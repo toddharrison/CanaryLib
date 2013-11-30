@@ -1,13 +1,13 @@
 package net.canarymod.database.mysql;
 
+import net.canarymod.Canary;
+import net.canarymod.config.Configuration;
+import net.canarymod.config.DatabaseConfiguration;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.LinkedList;
-
-import net.canarymod.Canary;
-import net.canarymod.config.Configuration;
-import net.canarymod.config.DatabaseConfiguration;
 
 /**
  * This class is a MySQL Connection Pool for the MySQL backend for CanaryMod.
@@ -16,6 +16,7 @@ import net.canarymod.config.DatabaseConfiguration;
  *
  * @author Somners
  */
+@Deprecated
 public class MySQLConnectionPool {
 
     private DatabaseConfiguration config;

@@ -452,13 +452,24 @@ public abstract class Canary implements TaskOwner {
     }
 
     /**
-     * Use the standard CanaryMod logger to log messages with DERP level
+     * Use the standard CanaryMod logger to log situations that should normally never occur.
      *
      * @param message
      *         the message to be logged
      */
     public static void logDerp(String message) {
         logger.log(CanaryLevel.DERP, message);
+    }
+
+    /**
+     * Use the standard CanaryMod logger for logging exceptions that should normally never occur.
+     * @param message
+     *          the message to be logged
+     * @param t
+     *          the Throwable object to be logged
+     */
+    public static void logDerp(String message, Throwable t) {
+        logger.log(CanaryLevel.DERP, message, t);
     }
 
     /**

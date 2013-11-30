@@ -12,4 +12,8 @@ public class DatabaseAccessException extends Exception {
     public DatabaseAccessException(String str) {
         super(str);
     }
+
+    public DatabaseAccessException(String str, Throwable t) {
+        super(str, t);
+    }
 }

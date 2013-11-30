@@ -1,9 +1,10 @@
 package net.canarymod.config;
 
-import java.io.File;
-
 import net.canarymod.Canary;
+import net.canarymod.database.JdbcConnectionManager;
 import net.visualillusionsent.utils.PropertiesFile;
+
+import java.io.File;
 
 /**
  * Database Configuration settings
@@ -39,12 +40,54 @@ public class DatabaseConfiguration implements ConfigurationContainer {
 
     /** Creates the default configuration */
     private void verifyConfig() {
+        cfg.clearHeader();
+        cfg.addHeaderLines(
+                "For more settings explanations see following websites ...",
+                "http://javatech.org/2007/11/c3p0-connectionpool-configuration-rules-of-thumb/",
+                "https://community.jboss.org/wiki/HowToConfigureTheC3P0ConnectionPool?_sscc=t");
+
         cfg.getString("name", "minecraft");
         cfg.getString("host", "localhost");
         cfg.getString("username", "admin");
         cfg.getString("password", "admin");
         cfg.getInt("port", 3306);
         cfg.getInt("maxConnections", 5);
+
+        // c3p0 settings
+
+        cfg.getInt("acquire-increment", 5);
+        cfg.addComment("acquire-increment", "Determines how many connections at a time c3p0 will try to acquire when the pool is exhausted.");
+
+        cfg.getInt("max-connection-idle-time", 900); //15 minutes
+        cfg.addComment("max-connection-idle-time", "Determines how long idle connections can stay in the connection pool before they are removed.");
+
+        cfg.getInt("max-excess-connections-idle-time", 1800); // 30 minutes
+        cfg.addComment("max-excess-connections-idle-time", "Time until the connection pool will be culled down to min-connection-pool-size. Set 0 to not enforce pool shrinking.");
+
+        cfg.getInt("max-connection-pool-size", 10);
+        cfg.addComment("max-connection-pool-size", "The maximum allowed number of pooled connections. More for larger servers");
+
+        cfg.getInt("min-connection-pool-size", 3);
+        cfg.addComment("min-connection-pool-size", "The minimum amount of connections allowed. More means more memory usage but takes away some impact from creating new connections.");
+
+        cfg.getInt("num-helper-threads", 4);
+        cfg.addComment("num-helper-threads", "Amount of threads that will perform slow JDBC operations (closing idle connections, returning connections to pool etc)");
+
+        cfg.getInt("return-connection-timeout", 900); //15 minutes
+        cfg.addComment("return-connection-timeout", "Defines a time a connection can remain checked out. After that it will be forced back into the connection pool.");
+
+        cfg.getInt("connection-test-frequency", 0); // 60 minutes
+        cfg.addComment("idle-connection-test-frequency", "Every this amount of seconds idle connections will be checked for validity. Set 0 to turn off");
+
+        cfg.getInt("max-cached-statements", 50);
+        cfg.addComment("max-cached-statements", "Number of max cached statements on all connections. (Roughly 5 * expected pooled connections)");
+
+        cfg.getInt("max-statements-per-connection", 5);
+        cfg.addComment("max-statements-per-connection", "Number of max cached statements on a single connection.");
+
+        cfg.getInt("statement-cache-close-threads", 1);
+        cfg.addComment("statement-cache-close-threads", "Number of threads to use when closing statements is deferred (happens when parent connection is still in use)");
+
         cfg.save();
     }
 
@@ -59,8 +102,13 @@ public class DatabaseConfiguration implements ConfigurationContainer {
      */
     public String getDatabaseUrl(String driver) {
         int port = getDatabasePort();
+        if(driver.equals(JdbcConnectionManager.Type.SQLITE.getIdentifier())) {
+            return "jdbc:" + driver + "://" + getDatabaseHost() + ((port == 0) ? "" : (":" + port)) + "/db/" + getDatabaseName() + ".db";
+        }
+        else {
+            return "jdbc:" + driver + "://" + getDatabaseHost() + ((port == 0) ? "" : (":" + port)) + "/" + getDatabaseName();
+        }
 
-        return "jdbc:" + driver + "://" + getDatabaseHost() + ((port == 0) ? "" : (":" + port)) + "/" + getDatabaseName();
     }
 
     /**
@@ -82,12 +130,12 @@ public class DatabaseConfiguration implements ConfigurationContainer {
     }
 
     /**
-     * Get the name of the database. Defaults to 'minecraft'
+     * Get the name of the database. Defaults to 'canarymod'
      *
      * @return database name
      */
     public String getDatabaseName() {
-        return cfg.getString("name", "minecraft");
+        return cfg.getString("name", "canarymod");
     }
 
     /**
@@ -118,5 +166,110 @@ public class DatabaseConfiguration implements ConfigurationContainer {
      */
     public int getDatabaseMaxConnections() {
         return cfg.getInt("maxConnections");
+    }
+
+    /**
+     * Defines the total number PreparedStatements a DataSource will cache.
+     * The pool will destroy the least-recently-used PreparedStatement when it hits this limit.
+     *
+     * @return config for max cached statements
+     */
+    public int getMaxCachedStatements() {
+        return cfg.getInt("max-cached-statements", 50);
+    }
+
+    /**
+     *  Defines how many statements each pooled Connection is allowed to own.
+     *  You can set this to a bit more than the number of PreparedStatements
+     *  your application frequently uses, to avoid churning.
+     *
+     * @return config for max num of pooled statements per connection
+     */
+    public int getMaxCachedStatementsPerConnection() {
+        return cfg.getInt("max-statements-per-connection", 5);
+    }
+
+    /**
+     * If greater than zero, the Statement pool will defer physically close()ing cached Statements
+     * until its parent Connection is not in use by any client or internally (in e.g. a test) by the pool itself.
+     *
+     * @return config num of threads used to defer closing statements
+     */
+    public int getNumStatementCloseThreads() {
+        return cfg.getInt("statement-cache-close-threads", 1);
+    }
+
+    /**
+     * Defines the interval of checking validity of pooled connections in seconds.
+     *
+     * @return connection re-check interval
+     */
+    public int getConnectionTestFrequency() {
+        return cfg.getInt("connection-test-frequency", 3600);
+    }
+
+    /**
+     * Defines the time in seconds a connection can stay checked out, before it is returned to the connection pool.
+     *
+     * @return num of seconds a connection can stay checked out
+     */
+    public int getReturnConnectionTimeout() {
+        return cfg.getInt("return-connection-timeout", 900);
+    }
+
+    /**
+     * Defines the amount of threads to use when executing slow JDBC operations,
+     * such as closing connections and statements.
+     *
+     * @return num of threads to use for heavy JDBC operations
+     */
+    public int getNumHelperThreads() {
+        return cfg.getInt("num-helper-threads", 4);
+    }
+
+    /**
+     * Defines the minimum amount of connections to keep alive in the connection pool.
+     *
+     * @return min amount of connections
+     */
+    public int getMinPoolSize() {
+        return cfg.getInt("min-connection-pool-size", 3);
+    }
+
+    /**
+     * Defines the maximum allowed number of connections in the connection pool.
+     * @return max allowed connections in pool
+     */
+    public int getMaxPoolSize() {
+        return cfg.getInt("max-connection-pool-size", 10);
+    }
+
+    /**
+     * Number of seconds that Connections in excess of minPoolSize
+     * should be permitted to remain idle in the pool before being culled.
+     * Set 0 to turn off culling
+     *
+     * @return seconds to keep excess connections
+     */
+    public int getMaxExcessConnectionsIdleTime() {
+        return cfg.getInt("max-excess-connections-idle-time", 1800);
+    }
+
+    /**
+     * Determines how many connections at a time to acquire when the pool is exhausted.
+     *
+     * @return connections to acquire
+     */
+    public int getAcquireIncrement() {
+        return cfg.getInt("acquire-increment", 5);
+    }
+
+    /**
+     * Time to keep idle connections in the pool before they are closed and discarded.
+     *
+     * @return keep-alive time of connections in pool
+     */
+    public int getMaxConnectionIdleTime() {
+        return cfg.getInt("max-connection-idle-time", 900);
     }
 }
