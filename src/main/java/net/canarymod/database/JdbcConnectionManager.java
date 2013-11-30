@@ -15,6 +15,7 @@ import java.sql.SQLException;
  * In our particular case that is mysql and sqlite.
  * For sqlite, due to the minimal nature of it,
  * there need to be a separate handling.
+ * TODO: Configure statement caching!
  */
 public class JdbcConnectionManager {
     /**

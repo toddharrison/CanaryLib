@@ -1,27 +1,19 @@
 package net.canarymod.database.mysql;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import net.canarymod.Canary;
 import net.canarymod.database.Column;
 import net.canarymod.database.DataAccess;
 import net.canarymod.database.Database;
+import net.canarymod.database.JdbcConnectionManager;
 import net.canarymod.database.exceptions.DatabaseAccessException;
 import net.canarymod.database.exceptions.DatabaseReadException;
 import net.canarymod.database.exceptions.DatabaseTableInconsistencyException;
 import net.canarymod.database.exceptions.DatabaseWriteException;
+
+import java.sql.*;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Represents access to a MySQL database
@@ -31,16 +23,11 @@ import net.canarymod.database.exceptions.DatabaseWriteException;
 public class MySQLDatabase extends Database {
 
     private static MySQLDatabase instance;
-    private static MySQLConnectionPool pool;
     private final String LIST_REGEX = "\u00B6";
     private final String NULL_STRING = "NULL";
 
     private MySQLDatabase() {
-        try {
-            pool = new MySQLConnectionPool();
-        }
-        catch (Exception e) {
-        }
+        // one does not simply instantiate MySQLDatabase!
     }
 
     public static MySQLDatabase getInstance() {
@@ -55,7 +42,7 @@ public class MySQLDatabase extends Database {
         if (this.doesEntryExist(data)) {
             return;
         }
-        Connection conn = pool.getConnectionFromPool();
+        Connection conn = JdbcConnectionManager.getConnection();
         PreparedStatement ps = null;
 
         try {
@@ -94,16 +81,16 @@ public class MySQLDatabase extends Database {
             if (ps.executeUpdate() == 0) {
                 throw new DatabaseWriteException("Error inserting MySQL: no rows updated!");
             }
+
         }
         catch (SQLException ex) {
-            Canary.logStacktrace(ex.getMessage(), ex);
+            Canary.logWarning(ex.getMessage(), ex);
         }
         catch (DatabaseTableInconsistencyException dtie) {
-            Canary.logStacktrace(dtie.getMessage(), dtie);
+            Canary.logWarning(dtie.getMessage(), dtie);
         }
         finally {
-            this.closePS(ps);
-            pool.returnConnectionToPool(conn);
+            close(conn, ps, null);
         }
 
     }
@@ -114,7 +101,7 @@ public class MySQLDatabase extends Database {
             return;
         }
 
-        Connection conn = pool.getConnectionFromPool();
+        Connection conn = JdbcConnectionManager.getConnection();
         ResultSet rs = null;
 
         try {
@@ -141,30 +128,29 @@ public class MySQLDatabase extends Database {
             }
         }
         catch (SQLException ex) {
-            Canary.logStacktrace(ex.getMessage(), ex);
+            Canary.logWarning(ex.getMessage(), ex);
         }
         catch (DatabaseTableInconsistencyException dtie) {
-            Canary.logStacktrace(dtie.getMessage(), dtie);
+            Canary.logWarning(dtie.getMessage(), dtie);
         }
-        catch (DatabaseReadException ex) {
-            Logger.getLogger(MySQLDatabase.class.getName()).log(Level.SEVERE, null, ex);
+        catch (DatabaseReadException e) {
+            Canary.logWarning(e.getMessage(), e);
         }
         finally {
+            PreparedStatement st = null;
             try {
-                PreparedStatement st = rs != null && rs.getStatement() instanceof PreparedStatement ? (PreparedStatement) rs.getStatement() : null;
-                this.closeRS(rs);
-                this.closePS(st);
-                pool.returnConnectionToPool(conn);
+                st = rs != null && rs.getStatement() instanceof PreparedStatement ? (PreparedStatement) rs.getStatement() : null;
+            } catch (SQLException e) {
+                Canary.logWarning(e.getMessage(), e);
             }
-            catch (SQLException ex) {
-                Canary.logStacktrace(ex.getMessage(), ex);
-            }
+            close(conn, st, rs);
         }
     }
 
+
     @Override
     public void remove(String tableName, String[] fieldNames, Object[] fieldValues) throws DatabaseWriteException {
-        Connection conn = pool.getConnectionFromPool();
+        Connection conn = JdbcConnectionManager.getConnection();
         ResultSet rs = null;
 
         try {
@@ -185,9 +171,7 @@ public class MySQLDatabase extends Database {
         finally {
             try {
                 PreparedStatement st = rs != null && rs.getStatement() instanceof PreparedStatement ? (PreparedStatement) rs.getStatement() : null;
-                this.closeRS(rs);
-                this.closePS(st);
-                pool.returnConnectionToPool(conn);
+                close(conn, st, rs);
             }
             catch (SQLException ex) {
                 Canary.logStacktrace(ex.getMessage(), ex);
@@ -198,7 +182,7 @@ public class MySQLDatabase extends Database {
     @Override
     public void load(DataAccess dataset, String[] fieldNames, Object[] fieldValues) throws DatabaseReadException {
         ResultSet rs = null;
-        Connection conn = pool.getConnectionFromPool();
+        Connection conn = JdbcConnectionManager.getConnection();
         HashMap<String, Object> dataSet = new HashMap<String, Object>();
         try {
             rs = this.getResultSet(conn, dataset, fieldNames, fieldValues, true);
@@ -230,9 +214,7 @@ public class MySQLDatabase extends Database {
         finally {
             try {
                 PreparedStatement st = rs != null && rs.getStatement() instanceof PreparedStatement ? (PreparedStatement) rs.getStatement() : null;
-                this.closeRS(rs);
-                this.closePS(st);
-                pool.returnConnectionToPool(conn);
+                close(conn, st, rs);
             }
             catch (SQLException ex) {
                 Canary.logStacktrace(ex.getMessage(), ex);
@@ -249,7 +231,7 @@ public class MySQLDatabase extends Database {
     @Override
     public void loadAll(DataAccess typeTemplate, List<DataAccess> datasets, String[] fieldNames, Object[] fieldValues) throws DatabaseReadException {
         ResultSet rs = null;
-        Connection conn = pool.getConnectionFromPool();
+        Connection conn = JdbcConnectionManager.getConnection();
         List<HashMap<String, Object>> stuff = new ArrayList<HashMap<String, Object>>();
         try {
             rs = this.getResultSet(conn, typeTemplate, fieldNames, fieldValues, false);
@@ -284,9 +266,7 @@ public class MySQLDatabase extends Database {
         finally {
             try {
                 PreparedStatement st = rs != null && rs.getStatement() instanceof PreparedStatement ? (PreparedStatement) rs.getStatement() : null;
-                this.closeRS(rs);
-                this.closePS(st);
-                pool.returnConnectionToPool(conn);
+                close(conn, st, rs);
             }
             catch (SQLException ex) {
                 Canary.logStacktrace(ex.getMessage(), ex);
@@ -307,7 +287,7 @@ public class MySQLDatabase extends Database {
 
     @Override
     public void updateSchema(DataAccess schemaTemplate) throws DatabaseWriteException {
-        Connection conn = pool.getConnectionFromPool();
+        Connection conn = JdbcConnectionManager.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
@@ -355,14 +335,12 @@ public class MySQLDatabase extends Database {
             Canary.logStacktrace("Error updating MySQL schema." + dtie.getMessage(), dtie);
         }
         finally {
-            this.closeRS(rs);
-            this.closePS(ps);
-            pool.returnConnectionToPool(conn);
+            close(conn, ps, rs);
         }
     }
 
     public void createTable(DataAccess data) throws DatabaseWriteException {
-        Connection conn = pool.getConnectionFromPool();
+        Connection conn = JdbcConnectionManager.getConnection();
         PreparedStatement ps = null;
 
         try {
@@ -399,13 +377,12 @@ public class MySQLDatabase extends Database {
             Canary.logStacktrace(ex.getMessage() + " Error creating MySQL table '" + data.getName() + "'. ", ex);
         }
         finally {
-            this.closePS(ps);
-            pool.returnConnectionToPool(conn);
+            close(conn, ps, null);
         }
     }
 
     public void insertColumn(String tableName, Column column) throws DatabaseWriteException {
-        Connection conn = pool.getConnectionFromPool();
+        Connection conn = JdbcConnectionManager.getConnection();
         PreparedStatement ps = null;
 
         try {
@@ -418,14 +395,13 @@ public class MySQLDatabase extends Database {
             throw new DatabaseWriteException("Error adding MySQL collumn: " + column.columnName());
         }
         finally {
-            this.closePS(ps);
-            pool.returnConnectionToPool(conn);
+            close(conn, ps, null);
         }
 
     }
 
     public void deleteColumn(String tableName, String columnName) throws DatabaseWriteException {
-        Connection conn = pool.getConnectionFromPool();
+        Connection conn = JdbcConnectionManager.getConnection();
         PreparedStatement ps = null;
 
         try {
@@ -438,36 +414,35 @@ public class MySQLDatabase extends Database {
             throw new DatabaseWriteException("Error deleting MySQL collumn: " + columnName);
         }
         finally {
-            this.closePS(ps);
-            pool.returnConnectionToPool(conn);
+            close(conn, ps, null);
         }
     }
 
-    public boolean doesPrimaryKeyExist(DataAccess data, String primaryKey, Object value) throws DatabaseWriteException {
-        Connection conn = pool.getConnectionFromPool();
-        PreparedStatement ps = null;
-        boolean toRet = false;
-
-        try {
-            ps = conn.prepareStatement("SELECT * FROM `" + data.getName() + "` WHERE '" + primaryKey + "' = ?");
-            ps.setObject(1, this.convert(value));
-            toRet = ps.execute();
-
-        }
-        catch (SQLException ex) {
-            throw new DatabaseWriteException("Error checking Value for MySQL Primary "
-                    + "Key in Table `" + data.getName() + "` for key `" + primaryKey
-                    + "` and value '" + String.valueOf(value) + "'.");
-        }
-        finally {
-            this.closePS(ps);
-            pool.returnConnectionToPool(conn);
-        }
-        return toRet;
-    }
+//    public boolean doesPrimaryKeyExist(DataAccess data, String primaryKey, Object value) throws DatabaseWriteException {
+//        Connection conn = pool.getConnectionFromPool();
+//        PreparedStatement ps = null;
+//        boolean toRet = false;
+//
+//        try {
+//            ps = conn.prepareStatement("SELECT * FROM `" + data.getName() + "` WHERE '" + primaryKey + "' = ?");
+//            ps.setObject(1, this.convert(value));
+//            toRet = ps.execute();
+//
+//        }
+//        catch (SQLException ex) {
+//            throw new DatabaseWriteException("Error checking Value for MySQL Primary "
+//                    + "Key in Table `" + data.getName() + "` for key `" + primaryKey
+//                    + "` and value '" + String.valueOf(value) + "'.");
+//        }
+//        finally {
+//            this.closePS(ps);
+//            pool.returnConnectionToPool(conn);
+//        }
+//        return toRet;
+//    }
 
     public boolean doesEntryExist(DataAccess data) throws DatabaseWriteException {
-        Connection conn = pool.getConnectionFromPool();
+        Connection conn = JdbcConnectionManager.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
         boolean toRet = false;
@@ -520,49 +495,9 @@ public class MySQLDatabase extends Database {
             Logger.getLogger(MySQLDatabase.class.getName()).log(Level.SEVERE, null, ex);
         }
         finally {
-            this.closePS(ps);
-            this.closeRS(rs);
-            pool.returnConnectionToPool(conn);
+            close(conn, ps, rs);
         }
         return toRet;
-    }
-
-    /**
-     * Safely Close a ResultSet.
-     *
-     * @param rs
-     *         ResultSet to close.
-     */
-    public void closeRS(ResultSet rs) {
-        if (rs != null) {
-            try {
-                if (!rs.isClosed()) {
-                    rs.close();
-                }
-            }
-            catch (SQLException sqle) {
-                Canary.logStacktrace("Error closing ResultSet in MySQL database.", sqle);
-            }
-        }
-    }
-
-    /**
-     * Safely Close a PreparedStatement.
-     *
-     * @param ps
-     *         PreparedStatement to close.
-     */
-    public void closePS(PreparedStatement ps) {
-        if (ps != null) {
-            try {
-                if (!ps.isClosed()) {
-                    ps.close();
-                }
-            }
-            catch (SQLException sqle) {
-                Canary.logStacktrace("Error closing PreparedStatement in MySQL database.", sqle);
-            }
-        }
     }
 
     public ResultSet getResultSet(Connection conn, DataAccess data, String[] fieldNames, Object[] fieldValues, boolean limitOne) throws DatabaseReadException {
@@ -623,7 +558,7 @@ public class MySQLDatabase extends Database {
         ArrayList<String> columns = new ArrayList<String>();
         String columnName;
 
-        Connection connection = pool.getConnectionFromPool();
+        Connection connection = JdbcConnectionManager.getConnection();
         try {
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SHOW COLUMNS FROM `" + data.getName() + "`");
@@ -636,16 +571,15 @@ public class MySQLDatabase extends Database {
             Canary.logStacktrace(ex.getMessage(), ex);
         }
         finally {
-            this.closeRS(resultSet);
             if (statement != null) {
                 try {
                     statement.close();
                 }
-                catch (SQLException ex) {
-                    Logger.getLogger(MySQLDatabase.class.getName()).log(Level.SEVERE, null, ex);
+                catch (SQLException e) {
+                    Canary.logWarning(e.getMessage(), e);
                 }
             }
-            pool.returnConnectionToPool(connection);
+            close(connection, null, resultSet);
         }
         return columns;
     }
@@ -799,5 +733,31 @@ public class MySQLDatabase extends Database {
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * Close a set of working data.
+     * This will return all the data to the connection pool.
+     * You can pass null for objects that are not relevant in your given context
+     * @param c the connection object
+     * @param ps the prepared statement
+     * @param rs the result set
+     */
+    private void close(Connection c, PreparedStatement ps, ResultSet rs) {
+        try {
+            if(ps != null) {
+                ps.close();
+            }
+            if(rs != null) {
+                rs.close();
+            }
+            if(c != null) {
+                c.close();
+            }
+        }
+        catch(SQLException e) {
+            Canary.logWarning(e.getMessage(), e);
+        }
+
     }
 }
