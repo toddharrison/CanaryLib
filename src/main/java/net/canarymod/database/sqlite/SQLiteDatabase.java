@@ -1,41 +1,21 @@
 package net.canarymod.database.sqlite;
 
-import java.io.File;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Types;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import net.canarymod.Canary;
-import net.canarymod.config.Configuration;
 import net.canarymod.database.Column;
 import net.canarymod.database.Column.DataType;
-import static net.canarymod.database.Column.DataType.BOOLEAN;
-import static net.canarymod.database.Column.DataType.BYTE;
-import static net.canarymod.database.Column.DataType.DOUBLE;
-import static net.canarymod.database.Column.DataType.FLOAT;
-import static net.canarymod.database.Column.DataType.INTEGER;
-import static net.canarymod.database.Column.DataType.LONG;
-import static net.canarymod.database.Column.DataType.SHORT;
-import static net.canarymod.database.Column.DataType.STRING;
 import net.canarymod.database.DataAccess;
 import net.canarymod.database.Database;
+import net.canarymod.database.JdbcConnectionManager;
 import net.canarymod.database.exceptions.DatabaseAccessException;
 import net.canarymod.database.exceptions.DatabaseReadException;
 import net.canarymod.database.exceptions.DatabaseTableInconsistencyException;
 import net.canarymod.database.exceptions.DatabaseWriteException;
+
+import java.io.File;
+import java.sql.*;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * SQLite Database
@@ -44,11 +24,9 @@ import net.canarymod.database.exceptions.DatabaseWriteException;
  */
 public class SQLiteDatabase extends Database {
 
-    private Connection conn; // One Connection, All the Time
     private static SQLiteDatabase instance;
     private final String LIST_REGEX = "\u00B6";
     private final String NULL_STRING = "NULL";
-    private final String database;
 
     private SQLiteDatabase() {
         File path = new File("db/");
@@ -56,13 +34,15 @@ public class SQLiteDatabase extends Database {
         if (!path.exists()) {
             path.mkdirs();
         }
-        database = Configuration.getDbConfig().getDatabaseName();
         try {
-            conn = DriverManager.getConnection("jdbc:sqlite:" + database + ".db");
+            PreparedStatement ps = JdbcConnectionManager.getConnection().prepareStatement("PRAGMA encoding = \"UTF-8\"");
+            ps.execute();
+            ps.close();
         }
-        catch (Exception ex) {
-            Canary.logStacktrace("Failed to create connection to SQLite database", ex);
+        catch(SQLException e) {
+            Canary.logWarning("Error while instantiating a new SQLiteDatabase!", e);
         }
+
     }
 
     public static SQLiteDatabase getInstance() {
@@ -100,13 +80,13 @@ public class SQLiteDatabase extends Database {
                 values.deleteCharAt(values.length() - 1);
             }
             String state = "INSERT INTO `" + data.getName() + "` (" + fields.toString() + ") VALUES(" + values.toString() + ")";
-            ps = conn.prepareStatement(state);
+            ps = JdbcConnectionManager.getConnection().prepareStatement(state);
 
             int i = 1;
             for (Column c : columns.keySet()) {
                 if (!c.autoIncrement()) {
                     if (c.isList()) {
-                        ps.setObject(i, getString((List<?>) columns.get(c)));
+                        ps.setString(i, getString((List<?>) columns.get(c)));
                     }
                     ps.setObject(i, convert(columns.get(c)));
                     i++;
@@ -166,7 +146,7 @@ public class SQLiteDatabase extends Database {
                 where.append(fieldValues[index]);
             }
 
-            ps = conn.prepareStatement(String.format(updateClause, set.toString(), where.toString()));
+            ps = JdbcConnectionManager.getConnection().prepareStatement(String.format(updateClause, set.toString(), where.toString()));
             ps.execute();
         }
         catch (SQLException ex) {
@@ -195,7 +175,7 @@ public class SQLiteDatabase extends Database {
                 buildState.append("=");
                 buildState.append(fieldValues[index]);
             }
-            ps = conn.prepareStatement(buildState.toString());
+            ps = JdbcConnectionManager.getConnection().prepareStatement(buildState.toString());
             ps.execute();
         }
         catch (SQLException ex) {
@@ -211,7 +191,7 @@ public class SQLiteDatabase extends Database {
         ResultSet rs = null;
         HashMap<String, Object> dataSet = new HashMap<String, Object>();
         try {
-            rs = this.getResultSet(conn, dataset, fieldNames, fieldValues, true);
+            rs = this.getResultSet(JdbcConnectionManager.getConnection(), dataset, fieldNames, fieldValues, true);
             if (rs != null) {
                 if (rs.next()) {
                     for (Column column : dataset.getTableLayout()) {
@@ -264,7 +244,7 @@ public class SQLiteDatabase extends Database {
         ResultSet rs = null;
         List<HashMap<String, Object>> stuff = new ArrayList<HashMap<String, Object>>();
         try {
-            rs = this.getResultSet(conn, typeTemplate, fieldNames, fieldValues, false);
+            rs = this.getResultSet(JdbcConnectionManager.getConnection(), typeTemplate, fieldNames, fieldValues, false);
             if (rs != null) {
                 while (rs.next()) {
                     HashMap<String, Object> dataSet = new HashMap<String, Object>();
@@ -326,7 +306,7 @@ public class SQLiteDatabase extends Database {
         try {
             // First check if the table exists, if it doesn't we'll skip the rest
             // of this method since we're creating it fresh.
-            DatabaseMetaData metadata = conn.getMetaData();
+            DatabaseMetaData metadata = JdbcConnectionManager.getConnection().getMetaData();
             rs = metadata.getTables(null, null, schemaTemplate.getName(), null);
             if (!rs.next()) {
                 createTable(schemaTemplate);
@@ -404,8 +384,8 @@ public class SQLiteDatabase extends Database {
                     fields.append(", ");
                 }
             }
-            String state = "CREATE TABLE IF NOT EXISTS `" + data.getName() + "` (" + fields.toString() + ") ";
-            ps = conn.prepareStatement(state);
+            String state = "CREATE TABLE IF NOT EXISTS `" + data.getName() + "` (" + fields.toString() + ")";
+            ps = JdbcConnectionManager.getConnection().prepareStatement(state);
             if (ps.execute()) {
                 Canary.logDebug("Statment Executed!");
             }
@@ -426,7 +406,7 @@ public class SQLiteDatabase extends Database {
 
         try {
             if (column != null && !column.columnName().trim().equals("")) {
-                ps = conn.prepareStatement("ALTER TABLE `" + tableName + "` ADD `" + column.columnName() + "` " + getDataTypeSyntax(column.dataType()));
+                ps = JdbcConnectionManager.getConnection().prepareStatement("ALTER TABLE `" + tableName + "` ADD `" + column.columnName() + "` " + getDataTypeSyntax(column.dataType()));
                 ps.execute();
             }
         }
@@ -444,7 +424,7 @@ public class SQLiteDatabase extends Database {
 
         try {
             if (columnName != null && !columnName.trim().equals("")) {
-                ps = conn.prepareStatement("ALTER TABLE `" + tableName + "` DROP `" + columnName + "`");
+                ps = JdbcConnectionManager.getConnection().prepareStatement("ALTER TABLE `" + tableName + "` DROP `" + columnName + "`");
                 ps.execute();
             }
         }
@@ -454,27 +434,6 @@ public class SQLiteDatabase extends Database {
         finally {
             closePS(ps);
         }
-    }
-
-    public boolean doesPrimaryKeyExist(DataAccess data, String primaryKey, Object value) throws DatabaseWriteException {
-        PreparedStatement ps = null;
-        boolean toRet = false;
-
-        try {
-            ps = conn.prepareStatement("SELECT * FROM `" + data.getName() + "` WHERE '" + primaryKey + "' = ?");
-            ps.setObject(1, convert(value));
-            toRet = ps.execute();
-
-        }
-        catch (SQLException ex) {
-            throw new DatabaseWriteException("Error checking Value for SQLite Primary "
-                    + "Key in Table `" + data.getName() + "` for key `" + primaryKey
-                    + "` and value '" + String.valueOf(value) + "'.");
-        }
-        finally {
-            closePS(ps);
-        }
-        return toRet;
     }
 
     public boolean doesEntryExist(DataAccess data) throws DatabaseWriteException {
@@ -500,7 +459,7 @@ public class SQLiteDatabase extends Database {
                     sb.append("' = ?");
                 }
             }
-            ps = conn.prepareStatement("SELECT * FROM `" + data.getName() + "` WHERE " + sb.toString());
+            ps = JdbcConnectionManager.getConnection().prepareStatement("SELECT * FROM `" + data.getName() + "` WHERE " + sb.toString());
             it = columns.keySet().iterator();
 
             int index = 1;
@@ -626,7 +585,7 @@ public class SQLiteDatabase extends Database {
         String columnName;
 
         try {
-            statement = conn.createStatement();
+            statement = JdbcConnectionManager.getConnection().createStatement();
             resultSet = statement.executeQuery("SELECT * FROM '" + data.getName() + "'");
             ResultSetMetaData rsMeta = resultSet.getMetaData();
             for (int index = 1; index <= rsMeta.getColumnCount(); index++) {
@@ -654,73 +613,23 @@ public class SQLiteDatabase extends Database {
     public String getDataTypeSyntax(Column.DataType type) {
         switch (type) {
             case BYTE:
-                return "INT";
+                return "INTEGER";
             case INTEGER:
-                return "INT";
+                return "INTEGER";
             case FLOAT:
-                return "DOUBLE";
+                return "INTEGER";
             case DOUBLE:
-                return "DOUBLE";
+                return "INTEGER";
             case LONG:
-                return "BIGINT";
+                return "INTEGER";
             case SHORT:
-                return "TINYINT";
+                return "INTEGER";
             case STRING:
                 return "TEXT";
             case BOOLEAN:
-                return "BOOLEAN";
+                return "INTEGER";
         }
         return "";
-    }
-
-    public int getJDBCDataType(Column.DataType type) {
-        switch (type) {
-            case BYTE:
-                return Types.INTEGER;
-            case INTEGER:
-                return Types.INTEGER;
-            case FLOAT:
-                return Types.DOUBLE;
-            case DOUBLE:
-                return Types.DOUBLE;
-            case LONG:
-                return Types.BIGINT;
-            case SHORT:
-                return Types.TINYINT;
-            case STRING:
-                return Types.BLOB;
-            case BOOLEAN:
-                return Types.TINYINT;
-        }
-        return 0;
-    }
-
-    public int getJDBCDataType(Object o) {
-        if (o instanceof Byte) {
-            return Types.INTEGER;
-        }
-        else if (o instanceof Integer) {
-            return Types.INTEGER;
-        }
-        else if (o instanceof Float) {
-            return Types.DOUBLE;
-        }
-        else if (o instanceof Double) {
-            return Types.DOUBLE;
-        }
-        else if (o instanceof Long) {
-            return Types.BIGINT;
-        }
-        else if (o instanceof Short) {
-            return Types.TINYINT;
-        }
-        else if (o instanceof String) {
-            return Types.BLOB;
-        }
-        else if (o instanceof Boolean) {
-            return Types.TINYINT;
-        }
-        return 0;
     }
 
     /**
@@ -835,6 +744,9 @@ public class SQLiteDatabase extends Database {
      * @return a string representation of the passed list.
      */
     public String getString(List<?> list) {
+        if(list == null) {
+            return NULL_STRING;
+        }
         StringBuilder sb = new StringBuilder();
         Iterator<?> it = list.iterator();
         while (it.hasNext()) {

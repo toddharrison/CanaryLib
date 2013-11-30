@@ -149,7 +149,10 @@ public class JdbcConnectionManager {
             JdbcConnectionManager cman = getInstance();
             if(cman.type == Type.SQLITE) {
                 if(cman.sqliteConnection != null) {
-                    cman.sqliteConnection.close();
+                    if(!cman.sqliteConnection.isClosed()) {
+                        return cman.sqliteConnection;
+                    }
+//                    cman.sqliteConnection.close();
                 }
                 cman.sqliteConnection = cman.cpds.getConnection();
                 return cman.sqliteConnection;

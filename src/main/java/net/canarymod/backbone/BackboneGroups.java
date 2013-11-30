@@ -1,7 +1,5 @@
 package net.canarymod.backbone;
 
-import java.util.ArrayList;
-
 import net.canarymod.Canary;
 import net.canarymod.ToolBox;
 import net.canarymod.chat.Colors;
@@ -10,6 +8,8 @@ import net.canarymod.database.Database;
 import net.canarymod.database.exceptions.DatabaseReadException;
 import net.canarymod.database.exceptions.DatabaseWriteException;
 import net.canarymod.user.Group;
+
+import java.util.ArrayList;
 
 /**
  * Backbone to the groups System. This contains NO logic, it is only the data
@@ -154,7 +154,7 @@ public class BackboneGroups extends Backbone {
     }
 
     private Group loadParents(String parent, ArrayList<Group> existingGroups) {
-        if (parent == null) {
+        if (parent == null || parent.isEmpty()) {
             return null;
         }
         for (Group g : existingGroups) {
@@ -171,6 +171,9 @@ public class BackboneGroups extends Backbone {
             Canary.logStacktrace(e.getMessage(), e);
         }
         if (data.hasData()) {
+            if(data.name.equals(parent)) {
+                return null;
+            }
             Group g = new Group();
 
             g.setDefaultGroup(data.isDefault);
@@ -179,6 +182,7 @@ public class BackboneGroups extends Backbone {
             g.setWorldName(ToolBox.stringToNull(data.worldName));
             g.setParent(loadParents(data.parent, existingGroups));
             g.setPrefix(data.prefix);
+            existingGroups.add(g);
             return g;
         }
         return null;

@@ -103,7 +103,7 @@ public class DatabaseConfiguration implements ConfigurationContainer {
     public String getDatabaseUrl(String driver) {
         int port = getDatabasePort();
         if(driver.equals(JdbcConnectionManager.Type.SQLITE.getIdentifier())) {
-            return "jdbc:" + driver + "://" + getDatabaseHost() + ((port == 0) ? "" : (":" + port)) + "/db/" + getDatabaseName() + ".db";
+            return "jdbc:" + driver + ":db/" + getDatabaseName() + ".db";
         }
         else {
             return "jdbc:" + driver + "://" + getDatabaseHost() + ((port == 0) ? "" : (":" + port)) + "/" + getDatabaseName();
