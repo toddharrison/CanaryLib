@@ -1,14 +1,14 @@
 package net.canarymod.kit;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import net.canarymod.Canary;
 import net.canarymod.ToolBox;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.inventory.Item;
 import net.canarymod.chat.TextFormat;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Contains information about a kit
@@ -92,7 +92,7 @@ public class Kit {
             lastUsed = 0L;
             lastUsages.put(player.getName(), lastUsed);
         }
-        if (lastUsed.longValue() + delay < ToolBox.getUnixTimestamp()) {
+        if (lastUsed + delay < ToolBox.getUnixTimestamp()) {
             if (owners != null && owners.length > 0) {
                 for (String owner : owners) {
                     if (owner.equals(player.getName())) {
@@ -124,7 +124,7 @@ public class Kit {
             return true;
         }
         else {
-            player.notice("You have to wait " + TextFormat.ORANGE + ToolBox.getTimeUntil(lastUsed.longValue(), delay) + TextFormat.LIGHT_RED + " before using again.");
+            player.notice("You have to wait " + TextFormat.ORANGE + ToolBox.getTimeUntil(lastUsed, delay) + TextFormat.LIGHT_RED + " before using again.");
             return false;
         }
     }

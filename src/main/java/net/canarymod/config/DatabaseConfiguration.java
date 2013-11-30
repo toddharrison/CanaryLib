@@ -46,7 +46,7 @@ public class DatabaseConfiguration implements ConfigurationContainer {
                 "http://javatech.org/2007/11/c3p0-connectionpool-configuration-rules-of-thumb/",
                 "https://community.jboss.org/wiki/HowToConfigureTheC3P0ConnectionPool?_sscc=t");
 
-        cfg.getString("name", "minecraft");
+        cfg.getString("name", "canarymod");
         cfg.getString("host", "localhost");
         cfg.getString("username", "admin");
         cfg.getString("password", "admin");

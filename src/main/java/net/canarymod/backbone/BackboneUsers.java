@@ -1,8 +1,5 @@
 package net.canarymod.backbone;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import net.canarymod.Canary;
 import net.canarymod.api.OfflinePlayer;
 import net.canarymod.api.entity.living.humanoid.Player;
@@ -11,6 +8,9 @@ import net.canarymod.database.Database;
 import net.canarymod.database.exceptions.DatabaseReadException;
 import net.canarymod.database.exceptions.DatabaseWriteException;
 import net.canarymod.user.Group;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Backbone to the Player System. This contains NO logic, it is only the data
@@ -194,7 +194,7 @@ public class BackboneUsers extends Backbone {
         data.subgroups = groupNames;
         data.isMuted = player.isMuted();
         String prefix = player.getPrefix();
-        if (prefix.equals(player.getGroup().getPrefix())) {
+        if (player.getGroup().getPrefix().equals(prefix)) {
             data.prefix = null;
         }
         else {

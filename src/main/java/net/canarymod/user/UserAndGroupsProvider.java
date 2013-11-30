@@ -1,13 +1,13 @@
 package net.canarymod.user;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import net.canarymod.Canary;
 import net.canarymod.api.OfflinePlayer;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.backbone.BackboneGroups;
 import net.canarymod.backbone.BackboneUsers;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Access to the backbone for users and groups
@@ -23,9 +23,6 @@ public class UserAndGroupsProvider {
 
     /**
      * Instantiate a groups provider
-     *
-     * @param bone
-     * @param type
      */
     public UserAndGroupsProvider() {
         backboneGroups = new BackboneGroups();
@@ -261,7 +258,7 @@ public class UserAndGroupsProvider {
             playerData.remove(player.getName());
             String[] data = new String[3];
             String prefix = player.getPrefix();
-            if (prefix.equals(player.getGroup().getPrefix())) {
+            if (player.getGroup().getPrefix().equals(prefix)) {
                 data[0] = null;
             }
             else {

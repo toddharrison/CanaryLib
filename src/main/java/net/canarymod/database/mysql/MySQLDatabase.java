@@ -18,7 +18,8 @@ import java.util.logging.Logger;
 /**
  * Represents access to a MySQL database
  *
- * @author Somners
+ * @author somners (Aaron)
+ * @author damagefilter (Chris)
  */
 public class MySQLDatabase extends Database {
 
@@ -71,9 +72,9 @@ public class MySQLDatabase extends Database {
             for (Column c : columns.keySet()) {
                 if (!c.autoIncrement()) {
                     if (c.isList()) {
-                        ps.setObject(i, this.getString((List<?>) columns.get(c)));
+                        ps.setString(i, this.getString((List<?>) columns.get(c)));
                     }
-                    ps.setObject(i, this.convert(columns.get(c)));
+                    ps.setString(i, this.convert(columns.get(c)));
                     i++;
                 }
             }
@@ -180,15 +181,15 @@ public class MySQLDatabase extends Database {
     }
 
     @Override
-    public void load(DataAccess dataset, String[] fieldNames, Object[] fieldValues) throws DatabaseReadException {
+    public void load(DataAccess da, String[] fieldNames, Object[] fieldValues) throws DatabaseReadException {
         ResultSet rs = null;
         Connection conn = JdbcConnectionManager.getConnection();
         HashMap<String, Object> dataSet = new HashMap<String, Object>();
         try {
-            rs = this.getResultSet(conn, dataset, fieldNames, fieldValues, true);
+            rs = this.getResultSet(conn, da, fieldNames, fieldValues, true);
             if (rs != null) {
                 if (rs.next()) {
-                    for (Column column : dataset.getTableLayout()) {
+                    for (Column column : da.getTableLayout()) {
                         if (column.isList()) {
                             dataSet.put(column.columnName(), this.getList(column.dataType(), rs.getString(column.columnName())));
                         }
@@ -199,17 +200,21 @@ public class MySQLDatabase extends Database {
                             dataSet.put(column.columnName(), rs.getObject(column.columnName()));
                         }
                     }
+                    da.load(dataSet);
                 }
             }
         }
         catch (DatabaseReadException dre) {
-            Canary.logStacktrace(dre.getMessage(), dre);
+            Canary.logWarning(dre.getMessage(), dre);
         }
         catch (SQLException ex) {
-            Canary.logStacktrace(ex.getMessage(), ex);
+            Canary.logWarning(ex.getMessage(), ex);
         }
         catch (DatabaseTableInconsistencyException dtie) {
-            Canary.logStacktrace(dtie.getMessage(), dtie);
+            Canary.logWarning(dtie.getMessage(), dtie);
+        }
+        catch (DatabaseAccessException e) {
+            Canary.logWarning(e.getMessage(), e);
         }
         finally {
             try {
@@ -217,14 +222,8 @@ public class MySQLDatabase extends Database {
                 close(conn, st, rs);
             }
             catch (SQLException ex) {
-                Canary.logStacktrace(ex.getMessage(), ex);
+                Canary.logWarning(ex.getMessage(), ex);
             }
-        }
-        try {
-            dataset.load(dataSet);
-        }
-        catch (DatabaseAccessException ex) {
-            Canary.logStacktrace(ex.getMessage(), ex);
         }
     }
 
@@ -367,7 +366,7 @@ public class MySQLDatabase extends Database {
             if (primary != null) {
                 fields.append(", PRIMARY KEY(`").append(primary).append("`)");
             }
-            ps = conn.prepareStatement("CREATE TABLE IF NOT EXISTS `" + data.getName() + "` (" + fields.toString() + ") ");
+            ps = conn.prepareStatement("CREATE TABLE IF NOT EXISTS `" + data.getName() + "` (" + fields.toString() + ") CHARACTER SET utf8 ");
             ps.execute();
         }
         catch (SQLException ex) {
@@ -613,11 +612,11 @@ public class MySQLDatabase extends Database {
      *
      * @return
      */
-    private Object convert(Object o) {
+    private String convert(Object o) {
         if (o instanceof String && ((String) o).contains("*")) {
             ((String) o).replace("*", "\\*");
         }
-        return o;
+        return String.valueOf(o);
     }
 
     /**
@@ -718,19 +717,21 @@ public class MySQLDatabase extends Database {
      * @return a string representation of the passed list.
      */
     public String getString(List<?> list) {
+        if(list == null) {
+            return NULL_STRING;
+        }
         StringBuilder sb = new StringBuilder();
-        Iterator<?> it = list.iterator();
-        while (it.hasNext()) {
-            Object o = it.next();
+        for (Object o : list) {
             if (o == null) {
                 sb.append(NULL_STRING);
             }
             else {
                 sb.append(String.valueOf(o));
             }
-            if (it.hasNext()) {
-                sb.append(this.LIST_REGEX);
-            }
+            sb.append(this.LIST_REGEX);
+        }
+        if(sb.length() > 0) {
+            sb.deleteCharAt(sb.length() - 1);
         }
         return sb.toString();
     }
