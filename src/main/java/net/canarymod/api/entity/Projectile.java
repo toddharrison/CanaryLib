@@ -5,7 +5,7 @@ package net.canarymod.api.entity;
  *
  * @author Larry (Larry1123)
  */
-public interface Projectile {
+public interface Projectile extends Entity {
 
     /**
      * Sets the Motion of a Projectile and Rotation
