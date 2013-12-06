@@ -1,13 +1,13 @@
 package net.canarymod.commandsys.commands;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import net.canarymod.Canary;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.chat.TextFormat;
 import net.canarymod.commandsys.NativeCommand;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Command to get information about CanaryMod
@@ -32,7 +32,7 @@ public class CanaryModCommand implements NativeCommand {
         builder.delete(0, builder.length());
         temp.add(builder.append(TextFormat.ORANGE).append("GitHub: ").append(TextFormat.WHITE).append("http://git.io/GMO-6g").toString());
         builder.delete(0, builder.length());
-        temp.add(builder.append(TextFormat.LIGHT_RED).append("  Copyright (c) 2012-2013 ").append(TextFormat.BLUE).append("FallenMoonNetwork").append(TextFormat.LIGHT_RED).append("/").append(TextFormat.ORANGE).append("CanaryMod Team").toString());
+        temp.add(builder.append(TextFormat.LIGHT_RED).append("  Copyright (c) 2012-2013 ").append(TextFormat.ORANGE).append("CanaryMod Team").toString());
         builder.delete(0, builder.length());
         temp.add(builder.append(TextFormat.LIGHT_RED).append("  Licensed under the BSD 3-Clause License ").toString());
         information = Collections.unmodifiableList(temp);
