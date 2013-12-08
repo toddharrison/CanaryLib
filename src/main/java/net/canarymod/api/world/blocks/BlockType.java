@@ -8,82 +8,96 @@ import java.util.HashMap;
  * @author Chris (damagefilter)
  */
 public final class BlockType {
-    public static final BlockType Air = new BlockType(0, 0, "Air");
-    public static final BlockType Stone = new BlockType(1, 0, "Stone");
-    public static final BlockType Grass = new BlockType(2, 0, "Grass");
-    public static final BlockType Dirt = new BlockType(3, 0, "Dirt");
-    public static final BlockType Cobble = new BlockType(4, 0, "Cobble");
-    public static final BlockType OakWood = new BlockType(5, 0, "Oak Wood");
-    public static final BlockType SpruceWood = new BlockType(5, 1, "Spruce Wood");
-    public static final BlockType BirchWood = new BlockType(5, 2, "Birch Wood");
-    public static final BlockType JungleWood = new BlockType(5, 3, "Jungle Wood");
-    public static final BlockType OakSapling = new BlockType(6, 0, "Oak Sapling");
-    public static final BlockType SpruceSapling = new BlockType(6, 1, "Spruce Sapling");
-    public static final BlockType BirchSapling = new BlockType(6, 2, "Birch Sapling");
-    public static final BlockType JungleSapling = new BlockType(6, 3, "Jungle Sapling");
-    public static final BlockType Bedrock = new BlockType(7, 0, "Bedrock");
-    public static final BlockType Water = new BlockType(8, 0, "Water");
-    public static final BlockType WaterFlowing = new BlockType(9, 0, "Water Flowing");
-    public static final BlockType Lava = new BlockType(10, 0, "Lava");
-    public static final BlockType LavaFlowing = new BlockType(11, 0, "Lava Flowing");
-    public static final BlockType Sand = new BlockType(12, 0, "Sand");
-    public static final BlockType Gravel = new BlockType(13, 0, "Gravel");
-    public static final BlockType GoldOre = new BlockType(14, 0, "Gold Ore");
-    public static final BlockType IronOre = new BlockType(15, 0, "Iron Ore");
-    public static final BlockType CoalOre = new BlockType(16, 0, "Coal Ore");
-    public static final BlockType OakLog = new BlockType(17, 0, "Oak Log");
-    public static final BlockType PineLog = new BlockType(17, 1, "Pine Log");
-    public static final BlockType BirchLog = new BlockType(17, 2, "Birch Log");
-    public static final BlockType JungleLog = new BlockType(17, 3, "Jungle Log");
-    public static final BlockType OakLeaves = new BlockType(18, 0, "Oak Leaves");
-    public static final BlockType PineLeaves = new BlockType(18, 1, "Pine Needles");
-    public static final BlockType BirchLeaves = new BlockType(18, 2, "Birch Leaves");
-    public static final BlockType JungleLeaves = new BlockType(18, 3, "Jungle Leaves");
-    public static final BlockType Sponge = new BlockType(19, 0, "Sponge"); // THE SPONGE IS A LIE!
-    public static final BlockType Glass = new BlockType(20, 0, "Glass");
-    public static final BlockType LapislazuliOre = new BlockType(21, 0, "Lapislazuli Pre");
-    public static final BlockType LapisBlock = new BlockType(22, 0, "Lapislazuli Block");
-    public static final BlockType Dispenser = new BlockType(23, 0, "Dispenser");
-    public static final BlockType Sandstone = new BlockType(24, 0, "Sandstone");
-    public static final BlockType SandstoneOrnate = new BlockType(24, 1, "Ornate Sandstone");
-    public static final BlockType SandstoneBlank = new BlockType(24, 2, "Blank Sandstone");
-    public static final BlockType NoteBlock = new BlockType(25, 0, "Note Block");
-    public static final BlockType BedBlock = new BlockType(26, 0, "Bed Block");
-    public static final BlockType PoweredRail = new BlockType(27, 0, "Powered Rail");
-    public static final BlockType DetectorRail = new BlockType(28, 0, "Detector Rail");
-    public static final BlockType StickyPiston = new BlockType(29, 0, "Sticky Piston");
-    public static final BlockType SpiderWeb = new BlockType(30, 0, "Spider Web");
-    public static final BlockType Shrub = new BlockType(31, 0, "Shrub");
-    public static final BlockType TallGrass = new BlockType(31, 1, "Tall Grass");
-    public static final BlockType TallFern = new BlockType(31, 2, "Tall Fern");
-    // 32 MIA
-    public static final BlockType Piston = new BlockType(33, 0, "Piston");
-    public static final BlockType PistonExtended = new BlockType(34, 0, "Extended Piston");
-    public static final BlockType WoolWhite = new BlockType(35, 0, "White Wool");
-    public static final BlockType WoolOrange = new BlockType(35, 1, "Orange Wool");
-    public static final BlockType WoolMagenta = new BlockType(35, 2, "Magenta Wool");
-    public static final BlockType WoolLightBlue = new BlockType(35, 3, "Light Blue Wool");
-    public static final BlockType WoolYellow = new BlockType(35, 4, "Yellow Wool");
-    public static final BlockType WoolLightGreen = new BlockType(35, 5, "Light Green Wool");
-    public static final BlockType WoolPink = new BlockType(35, 6, "Pink Wool");
-    public static final BlockType WoolGray = new BlockType(35, 7, "Gray Wool");
-    public static final BlockType WoolLightGray = new BlockType(35, 8, "Light Gray Wool");
-    public static final BlockType WoolCyan = new BlockType(35, 9, "Cyan Wool");
-    public static final BlockType WoolPurple = new BlockType(35, 10, "Purple Wool");
-    public static final BlockType WoolBlue = new BlockType(35, 11, "Blue Wool");
-    public static final BlockType WoolBrown = new BlockType(35, 12, "Brown Wool");
-    public static final BlockType WoolDarkGreen = new BlockType(35, 13, "Dark Green Wool");
-    public static final BlockType WoolRed = new BlockType(35, 14, "Red Wool");
-    public static final BlockType WoolBlack = new BlockType(35, 15, "Black Wool");
-    public static final BlockType PistonBlockFiller = new BlockType(36, 0, "Piston Block Filler");
-    public static final BlockType YellowFlower = new BlockType(37, 0, "Yellow Flower");
-    public static final BlockType RedFlower = new BlockType(38, 0, "Red Flower");
-    public static final BlockType BrownMushroom = new BlockType(39, 0, "Brown Mushroom");
-    public static final BlockType RedMushroom = new BlockType(40, 0, "Red Mushroom");
-    public static final BlockType GoldBlock = new BlockType(41, 0, "Gold Block");
-    public static final BlockType IronBlock = new BlockType(42, 0, "Iron Block");
-    public static final BlockType DoublestepOrnateStone = new BlockType(43, 0, "Doublesetp Ornate Stone");
-    public static final BlockType DoublestepSandStoneTrim = new BlockType(43, 1, "Doublestep Sandstone Trim");
+    public static final BlockType Air = new BlockType(0, 0, "Air", "minecraft:air");
+    public static final BlockType Stone = new BlockType(1, 0, "Stone", "minecraft:stone");
+    public static final BlockType Grass = new BlockType(2, 0, "Grass", "minecraft:grass");
+    public static final BlockType Dirt = new BlockType(3, 0, "Dirt", "minecraft:dirt");
+    public static final BlockType Cobble = new BlockType(4, 0, "Cobble", "minecraft:cobblestone");
+    public static final BlockType OakWood = new BlockType(5, 0, "Oak Wood", "minecraft:planks");
+    public static final BlockType SpruceWood = new BlockType(5, 1, "Spruce Wood", "minecraft:planks");
+    public static final BlockType BirchWood = new BlockType(5, 2, "Birch Wood", "minecraft:planks");
+    public static final BlockType JungleWood = new BlockType(5, 3, "Jungle Wood", "minecraft:planks");
+    public static final BlockType AcaciaWood = new BlockType(5, 4, "Acacia Wood", "minecraft:planks");
+    public static final BlockType DarkOakWood = new BlockType(5, 4, "Dark Oak Wood", "minecraft:planks");
+    public static final BlockType OakSapling = new BlockType(6, 0, "Oak Sapling", "minecraft:sapling");
+    public static final BlockType SpruceSapling = new BlockType(6, 1, "Spruce Sapling", "minecraft:sapling");
+    public static final BlockType BirchSapling = new BlockType(6, 2, "Birch Sapling", "minecraft:sapling");
+    public static final BlockType JungleSapling = new BlockType(6, 3, "Jungle Sapling", "minecraft:sapling");
+    public static final BlockType AcaciaSapling = new BlockType(6, 4, "Acacia Sapling", "minecraft:sapling");
+    public static final BlockType DarkOakSapling = new BlockType(6, 5, "Dark Oak Sapling", "minecraft:sapling");
+    public static final BlockType Bedrock = new BlockType(7, 0, "Bedrock", "minecraft:bedrock");
+    public static final BlockType Water = new BlockType(8, 0, "Water Flowing", "minecraft:water_flowing");
+    public static final BlockType WaterFlowing = new BlockType(9, 0, "Water", "minecraft:water");
+    public static final BlockType Lava = new BlockType(10, 0, "Lava Flowing", "minecraft:lava_flowing");
+    public static final BlockType LavaFlowing = new BlockType(11, 0, "Lava", "minecraft:lava");
+    public static final BlockType Sand = new BlockType(12, 0, "Sand", "minecraft:sand");
+    public static final BlockType Gravel = new BlockType(13, 0, "Gravel", "minecraft:gravel");
+    public static final BlockType GoldOre = new BlockType(14, 0, "Gold Ore", "minecraft:gold_ore");
+    public static final BlockType IronOre = new BlockType(15, 0, "Iron Ore", "minecraft:iron_ore");
+    public static final BlockType CoalOre = new BlockType(16, 0, "Coal Ore", "minecraft:coal_ore");
+    public static final BlockType OakLog = new BlockType(17, 0, "Oak Log", "minecraft:log");
+    public static final BlockType PineLog = new BlockType(17, 1, "Pine Log", "minecraft:log");
+    public static final BlockType BirchLog = new BlockType(17, 2, "Birch Log", "minecraft:log");
+    public static final BlockType JungleLog = new BlockType(17, 3, "Jungle Log", "minecraft:log");
+    public static final BlockType OakLeaves = new BlockType(18, 0, "Oak Leaves", "minecraft:leaves");
+    public static final BlockType PineLeaves = new BlockType(18, 1, "Pine Needles", "minecraft:leaves");
+    public static final BlockType BirchLeaves = new BlockType(18, 2, "Birch Leaves", "minecraft:leaves");
+    public static final BlockType JungleLeaves = new BlockType(18, 3, "Jungle Leaves", "minecraft:leaves");
+    public static final BlockType Sponge = new BlockType(19, 0, "Sponge", "minecraft:sponge"); // THE SPONGE IS A LIE!
+    public static final BlockType Glass = new BlockType(20, 0, "Glass", "minecraft:glass");
+    public static final BlockType LapislazuliOre = new BlockType(21, 0, "Lapislazuli Ore", "minecraft:lapis_ore");
+    public static final BlockType LapisBlock = new BlockType(22, 0, "Lapislazuli Block", "minecraft:lapis_block");
+    public static final BlockType Dispenser = new BlockType(23, 0, "Dispenser", "minecraft:dispenser");
+    public static final BlockType Sandstone = new BlockType(24, 0, "Sandstone", "minecraft:sandstone");
+    public static final BlockType SandstoneOrnate = new BlockType(24, 1, "Ornate Sandstone", "minecraft:sandstone");
+    public static final BlockType SandstoneBlank = new BlockType(24, 2, "Blank Sandstone", "minecraft:sandstone");
+    public static final BlockType NoteBlock = new BlockType(25, 0, "Note Block", "minecraft:noteblock");
+    public static final BlockType BedBlock = new BlockType(26, 0, "Bed Block", "minecraft:bed");
+    public static final BlockType PoweredRail = new BlockType(27, 0, "Powered Rail", "minecraft:golden_rail");
+    public static final BlockType DetectorRail = new BlockType(28, 0, "Detector Rail", "minecraft:detector_rail");
+    public static final BlockType StickyPiston = new BlockType(29, 0, "Sticky Piston", "minecraft:sticky_piston");
+    public static final BlockType SpiderWeb = new BlockType(30, 0, "Spider Web", "minecraft:web");
+    public static final BlockType Shrub = new BlockType(31, 0, "Shrub", "minecraft:tallgrass");
+    public static final BlockType TallGrass = new BlockType(31, 1, "Grass", "minecraft:tallgrass");
+    public static final BlockType Fern = new BlockType(31, 2, "Fern", "minecraft:tallgrass");
+    public static final BlockType DeadBush = new BlockType(32, 0, "Dead Bush", "minecraft:deadbush");
+    public static final BlockType Piston = new BlockType(33, 0, "Piston", "minecraft:piston");
+    public static final BlockType PistonHead = new BlockType(34, 0, "Piston Head", "minecraft:piston_head");
+    public static final BlockType WoolWhite = new BlockType(35, 0, "White Wool", "minecraft:wool");
+    public static final BlockType WoolOrange = new BlockType(35, 1, "Orange Wool", "minecraft:wool");
+    public static final BlockType WoolMagenta = new BlockType(35, 2, "Magenta Wool", "minecraft:wool");
+    public static final BlockType WoolLightBlue = new BlockType(35, 3, "Light Blue Wool", "minecraft:wool");
+    public static final BlockType WoolYellow = new BlockType(35, 4, "Yellow Wool", "minecraft:wool");
+    public static final BlockType WoolLightGreen = new BlockType(35, 5, "Light Green Wool", "minecraft:wool");
+    public static final BlockType WoolPink = new BlockType(35, 6, "Pink Wool", "minecraft:wool");
+    public static final BlockType WoolGray = new BlockType(35, 7, "Gray Wool", "minecraft:wool");
+    public static final BlockType WoolLightGray = new BlockType(35, 8, "Light Gray Wool", "minecraft:wool");
+    public static final BlockType WoolCyan = new BlockType(35, 9, "Cyan Wool", "minecraft:wool");
+    public static final BlockType WoolPurple = new BlockType(35, 10, "Purple Wool", "minecraft:wool");
+    public static final BlockType WoolBlue = new BlockType(35, 11, "Blue Wool", "minecraft:wool");
+    public static final BlockType WoolBrown = new BlockType(35, 12, "Brown Wool", "minecraft:wool");
+    public static final BlockType WoolDarkGreen = new BlockType(35, 13, "Dark Green Wool", "minecraft:wool");
+    public static final BlockType WoolRed = new BlockType(35, 14, "Red Wool", "minecraft:wool");
+    public static final BlockType WoolBlack = new BlockType(35, 15, "Black Wool", "minecraft:wool");
+    public static final BlockType PistonExtended = new BlockType(36, 0, "Piston Extension", "minecraft:piston_extension");
+    public static final BlockType Dandelion = new BlockType(37, 0, "Dandelion", "minecraft:yellow_flower");
+
+    public static final BlockType Poppy = new BlockType(38, 0, "Poppy", "minecraft:red_flower");
+    public static final BlockType BlueOrchid = new BlockType(38, 1, "Blue Orchid", "minecraft:red_flower");
+    public static final BlockType Allium = new BlockType(38, 2, "Allium", "minecraft:red_flower");
+    public static final BlockType AzureBluet = new BlockType(38, 3, "Azure Bluet", "minecraft:red_flower");
+    public static final BlockType RedTulip = new BlockType(38, 4, "Red Tulip", "minecraft:red_flower");
+    public static final BlockType OrangeTulip = new BlockType(38, 5, "Orange Tulip", "minecraft:red_flower");
+    public static final BlockType WhiteTulip = new BlockType(38, 6, "White Tulip", "minecraft:red_flower");
+    public static final BlockType PinkTulip = new BlockType(38, 7, "Pink Tulip", "minecraft:red_flower");
+    public static final BlockType OxeyeDaisy = new BlockType(38, 8, "Oxeye Daisy", "minecraft:red_flower");
+
+    public static final BlockType BrownMushroom = new BlockType(39, 0, "Brown Mushroom", "minecraft:brown_mushroom");
+    public static final BlockType RedMushroom = new BlockType(40, 0, "Red Mushroom", "minecraft:red_mushroom");
+    public static final BlockType GoldBlock = new BlockType(41, 0, "Gold Block", "minecraft:gold_block");
+    public static final BlockType IronBlock = new BlockType(42, 0, "Iron Block", "minecraft:iron_block");
+    public static final BlockType DoublestepOrnateStone = new BlockType(43, 0, "Doublesetp Ornate Stone", "minecraft:double_stone_slab");
+    public static final BlockType DoublestepSandStoneTrim = new BlockType(43, 1, "Doublestep Sandstone Trim", "minecraft:double_stone_slab");
     public static final BlockType DoublestepWood = new BlockType(43, 2, "Doublestep Wood");
     public static final BlockType DoublestepCobble = new BlockType(43, 3, "Doublestep Cobble");
     public static final BlockType DoublestepBrickBlock = new BlockType(43, 4, "Doublestep Bricks");
@@ -280,26 +294,16 @@ public final class BlockType {
 
     private static HashMap<String, BlockType> blockTypes;
 
-    public BlockType(short id, short data) {
-        this(id, data, "unnamed_block_" + id + "_" + data);
-    }
-
-    /**
-     * Constructs a BlockType from integers.
-     * Note if your id's exceed 32000, there will be errors
-     * so make sure your block data and id are clamped to this value
-     *
-     * @param id
-     *         the ID for the Block
-     * @param data
-     *         the Data for the Block
-     */
-    public BlockType(int id, int data) {
-        this(id, data, "unnamed_block_" + id + "_" + data);
-    }
-
     public BlockType(int id, String name) {
-        this(id, 0, name);
+        this(id, 0, name, "canarymod:"+name.replace(" ", "").toLowerCase());
+    }
+
+    public BlockType(int id, String name, String mod) {
+        this(id, 0, name, mod+":"+name.replace(" ", "").toLowerCase());
+    }
+
+    public BlockType(int id, String name, String mod, String machineName) {
+        this(id, 0, name, mod+":"+machineName);
     }
 
     /**
@@ -315,7 +319,7 @@ public final class BlockType {
      * @param name
      *         the block name
      */
-    public BlockType(int id, int data, String name) {
+    public BlockType(int id, int data, String name, String machineName) {
         if (blockTypes == null) {
             blockTypes = new HashMap<String, BlockType>();
         }
@@ -325,12 +329,12 @@ public final class BlockType {
         this.id = (short) id;
         this.data = (short) data;
         this.displayName = name;
-        this.machineName = name.replace(" ", "").toLowerCase();
-        if (!blockTypes.containsKey(name)) {
-            blockTypes.put(name, this);
+        this.machineName = machineName;
+        if (!blockTypes.containsKey(machineName)) {
+            blockTypes.put(machineName, this);
         }
         else {
-            throw new CustomBlockTypeException("BlockType '" + name + "' already exists!");
+            throw new CustomBlockTypeException("BlockType '" + machineName + "' already exists!");
         }
     }
 
