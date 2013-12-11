@@ -23,7 +23,8 @@ public class JdbcConnectionManager {
      */
     public enum Type {
         MYSQL("com.mysql.jdbc.Driver", "mysql"),
-        SQLITE("org.sqlite.JDBC", "sqlite");
+        SQLITE("org.sqlite.JDBC", "sqlite"),
+        XML("is.not.valid.NotADriver", "xml");
 
         String classpath;
         String identifier;
@@ -129,7 +130,11 @@ public class JdbcConnectionManager {
     private static JdbcConnectionManager getInstance() throws DatabaseAccessException {
         if(instance == null) {
             try {
-                instance = new JdbcConnectionManager(Type.forName(Configuration.getServerConfig().getDatasourceType()));
+                Type t = Type.forName(Configuration.getServerConfig().getDatasourceType());
+                if(t == Type.XML) {
+                    throw new DatabaseAccessException("XML is not a valid JDBC Database type");
+                }
+                instance = new JdbcConnectionManager(t);
             }
             catch(SQLException e) {
                 throw new DatabaseAccessException("Unable to instantiate Connection Pool!", e);

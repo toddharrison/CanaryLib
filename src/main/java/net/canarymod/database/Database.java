@@ -1,8 +1,5 @@
 package net.canarymod.database;
 
-import java.util.HashMap;
-import java.util.List;
-
 import net.canarymod.Canary;
 import net.canarymod.config.Configuration;
 import net.canarymod.database.exceptions.DatabaseException;
@@ -11,6 +8,9 @@ import net.canarymod.database.exceptions.DatabaseWriteException;
 import net.canarymod.database.mysql.MySQLDatabase;
 import net.canarymod.database.sqlite.SQLiteDatabase;
 import net.canarymod.database.xml.XmlDatabase;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * A database representation, used to store any kind of data
@@ -40,11 +40,19 @@ public abstract class Database {
 
         static {
             try {
-                Database.Type.registerDatabase("xml", XmlDatabase.getInstance());
-                Database.Type.registerDatabase("mysql", MySQLDatabase.getInstance());
-                Database.Type.registerDatabase("sqlite", SQLiteDatabase.getInstance());
+                String dbname = Configuration.getServerConfig().getDatasourceType();
+                if("xml".equalsIgnoreCase(dbname)) {
+                    Database.Type.registerDatabase("xml", XmlDatabase.getInstance());
+                }
+                else if ("mysql".equalsIgnoreCase(dbname)) {
+                    Database.Type.registerDatabase("mysql", MySQLDatabase.getInstance());
+                }
+                else if ("sqlite".equalsIgnoreCase(dbname)) {
+                    Database.Type.registerDatabase("sqlite", SQLiteDatabase.getInstance());
+                }
             }
-            catch (DatabaseException e) {
+            catch (Exception e) {
+                Canary.logWarning("Exception occured while trying to prepare databases!");
             }
         }
     }
