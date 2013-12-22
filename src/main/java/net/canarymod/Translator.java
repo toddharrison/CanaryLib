@@ -32,7 +32,7 @@ public class Translator extends LocaleHelper {
     }
 
     private Translator() {
-        super(true, canaryLang, Configuration.getServerConfig().getLanguageCode());
+        super(true, canaryLang, Configuration.getServerConfig().getServerLocale());
     }
 
     /**

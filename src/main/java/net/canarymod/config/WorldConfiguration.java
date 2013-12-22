@@ -1,14 +1,14 @@
 package net.canarymod.config;
 
-import java.io.File;
-import java.util.HashMap;
-
 import net.canarymod.Canary;
 import net.canarymod.MathHelp;
 import net.canarymod.api.GameMode;
 import net.canarymod.api.world.World;
 import net.canarymod.api.world.WorldType;
 import net.visualillusionsent.utils.PropertiesFile;
+
+import java.io.File;
+import java.util.HashMap;
 
 /**
  * @author Jason (darkdiplomat)
@@ -87,49 +87,6 @@ public class WorldConfiguration implements ConfigurationContainer {
 
         cfg.getIntArray("ender-blocks", enderblocks);
         cfg.getIntArray("disallowed-blocks", disallowedblocks);
-
-        cfg.getBoolean("disable-ocean", false);
-        cfg.getInt("ocean-replacement-id", 4);
-        cfg.getBoolean("disable-plains", false);
-        cfg.getInt("plains-replacement-id", 4);
-        cfg.getBoolean("disable-deserts", false);
-        cfg.getInt("deserts-replacement-id", 4);
-        cfg.getBoolean("disable-extremehills", false);
-        cfg.getInt("extremehills-replacement-id", 4);
-        cfg.getBoolean("disable-forests", false);
-        cfg.getInt("forests-replacement-id", 3);
-        cfg.getBoolean("disable-taiga", false);
-        cfg.getInt("taiga-replacement-id", 4);
-        cfg.getBoolean("disable-swampland", false);
-        cfg.getInt("swampland-replacement-id", 4);
-        cfg.getBoolean("disable-river", false);
-        cfg.getInt("river-replacement-id", 4);
-        cfg.getBoolean("disable-frozenocean", false);
-        cfg.getInt("frozenocean-replacement-id", 4);
-        cfg.getBoolean("disable-frozenriver", false);
-        cfg.getInt("frozenriver-replacement-id", 4);
-        cfg.getBoolean("disable-iceplains", false);
-        cfg.getInt("iceplains-replacement-id", 4);
-        cfg.getBoolean("disable-icemountains", false);
-        cfg.getInt("icemountains-replacement-id", 4);
-        cfg.getBoolean("disable-mushroomisland", false);
-        cfg.getInt("mushroomisland-replacement-id", 4);
-        cfg.getBoolean("disable-mushroomislandshore", false);
-        cfg.getInt("mushroomislandshore-replacement-id", 4);
-        cfg.getBoolean("disable-beach", false);
-        cfg.getInt("beach-replacement-id", 4);
-        cfg.getBoolean("disable-deserthills", false);
-        cfg.getInt("deserthills-replacement-id", 4);
-        cfg.getBoolean("disable-foresthills", false);
-        cfg.getInt("foresthills-replacement-id", 4);
-        cfg.getBoolean("disable-taigahills", false);
-        cfg.getInt("taigahills-replacement-id", 4);
-        cfg.getBoolean("disable-extremehillsedge", false);
-        cfg.getInt("extremehillsedge-replacement-id", 4);
-        cfg.getBoolean("disable-jungle", false);
-        cfg.getInt("jungle-replacement-id", 4);
-        cfg.getBoolean("disable-junglehills", false);
-        cfg.getInt("junglehills-replacement-id", 4);
 
         cfg.save();
     }
@@ -428,110 +385,5 @@ public class WorldConfiguration implements ConfigurationContainer {
      */
     public String getGeneratorSettings() {
         return cfg.getString("generator-settings", "");
-    }
-
-    public boolean isBiomeDisabled(int n) {
-        switch (n) {
-            case 0:
-                return cfg.getBoolean("disable-ocean", false);
-            case 1:
-                return cfg.getBoolean("disable-plains", false);
-            case 2:
-                return cfg.getBoolean("disable-desert", false);
-            case 3:
-                return cfg.getBoolean("disable-extremehills", false);
-            case 4:
-                return cfg.getBoolean("disable-forest", false);
-            case 5:
-                return cfg.getBoolean("disable-taiga", false);
-            case 6:
-                return cfg.getBoolean("disable-swampland", false);
-            case 7:
-                return cfg.getBoolean("disable-river", false);
-            case 8:
-            case 9:
-                return false; // Hell and Sky are Nether and End biomes
-            case 10:
-                return cfg.getBoolean("disable-frozenocean", false);
-            case 11:
-                return cfg.getBoolean("disable-frozenriver", false);
-            case 12:
-                return cfg.getBoolean("disable-iceplains", false);
-            case 13:
-                return cfg.getBoolean("disable-icemountains", false);
-            case 14:
-                return cfg.getBoolean("disable-mushroomisland", false);
-            case 15:
-                return cfg.getBoolean("disable-mushroomislandshore", false);
-            case 16:
-                return cfg.getBoolean("disable-beach", false);
-            case 17:
-                return cfg.getBoolean("disable-deserthills", false);
-            case 18:
-                return cfg.getBoolean("disable-foresthills", false);
-            case 19:
-                return cfg.getBoolean("disable-taigahills", false);
-            case 20:
-                return cfg.getBoolean("disable-extremehillsedge", false);
-            case 21:
-                return cfg.getBoolean("disable-jungle", false);
-            case 22:
-                return cfg.getBoolean("disable-junglehills", false);
-            default:
-                return false;
-        }
-    }
-
-    public int getReplacementBiomeId(int n) {
-        switch (n) {
-            case 0:
-                return MathHelp.setInRange(cfg.getInt("ocean-replacement-id", 4), 0, 22);
-            case 1:
-                return MathHelp.setInRange(cfg.getInt("plains-replacement-id", 4), 0, 22);
-            case 2:
-                return MathHelp.setInRange(cfg.getInt("desert-replacement-id", 4), 0, 22);
-            case 3:
-                return MathHelp.setInRange(cfg.getInt("extremehills-replacement-id", 4), 0, 22);
-            case 4:
-                return MathHelp.setInRange(cfg.getInt("forest-replacement-id", 3), 0, 22);
-            case 5:
-                return MathHelp.setInRange(cfg.getInt("taiga-replacement-id", 4), 0, 22);
-            case 6:
-                return MathHelp.setInRange(cfg.getInt("swampland-replacement-id", 4), 0, 22);
-            case 7:
-                return MathHelp.setInRange(cfg.getInt("river-replacement-id", 4), 0, 22);
-            case 8:
-                return 8;
-            case 9:
-                return 9;
-            case 10:
-                return MathHelp.setInRange(cfg.getInt("frozenocean-replacement-id", 4), 0, 22);
-            case 11:
-                return MathHelp.setInRange(cfg.getInt("frozenriver-replacement-id", 4), 0, 22);
-            case 12:
-                return MathHelp.setInRange(cfg.getInt("iceplains-replacement-id", 4), 0, 22);
-            case 13:
-                return MathHelp.setInRange(cfg.getInt("icemountains-replacement-id", 4), 0, 22);
-            case 14:
-                return MathHelp.setInRange(cfg.getInt("mushroomisland-replacement-id", 4), 0, 22);
-            case 15:
-                return MathHelp.setInRange(cfg.getInt("mushroomislandshore-replacement-id", 4), 0, 22);
-            case 16:
-                return MathHelp.setInRange(cfg.getInt("beach-replacement-id", 4), 0, 22);
-            case 17:
-                return MathHelp.setInRange(cfg.getInt("deserthills-replacement-id", 4), 0, 22);
-            case 18:
-                return MathHelp.setInRange(cfg.getInt("foresthills-replacement-id", 4), 0, 22);
-            case 19:
-                return MathHelp.setInRange(cfg.getInt("taigahills-replacement-id", 4), 0, 22);
-            case 20:
-                return MathHelp.setInRange(cfg.getInt("extremehillsedge-replacement-id", 4), 0, 22);
-            case 21:
-                return MathHelp.setInRange(cfg.getInt("jungle-replacement-id", 4), 0, 22);
-            case 22:
-                return MathHelp.setInRange(cfg.getInt("junglehills-replacement-id", 4), 0, 22);
-            default:
-                return 4;
-        }
     }
 }
