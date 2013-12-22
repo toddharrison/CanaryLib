@@ -64,9 +64,29 @@
         <url>https://github.com/CanaryModTeam/CanaryLib</url>
         <developerConnection>scm:git:git@github.com:CanaryModTeam/CanaryLib.git</developerConnection>
     </scm>
+    <issueManagement>
+        <url>https://github.com/CanaryModTeam/CanaryLib/issues</url>
+        <system>GitHub</system>
+    </issueManagement>
+    <ciManagement>
+        <system>Jenkins</system>
+        <url>http://ci.visualillusionsent.net/job/CanaryLib/</url>
+    </ciManagement>
+    <distributionManagement>
+        <repository>
+            <id>vi-repo2</id>
+            <name>Visual Illusions Repository</name>
+            <url>http://repo2.visualillusionsent.net/repository/public/</url>
+        </repository>
+        <snapshotRepository>
+            <id>vi-repo2</id>
+            <name>Visual Illusions Repository</name>
+            <url>http://repo2.visualillusionsent.net/repository/public/</url>
+        </snapshotRepository>
+    </distributionManagement>
     <repositories>
         <repository>
-            <id>vi-repo</id>
+            <id>vi-repo2</id>
             <name>Visual Illusions Repository</name>
             <url>http://repo2.visualillusionsent.net/repository/public/</url>
         </repository>
