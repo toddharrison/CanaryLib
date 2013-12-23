@@ -39,6 +39,8 @@ public class ServerConfiguration implements ConfigurationContainer {
 
     /** Creates the default configuration */
     private void verifyConfig() {
+        cfg.getBoolean("announce-player-achievements", true);
+        cfg.setComments("announce-player-achievements", "Sets whether to inform all of a Player's Achievement");
         cfg.getBoolean("allow-enchantment-stacking", false);
         cfg.setComments("allow-enchantment-stacking", "Sets whether to allow items with enchantments to stack with non-enchanted items");
         cfg.getString("ban-default-message", "You are banned from this server.");
@@ -130,6 +132,10 @@ public class ServerConfiguration implements ConfigurationContainer {
         cfg.setComments("world-cache-timeout", "For how long should a world be empty before it will be unloaded (if use-world-cache is enabled)");
 
         cfg.save();
+    }
+
+    public boolean getAnnounceAchievements() {
+        return cfg.getBoolean("announce-player-achievements", true);
     }
 
     /**
