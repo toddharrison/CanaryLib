@@ -1,6 +1,7 @@
 package net.canarymod.user;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.canarymod.chat.Colors;
 import net.canarymod.permissionsystem.PermissionProvider;
@@ -31,7 +32,7 @@ public class Group {
     private PermissionProvider permissions;
 
     /** List of groups this group inherits/has control over */
-    private ArrayList<Group> childGroups = new ArrayList<Group>();
+    private List<Group> childGroups = new ArrayList<Group>();
 
     /**
      * The parent group (the group this group is a child of).
@@ -125,8 +126,8 @@ public class Group {
      *
      * @return the list of children groups
      */
-    public ArrayList<Group> childsToList() {
-        ArrayList<Group> list = new ArrayList<Group>();
+    public List<Group> childsToList() {
+        List<Group> list = new ArrayList<Group>();
 
         walkChilds(list, this);
         return list;
@@ -137,8 +138,8 @@ public class Group {
      *
      * @return the list of parent groups
      */
-    public ArrayList<Group> parentsToList() {
-        ArrayList<Group> parents = new ArrayList<Group>();
+    public List<Group> parentsToList() {
+        List<Group> parents = new ArrayList<Group>();
         if (this.parent == null || this.parent == this) {
             return parents;
         }
@@ -149,7 +150,7 @@ public class Group {
         return parents;
     }
 
-    private void walkParents(ArrayList<Group> list, Group group) {
+    private void walkParents(List<Group> list, Group group) {
         if (group.parent == null) {
             return; // Found topmost group
         }
@@ -157,7 +158,7 @@ public class Group {
         walkParents(list, group.parent);
     }
 
-    private void walkChilds(ArrayList<Group> list, Group group) {
+    private void walkChilds(List<Group> list, Group group) {
         list.add(group);
         for (Group g : group.childGroups) {
             walkChilds(list, g);
@@ -256,7 +257,7 @@ public class Group {
      *
      * @return
      */
-    public ArrayList<Group> getChildren() {
+    public List<Group> getChildren() {
         return childGroups;
     }
 

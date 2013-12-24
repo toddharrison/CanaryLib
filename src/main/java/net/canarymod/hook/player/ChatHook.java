@@ -2,6 +2,8 @@ package net.canarymod.hook.player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.hook.CancelableHook;
@@ -14,10 +16,10 @@ import net.canarymod.hook.CancelableHook;
 public final class ChatHook extends CancelableHook {
     private Player player;
     private String format;
-    private ArrayList<Player> receivers;
-    private HashMap<String, String> placeholders;
+    private List<Player> receivers;
+    private Map<String, String> placeholders;
 
-    public ChatHook(Player player, String format, ArrayList<Player> receivers, HashMap<String, String> replacements) {
+    public ChatHook(Player player, String format, List<Player> receivers, Map<String, String> replacements) {
         this.player = player;
         this.receivers = receivers;
         this.format = format;
@@ -106,7 +108,7 @@ public final class ChatHook extends CancelableHook {
      *
      * @return the list of {@link Player} receivers
      */
-    public ArrayList<Player> getReceiverList() {
+    public List<Player> getReceiverList() {
         return receivers;
     }
 
@@ -193,7 +195,7 @@ public final class ChatHook extends CancelableHook {
      *
      * @return placeholder map
      */
-    public HashMap<String, String> getPlaceholderMapping() {
+    public Map<String, String> getPlaceholderMapping() {
         return placeholders;
     }
 

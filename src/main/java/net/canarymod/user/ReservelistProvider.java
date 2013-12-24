@@ -1,6 +1,7 @@
 package net.canarymod.user;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.canarymod.backbone.BackboneReservelist;
 
@@ -11,7 +12,7 @@ import net.canarymod.backbone.BackboneReservelist;
  */
 public class ReservelistProvider {
     private BackboneReservelist backbonereservelist;
-    private ArrayList<String> reservelist;
+    private List<String> reservelist;
 
     public ReservelistProvider() {
         backbonereservelist = new BackboneReservelist();

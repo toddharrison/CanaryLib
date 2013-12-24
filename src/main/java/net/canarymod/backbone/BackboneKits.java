@@ -2,6 +2,7 @@ package net.canarymod.backbone;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import net.canarymod.Canary;
 import net.canarymod.database.DataAccess;
@@ -142,9 +143,9 @@ public class BackboneKits extends Backbone {
      *
      * @return An ArrayList of all kits.
      */
-    public ArrayList<Kit> loadKits() {
-        ArrayList<DataAccess> dataList = new ArrayList<DataAccess>();
-        ArrayList<Kit> kits = new ArrayList<Kit>();
+    public List<Kit> loadKits() {
+        List<DataAccess> dataList = new ArrayList<DataAccess>();
+        List<Kit> kits = new ArrayList<Kit>();
 
         try {
             Database.get().loadAll(new KitDataAccess(), dataList, new String[]{ }, new Object[]{ });

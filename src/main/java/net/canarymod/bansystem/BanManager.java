@@ -1,6 +1,7 @@
 package net.canarymod.bansystem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.canarymod.Canary;
 import net.canarymod.ToolBox;
@@ -14,7 +15,7 @@ import net.canarymod.backbone.BackboneBans;
  */
 public class BanManager {
     private BackboneBans backbone;
-    private ArrayList<Ban> bans = new ArrayList<Ban>();
+    private List<Ban> bans = new ArrayList<Ban>();
 
     public BanManager() {
         backbone = new BackboneBans();

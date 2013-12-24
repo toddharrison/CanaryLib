@@ -1,8 +1,6 @@
 package net.canarymod.permissionsystem;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 import java.util.Map.Entry;
 
 import net.canarymod.Canary;
@@ -21,8 +19,8 @@ import net.canarymod.database.exceptions.DatabaseReadException;
  * @author Chris (damagefilter)
  */
 public class MultiworldPermissionProvider implements PermissionProvider {
-    private ArrayList<PermissionNode> permissions;
-    private HashMap<String, Boolean> permissionCache = new HashMap<String, Boolean>(35);
+    private List<PermissionNode> permissions;
+    private Map<String, Boolean> permissionCache = new HashMap<String, Boolean>(35);
     private boolean isPlayerProvider;
     private String owner; // This can either be a player or group name
     private String world;
@@ -80,7 +78,7 @@ public class MultiworldPermissionProvider implements PermissionProvider {
     }
 
     @Override
-    public ArrayList<PermissionNode> getChildNodes(PermissionNode node, ArrayList<PermissionNode> childs) {
+    public List<PermissionNode> getChildNodes(PermissionNode node, List<PermissionNode> childs) {
         childs.add(node);
         if (node.hasChilds()) {
             for (String key : node.getChilds().keySet()) {
@@ -309,13 +307,13 @@ public class MultiworldPermissionProvider implements PermissionProvider {
     }
 
     @Override
-    public ArrayList<PermissionNode> getPermissionMap() {
+    public List<PermissionNode> getPermissionMap() {
         return permissions;
     }
 
     @Override
-    public ArrayList<String> getPermissionsAsStringList() {
-        ArrayList<String> list = new ArrayList<String>();
+    public List<String> getPermissionsAsStringList() {
+        List<String> list = new ArrayList<String>();
 
         for (PermissionNode node : permissions) {
             list.add(node.getFullPath());

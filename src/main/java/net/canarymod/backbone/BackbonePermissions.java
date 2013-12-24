@@ -1,6 +1,7 @@
 package net.canarymod.backbone;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.canarymod.Canary;
 import net.canarymod.api.entity.living.humanoid.Player;
@@ -110,7 +111,7 @@ public class BackbonePermissions extends Backbone {
      */
     public void saveGroupPermissions(Group g) {
         PermissionProvider permissions = g.getPermissionProvider();
-        ArrayList<PermissionNode> permissionList = permissions.getPermissionMap();
+        List<PermissionNode> permissionList = permissions.getPermissionMap();
 
         try {
             for (PermissionNode node : permissionList) {
@@ -153,7 +154,7 @@ public class BackbonePermissions extends Backbone {
      */
     public void saveUserPermissions(Player p) {
         PermissionProvider permissions = p.getPermissionProvider();
-        ArrayList<PermissionNode> permissionList = permissions.getPermissionMap();
+        List<PermissionNode> permissionList = permissions.getPermissionMap();
 
         try {
             for (PermissionNode node : permissionList) {

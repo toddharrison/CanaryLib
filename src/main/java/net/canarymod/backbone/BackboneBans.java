@@ -1,6 +1,7 @@
 package net.canarymod.backbone;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.canarymod.Canary;
 import net.canarymod.bansystem.Ban;
@@ -161,9 +162,9 @@ public class BackboneBans extends Backbone {
      *
      * @return An array list of all recorded ban instances.
      */
-    public ArrayList<Ban> loadBans() {
-        ArrayList<Ban> banList = new ArrayList<Ban>();
-        ArrayList<DataAccess> dataList = new ArrayList<DataAccess>();
+    public List<Ban> loadBans() {
+        List<Ban> banList = new ArrayList<Ban>();
+        List<DataAccess> dataList = new ArrayList<DataAccess>();
 
         try {
             Database.get().loadAll(new BanDataAccess(), dataList, new String[]{ }, new Object[]{ });

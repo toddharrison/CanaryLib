@@ -1,6 +1,7 @@
 package net.canarymod.backbone;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.canarymod.Canary;
 import net.canarymod.database.DataAccess;
@@ -87,9 +88,9 @@ public class BackboneWhitelist extends Backbone {
      *
      * @return An array list of all recorded ban instances.
      */
-    public ArrayList<String> loadWhitelist() {
-        ArrayList<String> whiteList = new ArrayList<String>();
-        ArrayList<DataAccess> dataList = new ArrayList<DataAccess>();
+    public List<String> loadWhitelist() {
+        List<String> whiteList = new ArrayList<String>();
+        List<DataAccess> dataList = new ArrayList<DataAccess>();
 
         try {
             Database.get().loadAll(new WhitelistDataAccess(), dataList, new String[]{ }, new Object[]{ });

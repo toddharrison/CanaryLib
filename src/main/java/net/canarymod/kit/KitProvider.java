@@ -1,10 +1,9 @@
 package net.canarymod.kit;
 
-import java.util.ArrayList;
+import net.canarymod.backbone.BackboneKits;
+
 import java.util.Collections;
 import java.util.List;
-
-import net.canarymod.backbone.BackboneKits;
 
 /**
  * Add, remove and get kits
@@ -12,7 +11,7 @@ import net.canarymod.backbone.BackboneKits;
  * @author Chris (damagefilter)
  */
 public class KitProvider {
-    private ArrayList<Kit> kits;
+    private List<Kit> kits;
     private BackboneKits backbone;
 
     public KitProvider() {

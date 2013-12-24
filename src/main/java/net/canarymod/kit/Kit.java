@@ -9,6 +9,7 @@ import net.canarymod.chat.TextFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Contains information about a kit
@@ -29,7 +30,7 @@ public class Kit {
     private String[] groups = null;
 
     /** List of last usages per player */
-    private HashMap<String, Long> lastUsages = new HashMap<String, Long>();
+    private Map<String, Long> lastUsages = new HashMap<String, Long>();
 
     private String name;
 
@@ -37,7 +38,7 @@ public class Kit {
      * The content of this kit as IItems Each list entry shall be a different
      * Item
      */
-    private ArrayList<Item> content = new ArrayList<Item>();
+    private List<Item> content = new ArrayList<Item>();
 
     public int getDelay() {
         return delay;
@@ -63,7 +64,7 @@ public class Kit {
         this.groups = groups;
     }
 
-    public ArrayList<Item> getContent() {
+    public List<Item> getContent() {
         return content;
     }
 
@@ -151,8 +152,8 @@ public class Kit {
      *
      * @return
      */
-    public ArrayList<String> getItemsAsStringList() {
-        ArrayList<String> list = new ArrayList<String>();
+    public List<String> getItemsAsStringList() {
+        List<String> list = new ArrayList<String>();
 
         for (Item i : content) {
             if (i != null) { // Null breaks the serializer... And we don't really need to track null items

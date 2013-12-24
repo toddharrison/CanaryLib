@@ -1,13 +1,7 @@
 package net.canarymod.plugin;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
+import java.util.*;
 
 import net.canarymod.Canary;
 import net.canarymod.CanaryClassLoader;
@@ -28,8 +22,8 @@ import net.visualillusionsent.utils.PropertiesFile;
  * @author Jos
  */
 public final class PluginLoader {
-    private final LinkedHashMap<String, Plugin> plugins; // This is keyed to set Plugin name
-    private final HashMap<String, PropertiesFile> pluginInf; // This is keyed to main class name
+    private final Map<String, Plugin> plugins; // This is keyed to set Plugin name
+    private final Map<String, PropertiesFile> pluginInf; // This is keyed to main class name
     private final PropertiesFile pluginPriorities;
     private static final Object lock = new Object();
 
@@ -130,7 +124,7 @@ public final class PluginLoader {
      * @param node
      * @param resolved
      */
-    private void depResolve(DependencyNode node, LinkedList<DependencyNode> resolved) {
+    private void depResolve(DependencyNode node, List<DependencyNode> resolved) {
         if (!node.isInvalid()) {
             for (DependencyNode edge : node.edges) {
                 if (!resolved.contains(edge)) {
@@ -191,7 +185,7 @@ public final class PluginLoader {
      * @param knownJars
      * @param loadOrder
      */
-    private final void buildDepTree(HashMap<String, PropertiesFile> knownJars, LinkedList<DependencyNode> loadOrder) {
+    private final void buildDepTree(Map<String, PropertiesFile> knownJars, List<DependencyNode> loadOrder) {
         HashMap<String, DependencyNode> nodes = new HashMap<String, DependencyNode>();
         // Make the flat dep tree
         for (String jar : knownJars.keySet()) {
@@ -729,7 +723,7 @@ public final class PluginLoader {
 
         private String name;
         private String jar;
-        public ArrayList<DependencyNode> edges;
+        public List<DependencyNode> edges;
         private PropertiesFile inf;
         private boolean isInvalid = false;
 

@@ -1,10 +1,10 @@
 package net.canarymod.api;
 
-import java.util.ArrayList;
-
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.World;
 import net.canarymod.api.world.blocks.Block;
+
+import java.util.List;
 
 /**
  * PlayerManager wrapper
@@ -40,9 +40,9 @@ public interface PlayerManager {
     /**
      * Get a list of all {@link Player}s that are managed by this PlayerManager
      *
-     * @return an {@link ArrayList} of {@link Player}s
+     * @return an {@link List} of {@link Player}s
      */
-    public ArrayList<Player> getManagedPlayers();
+    public List<Player> getManagedPlayers();
 
     /**
      * Marks a {@link Block} at this position for updating for this PlayerManager

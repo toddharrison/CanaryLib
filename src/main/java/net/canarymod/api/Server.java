@@ -1,6 +1,5 @@
 package net.canarymod.api;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.canarymod.api.entity.living.humanoid.Player;
@@ -61,9 +60,9 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
     /**
      * Get a list of online {@link Player}s
      *
-     * @return an {@link ArrayList} of {@link Player}s
+     * @return an {@link List} of {@link Player}s
      */
-    public ArrayList<Player> getPlayerList();
+    public List<Player> getPlayerList();
 
     /**
      * Get the default world name

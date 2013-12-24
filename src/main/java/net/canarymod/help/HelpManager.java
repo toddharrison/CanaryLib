@@ -1,9 +1,6 @@
 package net.canarymod.help;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.TreeMap;
+import java.util.*;
 
 import net.canarymod.Translator;
 import net.canarymod.api.entity.living.humanoid.Player;
@@ -18,7 +15,7 @@ import net.canarymod.commandsys.CommandOwner;
  */
 public class HelpManager {
 
-    private TreeMap<String, HelpNode> nodes;
+    private Map<String, HelpNode> nodes;
     private int pageSize = 13;
 
     public HelpManager() {
@@ -122,8 +119,8 @@ public class HelpManager {
      *
      * @return
      */
-    public ArrayList<String> getHelp(Player player, int page) {
-        ArrayList<String> lines = new ArrayList<String>();
+    public List<String> getHelp(Player player, int page) {
+        List<String> lines = new ArrayList<String>();
 
         if (page < 1) {
             page = 1;
@@ -164,8 +161,8 @@ public class HelpManager {
      *
      * @return
      */
-    public ArrayList<String> getHelp(Player player, String[] terms, int page) {
-        ArrayList<String> hits = new ArrayList<String>();
+    public List<String> getHelp(Player player, String[] terms, int page) {
+        List<String> hits = new ArrayList<String>();
         for (String key : nodes.keySet()) {
             HelpNode node = nodes.get(key);
             for (String word : terms) {
@@ -251,11 +248,11 @@ public class HelpManager {
      *
      * @return
      */
-    public ArrayList<HelpNode> getRawHelp(MessageReceiver caller) {
+    public List<HelpNode> getRawHelp(MessageReceiver caller) {
         return new ArrayList<HelpNode>(nodes.values());
     }
 
-    static String[] subCommandsToStringArray(ArrayList<CanaryCommand> cmds) {
+    static String[] subCommandsToStringArray(List<CanaryCommand> cmds) {
         ArrayList<String> list = new ArrayList<String>(cmds.size() + 1);
         for (CanaryCommand cmd : cmds) {
             if (cmd.meta.helpLookup().isEmpty()) {
@@ -275,7 +272,7 @@ public class HelpManager {
      * @param list
      * @param ignoreSubCommands
      */
-    private void addHelpContext(MessageReceiver caller, HelpNode node, ArrayList<String> list, boolean printToolTip, boolean ignoreSubCommands) {
+    private void addHelpContext(MessageReceiver caller, HelpNode node, List<String> list, boolean printToolTip, boolean ignoreSubCommands) {
         if (node.isSubCommand() && ignoreSubCommands) {
             return;
         }

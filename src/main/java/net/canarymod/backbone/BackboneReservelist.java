@@ -1,6 +1,7 @@
 package net.canarymod.backbone;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.canarymod.Canary;
 import net.canarymod.database.DataAccess;
@@ -87,9 +88,9 @@ public class BackboneReservelist extends Backbone {
      *
      * @return An array list of all recorded reserve entries.
      */
-    public ArrayList<String> loadReservelist() {
-        ArrayList<String> reservelist = new ArrayList<String>();
-        ArrayList<DataAccess> dataList = new ArrayList<DataAccess>();
+    public List<String> loadReservelist() {
+        List<String> reservelist = new ArrayList<String>();
+        List<DataAccess> dataList = new ArrayList<DataAccess>();
 
         try {
             Database.get().loadAll(new ReservelistDataAccess(), dataList, new String[]{ }, new Object[]{ });

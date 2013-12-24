@@ -1,6 +1,6 @@
 package net.canarymod.api;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.packet.Packet;
@@ -48,9 +48,9 @@ public interface ConfigurationManager {
     /**
      * Get a list of all players that are currently online
      *
-     * @return an {@link ArrayList} of all {@link Player}s online
+     * @return an {@link List} of all {@link Player}s online
      */
-    public ArrayList<Player> getAllPlayers();
+    public List<Player> getAllPlayers();
 
     /**
      * Get the maximum number of allowed {@link Player}s on the server

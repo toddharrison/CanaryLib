@@ -1,6 +1,7 @@
 package net.canarymod.commandsys;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
@@ -20,7 +21,7 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
     public final CommandOwner owner;
     public final LocaleHelper translator;
 
-    private ArrayList<CanaryCommand> subcommands = new ArrayList<CanaryCommand>();
+    private List<CanaryCommand> subcommands = new ArrayList<CanaryCommand>();
 
     private CanaryCommand parent;
 
@@ -115,7 +116,7 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
      *
      * @return list of Sub Command
      */
-    public ArrayList<CanaryCommand> getSubCommands(ArrayList<CanaryCommand> list) {
+    public List<CanaryCommand> getSubCommands(List<CanaryCommand> list) {
         if (parent != null) {
             list.add(this);
         }
@@ -130,7 +131,7 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
      *
      * @return list of SubCommands
      */
-    public ArrayList<CanaryCommand> getSubCommands() {
+    public List<CanaryCommand> getSubCommands() {
         return subcommands;
     }
 
