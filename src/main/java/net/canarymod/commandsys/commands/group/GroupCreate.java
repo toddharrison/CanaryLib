@@ -55,7 +55,7 @@ public class GroupCreate implements NativeCommand {
             }
             World world = ToolBox.parseWorld(args[2]);
             if (world == null) {
-                caller.notice(Translator.translateAndFormat("group unknown world", args[3]));
+                caller.notice(Translator.translateAndFormat("group unknown world", args[2]));
                 return;
             }
             else {

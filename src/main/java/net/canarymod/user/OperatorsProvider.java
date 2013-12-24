@@ -10,7 +10,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Access to the backbone for operators
@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 public class OperatorsProvider {
     private BackboneOperators backboneOps;
-    private ArrayList<String> ops;
+    private List<String> ops;
 
     public OperatorsProvider() {
         backboneOps = new BackboneOperators();

@@ -1,11 +1,11 @@
 package net.canarymod.api;
 
-import java.util.ArrayList;
-
 import net.canarymod.api.entity.Entity;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.packet.Packet;
 import net.canarymod.api.world.World;
+
+import java.util.List;
 
 /**
  * EntityTracker wrapper
@@ -60,9 +60,9 @@ public interface EntityTracker {
     public void sendPacketToTrackedPlayer(Player player, Packet packet);
 
     /**
-     * Get an {@link ArrayList} of all tracked entities in this EntityTracker
+     * Get an {@link List} of all tracked entities in this EntityTracker
      *
-     * @return the {@link ArrayList} of tracked entities
+     * @return the {@link List} of tracked entities
      */
-    public ArrayList<Entity> getTrackedEntities();
+    public List<Entity> getTrackedEntities();
 }

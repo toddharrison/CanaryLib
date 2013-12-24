@@ -1,6 +1,7 @@
 package net.canarymod.user;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.canarymod.backbone.BackboneWhitelist;
 
@@ -11,7 +12,7 @@ import net.canarymod.backbone.BackboneWhitelist;
  */
 public class WhitelistProvider {
     private BackboneWhitelist backboneWhitelist;
-    private ArrayList<String> whitelist;
+    private List<String> whitelist;
 
     public WhitelistProvider() {
         backboneWhitelist = new BackboneWhitelist();

@@ -1,6 +1,7 @@
 package net.canarymod.permissionsystem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.canarymod.chat.MessageReceiver;
 
@@ -21,7 +22,7 @@ public interface PermissionProvider {
      *
      * @return
      */
-    public ArrayList<PermissionNode> getChildNodes(PermissionNode node, ArrayList<PermissionNode> childs);
+    public List<PermissionNode> getChildNodes(PermissionNode node, List<PermissionNode> childs);
 
     /**
      * Add a new permission to the list. This is intelligent and will auto-sort
@@ -71,7 +72,7 @@ public interface PermissionProvider {
      *
      * @return
      */
-    public ArrayList<PermissionNode> getPermissionMap();
+    public List<PermissionNode> getPermissionMap();
 
     /**
      * Returns a List of Strings with the full permission node paths contained in this provider.
@@ -79,7 +80,7 @@ public interface PermissionProvider {
      *
      * @return
      */
-    public ArrayList<String> getPermissionsAsStringList();
+    public List<String> getPermissionsAsStringList();
 
     /**
      * Print out the list of the permissions filed in this provider in a human readable way to the given caller

@@ -21,7 +21,6 @@ import net.canarymod.api.world.effects.SoundEffect;
 import net.canarymod.api.world.position.Location;
 import net.canarymod.api.world.position.Position;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -128,58 +127,59 @@ public interface World {
      *
      * @return
      */
-    public ArrayList<EntityAnimal> getAnimalList();
+    public List<EntityAnimal> getAnimalList();
 
     /**
      * Get list of all mobs that are tracked for this world
      *
      * @return
      */
-    public ArrayList<EntityMob> getMobList();
+    public List<EntityMob> getMobList();
 
     /**
      * gets a list of all EntityLiving that are tracked for this world
      *
      * @return
      */
-    public ArrayList<EntityLiving> getEntityLivingList();
+    public List<EntityLiving> getEntityLivingList();
 
     /**
      * get ALL entities that are tracked in this world
      *
      * @return
      */
-    public ArrayList<Entity> getTrackedEntities();
+    public List<Entity> getTrackedEntities();
 
     /**
      * Get list of all players currently in this world
      *
      * @return
      */
-    public ArrayList<Player> getPlayerList();
+    public List<Player> getPlayerList();
 
     /**
      * Get list of all boats currently in this world
      *
      * @return
      */
-    public ArrayList<Boat> getBoatList();
+    public List<Boat> getBoatList();
 
     /**
      * Get list of all {@link Minecart} currently in this world
      *
-     * @return {@link ArrayList} of {@link Minecart}
+     * @return {@link List} of {@link Minecart}
      */
-    public ArrayList<Minecart> getMinecartList();
+    public List<Minecart> getMinecartList();
 
     /**
      * Get list of all {@link Vehicle} currently in this world
      *
-     * @return {@link ArrayList} of {@link Vehicle}
+     * @return {@link List} of {@link Vehicle}
      */
-    public ArrayList<Vehicle> getVehicleList();
+    public List<Vehicle> getVehicleList();
 
-    public ArrayList<EntityItem> getItemList();
+
+    public List<EntityItem> getItemList();
 
     /**
      * Get the block at this coordinates

@@ -1,6 +1,7 @@
 package net.canarymod.warp;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.canarymod.Canary;
 import net.canarymod.api.entity.living.humanoid.Player;
@@ -186,8 +187,8 @@ public class Warp {
         return allowedGroups;
     }
 
-    public ArrayList<String> getGroupsAsString() {
-        ArrayList<String> list = new ArrayList<String>();
+    public List<String> getGroupsAsString() {
+        List<String> list = new ArrayList<String>();
         if (allowedGroups == null) {
             return list;
         }

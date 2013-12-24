@@ -2,6 +2,7 @@ package net.canarymod.commandsys.commands;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
@@ -48,7 +49,7 @@ public class HelpCommand implements NativeCommand {
                 searchTerms = Arrays.copyOfRange(args, 1, args.length);
             }
         }
-        ArrayList<String> lines;
+        List<String> lines;
         if (searchTerms == null) {
             lines = Canary.help().getHelp(null, page);
         }
@@ -93,7 +94,7 @@ public class HelpCommand implements NativeCommand {
                 searchTerms = Arrays.copyOfRange(args, 1, args.length);
             }
         }
-        ArrayList<String> lines;
+        List<String> lines;
         if (searchTerms == null) {
             lines = Canary.help().getHelp(player, page);
         }

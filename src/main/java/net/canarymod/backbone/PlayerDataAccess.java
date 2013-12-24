@@ -1,11 +1,11 @@
 package net.canarymod.backbone;
 
-import java.util.ArrayList;
-
 import net.canarymod.database.Column;
 import net.canarymod.database.Column.ColumnType;
 import net.canarymod.database.Column.DataType;
 import net.canarymod.database.DataAccess;
+
+import java.util.List;
 
 /**
  * Player Data Access
@@ -44,7 +44,7 @@ public class PlayerDataAccess extends DataAccess {
      * Unless specified otherwise, a players color will be the one of the main group
      */
     @Column(columnName = "subgroups", dataType = DataType.STRING, isList = true)
-    public ArrayList<String> subgroups;
+    public List<String> subgroups;
 
     @Override
     public DataAccess getInstance() {

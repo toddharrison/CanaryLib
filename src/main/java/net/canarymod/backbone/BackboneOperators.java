@@ -1,6 +1,7 @@
 package net.canarymod.backbone;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.canarymod.Canary;
 import net.canarymod.database.DataAccess;
@@ -80,9 +81,9 @@ public class BackboneOperators extends Backbone {
      *
      * @return An array list of all recorded ban instances.
      */
-    public ArrayList<String> loadOps() {
-        ArrayList<String> ops = new ArrayList<String>();
-        ArrayList<DataAccess> dataList = new ArrayList<DataAccess>();
+    public List<String> loadOps() {
+        List<String> ops = new ArrayList<String>();
+        List<DataAccess> dataList = new ArrayList<DataAccess>();
 
         try {
             Database.get().loadAll(new OperatorsDataAccess(), dataList, new String[]{ }, new Object[]{ });

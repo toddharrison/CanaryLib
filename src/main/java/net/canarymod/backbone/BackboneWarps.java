@@ -130,9 +130,9 @@ public class BackboneWarps extends Backbone {
      *
      * @return An ArrayList containing all loaded Warp instances.
      */
-    public ArrayList<Warp> loadWarps() {
-        ArrayList<Warp> warps = new ArrayList<Warp>();
-        ArrayList<DataAccess> daos = new ArrayList<DataAccess>();
+    public List<Warp> loadWarps() {
+        List<Warp> warps = new ArrayList<Warp>();
+        List<DataAccess> daos = new ArrayList<DataAccess>();
 
         try {
             Database.get().loadAll(new WarpDataAccess(), daos, new String[]{ }, new Object[]{ });

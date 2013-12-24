@@ -1,13 +1,13 @@
 package net.canarymod.commandsys.commands;
 
-import java.util.ArrayList;
-
 import net.canarymod.Canary;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.Colors;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.chat.TextFormat;
 import net.canarymod.commandsys.NativeCommand;
+
+import java.util.List;
 
 /**
  * Command to list the players currently connected to the server  
@@ -35,7 +35,7 @@ public class PlayerList implements NativeCommand {
     }
 
     private String createList() {
-        ArrayList<Player> players = Canary.getServer().getPlayerList();
+        List<Player> players = Canary.getServer().getPlayerList();
         StringBuilder sb = new StringBuilder();
 
         for (Player p : players) {

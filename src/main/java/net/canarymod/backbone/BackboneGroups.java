@@ -10,6 +10,7 @@ import net.canarymod.database.exceptions.DatabaseWriteException;
 import net.canarymod.user.Group;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Backbone to the groups System. This contains NO logic, it is only the data
@@ -153,7 +154,7 @@ public class BackboneGroups extends Backbone {
         }
     }
 
-    private Group loadParents(String parent, ArrayList<Group> existingGroups) {
+    private Group loadParents(String parent, List<Group> existingGroups) {
         if (parent == null || parent.isEmpty()) {
             return null;
         }
@@ -200,7 +201,7 @@ public class BackboneGroups extends Backbone {
      * @return true - the group is in the list<br>
      *         false - the group is not in the list.
      */
-    private boolean alreadyInList(String name, ArrayList<Group> list) {
+    private boolean alreadyInList(String name, List<Group> list) {
         for (Group g : list) {
             if (g.getName().equals(name)) {
                 return true;
@@ -214,9 +215,9 @@ public class BackboneGroups extends Backbone {
      *
      * @return An ArrayList containing all recorded groups.
      */
-    public ArrayList<Group> loadGroups() {
-        ArrayList<DataAccess> dataList = new ArrayList<DataAccess>();
-        ArrayList<Group> groups = new ArrayList<Group>();
+    public List<Group> loadGroups() {
+        List<DataAccess> dataList = new ArrayList<DataAccess>();
+        List<Group> groups = new ArrayList<Group>();
 
         try {
             Database.get().loadAll(new GroupDataAccess(), dataList, new String[]{ }, new Object[]{ });

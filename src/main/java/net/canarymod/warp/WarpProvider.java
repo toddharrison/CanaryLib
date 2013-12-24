@@ -14,7 +14,7 @@ import net.canarymod.backbone.BackboneWarps;
  * @author Chris (damagefilter)
  */
 public class WarpProvider {
-    private ArrayList<Warp> warps;
+    private List<Warp> warps;
     private BackboneWarps backbone;
 
     public WarpProvider() {

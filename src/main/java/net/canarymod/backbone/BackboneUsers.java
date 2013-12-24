@@ -11,6 +11,8 @@ import net.canarymod.user.Group;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Backbone to the Player System. This contains NO logic, it is only the data
@@ -215,9 +217,9 @@ public class BackboneUsers extends Backbone {
      * @return A hashmap with a key of player name, and string array value with
      *         a prefix and group for a player, in that order.
      */
-    public HashMap<String, String[]> loadUsers() {
-        HashMap<String, String[]> players = new HashMap<String, String[]>();
-        ArrayList<DataAccess> daos = new ArrayList<DataAccess>();
+    public Map<String, String[]> loadUsers() {
+        Map<String, String[]> players = new HashMap<String, String[]>();
+        List<DataAccess> daos = new ArrayList<DataAccess>();
 
         try {
             Database.get().loadAll(new PlayerDataAccess(), daos, new String[]{ }, new Object[]{ });

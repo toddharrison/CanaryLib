@@ -8,6 +8,8 @@ import net.canarymod.backbone.BackboneUsers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Access to the backbone for users and groups
@@ -15,8 +17,8 @@ import java.util.HashMap;
  * @author Chris (damagefilter)
  */
 public class UserAndGroupsProvider {
-    private ArrayList<Group> groups;
-    private HashMap<String, String[]> playerData;
+    private List<Group> groups;
+    private Map<String, String[]> playerData;
     private BackboneGroups backboneGroups;
     private BackboneUsers backboneUsers;
     private Group defaultGroup;

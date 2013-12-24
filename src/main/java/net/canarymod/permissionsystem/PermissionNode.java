@@ -2,6 +2,8 @@ package net.canarymod.permissionsystem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A permission node. This represents a permission. Who would have thought
@@ -17,7 +19,7 @@ public class PermissionNode {
     /** ID in the database */
     private int id;
 
-    private HashMap<String, PermissionNode> childs = new HashMap<String, PermissionNode>();
+    private Map<String, PermissionNode> childs = new HashMap<String, PermissionNode>();
 
     private PermissionNode parent = null;
 
@@ -139,7 +141,7 @@ public class PermissionNode {
      * @return
      */
     public String getFullPath() {
-        ArrayList<PermissionNode> parents = parentsToList();
+        List<PermissionNode> parents = parentsToList();
         StringBuilder path = new StringBuilder();
 
         for (int i = parents.size() - 1; i >= 0; i--) {
@@ -156,14 +158,14 @@ public class PermissionNode {
      *
      * @return
      */
-    private ArrayList<PermissionNode> parentsToList() {
+    private List<PermissionNode> parentsToList() {
         ArrayList<PermissionNode> parents = new ArrayList<PermissionNode>();
 
         walkParents(parents, this);
         return parents;
     }
 
-    private void walkParents(ArrayList<PermissionNode> list, PermissionNode node) {
+    private void walkParents(List<PermissionNode> list, PermissionNode node) {
         if (node.parent == null) {
             return; // Found topmost permission
         }
@@ -198,7 +200,7 @@ public class PermissionNode {
      *
      * @return
      */
-    public HashMap<String, PermissionNode> getChilds() {
+    public Map<String, PermissionNode> getChilds() {
         return childs;
     }
 
