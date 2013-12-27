@@ -1,11 +1,11 @@
-package net.canarymod.api.entity;
+package net.canarymod.api.entity.effect;
 
 /**
  * LightningBolt wrapper interface
  *
  * @author Jason (darkdiplomat)
  */
-public interface LightningBolt {
+public interface LightningBolt extends WeatherEffect {
 
     /**
      * Gets the ticks that the LightningBolt will live for.<br>
@@ -27,8 +27,8 @@ public interface LightningBolt {
      * Gets the state of the LightingBolt.
      *
      * @return {@code 2} for play effects;<br>
-     *         {@code < 0} for living time decrement and setting blocks a blaze;<br>
-     *         {@code >= 0} for striking entities
+     * {@code < 0} for living time decrement and setting blocks a blaze;<br>
+     * {@code >= 0} for striking entities
      */
     public int getLightningState();
 

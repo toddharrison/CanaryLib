@@ -17,6 +17,7 @@ public enum EntityType {
     CHESTMINECART(43, 2), //
     CHICKEN(93, 4), //
     CHICKENEGG(0, 1), //
+    COMMANDBLOCKMINECART(40, 2),
     COW(92, 4), //
     CREEPER(50, 5), //
     DONKEY(100, 4), //
@@ -31,6 +32,7 @@ public enum EntityType {
     FALLINGBLOCK(21, 0), //
     FARMER(120, 3), //
     FIREWORKROCKET(22, 0), //
+    FISHHOOK(0, 0), // FishHook has no ID, weird...
     FURNACEMINECART(44, 2), //
     GHAST(56, 5), //
     GIANTZOMBIE(53, 5), //
@@ -41,7 +43,7 @@ public enum EntityType {
     LARGEFIREBALL(12, 0), //
     LEASHKNOT(8, 6), //
     LIBRARIAN(120, 3), //
-    LIGHTNINGBOLT(0, 0), //
+    LIGHTNINGBOLT(0, 8), //
     MAGMACUBE(62, 5), //
     MOBSPAWNERMINECART(47, 2), //
     MOOSHROOM(96, 4), //
@@ -77,7 +79,16 @@ public enum EntityType {
     XPORB(2, 0), //
     ZOMBIE(54, 5), //
     ZOMBIEHORSE(100, 4), //
-    ;
+
+    /* GENERIC TYPING */
+    GENERIC_ENTITY(0, 0),
+    GENERIC_THROWABLE(0, 1),
+    GENERIC_VEHICLE(0, 2),
+    GENERIC_LIVING(49, 3),
+    GENERIC_ANIMAL(49, 4),
+    GENERIC_MOB(48, 5),
+    GENERIC_HANGING(0, 6),
+    GENERIC_EFFECT(0, 7),;
 
     private final byte type;
     private final short id;
@@ -143,5 +154,14 @@ public enum EntityType {
      */
     public boolean isHanging() {
         return type == 6;
+    }
+
+    /**
+     * Checks if the EntityType is that of a Effect (ie: LightningBolt)
+     *
+     * @return {@code true} if effect; {@code false} if not
+     */
+    public boolean isEffect() {
+        return type == 7;
     }
 }

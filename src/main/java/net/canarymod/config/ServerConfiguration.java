@@ -85,8 +85,6 @@ public class ServerConfiguration implements ConfigurationContainer {
         cfg.setComments("playerlist-usecolors", "Sets whether the Player List should include colors and player prefixes");
         cfg.getInt("playerlist-ticks", 500);
         // RESERVED SPACE
-        cfg.getString("protect-spam", "default");
-        // COMMENT SPACE  // default: on for restricted users; off: no spam protections; all: on for all users
         cfg.getBoolean("query-enabled", false);
         cfg.setComments("query-enabled", "Enables GameSpy4 protocol server listener. Used to get information about server.");
         cfg.getInt("query-port", 25565);
@@ -114,6 +112,8 @@ public class ServerConfiguration implements ConfigurationContainer {
         cfg.setComments("show-unknown-command", "Sets whether to inform players of unknown commands");
         cfg.getBoolean("snooper-enabled", true);
         cfg.setComments("snooper-enabled", "Sets whether Mojang may snoop or not");
+        cfg.getString("spam-protection", "default");
+        cfg.setComments("spam-protection", "Level of protection against Spam. Options: default - on for all but ignorerestiction users; off - no protections; all - on for all");
         cfg.getBoolean("strict-sign-characters", true);
         cfg.setComments("strict-sign-characters", "Sets whether to strictly check characters on signs for invalid chat characters. Set to false to disable (and allow more characters)");
         cfg.getString("texture-pack", "");
@@ -457,6 +457,16 @@ public class ServerConfiguration implements ConfigurationContainer {
      */
     public boolean isSnooperEnabled() {
         return cfg.getBoolean("snooper-enabled", true);
+    }
+
+    /**
+     * Gets the spam protection level<br/>
+     * default - on for restricted users; off - totally off; all - on for all users
+     *
+     * @return the spam protection level
+     */
+    public String getSpamProtectionLevel() {
+        return cfg.getString("spam-protection", "default");
     }
 
     /**

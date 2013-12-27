@@ -1,9 +1,8 @@
 package net.canarymod.user;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.canarymod.backbone.BackboneWhitelist;
+
+import java.util.List;
 
 /**
  * Access to the backbone for whitelist

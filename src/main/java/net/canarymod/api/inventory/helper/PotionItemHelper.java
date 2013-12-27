@@ -1,15 +1,15 @@
 package net.canarymod.api.inventory.helper;
 
-import static net.canarymod.api.inventory.ItemType.Potion;
-import static net.canarymod.api.nbt.NBTTagType.LIST;
-
-import java.util.Iterator;
-
 import net.canarymod.Canary;
 import net.canarymod.api.inventory.Item;
 import net.canarymod.api.nbt.CompoundTag;
 import net.canarymod.api.nbt.ListTag;
 import net.canarymod.api.potion.PotionEffect;
+
+import java.util.Iterator;
+
+import static net.canarymod.api.inventory.ItemType.Potion;
+import static net.canarymod.api.nbt.NBTTagType.LIST;
 
 /**
  * Potion Item Helper!
@@ -135,7 +135,6 @@ public class PotionItemHelper extends ItemHelper {
                 continue;
             }
             CompoundTag potion_effect = TAG.copy();
-            potion_effect.setName("");
             potion_effect.put("Id", (byte) effect.getPotionID());
             potion_effect.put("Duration", effect.getDuration());
             potion_effect.put("Amplifier", (byte) effect.getAmplifier());

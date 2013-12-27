@@ -1,6 +1,6 @@
 package net.canarymod.hook.world;
 
-import net.canarymod.api.entity.LightningBolt;
+import net.canarymod.api.entity.effect.LightningBolt;
 import net.canarymod.hook.Hook;
 import net.canarymod.hook.entity.EntityLightningStruckHook;
 

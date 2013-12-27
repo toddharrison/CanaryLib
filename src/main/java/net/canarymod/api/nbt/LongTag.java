@@ -5,7 +5,7 @@ package net.canarymod.api.nbt;
  *
  * @author gregthegeek
  */
-public interface LongTag extends BaseTag {
+public interface LongTag extends PrimativeTag {
 
     /**
      * Returns the value associated with this tag.

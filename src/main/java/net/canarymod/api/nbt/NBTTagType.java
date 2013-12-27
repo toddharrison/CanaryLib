@@ -18,6 +18,7 @@ public enum NBTTagType {
     LONG, //
     SHORT, //
     STRING, //
+    ANY_NUMERIC, //
     ;
 
     public static NBTTagType getTypeFromId(byte id) {
@@ -44,6 +45,8 @@ public enum NBTTagType {
                 return COMPOUND;
             case 11:
                 return INT_ARRAY;
+            case 99:
+                return ANY_NUMERIC;
             default:
                 return UNKNOWN;
         }

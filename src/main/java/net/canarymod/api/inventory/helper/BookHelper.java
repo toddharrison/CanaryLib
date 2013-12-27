@@ -1,10 +1,5 @@
 package net.canarymod.api.inventory.helper;
 
-import static net.canarymod.api.nbt.NBTTagType.LIST;
-import static net.canarymod.api.nbt.NBTTagType.STRING;
-
-import java.util.Iterator;
-
 import net.canarymod.Canary;
 import net.canarymod.api.inventory.Enchantment;
 import net.canarymod.api.inventory.Item;
@@ -12,6 +7,11 @@ import net.canarymod.api.inventory.ItemType;
 import net.canarymod.api.nbt.CompoundTag;
 import net.canarymod.api.nbt.ListTag;
 import net.canarymod.api.nbt.StringTag;
+
+import java.util.Iterator;
+
+import static net.canarymod.api.nbt.NBTTagType.LIST;
+import static net.canarymod.api.nbt.NBTTagType.STRING;
 
 /**
  * BOOK! HELPER!
@@ -181,7 +181,6 @@ public class BookHelper extends ItemHelper {
                 continue;
             }
             StringTag toAdd = PAGE_TITLE_AUTHOR.copy();
-            toAdd.setName("page" + PAGES_TAG.size());
             toAdd.setValue(correctPage(page));
             success &= book.getDataTag().getListTag("pages").add(toAdd);
         }
@@ -238,7 +237,6 @@ public class BookHelper extends ItemHelper {
                 continue;
             }
             StringTag toAdd = PAGE_TITLE_AUTHOR.copy();
-            toAdd.setName("page" + PAGES_TAG.size());
             toAdd.setValue(correctPage(page));
             success &= pages_to_set.add(toAdd);
         }

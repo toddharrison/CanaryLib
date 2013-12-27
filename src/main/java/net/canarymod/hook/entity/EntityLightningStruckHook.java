@@ -1,7 +1,7 @@
 package net.canarymod.hook.entity;
 
 import net.canarymod.api.entity.Entity;
-import net.canarymod.api.entity.LightningBolt;
+import net.canarymod.api.entity.effect.LightningBolt;
 import net.canarymod.hook.CancelableHook;
 
 /**

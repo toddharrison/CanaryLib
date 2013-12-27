@@ -5,7 +5,7 @@ package net.canarymod.api.nbt;
  *
  * @author gregthegeek
  */
-public interface FloatTag extends BaseTag {
+public interface FloatTag extends PrimativeTag {
 
     /**
      * Returns the value associated with this tag.
