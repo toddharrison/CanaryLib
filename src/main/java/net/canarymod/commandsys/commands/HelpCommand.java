@@ -37,7 +37,7 @@ public class HelpCommand implements NativeCommand {
                 page = Integer.parseInt(args[1]);
             }
             else {
-                searchTerms = Arrays.copyOfRange(args, 1, 1);
+                searchTerms = Arrays.copyOfRange(args, 1, 2);
             }
         }
         else if (args.length > 2) {
