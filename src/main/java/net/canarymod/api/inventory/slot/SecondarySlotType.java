@@ -16,7 +16,7 @@ public enum SecondarySlotType {
     ARMOR, //
     /** Container slot */
     CONTAINER, //
-    /** Crafting slot (ie: Workbench crafting matrix) */
+    /** Crafting slot (ie: Workbench/Player crafting matrix) */
     CRAFT, //
     /** Enchantment slot */
     ENCHANT, //
@@ -30,6 +30,8 @@ public enum SecondarySlotType {
     PAYMENT, //
     /** Potion Slot (BrewingStand) */
     POTION, //
+    /** Ingredient Slot (BrewingStand) */
+    INGREDIENT, //
     /** Quick bar slot */
     QUICKBAR, //
     /** Trade slot */

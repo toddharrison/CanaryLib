@@ -19,10 +19,8 @@ public enum SlotType {
     ARMOR, //
     /** Beacon slots */
     BEACON, //
-    /** Ingredient slots (BrewingStand) */
-    INGREDIENT, //
-    /** Potion slot (BrewingStand) */
-    POTION, //
+    /** Brewing slots */
+    BREWING, //
     /** Crafting Slot */
     CRAFTING, //
     /** Enchantment Slot */
