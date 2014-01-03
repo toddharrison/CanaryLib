@@ -49,23 +49,18 @@ public class GroupCreate implements NativeCommand {
         }
         if (args.length == 3) { // This can be only a world or a group name
             parent = Canary.usersAndGroups().getGroup(args[2]);
-            if (parent == null) {
-                caller.notice(Translator.translateAndFormat("group unknown parent", args[2]));
-                return;
-            }
             World world = ToolBox.parseWorld(args[2]);
-            if (world == null) {
-                caller.notice(Translator.translateAndFormat("group unknown world", args[2]));
-                return;
-            }
-            else {
-                worldName = world.getFqName();
-            }
-            String groupworld = parent.getWorldName();
-            if (worldName != null && !(groupworld != null && groupworld.equals(worldName))) {
-                //Cannot add a parent from another world
-                caller.notice(Translator.translateAndFormat("group parent world mismatch", parent.getName(), parent.getWorldName(), worldName));
-                return;
+
+            //Note: if parent is null (therefore its world too) this means, the argument is a world name
+            String groupworld = parent != null ? parent.getWorldName() : null;
+            if(groupworld == null) {
+                worldName = world != null ? world.getFqName() : null;
+                if(worldName == null) {
+                    //So that's both null, all is invalid!
+                    caller.notice(Translator.translateAndFormat("group unknown world", args[2]));
+                    caller.notice(Translator.translateAndFormat("group unknown parent", args[2]));
+                    return;
+                }
             }
         }
 
