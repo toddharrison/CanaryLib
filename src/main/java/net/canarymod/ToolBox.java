@@ -125,9 +125,12 @@ public class ToolBox {
      * @return the world that was parsed or null if the world didn't exist or wasn't loaded.
      */
     public static World parseWorld(String world) {
-        world = world.replace(":", "_"); // some inputs come with a : as separator!
-        DimensionType t = DimensionType.fromName(world.substring(Math.max(0, world.lastIndexOf("_"))));
-        String nameOnly = world.substring(0, Math.max(0, world.lastIndexOf("_")));
+        String[] worldData = world.split("[:_]");
+        DimensionType t = null;
+        if (worldData.length == 2) {
+            t = DimensionType.fromName(worldData[1]);
+        }
+        String nameOnly = worldData[0];
         try {
             if (t != null) {
                 return Canary.getServer().getWorldManager().getWorld(nameOnly, t, false);
