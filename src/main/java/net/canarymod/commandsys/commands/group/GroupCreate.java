@@ -67,6 +67,7 @@ public class GroupCreate implements NativeCommand {
         group.setName(args[1]);
         group.setPermissionProvider(Canary.permissionManager().getGroupsProvider(args[1], worldName));
         group.setParent(parent);
+        group.setWorldName(worldName);
         Canary.usersAndGroups().addGroup(group);
         caller.message(Colors.YELLOW + Translator.translateAndFormat("group created", group.getName()));
     }
