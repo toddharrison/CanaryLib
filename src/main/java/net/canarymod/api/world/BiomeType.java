@@ -33,7 +33,23 @@ public enum BiomeType {
     HILLS_EXTREME_EDGE(20), //
     JUNGLE(21), //
     HILLS_JUNGLE(22), //
-
+    JUNGLE_EDGE(23), //
+    OCEAN_DEEP(24), //
+    BEACH_STONE(25), //
+    BEACH_COLD(26), //
+    FOREST_BIRCH(27), //
+    HILLS_FOREST_BIRCH(28), //
+    FOREST_ROOFED(29), //
+    TAIGA_COLD(30), //
+    HILLS_TAIGA_COLD(31), //
+    TAIGA_MEGA(32), //
+    HILLS_TAIGA_MEGA(33), //
+    HILLS_EXTREME_PLUS(34),//
+    SAVANNA(35), //
+    PLATEAU_SAVANNA(36), //
+    MESA(37), //
+    PLATEAU_MESA_F(38), //
+    PLATEAU_MESA(39), //
     ;
 
     private byte id;
@@ -87,7 +103,7 @@ public enum BiomeType {
         BiomeType[] types = new BiomeType[ids.length];
         for (int index = 0; index < ids.length; index++) {
             byte id;
-            if ((id = ids[index]) < 0 || id > 22) {
+            if ((id = ids[index]) < 0 || id > count()) {
                 id = -1;
             }
             types[index] = fromId(id);
