@@ -12,7 +12,7 @@ import net.canarymod.hook.Hook;
 public final class ChunkCreationHook extends Hook {
 
     private int x, z;
-    private byte[] blockdata;
+    private int[] blockdata;
     private BiomeType[] biomedata;
     private World dimension;
 
@@ -50,10 +50,10 @@ public final class ChunkCreationHook extends Hook {
     }
 
     /**
-     * Sets the blocks data. Tips: Set a byte[32768] if you want to generate a new chunk.
+     * Sets the blocks data. Tips: Set a int[32768] if you want to generate a new chunk.
      * The block index equals (x * 16 + z) * 128 + y where 16>x<=0, 16>z<=0, and 128>y<=0
      */
-    public void setBlockData(byte[] blockdata) {
+    public void setBlockData(int[] blockdata) {
         this.blockdata = blockdata;
     }
 
@@ -62,7 +62,7 @@ public final class ChunkCreationHook extends Hook {
      *
      * @return blockdata
      */
-    public byte[] getBlockData() {
+    public int[] getBlockData() {
         return blockdata;
     }
 
