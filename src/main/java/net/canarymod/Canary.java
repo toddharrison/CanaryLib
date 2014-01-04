@@ -358,7 +358,7 @@ public abstract class Canary implements TaskOwner {
      *         the {@link Throwable} thrown
      */
     public static void logStacktrace(String message, Throwable thrown) {
-        logger.log(Level.WARNING, message, thrown);
+        logger.trace(message, thrown);
     }
 
     /**
@@ -368,7 +368,7 @@ public abstract class Canary implements TaskOwner {
      *         the message to be logged
      */
     public static void logSevere(String message) {
-        logger.log(Level.SEVERE, message);
+        logger.fatal(message);
     }
 
     /**
@@ -380,7 +380,7 @@ public abstract class Canary implements TaskOwner {
      *         The Exception that caused the logging of this message
      */
     public static void logSevere(String message, Throwable ex) {
-        logger.log(Level.SEVERE, message, ex);
+        logger.fatal(message, ex);
     }
 
     /**
@@ -390,7 +390,7 @@ public abstract class Canary implements TaskOwner {
      *         the message to be logged
      */
     public static void logWarning(String message) {
-        logger.log(Level.WARNING, message);
+        logger.warn(message);
     }
 
     /**
@@ -402,7 +402,7 @@ public abstract class Canary implements TaskOwner {
      *         The Exception that caused the logging of this message
      */
     public static void logWarning(String message, Throwable ex) {
-        logger.log(Level.WARNING, message, ex);
+        logger.warn(message, ex);
     }
 
     /**
@@ -412,7 +412,7 @@ public abstract class Canary implements TaskOwner {
      *         the message to be logged
      */
     public static void logInfo(String message) {
-        logger.log(Level.INFO, message);
+        logger.info(message);
     }
 
     /**
@@ -423,7 +423,7 @@ public abstract class Canary implements TaskOwner {
      */
     public static void logDebug(String message) {
         if (Configuration.getServerConfig().isDebugMode()) {
-            logger.log(CanaryLevel.DEBUG, message);
+            logger.debug(message);
         }
     }
 
@@ -437,7 +437,7 @@ public abstract class Canary implements TaskOwner {
      */
     public static void logDebug(String message, Throwable thrown) {
         if (Configuration.getServerConfig().isDebugMode()) {
-            logger.log(CanaryLevel.DEBUG, message, thrown);
+            logger.debug(message, thrown);
         }
     }
 
@@ -448,7 +448,7 @@ public abstract class Canary implements TaskOwner {
      *         the message to be logged
      */
     public static void logNotice(String message) {
-        logger.log(CanaryLevel.NOTICE, message);
+        logger.debug(CanaryLevel.NOTICE, message);
     }
 
     /**
@@ -458,7 +458,7 @@ public abstract class Canary implements TaskOwner {
      *         the message to be logged
      */
     public static void logDerp(String message) {
-        logger.log(CanaryLevel.DERP, message);
+        logger.logDerp(message);
     }
 
     /**
@@ -469,7 +469,7 @@ public abstract class Canary implements TaskOwner {
      *          the Throwable object to be logged
      */
     public static void logDerp(String message, Throwable t) {
-        logger.log(CanaryLevel.DERP, message, t);
+        logger.info(CanaryLevel.DERP, message, t);
     }
 
     /**
@@ -479,7 +479,7 @@ public abstract class Canary implements TaskOwner {
      *         the message to be logged
      */
     public static void logServerMessage(String message) {
-        logger.log(CanaryLevel.SERVERMESSAGE, message);
+        logger.fatal(CanaryLevel.SERVERMESSAGE, message);
     }
 
     /**
@@ -489,7 +489,7 @@ public abstract class Canary implements TaskOwner {
      *         the message to be logged
      */
     public static void logChat(String message) {
-        logger.log(CanaryLevel.CHAT, message);
+        logger.info(CanaryLevel.CHAT, message);
     }
 
     /**

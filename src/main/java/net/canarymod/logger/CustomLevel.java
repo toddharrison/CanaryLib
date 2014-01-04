@@ -1,5 +1,8 @@
 package net.canarymod.logger;
 
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
+
 import java.util.HashMap;
 import java.util.logging.Level;
 
@@ -7,16 +10,17 @@ import java.util.logging.Level;
  * Custom Logger Level register
  *
  * @author Jason (darkdiplomat)
+ * @author Larry1123
+ * Updated to make use of log4j
  */
-public final class CustomLevel extends Level {
-
-    private static final long serialVersionUID = 171504162013L;
+public final class CustomLevel implements Marker {
 
     private static final HashMap<String, CustomLevel> registered = new HashMap<String, CustomLevel>();
-    private static int nextLevel = 1001;
 
-    private CustomLevel(String name, int lvl) {
-        super(name, lvl);
+    private final Marker marker;
+
+    private CustomLevel(String name) {
+        marker = MarkerManager.getMarker(name);
     }
 
     /**
@@ -40,7 +44,7 @@ public final class CustomLevel extends Level {
         if (registered.containsKey(name)) {
             throw new CustomLevelExistsException(name);
         }
-        CustomLevel toRet = new CustomLevel(name, nextLevel++);
+        CustomLevel toRet = new CustomLevel(name);
         registered.put(name, toRet);
         return toRet;
     }
@@ -74,4 +78,37 @@ public final class CustomLevel extends Level {
         }
         return null;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getName() {
+        return marker.getName();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Marker getParent() {
+        return marker.getParent();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isInstanceOf(Marker m) {
+        return marker.isInstanceOf(m);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isInstanceOf(String name) {
+        return marker.isInstanceOf(name);
+    }
+
 }
