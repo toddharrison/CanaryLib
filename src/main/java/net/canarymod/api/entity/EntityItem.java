@@ -77,4 +77,40 @@ public interface EntityItem extends Entity {
      *         the Item to attach
      */
     public void setItem(Item item);
+
+    /**
+     * Returns the owner of this item.
+     * Only the owner of an item can pick it up.
+     *
+     * @return The name of the owner this item's owner
+     */
+    public String getOwner();
+
+    /**
+     * Sets the owner of this item.
+     * Only the owner of an item can pick it up.
+     *
+     * @param owner The name of this item's new owner, or {@code null} to unset
+     * the owner
+     */
+    public void setOwner(String owner);
+
+    /**
+     * Returns the thrower of this item.
+     * This is the name of the player who dropped this item.
+     * Used for the "Diamonds to you!" achievement.
+     *
+     * @return The name of this item's thrower
+     */
+    public String getThrower();
+
+    /**
+     * Sets the thrower of this item.
+     * This is the name of the player who dropped this item.
+     * Used for the "Diamonds to you!" achievement.
+     *
+     * @param thrower The name of this item's new thrower, or {@code null} to
+     * unset the thrower
+     */
+    public void setThrower(String thrower);
 }
