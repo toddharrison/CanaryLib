@@ -316,53 +316,11 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
     public void addGUI(GUIControl gui);
 
     /**
-     * Gets the array of the amount of sent packets
-     *
-     * @return a long array of the sent packet count
-     */
-    public long[] getSentPacketCountArray();
-
-    /**
-     * Gets the array of the size of sent packets
-     *
-     * @return array of the size of sent packets
-     */
-    public long[] getSentPacketSizeArray();
-
-    /**
-     * Gets the array of the amount of received packets
-     *
-     * @return array of the amount of recieved packets
-     */
-    public long[] getReceivedPacketCountArray();
-
-    /**
-     * Gets the array of the size of received packets
-     *
-     * @return array of the size of received packets
-     */
-    public long[] getReceivedPacketSizeArray();
-
-    /**
      * Gets the array of Time Ticks
      *
      * @return array of Time ticks
      */
     public long[] getTickTimeArray();
-
-    /**
-     * Gets the number of TCP reading threads
-     *
-     * @return number of TCP reading threads
-     */
-    public int getTcpReaderThreadCount();
-
-    /**
-     * Gets the number of TCP writing threads
-     *
-     * @return number of TCP writing threads
-     */
-    public int getTcpWriterThreadCount();
 
     /**
      * Get the version of CanaryMod that is currently running
