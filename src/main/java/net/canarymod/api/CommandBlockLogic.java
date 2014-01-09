@@ -25,8 +25,27 @@ public interface CommandBlockLogic extends MessageReceiver {
      */
     public String getCommand();
 
-    /** Run this CommandBlock's command */
+    /** Run this CommandBlock's command. */
     public void activate();
+
+    /**
+     * Returns this command block's name.
+     * Displayed as prefix in chat when the doCommandBlockOutput game rule is
+     * true. Default value is "@".
+     *
+     * @return This command block's name
+     */
+    @Override
+    public String getName();
+
+    /**
+     * Sets this command block's name.
+     * Displayed as prefix in chat when the doCommandBlockOutput game rule is
+     * true. Default value is "@".
+     *
+     * @param name This command block's new name
+     */
+    public void setName(String name);
 
     /**
      * Returns the group that is used to handle CommandBlock permissions.
