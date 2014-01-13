@@ -27,7 +27,6 @@ import net.canarymod.warp.WarpProvider;
 import net.visualillusionsent.utils.JarUtils;
 
 import java.util.HashMap;
-import java.util.logging.Level;
 
 /**
  * The interface to the brains of the bird! AKA Utils
@@ -479,7 +478,7 @@ public abstract class Canary implements TaskOwner {
      *         the message to be logged
      */
     public static void logServerMessage(String message) {
-        logger.fatal(CanaryLevel.SERVERMESSAGE, message);
+        logger.info(CanaryLevel.SERVERMESSAGE, message);
     }
 
     /**
