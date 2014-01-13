@@ -1,8 +1,5 @@
 package net.canarymod.backbone;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.canarymod.Canary;
 import net.canarymod.ToolBox;
 import net.canarymod.api.world.position.Location;
@@ -13,6 +10,10 @@ import net.canarymod.database.exceptions.DatabaseWriteException;
 import net.canarymod.user.Group;
 import net.canarymod.warp.Warp;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 /**
  * Backbone to the warps system This contains NO logic, it is only the data
  * source access!
@@ -21,6 +22,7 @@ import net.canarymod.warp.Warp;
  */
 public class BackboneWarps extends Backbone {
 
+    private static WarpDataAccess schema = new WarpDataAccess();
     public BackboneWarps() {
         super(Backbone.System.WARPS);
         try {
@@ -35,7 +37,9 @@ public class BackboneWarps extends Backbone {
         WarpDataAccess data = new WarpDataAccess();
 
         try {
-            Database.get().load(data, new String[]{ "name" }, new Object[]{ warp.getName() });
+            HashMap<String,Object> filter = new HashMap<String, Object>();
+            filter.put("name", warp.getName());
+            Database.get().load(data, filter);
         }
         catch (DatabaseReadException e) {
             Canary.logStacktrace(e.getMessage(), e);
@@ -96,7 +100,10 @@ public class BackboneWarps extends Backbone {
      */
     public void removeWarp(Warp warp) {
         try {
-            Database.get().remove("warp", new String[]{ "name", "location" }, new Object[]{ warp.getName(), warp.getLocation().toString() });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("name", warp.getName());
+            filter.put("location", warp.getLocation().toString());
+            Database.get().remove(schema, filter);
         }
         catch (DatabaseWriteException e) {
             Canary.logStacktrace(e.getMessage(), e);
@@ -118,7 +125,9 @@ public class BackboneWarps extends Backbone {
         data.name = warp.getName();
         data.owner = warp.getOwner();
         try {
-            Database.get().update(data, new String[]{ "name" }, new Object[]{ warp.getName() });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("name", warp.getName());
+            Database.get().update(data, filter);
         }
         catch (DatabaseWriteException e) {
             Canary.logStacktrace(e.getMessage(), e);
@@ -135,7 +144,7 @@ public class BackboneWarps extends Backbone {
         List<DataAccess> daos = new ArrayList<DataAccess>();
 
         try {
-            Database.get().loadAll(new WarpDataAccess(), daos, new String[]{ }, new Object[]{ });
+            Database.get().loadAll(schema, daos, new HashMap<String, Object>());
             for (DataAccess dao : daos) {
                 WarpDataAccess data = (WarpDataAccess) dao;
                 Group[] groups = makeGroupArray(data.groups);

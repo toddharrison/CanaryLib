@@ -22,6 +22,7 @@ import java.util.Map;
  */
 public class BackboneUsers extends Backbone {
 
+    private static PlayerDataAccess schema = new PlayerDataAccess();
     public BackboneUsers() {
         super(Backbone.System.USERS);
         try {
@@ -111,7 +112,9 @@ public class BackboneUsers extends Backbone {
         PlayerDataAccess data = new PlayerDataAccess();
 
         try {
-            Database.get().load(data, new String[]{ "name" }, new Object[]{ player });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("name", player);
+            Database.get().load(data, filter);
         }
         catch (DatabaseReadException e) {
             Canary.logStacktrace(e.getMessage(), e);
@@ -128,7 +131,9 @@ public class BackboneUsers extends Backbone {
      */
     public void removeUser(String player) {
         try {
-            Database.get().remove("player", new String[]{ "name" }, new Object[]{ player });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("name", player);
+            Database.get().remove(schema, filter);
         }
         catch (DatabaseWriteException e) {
             Canary.logStacktrace(e.getMessage(), e);
@@ -161,7 +166,9 @@ public class BackboneUsers extends Backbone {
         }
         data.isMuted = player.isMuted();
         try {
-            Database.get().update(data, new String[]{ "name" }, new Object[]{ player.getName() });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("name", player.getName());
+            Database.get().update(data, filter);
         }
         catch (DatabaseWriteException e) {
             Canary.logStacktrace(e.getMessage(), e);
@@ -178,7 +185,9 @@ public class BackboneUsers extends Backbone {
         PlayerDataAccess data = new PlayerDataAccess();
 
         try {
-            Database.get().load(data, new String[]{ "name" }, new Object[]{ player.getName() });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("name", player.getName());
+            Database.get().load(data, filter);
         }
         catch (DatabaseReadException e) {
             Canary.logStacktrace(e.getCause().getMessage(), e);
@@ -203,7 +212,9 @@ public class BackboneUsers extends Backbone {
             data.prefix = prefix;
         }
         try {
-            Database.get().update(data, new String[]{ "name" }, new Object[]{ player.getName() });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("name", player.getName());
+            Database.get().update(data, filter);
         }
         catch (DatabaseWriteException e) {
             Canary.logStacktrace(e.getCause().getMessage(), e);
@@ -222,7 +233,7 @@ public class BackboneUsers extends Backbone {
         List<DataAccess> daos = new ArrayList<DataAccess>();
 
         try {
-            Database.get().loadAll(new PlayerDataAccess(), daos, new String[]{ }, new Object[]{ });
+            Database.get().loadAll(schema, daos, new HashMap<String, Object>());
             for (DataAccess dao : daos) {
                 PlayerDataAccess data = (PlayerDataAccess) dao;
                 String[] row = new String[3];
@@ -253,7 +264,9 @@ public class BackboneUsers extends Backbone {
         PlayerDataAccess data = new PlayerDataAccess();
 
         try {
-            Database.get().load(data, new String[]{ "name" }, new Object[]{ player });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("name", player);
+            Database.get().load(data,filter);
         }
         catch (DatabaseReadException e) {
             Canary.logStacktrace(e.getMessage(), e);

@@ -1,8 +1,5 @@
 package net.canarymod.backbone;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.canarymod.Canary;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.World;
@@ -10,11 +7,14 @@ import net.canarymod.database.DataAccess;
 import net.canarymod.database.Database;
 import net.canarymod.database.exceptions.DatabaseReadException;
 import net.canarymod.database.exceptions.DatabaseWriteException;
-import net.canarymod.logger.Logman;
 import net.canarymod.permissionsystem.MultiworldPermissionProvider;
 import net.canarymod.permissionsystem.PermissionNode;
 import net.canarymod.permissionsystem.PermissionProvider;
 import net.canarymod.user.Group;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Backbone to the permissions System. This contains NO logic, it is only the
@@ -24,13 +24,14 @@ import net.canarymod.user.Group;
  */
 public class BackbonePermissions extends Backbone {
 
+    private static PermissionDataAccess schema = new PermissionDataAccess(null);
     public BackbonePermissions() {
         super(Backbone.System.PERMISSIONS);
         try {
             for (String fqname : Canary.getServer().getWorldManager().getExistingWorlds()) {
                 Database.get().updateSchema(new PermissionDataAccess(fqname));
             }
-            Database.get().updateSchema(new PermissionDataAccess(null));
+            Database.get().updateSchema(schema);
         }
         catch (DatabaseWriteException e) {
             Canary.logStacktrace("Failed to update database schema", e);
@@ -53,9 +54,12 @@ public class BackbonePermissions extends Backbone {
         }
         PermissionProvider provider = new MultiworldPermissionProvider(world, false, name);
         ArrayList<DataAccess> dataList = new ArrayList<DataAccess>();
-        Logman.println("Loading permissions for " + name + ". World: " + ((world != null && !world.isEmpty()) ? world : "none"));
+        Canary.logDebug("Loading permissions for " + name + ". World: " + ((world != null && !world.isEmpty()) ? world : "none"));
         try {
-            Database.get().loadAll(new PermissionDataAccess(world), dataList, new String[]{ "owner", "type" }, new Object[]{ name, "group" });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("owner", name);
+            filter.put("type", "group");
+            Database.get().loadAll(new PermissionDataAccess(world), dataList, filter);
             for (DataAccess da : dataList) {
                 PermissionDataAccess data = (PermissionDataAccess) da;
 
@@ -88,7 +92,10 @@ public class BackbonePermissions extends Backbone {
         ArrayList<DataAccess> dataList = new ArrayList<DataAccess>();
 
         try {
-            Database.get().loadAll(new PermissionDataAccess(world), dataList, new String[]{ "owner", "type" }, new Object[]{ name, "player" });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("owner", name);
+            filter.put("type", "player");
+            Database.get().loadAll(new PermissionDataAccess(world), dataList, filter);
             for (DataAccess da : dataList) {
                 PermissionDataAccess data = (PermissionDataAccess) da;
 
@@ -112,20 +119,21 @@ public class BackbonePermissions extends Backbone {
     public void saveGroupPermissions(Group g) {
         PermissionProvider permissions = g.getPermissionProvider();
         List<PermissionNode> permissionList = permissions.getPermissionMap();
+        HashMap<String, Object> filter = new HashMap<String, Object>();
 
         try {
             for (PermissionNode node : permissionList) {
                 ArrayList<PermissionNode> childs = new ArrayList<PermissionNode>();
 
                 for (PermissionNode child : permissions.getChildNodes(node, childs)) {
-
                     PermissionDataAccess data = new PermissionDataAccess(g.getWorldName());
-
-                    Database.get().load(data, new String[]{ "id" }, new Object[]{ child.getId() });
+                    filter.clear();
+                    filter.put("id", child.getId());
+                    Database.get().load(data, filter);
                     if (data.hasData()) {
                         data.path = child.getFullPath();
                         data.value = child.getValue();
-                        Database.get().update(data, new String[]{ "id" }, new Object[]{ child.getId() });
+                        Database.get().update(data, filter);
                     }
                     else {
                         data.owner = g.getName();
@@ -155,20 +163,21 @@ public class BackbonePermissions extends Backbone {
     public void saveUserPermissions(Player p) {
         PermissionProvider permissions = p.getPermissionProvider();
         List<PermissionNode> permissionList = permissions.getPermissionMap();
+        HashMap<String, Object> filter = new HashMap<String, Object>();
 
         try {
             for (PermissionNode node : permissionList) {
                 ArrayList<PermissionNode> childs = new ArrayList<PermissionNode>();
 
                 for (PermissionNode child : permissions.getChildNodes(node, childs)) {
-
                     PermissionDataAccess data = new PermissionDataAccess(permissions.getWorld());
-
-                    Database.get().load(data, new String[]{ "id" }, new Object[]{ child.getId() });
+                    filter.clear();
+                    filter.put("id", child.getId());
+                    Database.get().load(data, filter);
                     if (data.hasData()) {
                         data.path = child.getFullPath();
                         data.value = child.getValue();
-                        Database.get().update(data, new String[]{ "id" }, new Object[]{ child.getId() });
+                        Database.get().update(data, filter);
                     }
                     else {
                         data.owner = p.getName();
@@ -200,11 +209,13 @@ public class BackbonePermissions extends Backbone {
      */
     public void removePermission(String path, String world) {
         try {
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("path", path);
             if (world != null) {
-                Database.get().remove("permission_" + world, new String[]{ "path" }, new Object[]{ path });
+                Database.get().remove(new PermissionDataAccess(world), filter);
             }
             else {
-                Database.get().remove("permission", new String[]{ "path" }, new Object[]{ path });
+                Database.get().remove(schema, filter);
             }
         }
         catch (DatabaseWriteException e) {
@@ -227,22 +238,43 @@ public class BackbonePermissions extends Backbone {
      */
     public void removePermission(String path, String subject, String world, boolean isPlayer) {
         try {
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("path", path);
+            filter.put("owner", subject);
             if (isPlayer) {
+                filter.put("type", "player");
                 if (world != null) {
-                    Database.get().remove("permission_" + world, new String[]{ "path", "type", "owner" }, new Object[]{ path, "player", subject });
+                    Database.get().remove(new PermissionDataAccess(world), filter);
                 }
                 else {
-                    Database.get().remove("permission", new String[]{ "path", "type", "owner" }, new Object[]{ path, "player", subject });
+                    Database.get().remove(schema, filter);
                 }
             }
             else {
+                filter.put("type", "group");
                 if (world != null) {
-                    Database.get().remove("permission_" + world, new String[]{ "path", "type", "owner" }, new Object[]{ path, "group", subject });
+                    Database.get().remove(new PermissionDataAccess(world), filter);
                 }
                 else {
-                    Database.get().remove("permission", new String[]{ "path", "type", "owner" }, new Object[]{ path, "group", subject });
+                    Database.get().remove(schema, filter);
                 }
             }
+        }
+        catch (DatabaseWriteException e) {
+            Canary.logStacktrace(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Remove all permissions that belong to the given group!
+     * @param group
+     */
+    public void removePermissions(Group group) {
+        try {
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("owner", group.getName());
+            filter.put("type", "group");
+            Database.get().remove(new PermissionDataAccess(group.getWorldName()), filter);
         }
         catch (DatabaseWriteException e) {
             Canary.logStacktrace(e.getMessage(), e);
@@ -281,7 +313,11 @@ public class BackbonePermissions extends Backbone {
 
         try {
             Database.get().insert(data);
-            Database.get().load(data, new String[]{ "path", "owner", "type" }, new Object[]{ path, owner, type });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("path", path);
+            filter.put("owner", owner);
+            filter.put("type", type);
+            Database.get().load(data, filter);
             return data.id;
         }
         catch (DatabaseWriteException e) {
@@ -315,12 +351,16 @@ public class BackbonePermissions extends Backbone {
     public int updatePermission(String path, String owner, String type, String world, boolean value) {
         PermissionDataAccess data = new PermissionDataAccess(world);
         try {
-            Database.get().load(data, new String[]{ "path", "owner", "type" }, new Object[]{ path, owner, type });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("path", path);
+            filter.put("owner", owner);
+            filter.put("type", type);
+            Database.get().load(data, filter);
             if (!data.hasData()) {
                 throw new DatabaseReadException("Could not load a permission path! (" + path + ")");
             }
             data.value = value;
-            Database.get().update(data, new String[]{ "path", "owner", "type" }, new Object[]{ path, owner, type });
+            Database.get().update(data, filter);
         }
         catch (DatabaseReadException e) {
             Canary.logStacktrace(e.getMessage(), e);
@@ -335,7 +375,11 @@ public class BackbonePermissions extends Backbone {
         PermissionDataAccess data = new PermissionDataAccess(world);
 
         try {
-            Database.get().load(data, new String[]{ "path", "owner", "type" }, new Object[]{ path, owner, type });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("path", path);
+            filter.put("owner", owner);
+            filter.put("type", type);
+            Database.get().load(data, filter);
         }
         catch (DatabaseReadException e) {
             Canary.logStacktrace(e.getMessage(), e);

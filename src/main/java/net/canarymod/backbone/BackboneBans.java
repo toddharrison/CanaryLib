@@ -1,14 +1,15 @@
 package net.canarymod.backbone;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.canarymod.Canary;
 import net.canarymod.bansystem.Ban;
 import net.canarymod.database.DataAccess;
 import net.canarymod.database.Database;
 import net.canarymod.database.exceptions.DatabaseReadException;
 import net.canarymod.database.exceptions.DatabaseWriteException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Backbone to the ban System. This contains NO logic, it is only the data
@@ -18,10 +19,11 @@ import net.canarymod.database.exceptions.DatabaseWriteException;
  */
 public class BackboneBans extends Backbone {
 
+    private static BanDataAccess schema = new BanDataAccess();
     public BackboneBans() {
         super(Backbone.System.BANS);
         try {
-            Database.get().updateSchema(new BanDataAccess());
+            Database.get().updateSchema(schema);
         }
         catch (DatabaseWriteException e) {
             Canary.logStacktrace("Failed to update Database Schema!", e);
@@ -32,7 +34,9 @@ public class BackboneBans extends Backbone {
         BanDataAccess data = new BanDataAccess();
 
         try {
-            Database.get().load(data, new String[]{ "player" }, new Object[]{ ban.getSubject() });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("player", ban.getSubject());
+            Database.get().load(data, filter);
         }
         catch (DatabaseReadException e) {
             Canary.logStacktrace(e.getMessage(), e);
@@ -74,7 +78,9 @@ public class BackboneBans extends Backbone {
      */
     public void liftBan(String subject) {
         try {
-            Database.get().remove("ban", new String[]{ "player" }, new Object[]{ subject });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("player", subject);
+            Database.get().remove(schema, filter);
         }
         catch (DatabaseWriteException e) {
             Canary.logStacktrace(e.getMessage(), e);
@@ -89,7 +95,9 @@ public class BackboneBans extends Backbone {
      */
     public void liftIpBan(String subject) {
         try {
-            Database.get().remove("ban", new String[]{ "ip" }, new Object[]{ subject });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("ip", subject);
+            Database.get().remove(schema, filter);
         }
         catch (DatabaseWriteException e) {
             Canary.logStacktrace(e.getMessage(), e);
@@ -109,7 +117,9 @@ public class BackboneBans extends Backbone {
         BanDataAccess data = new BanDataAccess();
 
         try {
-            Database.get().load(data, new String[]{ "player" }, new Object[]{ name });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("player", name);
+            Database.get().load(data, filter);
         }
         catch (DatabaseReadException e) {
             Canary.logStacktrace(e.getMessage(), e);
@@ -137,14 +147,16 @@ public class BackboneBans extends Backbone {
         BanDataAccess data = new BanDataAccess();
 
         try {
-            Database.get().load(data, new String[]{ "player" }, new Object[]{ ban.getSubject() });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("player", ban.getSubject());
+            Database.get().load(data, filter);
             if (data.hasData()) {
                 data.banningPlayer = ban.getBanningPlayer();
                 data.ip = ban.getIp();
                 data.player = ban.getSubject();
                 data.reason = ban.getReason();
                 data.unbanDate = ban.getTimestamp();
-                Database.get().update(data, new String[]{ "player" }, new Object[]{ ban.getSubject() });
+                Database.get().update(data, filter);
             }
 
         }
@@ -167,7 +179,7 @@ public class BackboneBans extends Backbone {
         List<DataAccess> dataList = new ArrayList<DataAccess>();
 
         try {
-            Database.get().loadAll(new BanDataAccess(), dataList, new String[]{ }, new Object[]{ });
+            Database.get().loadAll(schema, dataList, new HashMap<String, Object>());
             for (DataAccess da : dataList) {
                 BanDataAccess data = (BanDataAccess) da;
                 Ban ban = new Ban();

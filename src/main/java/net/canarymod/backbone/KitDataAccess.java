@@ -1,11 +1,10 @@
 package net.canarymod.backbone;
 
-import java.util.List;
-
 import net.canarymod.database.Column;
-import net.canarymod.database.Column.ColumnType;
 import net.canarymod.database.Column.DataType;
 import net.canarymod.database.DataAccess;
+
+import java.util.List;
 
 /**
  * Kit Data Access
@@ -17,10 +16,6 @@ public class KitDataAccess extends DataAccess {
     public KitDataAccess() {
         super("kit");
     }
-
-    /** ID for this kit, serves as Primary Key, Auto Incremented. */
-    @Column(columnName = "id", dataType = DataType.INTEGER, autoIncrement = true, columnType = ColumnType.PRIMARY)
-    public int id;
 
     /** Delay in seconds to receive this kit. */
     @Column(columnName = "useDelay", dataType = DataType.INTEGER)

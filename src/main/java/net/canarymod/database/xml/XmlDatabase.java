@@ -1,5 +1,21 @@
 package net.canarymod.database.xml;
 
+import net.canarymod.database.Column;
+import net.canarymod.database.Column.DataType;
+import net.canarymod.database.DataAccess;
+import net.canarymod.database.Database;
+import net.canarymod.database.exceptions.DatabaseAccessException;
+import net.canarymod.database.exceptions.DatabaseReadException;
+import net.canarymod.database.exceptions.DatabaseTableInconsistencyException;
+import net.canarymod.database.exceptions.DatabaseWriteException;
+import org.jdom2.Content;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -10,23 +26,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-
-import net.canarymod.database.Column;
-import net.canarymod.database.Column.DataType;
-import net.canarymod.database.DataAccess;
-import net.canarymod.database.Database;
-import net.canarymod.database.exceptions.DatabaseAccessException;
-import net.canarymod.database.exceptions.DatabaseReadException;
-import net.canarymod.database.exceptions.DatabaseTableInconsistencyException;
-import net.canarymod.database.exceptions.DatabaseWriteException;
-
-import org.jdom2.Content;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
-import org.jdom2.input.SAXBuilder;
-import org.jdom2.output.Format;
-import org.jdom2.output.XMLOutputter;
+import java.util.Map;
 
 /**
  * Represent access to an XML database
@@ -90,21 +90,19 @@ public class XmlDatabase extends Database {
     }
 
     @Override
-    public void load(DataAccess data, String[] fieldNames, Object[] fieldValues) throws DatabaseReadException {
+    public void load(DataAccess data, Map<String, Object> filters) throws DatabaseReadException {
         File file = new File("db/" + data.getName() + ".xml");
 
         if (!file.exists()) {
             throw new DatabaseReadException("Table " + data.getName() + " does not exist!");
         }
-        if (fieldNames.length != fieldValues.length) {
-            throw new DatabaseReadException("Field and Value field lenghts are inconsistent!");
-        }
+
         try {
             FileInputStream in = new FileInputStream(file);
             Document table = fileBuilder.build(in);
             in.close();
 
-            loadData(data, table, fieldNames, fieldValues);
+            loadData(data, table, filters);
         }
         catch (JDOMException e) {
             throw new DatabaseReadException(e.getMessage(), e);
@@ -118,21 +116,19 @@ public class XmlDatabase extends Database {
     }
 
     @Override
-    public void loadAll(DataAccess typeTemplate, List<DataAccess> datasets, String[] fieldNames, Object[] fieldValues) throws DatabaseReadException {
+    public void loadAll(DataAccess typeTemplate, List<DataAccess> datasets, Map<String, Object> filters) throws DatabaseReadException {
         File file = new File("db/" + typeTemplate.getName() + ".xml");
 
         if (!file.exists()) {
             throw new DatabaseReadException("Table " + typeTemplate.getName() + " does not exist!");
         }
-        if (fieldNames.length != fieldValues.length) {
-            throw new DatabaseReadException("Field and Value field lenghts are inconsistent!");
-        }
+
         try {
             FileInputStream in = new FileInputStream(file);
             Document table = fileBuilder.build(in);
             in.close();
 
-            loadAllData(typeTemplate, datasets, table, fieldNames, fieldValues);
+            loadAllData(typeTemplate, datasets, table, filters);
         }
         catch (JDOMException e) {
             throw new DatabaseReadException(e.getMessage(), e);
@@ -147,21 +143,19 @@ public class XmlDatabase extends Database {
     }
 
     @Override
-    public void update(DataAccess data, String[] fieldNames, Object[] fieldValues) throws DatabaseWriteException {
+    public void update(DataAccess data, Map<String, Object> filters) throws DatabaseWriteException {
         File file = new File("db/" + data.getName() + ".xml");
 
         if (!file.exists()) {
             throw new DatabaseWriteException("Table " + data.getName() + " does not exist!");
         }
-        if (fieldNames.length != fieldValues.length) {
-            throw new DatabaseWriteException("Field and Value field lenghts are inconsistent!");
-        }
+
         try {
             FileInputStream in = new FileInputStream(file);
             Document table = fileBuilder.build(in);
             in.close();
 
-            updateData(file, table, data, fieldNames, fieldValues);
+            updateData(file, table, data, filters);
         }
         catch (JDOMException e) {
             throw new DatabaseWriteException(e.getMessage(), e);
@@ -175,21 +169,42 @@ public class XmlDatabase extends Database {
     }
 
     @Override
-    public void remove(String tableName, String[] fieldNames, Object[] fieldValues) throws DatabaseWriteException {
-        File file = new File("db/" + tableName + ".xml");
+    public void remove(DataAccess data, Map<String, Object> filters) throws DatabaseWriteException {
+        File file = new File("db/" + data.getName() + ".xml");
 
         if (!file.exists()) {
-            throw new DatabaseWriteException("Table " + tableName + " does not exist!");
+            throw new DatabaseWriteException("Table " + data.getName() + " does not exist!");
         }
-        if (fieldNames.length != fieldValues.length) {
-            throw new DatabaseWriteException("Field and Value field lenghts are inconsistent!");
-        }
+
         try {
             FileInputStream in = new FileInputStream(file);
             Document table = fileBuilder.build(in);
             in.close();
 
-            removeData(file, table, fieldNames, fieldValues);
+            removeData(file, table, filters, false);
+        }
+        catch (JDOMException e) {
+            throw new DatabaseWriteException(e.getMessage(), e);
+        }
+        catch (IOException e) {
+            throw new DatabaseWriteException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void removeAll(DataAccess data, Map<String, Object> filters) throws DatabaseWriteException {
+        File file = new File("db/" + data.getName() + ".xml");
+
+        if (!file.exists()) {
+            throw new DatabaseWriteException("Table " + data.getName() + " does not exist!");
+        }
+
+        try {
+            FileInputStream in = new FileInputStream(file);
+            Document table = fileBuilder.build(in);
+            in.close();
+
+            removeData(file, table, filters, true);
         }
         catch (JDOMException e) {
             throw new DatabaseWriteException(e.getMessage(), e);
@@ -343,25 +358,24 @@ public class XmlDatabase extends Database {
      *
      * @param file
      * @param table
-     * @param fields
-     * @param values
-     *
+     * @param filters
      * @throws IOException
      * @throws DatabaseTableInconsistencyException
      *
      * @throws DatabaseWriteException
      */
-    private void updateData(File file, Document table, DataAccess data, String[] fields, Object[] values) throws IOException, DatabaseTableInconsistencyException, DatabaseWriteException {
+    private void updateData(File file, Document table, DataAccess data, Map<String, Object> filters) throws IOException, DatabaseTableInconsistencyException, DatabaseWriteException {
         boolean hasUpdated = false;
+        String[] fields = new String[filters.size()];
+        filters.keySet().toArray(fields); // We know those are strings
         for (Element element : table.getRootElement().getChildren()) {
-
             int equalFields = 0;
 
-            for (int i = 0; i < fields.length; ++i) {
-                Element child = element.getChild(fields[i]);
+            for (String field : fields) {
+                Element child = element.getChild(field);
 
                 if (child != null) {
-                    if (child.getText().equals(String.valueOf(values[i]))) {
+                    if (child.getText().equals(String.valueOf(filters.get(field)))) {
                         equalFields++;
                     }
                 }
@@ -399,16 +413,18 @@ public class XmlDatabase extends Database {
         }
     }
 
-    private void removeData(File file, Document table, String[] fields, Object[] values) throws IOException {
+    private void removeData(File file, Document table, Map<String, Object> filters, boolean removeAll) throws IOException {
         ArrayList<Element> toremove = new ArrayList<Element>();
+        String[] fields = new String[filters.size()];
+        filters.keySet().toArray(fields); // We know those are strings
         for (Element element : table.getRootElement().getChildren()) {
             int equalFields = 0;
 
-            for (int i = 0; i < fields.length; ++i) {
-                Element child = element.getChild(fields[i]);
+            for (String field : fields) {
+                Element child = element.getChild(field);
 
                 if (child != null) {
-                    if (child.getText().equals(String.valueOf(values[i]))) {
+                    if (child.getText().equals(String.valueOf(filters.get(field)))) {
                         equalFields++;
                     }
                 }
@@ -418,6 +434,10 @@ public class XmlDatabase extends Database {
             }
             // table.getRootElement().removeContent(element);
             toremove.add(element);
+            if(!removeAll) {
+                // Just remove one row
+                break;
+            }
         }
         for (Element e : toremove) {
             e.detach();
@@ -425,15 +445,17 @@ public class XmlDatabase extends Database {
         write(file.getPath(), table);
     }
 
-    private void loadData(DataAccess data, Document table, String[] fields, Object[] values) throws DatabaseAccessException {
+    private void loadData(DataAccess data, Document table, Map<String, Object> filters) throws DatabaseAccessException {
+        String[] fields = new String[filters.size()];
+        filters.keySet().toArray(fields); // We know those are strings
         for (Element element : table.getRootElement().getChildren()) {
             int equalFields = 0;
 
-            for (int i = 0; i < fields.length; ++i) {
-                Element child = element.getChild(fields[i]);
+            for (String field : fields) {
+                Element child = element.getChild(field);
 
                 if (child != null) {
-                    if (child.getText().equals(String.valueOf(values[i]))) {
+                    if (child.getText().equals(String.valueOf(filters.get(field)))) {
                         equalFields++;
                     }
                 }
@@ -451,15 +473,17 @@ public class XmlDatabase extends Database {
         }
     }
 
-    private void loadAllData(DataAccess template, List<DataAccess> datasets, Document table, String[] fields, Object[] values) throws DatabaseAccessException {
+    private void loadAllData(DataAccess template, List<DataAccess> datasets, Document table, Map<String, Object> filters) throws DatabaseAccessException {
+        String[] fields = new String[filters.size()];
+        filters.keySet().toArray(fields); // We know those are strings
         for (Element element : table.getRootElement().getChildren()) {
             int equalFields = 0;
 
-            for (int i = 0; i < fields.length; ++i) {
-                Element child = element.getChild(fields[i]);
+            for (String field : fields) {
+                Element child = element.getChild(field);
 
                 if (child != null) {
-                    if (child.getText().equals(String.valueOf(values[i]))) {
+                    if (child.getText().equals(String.valueOf(filters.get(field)))) {
                         equalFields++;
                     }
                 }

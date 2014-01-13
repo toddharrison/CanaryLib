@@ -1,8 +1,5 @@
 package net.canarymod.permissionsystem;
 
-import java.util.*;
-import java.util.Map.Entry;
-
 import net.canarymod.Canary;
 import net.canarymod.Translator;
 import net.canarymod.backbone.PermissionDataAccess;
@@ -11,6 +8,13 @@ import net.canarymod.chat.MessageReceiver;
 import net.canarymod.database.DataAccess;
 import net.canarymod.database.Database;
 import net.canarymod.database.exceptions.DatabaseReadException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * A PermissionProvider implementation based on PermissionNode objects,
@@ -326,7 +330,10 @@ public class MultiworldPermissionProvider implements PermissionProvider {
         PermissionDataAccess data = new PermissionDataAccess(world);
         ArrayList<DataAccess> list = new ArrayList<DataAccess>();
         try {
-            Database.get().loadAll(data, list, new String[]{ "owner", "type" }, new Object[]{ this.owner, isPlayerProvider ? "player" : "group" });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("owner", this.owner);
+            filter.put("type", isPlayerProvider ? "player" : "group");
+            Database.get().loadAll(data, list, filter);
         }
         catch (DatabaseReadException e) {
             caller.notice(Translator.translate("no permissions"));

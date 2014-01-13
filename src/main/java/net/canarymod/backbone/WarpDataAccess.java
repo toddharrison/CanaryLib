@@ -1,11 +1,10 @@
 package net.canarymod.backbone;
 
-import java.util.List;
-
 import net.canarymod.database.Column;
-import net.canarymod.database.Column.ColumnType;
 import net.canarymod.database.Column.DataType;
 import net.canarymod.database.DataAccess;
+
+import java.util.List;
 
 /**
  * Warp Data Access
@@ -17,10 +16,6 @@ public class WarpDataAccess extends DataAccess {
     public WarpDataAccess() {
         super("warp");
     }
-
-    /** ID for this warp, serves as Primary Key, Auto Incremented. */
-    @Column(columnName = "id", dataType = DataType.INTEGER, autoIncrement = true, columnType = ColumnType.PRIMARY)
-    public int id;
 
     /** Name of this warp. */
     @Column(columnName = "name", dataType = DataType.STRING)

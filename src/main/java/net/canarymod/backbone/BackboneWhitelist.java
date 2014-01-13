@@ -1,13 +1,14 @@
 package net.canarymod.backbone;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.canarymod.Canary;
 import net.canarymod.database.DataAccess;
 import net.canarymod.database.Database;
 import net.canarymod.database.exceptions.DatabaseReadException;
 import net.canarymod.database.exceptions.DatabaseWriteException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Backbone to the whitelist system. This contains NO logic, it is only the data
@@ -17,6 +18,7 @@ import net.canarymod.database.exceptions.DatabaseWriteException;
  */
 public class BackboneWhitelist extends Backbone {
 
+    private static WhitelistDataAccess schema = new WhitelistDataAccess();
     public BackboneWhitelist() {
         super(Backbone.System.WHITELIST);
         try {
@@ -39,7 +41,9 @@ public class BackboneWhitelist extends Backbone {
         WhitelistDataAccess data = new WhitelistDataAccess();
 
         try {
-            Database.get().load(data, new String[]{ "player" }, new Object[]{ player });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("player", player);
+            Database.get().load(data,filter);
         }
         catch (DatabaseReadException e) {
             Canary.logStacktrace(e.getMessage(), e);
@@ -76,7 +80,9 @@ public class BackboneWhitelist extends Backbone {
      */
     public void removeWhitelistEntry(String subject) {
         try {
-            Database.get().remove("whitelist", new String[]{ "player" }, new Object[]{ subject });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("player", subject);
+            Database.get().remove(schema, filter);
         }
         catch (DatabaseWriteException e) {
             Canary.logStacktrace(e.getMessage(), e);
@@ -93,7 +99,7 @@ public class BackboneWhitelist extends Backbone {
         List<DataAccess> dataList = new ArrayList<DataAccess>();
 
         try {
-            Database.get().loadAll(new WhitelistDataAccess(), dataList, new String[]{ }, new Object[]{ });
+            Database.get().loadAll(schema, dataList, new HashMap<String, Object>());
             for (DataAccess da : dataList) {
                 WhitelistDataAccess data = (WhitelistDataAccess) da;
                 whiteList.add(data.player);

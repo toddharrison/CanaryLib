@@ -1,7 +1,6 @@
 package net.canarymod.backbone;
 
 import net.canarymod.database.Column;
-import net.canarymod.database.Column.ColumnType;
 import net.canarymod.database.Column.DataType;
 import net.canarymod.database.DataAccess;
 
@@ -15,10 +14,6 @@ public class BanDataAccess extends DataAccess {
     public BanDataAccess() {
         super("ban");
     }
-
-    /** ID for this ban, serves as Primary Key, Auto Incremented. */
-    @Column(columnName = "id", dataType = DataType.INTEGER, autoIncrement = true, columnType = ColumnType.PRIMARY)
-    public int id;
 
     /** Player name for this ban. */
     @Column(columnName = "player", dataType = DataType.STRING)

@@ -1,13 +1,14 @@
 package net.canarymod.backbone;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.canarymod.Canary;
 import net.canarymod.database.DataAccess;
 import net.canarymod.database.Database;
 import net.canarymod.database.exceptions.DatabaseReadException;
 import net.canarymod.database.exceptions.DatabaseWriteException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Backbone to the ops system. This contains NO logic, it is only the data
@@ -18,10 +19,11 @@ import net.canarymod.database.exceptions.DatabaseWriteException;
  */
 public class BackboneOperators extends Backbone {
 
+    public static OperatorsDataAccess schema = new OperatorsDataAccess();
     public BackboneOperators() {
         super(Backbone.System.OPERATORS);
         try {
-            Database.get().updateSchema(new OperatorsDataAccess());
+            Database.get().updateSchema(schema);
         }
         catch (DatabaseWriteException e) {
             Canary.logStacktrace("Failed to update database schema", e);
@@ -32,7 +34,10 @@ public class BackboneOperators extends Backbone {
         OperatorsDataAccess data = new OperatorsDataAccess();
 
         try {
-            Database.get().load(data, new String[]{ "player" }, new Object[]{ player });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("player", player);
+
+            Database.get().load(data, filter);
         }
         catch (DatabaseReadException e) {
             Canary.logStacktrace(e.getMessage(), e);
@@ -69,7 +74,9 @@ public class BackboneOperators extends Backbone {
      */
     public void removeOpEntry(String subject) {
         try {
-            Database.get().remove("operators", new String[]{ "player" }, new Object[]{ subject });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("player", subject);
+            Database.get().remove(schema, filter);
         }
         catch (DatabaseWriteException e) {
             Canary.logStacktrace(e.getMessage(), e);
@@ -86,7 +93,7 @@ public class BackboneOperators extends Backbone {
         List<DataAccess> dataList = new ArrayList<DataAccess>();
 
         try {
-            Database.get().loadAll(new OperatorsDataAccess(), dataList, new String[]{ }, new Object[]{ });
+            Database.get().loadAll(schema, dataList, new HashMap<String, Object>());
             for (DataAccess da : dataList) {
                 OperatorsDataAccess data = (OperatorsDataAccess) da;
                 ops.add(data.player);

@@ -10,6 +10,7 @@ import net.canarymod.database.exceptions.DatabaseWriteException;
 import net.canarymod.user.Group;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -20,33 +21,15 @@ import java.util.List;
  */
 public class BackboneGroups extends Backbone {
 
+    private static GroupDataAccess schema = new GroupDataAccess();
     public BackboneGroups() {
         super(Backbone.System.GROUPS);
         try {
-            Database.get().updateSchema(new GroupDataAccess());
+            Database.get().updateSchema(schema);
         }
         catch (DatabaseWriteException e) {
             Canary.logStacktrace("Failed to update database schema", e);
         }
-    }
-
-    /**
-     * Converts Strings with literal 'null' to null value. If the string is not
-     * null or the literal string 'null' then it returns the string.
-     *
-     * @param test
-     *         String to test.
-     *
-     * @return The string or null if test equals null or literal string 'null'
-     */
-    public String stringToNull(String test) {
-        if (test == null) {
-            return null;
-        }
-        if (test.equalsIgnoreCase("null")) {
-            return null;
-        }
-        return test;
     }
 
     /**
@@ -81,7 +64,9 @@ public class BackboneGroups extends Backbone {
         GroupDataAccess data = new GroupDataAccess();
 
         try {
-            Database.get().load(data, new String[]{ "name" }, new Object[]{ group.getName() });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("name", group.getName());
+            Database.get().load(data, filter);
         }
         catch (DatabaseReadException e) {
             Canary.logStacktrace(e.getMessage(), e);
@@ -98,8 +83,11 @@ public class BackboneGroups extends Backbone {
      */
     public void removeGroup(Group group) {
         try {
-            Database.get().remove("group", new String[]{ "name" }, new Object[]{ group.getName() });
-            Database.get().remove("permission", new String[]{ "owner", "type" }, new Object[]{ group.getName(), "group" });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("name", group.getName());
+            Database.get().remove(schema, filter);
+            // Additionally remove all permissions belonging to a group!
+            Canary.permissionManager().removeAllGroupPermissions(group);
         }
         catch (DatabaseWriteException e) {
             Canary.logStacktrace(e.getMessage(), e);
@@ -109,14 +97,19 @@ public class BackboneGroups extends Backbone {
 
     public void renameGroup(Group subject, String newname) {
         GroupDataAccess group = new GroupDataAccess();
+        group.id = subject.getId();
+        group.isDefault = subject.isDefaultGroup();
+        group.name = newname;
+        group.parent = subject.getParent() != null ? subject.getParent().getName() : null;
+        group.prefix = subject.getPrefix();
+        group.worldName = subject.getWorldName();
         try {
-            Database.get().load(group, new String[]{ "name" }, new Object[]{ subject.getName() });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("id", group.id);
+            filter.put("world", group.worldName);
             group.name = newname;
-            Database.get().update(group, new String[]{ "id" }, new Object[]{ group.id });
+            Database.get().update(group, filter);
             subject.setName(newname);
-        }
-        catch (DatabaseReadException e) {
-            Canary.logStacktrace(e.getMessage(), e);
         }
         catch (DatabaseWriteException e) {
             Canary.logStacktrace(e.getMessage(), e);
@@ -125,7 +118,7 @@ public class BackboneGroups extends Backbone {
 
     /**
      * Update a Group and all its child groups.
-     *
+     * This will not perform rename operations properly. For renaming groups, use renameGroup()
      * @param group
      *         The group instance to update to the database.
      */
@@ -136,6 +129,7 @@ public class BackboneGroups extends Backbone {
         }
         GroupDataAccess updatedData = new GroupDataAccess();
 
+        updatedData.id = group.getId();
         updatedData.isDefault = group.isDefaultGroup();
         updatedData.prefix = group.getPrefix();
         updatedData.name = group.getName();
@@ -144,7 +138,10 @@ public class BackboneGroups extends Backbone {
             updatedData.parent = group.getParent().getName();
         }
         try {
-            Database.get().update(updatedData, new String[]{ "name" }, new Object[]{ group.getName() });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("id", updatedData.id);
+            filter.put("name", updatedData.name);
+            Database.get().update(updatedData, filter);
             for (Group g : group.getChildren()) {
                 updateGroup(g);
             }
@@ -167,7 +164,9 @@ public class BackboneGroups extends Backbone {
         GroupDataAccess data = new GroupDataAccess();
 
         try {
-            Database.get().load(data, new String[]{ "name" }, new Object[]{ parent });
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("name", parent);
+            Database.get().load(data, filter);
             if (data.hasData()) {
                 Group g = new Group();
                 g.setDefaultGroup(data.isDefault);
@@ -220,10 +219,9 @@ public class BackboneGroups extends Backbone {
         List<Group> groups = new ArrayList<Group>();
 
         try {
-            Database.get().loadAll(new GroupDataAccess(), dataList, new String[]{ }, new Object[]{ });
+            Database.get().loadAll(schema, dataList, new HashMap<String, Object>());
             for (DataAccess da : dataList) {
                 GroupDataAccess data = (GroupDataAccess) da;
-
                 if (alreadyInList(data.name, groups)) {
                     continue;
                 }

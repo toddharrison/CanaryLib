@@ -357,7 +357,7 @@ public abstract class Canary implements TaskOwner {
      *         the {@link Throwable} thrown
      */
     public static void logStacktrace(String message, Throwable thrown) {
-        logger.trace(message, thrown);
+        logger.info(CanaryLevel.SERVERMESSAGE, message, thrown);
     }
 
     /**

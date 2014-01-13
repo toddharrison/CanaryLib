@@ -104,94 +104,93 @@ public class SQLiteDatabase extends Database {
             Canary.logStacktrace(dtie.getMessage(), dtie);
         }
         finally {
-            closePS(ps);
+            close(null, ps, null);
         }
 
     }
 
     @Override
-    public void update(DataAccess data, String[] fieldNames, Object[] fieldValues) throws DatabaseWriteException {
+    public void update(DataAccess data, Map<String, Object> filters) throws DatabaseWriteException {
         if (!doesEntryExist(data)) {
             return;
         }
-        PreparedStatement ps = null;
+        Connection conn = JdbcConnectionManager.getConnection();
+        ResultSet rs = null;
+
         try {
-            String updateClause = "UPDATE " + data.getName() + " SET %s WHERE %s";
-            StringBuilder set = new StringBuilder();
-            StringBuilder where = new StringBuilder();
-            HashMap<Column, Object> columns = data.toDatabaseEntryList();
-            Iterator<Column> it = columns.keySet().iterator();
-            Column column;
-
-            while (it.hasNext()) {
-                column = it.next();
-                if (where.length() > 0) {
-                    where.append(", ").append(column.columnName());
+            rs = this.getResultSet(conn, data, filters, true);
+            if (rs != null) {
+                if (rs.next()) {
+                    HashMap<Column, Object> columns = data.toDatabaseEntryList();
+                    Iterator<Column> it = columns.keySet().iterator();
+                    Column column;
+                    while (it.hasNext()) {
+                        column = it.next();
+                        if (column.isList()) {
+                            rs.updateObject(column.columnName(), this.getString((List<?>) columns.get(column)));
+                        }
+                        else {
+                            rs.updateObject(column.columnName(), columns.get(column));
+                        }
+                    }
+                    rs.updateRow();
                 }
                 else {
-                    where.append(column.columnName());
+                    throw new DatabaseWriteException("Error updating DataAccess to SQLite, no such entry: " + data.toString());
                 }
-                set.append("=");
-                set.append(convert(columns.get(column)));
             }
-
-            for (int index = 0; index < fieldNames.length && index < fieldValues.length; index++) {
-                if (where.length() > 0) {
-                    where.append(" AND ").append(fieldNames[index]);
-                }
-                else {
-                    where.append(fieldNames[index]);
-                }
-                where.append("=");
-                where.append(fieldValues[index]);
-            }
-
-            ps = JdbcConnectionManager.getConnection().prepareStatement(String.format(updateClause, set.toString(), where.toString()));
-            ps.execute();
         }
         catch (SQLException ex) {
-            Canary.logStacktrace(ex.getMessage(), ex);
+            Canary.logWarning(ex.getMessage(), ex);
         }
-        catch (DatabaseTableInconsistencyException dbtiex) {
-            Canary.logStacktrace(dbtiex.getMessage(), dbtiex);
+        catch (DatabaseTableInconsistencyException dtie) {
+            Canary.logWarning(dtie.getMessage(), dtie);
+        }
+        catch (DatabaseReadException e) {
+            Canary.logWarning(e.getMessage(), e);
         }
         finally {
-            closePS(ps);
+            PreparedStatement st = null;
+            try {
+                st = rs != null && rs.getStatement() instanceof PreparedStatement ? (PreparedStatement) rs.getStatement() : null;
+            }
+            catch (SQLException e) {
+                Canary.logWarning(e.getMessage(), e);
+            }
+            close(conn, st, rs);
         }
     }
 
     @Override
-    public void remove(String tableName, String[] fieldNames, Object[] fieldValues) throws DatabaseWriteException {
-        PreparedStatement ps = null;
+    public void remove(DataAccess dataAccess, Map<String, Object> filters) throws DatabaseWriteException {
+        Connection conn = JdbcConnectionManager.getConnection();
+
         try {
-            StringBuilder buildState = new StringBuilder("DELETE FROM " + tableName + " WHERE ");
-            for (int index = 0; index < fieldNames.length && index < fieldValues.length; index++) {
-                if (buildState.length() > ("DELETE FROM " + tableName + " WHERE ").length()) {
-                    buildState.append(" AND ").append(fieldNames[index]);
-                }
-                else {
-                    buildState.append(fieldNames[index]);
-                }
-                buildState.append("=");
-                buildState.append(fieldValues[index]);
-            }
-            ps = JdbcConnectionManager.getConnection().prepareStatement(buildState.toString());
-            ps.execute();
+            this.deleteRows(conn, dataAccess, filters, false);
         }
-        catch (SQLException ex) {
-            Canary.logStacktrace(ex.getMessage(), ex);
-        }
-        finally {
-            closePS(ps);
+        catch (DatabaseReadException dre) {
+            Canary.logStacktrace(dre.getMessage(), dre);
         }
     }
 
     @Override
-    public void load(DataAccess dataset, String[] fieldNames, Object[] fieldValues) throws DatabaseReadException {
+    public void removeAll(DataAccess dataAccess, Map<String, Object> filters) throws DatabaseWriteException {
+        Connection conn = JdbcConnectionManager.getConnection();
+
+        try {
+            this.deleteRows(conn, dataAccess, filters, true);
+        }
+        catch (DatabaseReadException dre) {
+            Canary.logStacktrace(dre.getMessage(), dre);
+        }
+    }
+
+    @Override
+    public void load(DataAccess dataset, Map<String, Object> filters) throws DatabaseReadException {
         ResultSet rs = null;
         HashMap<String, Object> dataSet = new HashMap<String, Object>();
         try {
-            rs = this.getResultSet(JdbcConnectionManager.getConnection(), dataset, fieldNames, fieldValues, true);
+            rs = this.getResultSet(JdbcConnectionManager.getConnection(), dataset, filters, true);
             if (rs != null) {
                 if (rs.next()) {
                     for (Column column : dataset.getTableLayout()) {
@@ -221,8 +220,7 @@ public class SQLiteDatabase extends Database {
             try {
                 if (rs != null) {
                     PreparedStatement st = rs.getStatement() instanceof PreparedStatement ? (PreparedStatement) rs.getStatement() : null;
-                    closeRS(rs);
-                    closePS(st);
+                    close(null, st, rs);
                 }
             }
             catch (SQLException ex) {
@@ -240,11 +238,11 @@ public class SQLiteDatabase extends Database {
     }
 
     @Override
-    public void loadAll(DataAccess typeTemplate, List<DataAccess> datasets, String[] fieldNames, Object[] fieldValues) throws DatabaseReadException {
+    public void loadAll(DataAccess typeTemplate, List<DataAccess> datasets, Map<String, Object> filters) throws DatabaseReadException {
         ResultSet rs = null;
         List<HashMap<String, Object>> stuff = new ArrayList<HashMap<String, Object>>();
         try {
-            rs = this.getResultSet(JdbcConnectionManager.getConnection(), typeTemplate, fieldNames, fieldValues, false);
+            rs = this.getResultSet(JdbcConnectionManager.getConnection(), typeTemplate, filters, false);
             if (rs != null) {
                 while (rs.next()) {
                     HashMap<String, Object> dataSet = new HashMap<String, Object>();
@@ -277,8 +275,7 @@ public class SQLiteDatabase extends Database {
             try {
                 if (rs != null) {
                     PreparedStatement st = rs.getStatement() instanceof PreparedStatement ? (PreparedStatement) rs.getStatement() : null;
-                    closeRS(rs);
-                    closePS(st);
+                    close(null, st, rs);
                 }
             }
             catch (SQLException ex) {
@@ -300,7 +297,6 @@ public class SQLiteDatabase extends Database {
 
     @Override
     public void updateSchema(DataAccess schemaTemplate) throws DatabaseWriteException {
-        PreparedStatement ps = null;
         ResultSet rs = null;
 
         try {
@@ -347,8 +343,7 @@ public class SQLiteDatabase extends Database {
             Canary.logStacktrace("Error updating SQLite schema." + dtie.getMessage(), dtie);
         }
         finally {
-            closeRS(rs);
-            closePS(ps);
+            close(null, null, rs);
         }
     }
 
@@ -397,7 +392,7 @@ public class SQLiteDatabase extends Database {
             Canary.logStacktrace(ex.getMessage() + " Error creating SQLite table '" + data.getName() + "'. ", ex);
         }
         finally {
-            closePS(ps);
+            close(null, ps, null);
         }
     }
 
@@ -414,7 +409,7 @@ public class SQLiteDatabase extends Database {
             throw new DatabaseWriteException("Error adding SQLite collumn: " + column.columnName());
         }
         finally {
-            closePS(ps);
+            close(null, ps, null);
         }
 
     }
@@ -432,7 +427,7 @@ public class SQLiteDatabase extends Database {
             throw new DatabaseWriteException("Error deleting SQLite collumn: " + columnName);
         }
         finally {
-            closePS(ps);
+            close(null, ps, null);
         }
     }
 
@@ -484,61 +479,49 @@ public class SQLiteDatabase extends Database {
             Logger.getLogger(SQLiteDatabase.class.getName()).log(Level.SEVERE, null, ex);
         }
         finally {
-            closePS(ps);
-            closeRS(rs);
+            close(null, ps, rs);
         }
         return toRet;
     }
 
-    /**
-     * Safely Close a ResultSet.
-     *
-     * @param rs
-     *         ResultSet to close.
-     */
-    public void closeRS(ResultSet rs) {
-        if (rs != null) {
-            try {
-                // org.sqlite.RS doesn't have a isClosed()
-                rs.close();
-            }
-            catch (SQLException sqle) {
-                Canary.logStacktrace("Error closing ResultSet in SQLite database.", sqle);
-            }
-        }
-    }
 
     /**
-     * Safely Close a PreparedStatement.
+     * Close a set of working data.
+     * This will return all the data to the connection pool.
+     * You can pass null for objects that are not relevant in your given context
      *
-     * @param ps
-     *         PreparedStatement to close.
+     * @param c  the connection object
+     * @param ps the prepared statement
+     * @param rs the result set
      */
-    public void closePS(PreparedStatement ps) {
-        if (ps != null) {
-            try {
-                // org.sqlite.PrepStmt doesn't have isClosed()
+    private void close(Connection c, PreparedStatement ps, ResultSet rs) {
+        try {
+            if (ps != null) {
                 ps.close();
             }
-            catch (SQLException sqle) {
-                Canary.logStacktrace("Error closing PreparedStatement in SQLite database.", sqle);
+            if (rs != null) {
+                rs.close();
+            }
+            if (c != null) {
+                c.close();
             }
         }
+        catch (SQLException e) {
+            Canary.logWarning(e.getMessage(), e);
+        }
+
     }
 
-    public ResultSet getResultSet(Connection conn, DataAccess data, String[] fieldNames, Object[] fieldValues, boolean limitOne) throws DatabaseReadException {
-        return this.getResultSet(conn, data.getName(), fieldNames, fieldValues, limitOne);
-    }
-
-    public ResultSet getResultSet(Connection conn, String tableName, String[] fieldNames, Object[] fieldValues, boolean limitOne) throws DatabaseReadException {
+    public ResultSet getResultSet(Connection conn, DataAccess data, Map<String, Object> filters, boolean limitOne) throws DatabaseReadException {
         PreparedStatement ps;
-        ResultSet toRet = null;
+        ResultSet toRet;
 
         try {
-            if (fieldNames.length > 0) {
-                StringBuilder sb = new StringBuilder();
 
-                for (int i = 0; i < fieldNames.length && i < fieldValues.length; i++) {
+            if (filters.size() > 0) {
+                StringBuilder sb = new StringBuilder();
+                Object[] fieldNames = filters.keySet().toArray();
+                for (int i = 0; i < fieldNames.length && i < fieldNames.length; i++) {
                     sb.append("`").append(fieldNames[i]);
                     if (i + 1 < fieldNames.length) {
                         sb.append("`=? AND ");
@@ -550,44 +533,131 @@ public class SQLiteDatabase extends Database {
                 if (limitOne) {
                     sb.append(" LIMIT 1");
                 }
-                ps = conn.prepareStatement("SELECT * FROM `" + tableName + "` WHERE " + sb.toString());
-                for (int i = 0; i < fieldNames.length && i < fieldValues.length; i++) {
-                    ps.setObject(i + 1, convert(fieldValues[i]));
+                ps = conn.prepareStatement("SELECT * FROM `" + data.getName() + "` WHERE " + sb.toString());
+                for (int i = 0; i < fieldNames.length && i < fieldNames.length; i++) {
+                    String fieldName = String.valueOf(fieldNames[i]);
+                    Column col = data.getColumnForName(fieldName);
+                    if (col == null) {
+                        throw new DatabaseReadException("Error fetching MySQL ResultSet in " + data.getName() + ". Column " + fieldNames[i] + " does not exist!");
+                    }
+                    setToStatement(i + 1, filters.get(fieldName), ps, col.dataType());
                 }
-                toRet = ps.executeQuery();
+
             }
             else {
                 if (limitOne) {
-                    ps = conn.prepareStatement("SELECT * FROM `" + tableName + "` LIMIT 1");
+                    ps = conn.prepareStatement("SELECT * FROM `" + data.getName() + "` LIMIT 1");
                 }
                 else {
-                    ps = conn.prepareStatement("SELECT * FROM `" + tableName + "`");
+                    ps = conn.prepareStatement("SELECT * FROM `" + data.getName() + "`");
                 }
-
-                toRet = ps.executeQuery();
             }
+            toRet = ps.executeQuery();
         }
         catch (SQLException ex) {
-            throw new DatabaseReadException("Error Querying SQLite ResultSet in "
-                    + tableName);
+            throw new DatabaseReadException("Error fetching MySQL ResultSet in " + data.getName(), ex);
         }
         catch (Exception ex) {
-            Logger.getLogger(SQLiteDatabase.class.getName()).log(Level.SEVERE, null, ex);
+            throw new DatabaseReadException("Error fetching MySQL ResultSet in " + data.getName(), ex);
         }
+
         return toRet;
     }
 
+    public void deleteRows(Connection conn, DataAccess data, Map<String, Object> filters, boolean limitOne) throws DatabaseReadException {
+        PreparedStatement ps;
+        try {
+            if (filters.size() > 0) {
+                StringBuilder sb = new StringBuilder();
+                Object[] fieldNames = filters.keySet().toArray();
+                for (int i = 0; i < fieldNames.length && i < fieldNames.length; i++) {
+                    sb.append("`").append(fieldNames[i]);
+                    if (i + 1 < fieldNames.length) {
+                        sb.append("`=? AND ");
+                    }
+                    else {
+                        sb.append("`=?");
+                    }
+                }
+                if (limitOne) {
+                    sb.append(" LIMIT 1");
+                }
+                ps = conn.prepareStatement("DELETE FROM `" + data.getName() + "` WHERE " + sb.toString());
+                for (int i = 0; i < fieldNames.length && i < fieldNames.length; i++) {
+                    String fieldName = String.valueOf(fieldNames[i]);
+                    Column col = data.getColumnForName(fieldName);
+                    if (col == null) {
+                        throw new DatabaseReadException("Error deleting from SQLite table " + data.getName() + ". Column " + fieldNames[i] + " does not exist!");
+                    }
+                    setToStatement(i + 1, filters.get(fieldName), ps, col.dataType());
+                }
+
+            }
+            else {
+                if (limitOne) {
+                    ps = conn.prepareStatement("DELETE FROM `" + data.getName() + "` LIMIT 1");
+                }
+                else {
+                    // TODO: This will not work because sqlite sucks.
+                    // What needs to be done is each row must be deleted, then sqlite knows a "VACUUM" command which clears the table.
+                    ps = conn.prepareStatement("TRUNCATE `" + data.getName() + "`");
+                }
+            }
+            ps.execute();
+        }
+        catch (SQLException ex) {
+            throw new DatabaseReadException("Error deleting from SQLite table " + data.getName(), ex);
+        }
+        catch (Exception ex) {
+            throw new DatabaseReadException("Error deleting from SQLite table " + data.getName(), ex);
+        }
+    }
+
+    /**
+     * Sets the given object as the given type to the given index
+     * of the given PreparedStatement.
+     *
+     * @param index the index to set to
+     * @param o     the object to set
+     * @param ps    the prepared statement
+     * @param t     the DataType hint
+     * @throws DatabaseWriteException when an SQLException was raised or when the data type doesn't match the objects type
+     */
+    private void setToStatement(int index, Object o, PreparedStatement ps, Column.DataType t) throws DatabaseWriteException {
+        try {
+            switch (t) {
+                case BYTE:
+                case INTEGER:
+                case FLOAT:
+                case DOUBLE:
+                case LONG:
+                case SHORT:
+                case BOOLEAN: //SQlite doesn't know boolean values, it converts it to tinyint
+                    ps.setInt(index, (Integer) o);
+                case STRING:
+                    ps.setString(index, (String) o);
+            }
+        }
+        catch (SQLException e) {
+            throw new DatabaseWriteException("Failed to set property to prepared statement!", e);
+        }
+        catch (ClassCastException e) {
+            throw new DatabaseWriteException("Failed to set property to prepared statement!", e);
+        }
+
+    }
+
     public List<String> getColumnNames(DataAccess data) {
-        Statement statement = null;
-        ResultSet resultSet = null;
+        Statement ps = null;
+        ResultSet rs = null;
 
         ArrayList<String> columns = new ArrayList<String>();
         String columnName;
 
         try {
-            statement = JdbcConnectionManager.getConnection().createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM '" + data.getName() + "'");
-            ResultSetMetaData rsMeta = resultSet.getMetaData();
+            ps = JdbcConnectionManager.getConnection().createStatement();
+            rs = ps.executeQuery("SELECT * FROM '" + data.getName() + "'");
+            ResultSetMetaData rsMeta = rs.getMetaData();
             for (int index = 1; index <= rsMeta.getColumnCount(); index++) {
                 columnName = rsMeta.getColumnLabel(index);
                 columns.add(columnName);
@@ -597,10 +667,10 @@ public class SQLiteDatabase extends Database {
             Canary.logStacktrace(ex.getMessage(), ex);
         }
         finally {
-            closeRS(resultSet);
-            if (statement != null) {
+            close(null, null, rs);
+            if (ps != null) {
                 try {
-                    statement.close();
+                    ps.close();
                 }
                 catch (SQLException ex) {
                     Logger.getLogger(SQLiteDatabase.class.getName()).log(Level.SEVERE, null, ex);

@@ -262,7 +262,7 @@ public class Group {
         return childGroups;
     }
 
-    /** @return the worldName */
+    /** @return the worldName fully qualified name for a world*/
     public String getWorldName() {
         return worldName;
     }

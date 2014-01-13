@@ -1,17 +1,17 @@
 package net.canarymod.database;
 
+import net.canarymod.Canary;
+import net.canarymod.ToolBox;
+import net.canarymod.database.exceptions.DatabaseAccessException;
+import net.canarymod.database.exceptions.DatabaseTableInconsistencyException;
+import net.canarymod.database.exceptions.DatabaseWriteException;
+
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
-import net.canarymod.Canary;
-import net.canarymod.ToolBox;
-import net.canarymod.database.exceptions.DatabaseAccessException;
-import net.canarymod.database.exceptions.DatabaseTableInconsistencyException;
-import net.canarymod.database.exceptions.DatabaseWriteException;
 
 /**
  * Handle the layout and creation of tables
@@ -20,10 +20,13 @@ import net.canarymod.database.exceptions.DatabaseWriteException;
  */
 public abstract class DataAccess {
 
-    protected String tableName;
+    private String tableName;
     private boolean isInconsistent = false;
     private boolean isLoaded = false;
     private boolean hasData = false;
+
+    @Column(columnName = "id", dataType = Column.DataType.INTEGER, autoIncrement = true, columnType = Column.ColumnType.PRIMARY)
+    public Integer id;
 
     /**
      * Construct a new DataAccess object that represents a table
@@ -86,7 +89,6 @@ public abstract class DataAccess {
     public final HashMap<Column, Object> toDatabaseEntryList() throws DatabaseTableInconsistencyException {
         List<Field> fields = Arrays.asList(ToolBox.safeArrayMerge(getClass().getFields(), getClass().getDeclaredFields(), new Field[1]));
         HashMap<Column, Object> fieldMap = new HashMap<Column, Object>();
-
         for (Field field : fields) {
             Column colInfo = field.getAnnotation(Column.class);
 
@@ -232,6 +234,27 @@ public abstract class DataAccess {
         catch (DatabaseTableInconsistencyException e) {
             Canary.logSevere("Could not finish column name lookup in database for " + tableName, e);
             return false;
+        }
+    }
+
+    /**
+     * Retrieves a Column with the given name from this DataAccess.
+     *
+     * @param name the column name
+     * @return a column or null if there is no column with the name given
+     */
+    public final Column getColumnForName(String name) {
+        try {
+            for (Column col : getTableLayout()) {
+                if (col.columnName().equals(name)) {
+                    return col;
+                }
+            }
+            return null;
+        }
+        catch (DatabaseTableInconsistencyException e) {
+            Canary.logSevere("Could not finish column name lookup in database for " + tableName, e);
+            return null;
         }
     }
 

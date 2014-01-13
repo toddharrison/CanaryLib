@@ -66,6 +66,12 @@ public class PermissionManager {
 
     }
 
+    public void removeAllGroupPermissions(Group group) {
+        backbone.removePermissions(group);
+        group.getPermissionProvider().reload();
+
+    }
+
     public int addPermission(String path, boolean value, String owner, String type, String world) {
         return backbone.addPermission(path, value, owner, type, world);
     }

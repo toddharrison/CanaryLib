@@ -11,6 +11,7 @@ import net.canarymod.database.xml.XmlDatabase;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A database representation, used to store any kind of data
@@ -86,29 +87,34 @@ public abstract class Database {
      * the correct entry in the database to update. The updated data must be provided in the DataAccess
      *
      * @param data
-     *         the data to be updated
-     * @param fieldNames
-     *         the string array of field names
-     * @param fieldValues
-     *         the object array of field values
+     *         the data to be updated. Additionally this acts as information about the table schema
+     * @param filters
+     *         FieldName->Value map to filter which rows should be updated
      *
      * @throws DatabaseWriteException
      */
-    public abstract void update(DataAccess data, String[] fieldNames, Object[] fieldValues) throws DatabaseWriteException;
+    public abstract void update(DataAccess data, Map<String,Object> filters) throws DatabaseWriteException;
 
     /**
-     * Removes the data set from the given table that suits the given field names and values
+     * Removes the data set from the given table that suits the given field names and values.
      *
-     * @param tableName
-     *         the name of the table
-     * @param fieldNames
-     *         the string array of field names
-     * @param fieldValues
-     *         the object array of field values
+     * @param da
+     *          the DataAccess object that specifies the data that should be removed
+     * @param filters
+     *          FieldName->Value map to filter which rows should be deleted
      *
      * @throws DatabaseWriteException
      */
-    public abstract void remove(String tableName, String[] fieldNames, Object[] fieldValues) throws DatabaseWriteException;
+    public abstract void remove(DataAccess da, Map<String,Object> filters) throws DatabaseWriteException;
+
+    /**
+     * Removes the data set from the given table that suits the given field names and values.
+     *
+     * @param da      the DataAccess object that specifies the data that should be removed
+     * @param filters FieldName->Value map to filter which rows should be deleted
+     * @throws DatabaseWriteException
+     */
+    public abstract void removeAll(DataAccess da, Map<String, Object> filters) throws DatabaseWriteException;
 
     /**
      * This method will fill your DataAccess object with the first data set from database,
@@ -120,30 +126,26 @@ public abstract class Database {
      *
      * @param dataset
      *         The class of your DataAccess object
-     * @param fieldNames
-     *         Fields names to look for in the database
-     * @param fieldValues
-     *         Respective values of the fields to look for
+     * @param filters
+     *         FieldName->Value map to filter which row should be loaded
      *
      * @throws DatabaseReadException
      */
-    public abstract void load(DataAccess dataset, String[] fieldNames, Object[] fieldValues) throws DatabaseReadException;
+    public abstract void load(DataAccess dataset, Map<String, Object> filters) throws DatabaseReadException;
 
     /**
      * Loads all results that match the field - values given into a DataAccess list.
      *
      * @param typeTemplate
-     *         The type template (an instance of the dataaccess type you wanna load)
+     *         The type template (an instance of the dataaccess type you want to load)
      * @param datasets
      *         DataAccess set - you can savely cast those to the type of typeTemplate
-     * @param fieldNames
-     *         Field names to look for
-     * @param fieldValues
-     *         Values for the respective fields
+     * @param filters
+     *         FieldName->Value map to filter which rows should be loaded
      *
      * @throws DatabaseReadException
      */
-    public abstract void loadAll(DataAccess typeTemplate, List<DataAccess> datasets, String[] fieldNames, Object[] fieldValues) throws DatabaseReadException;
+    public abstract void loadAll(DataAccess typeTemplate, List<DataAccess> datasets, Map<String, Object> filters) throws DatabaseReadException;
 
     /**
      * Updates the database table fields for the given DataAccess object.
