@@ -32,6 +32,7 @@ public abstract class Database {
                 throw new DatabaseException(name + " cannot be registered. Type already exists");
             }
             registeredDatabases.put(name, db);
+            Canary.logInfo(String.format("Registered %s Database", name));
         }
 
         public static Database getDatabaseFromType(String name) {
@@ -52,7 +53,7 @@ public abstract class Database {
                 }
             }
             catch (Exception e) {
-                Canary.logWarning("Exception occured while trying to prepare databases!");
+                Canary.logWarning("Exception occured while trying to prepare databases!", e);
             }
         }
     }

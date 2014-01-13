@@ -1,11 +1,11 @@
 package net.canarymod.config;
 
-import java.io.File;
-import java.util.HashMap;
-
 import net.canarymod.api.world.World;
 import net.canarymod.plugin.Plugin;
 import net.visualillusionsent.utils.PropertiesFile;
+
+import java.io.File;
+import java.util.HashMap;
 
 /**
  * A caching configuration provider.
@@ -17,14 +17,14 @@ import net.visualillusionsent.utils.PropertiesFile;
 public class Configuration {
 
     private static HashMap<Plugin, HashMap<String, PropertiesFile>> plugin_cfg_cache = new HashMap<Plugin, HashMap<String, PropertiesFile>>();
-    private static ServerConfiguration serverConfig;
-    private static DatabaseConfiguration dbConfig;
+    private static ServerConfiguration serverConfig = new ServerConfiguration("config" + File.separatorChar + "server.cfg");
+    private static DatabaseConfiguration dbConfig = new DatabaseConfiguration("config" + File.separatorChar + "db.cfg");
     private static HashMap<String, WorldConfiguration> worldConfigs = new HashMap<String, WorldConfiguration>();
 
-    public Configuration() {
-        serverConfig = new ServerConfiguration("config" + File.separatorChar + "server.cfg");
-        dbConfig = new DatabaseConfiguration("config" + File.separatorChar + "db.cfg");
-    }
+//    public Configuration() {
+//        serverConfig = new ServerConfiguration("config" + File.separatorChar + "server.cfg");
+//        dbConfig = new DatabaseConfiguration("config" + File.separatorChar + "db.cfg");
+//    }
 
     /** Reload all configuration from disk */
     public static void reload() {
