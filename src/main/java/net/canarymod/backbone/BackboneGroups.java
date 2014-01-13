@@ -124,7 +124,7 @@ public class BackboneGroups extends Backbone {
     }
 
     /**
-     * Update a Group.
+     * Update a Group and all its child groups.
      *
      * @param group
      *         The group instance to update to the database.
@@ -142,16 +142,17 @@ public class BackboneGroups extends Backbone {
         updatedData.worldName = group.getWorldName();
         if (group.hasParent()) {
             updatedData.parent = group.getParent().getName();
+        }
+        try {
+            Database.get().update(updatedData, new String[]{ "name" }, new Object[]{ group.getName() });
             for (Group g : group.getChildren()) {
                 updateGroup(g);
             }
         }
-        try {
-            Database.get().update(updatedData, new String[]{ "name" }, new Object[]{ group.getName() });
-        }
         catch (DatabaseWriteException e) {
             Canary.logStacktrace(e.getMessage(), e);
         }
+
     }
 
     private Group loadParents(String parent, List<Group> existingGroups) {
@@ -167,24 +168,23 @@ public class BackboneGroups extends Backbone {
 
         try {
             Database.get().load(data, new String[]{ "name" }, new Object[]{ parent });
+            if (data.hasData()) {
+                Group g = new Group();
+                g.setDefaultGroup(data.isDefault);
+                g.setId(data.id);
+                g.setName(data.name);
+                g.setWorldName(ToolBox.stringToNull(data.worldName));
+                g.setPrefix(data.prefix);
+                g.setParent(loadParents(data.parent, existingGroups));
+                existingGroups.add(g);
+                return g;
+            }
+            else {
+                Canary.logWarning(parent + " group was requested but could not be loaded! DataAccess was empty!");
+            }
         }
         catch (DatabaseReadException e) {
             Canary.logStacktrace(e.getMessage(), e);
-        }
-        if (data.hasData()) {
-            if(data.name.equals(parent)) {
-                return null;
-            }
-            Group g = new Group();
-
-            g.setDefaultGroup(data.isDefault);
-            g.setId(data.id);
-            g.setName(data.name);
-            g.setWorldName(ToolBox.stringToNull(data.worldName));
-            g.setParent(loadParents(data.parent, existingGroups));
-            g.setPrefix(data.prefix);
-            existingGroups.add(g);
-            return g;
         }
         return null;
     }
@@ -233,10 +233,10 @@ public class BackboneGroups extends Backbone {
                 g.setId(data.id);
                 g.setName(data.name);
                 g.setWorldName(ToolBox.stringToNull(data.worldName));
+                g.setPrefix(data.prefix);
                 if (!data.isDefault || !data.name.equals(data.parent)) {
                     g.setParent(loadParents(data.parent, groups));
                 }
-                g.setPrefix(data.prefix);
                 groups.add(g);
             }
         }

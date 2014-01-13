@@ -1,4 +1,4 @@
-package net.canarymod.commandsys.commands.group;
+package net.canarymod.commandsys.commands.groupmod;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
@@ -9,7 +9,7 @@ import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.Group;
 
 /**
- * Command to remove a group   
+ * Command to remove a group
  *
  * @author Chris (damagefilter)
  */

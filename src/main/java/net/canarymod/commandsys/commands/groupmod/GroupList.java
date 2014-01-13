@@ -1,4 +1,4 @@
-package net.canarymod.commandsys.commands.group;
+package net.canarymod.commandsys.commands.groupmod;
 
 import net.canarymod.Canary;
 import net.canarymod.chat.Colors;
@@ -7,7 +7,7 @@ import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.Group;
 
 /**
- * Command to list all the groups defined   
+ * Command to list all the groups defined
  *
  * @author Chris (damagefilter)
  */

@@ -1,4 +1,4 @@
-package net.canarymod.commandsys.commands.group;
+package net.canarymod.commandsys.commands.groupmod;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
@@ -9,7 +9,7 @@ import net.canarymod.user.Group;
 import net.visualillusionsent.utils.StringUtils;
 
 /**
- * Command to change the prefix of a group   
+ * Command to change the prefix of a group
  *
  * @author Chris (damagefilter)
  */
@@ -30,7 +30,7 @@ public class GroupPrefix implements NativeCommand {
             prefix = StringUtils.joinString(args, " ", 2).replaceAll("&([A-FK-Oa-fk-oRr0-9])", "\u00A7$1");
         }
         group.setPrefix(prefix);
-        Canary.usersAndGroups().updateGroup(group);
+        Canary.usersAndGroups().updateGroup(group, false);
         caller.message(Colors.YELLOW + Translator.translate("modify prefix set"));
     }
 }

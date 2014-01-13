@@ -1,9 +1,5 @@
 package net.canarymod.commandsys;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
 import net.canarymod.Canary;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.commands.BanCommand;
@@ -44,18 +40,19 @@ import net.canarymod.commandsys.commands.UnbanCommand;
 import net.canarymod.commandsys.commands.Uptime;
 import net.canarymod.commandsys.commands.WeatherCommand;
 import net.canarymod.commandsys.commands.WhitelistCommand;
-import net.canarymod.commandsys.commands.group.GroupBase;
-import net.canarymod.commandsys.commands.group.GroupCheck;
-import net.canarymod.commandsys.commands.group.GroupCreate;
-import net.canarymod.commandsys.commands.group.GroupList;
-import net.canarymod.commandsys.commands.group.GroupPermissionAdd;
-import net.canarymod.commandsys.commands.group.GroupPermissionCheck;
-import net.canarymod.commandsys.commands.group.GroupPermissionFlush;
-import net.canarymod.commandsys.commands.group.GroupPermissionList;
-import net.canarymod.commandsys.commands.group.GroupPermissionRemove;
-import net.canarymod.commandsys.commands.group.GroupPrefix;
-import net.canarymod.commandsys.commands.group.GroupRemove;
-import net.canarymod.commandsys.commands.group.GroupRename;
+import net.canarymod.commandsys.commands.groupmod.GroupBase;
+import net.canarymod.commandsys.commands.groupmod.GroupCheck;
+import net.canarymod.commandsys.commands.groupmod.GroupCreate;
+import net.canarymod.commandsys.commands.groupmod.GroupList;
+import net.canarymod.commandsys.commands.groupmod.GroupParent;
+import net.canarymod.commandsys.commands.groupmod.GroupPermissionAdd;
+import net.canarymod.commandsys.commands.groupmod.GroupPermissionCheck;
+import net.canarymod.commandsys.commands.groupmod.GroupPermissionFlush;
+import net.canarymod.commandsys.commands.groupmod.GroupPermissionList;
+import net.canarymod.commandsys.commands.groupmod.GroupPermissionRemove;
+import net.canarymod.commandsys.commands.groupmod.GroupPrefix;
+import net.canarymod.commandsys.commands.groupmod.GroupRemove;
+import net.canarymod.commandsys.commands.groupmod.GroupRename;
 import net.canarymod.commandsys.commands.playermod.PlayerCreate;
 import net.canarymod.commandsys.commands.playermod.PlayerGroupAdd;
 import net.canarymod.commandsys.commands.playermod.PlayerGroupCheck;
@@ -73,6 +70,10 @@ import net.canarymod.commandsys.commands.warp.WarpList;
 import net.canarymod.commandsys.commands.warp.WarpRemove;
 import net.canarymod.commandsys.commands.warp.WarpSet;
 import net.canarymod.commandsys.commands.warp.WarpUse;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Canary "native" commands
@@ -105,6 +106,7 @@ public class CommandList implements CommandListener {
         temp.put("groupmod_check", new GroupCheck());
         temp.put("groupmod_rename", new GroupRename());
         temp.put("groupmod_prefix", new GroupPrefix());
+        temp.put("groupmod_parent", new GroupParent());
         temp.put("playermod", new PlayermodBase());
         temp.put("playermod_add", new PlayerCreate());
         temp.put("playermod_perms_add", new PlayerPermissionAdd());
@@ -363,6 +365,16 @@ public class CommandList implements CommandListener {
         natives.get("groupmod_prefix").execute(caller, parameters);
     }
 
+    @Command(aliases = {"parent"},
+            parent = "groupmod",
+            helpLookup = "groupmod parent",
+            description = "group parent info",
+            permissions = {"canary.command.super.groupmod.parent"},
+            toolTip = "/groupmod parent <group> <parent group>",
+            min = 3)
+    public void groupParent(MessageReceiver caller, String[] parameters) {
+        natives.get("groupmod_parent").execute(caller, parameters);
+    }
     // groupmod end
 
     // XXX PLAYER Start

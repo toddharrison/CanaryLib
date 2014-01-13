@@ -1,10 +1,10 @@
 package net.canarymod.user;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.canarymod.chat.Colors;
 import net.canarymod.permissionsystem.PermissionProvider;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a player group
@@ -228,7 +228,7 @@ public class Group {
     /**
      * Set a new parent.
      * This will remove the group from its old parent
-     * and add it to the nwe parents childs list
+     * and add it to the new parents childs list
      *
      * @param group
      */
@@ -236,10 +236,11 @@ public class Group {
         if (parent != null) {
             parent.detachChild(this);
         }
-        parent = group;
-        if (parent != null) {
-            parent.addChild(this);
+
+        if (group != null) {
+            group.addChild(this);
         }
+        parent = group;
     }
 
     public void addChild(Group g) {

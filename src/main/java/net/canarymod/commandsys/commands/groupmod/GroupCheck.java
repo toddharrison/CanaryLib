@@ -1,4 +1,4 @@
-package net.canarymod.commandsys.commands.group;
+package net.canarymod.commandsys.commands.groupmod;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
@@ -8,7 +8,7 @@ import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.Group;
 
 /**
- * Command to check the values of a group   
+ * Command to check the values of a group
  *
  * @author Chris (damagefilter)
  */

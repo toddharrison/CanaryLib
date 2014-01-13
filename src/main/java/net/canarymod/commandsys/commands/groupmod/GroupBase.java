@@ -1,4 +1,4 @@
-package net.canarymod.commandsys.commands.group;
+package net.canarymod.commandsys.commands.groupmod;
 
 import net.canarymod.Canary;
 import net.canarymod.chat.MessageReceiver;

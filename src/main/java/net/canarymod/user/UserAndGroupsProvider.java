@@ -7,7 +7,6 @@ import net.canarymod.backbone.BackboneGroups;
 import net.canarymod.backbone.BackboneUsers;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -89,16 +88,26 @@ public class UserAndGroupsProvider {
     /**
      * Remove this group
      *
-     * @param g
+     * @param g the group to remove
      */
     public void removeGroup(Group g) {
         // Move children up to the next parent
-        for (Group child : g.getChildren()) {
-            child.setParent(g.getParent());
+        try {
+            List<Group> childs = new ArrayList<Group>();
+            childs.addAll(g.getChildren());
+//            Collections.copy(childs, g.getChildren());
+
+            for (Group child : childs) {
+                child.setParent(g.getParent());
+                this.updateGroup(child, false);
+            }
+            // Now we can safely remove the group
+            backboneGroups.removeGroup(g);
+            groups.remove(g);
         }
-        // Now we can safely remove the group
-        backboneGroups.removeGroup(g);
-        groups.remove(g);
+        catch(Exception e) {
+            Canary.logWarning(e.getMessage(), e);
+        }
     }
 
     /**
@@ -114,7 +123,7 @@ public class UserAndGroupsProvider {
         backboneGroups.renameGroup(group, newName);
         groups.add(group);
         for (Group g : groups) {
-            updateGroup(g);
+            updateGroup(g, true);
         }
     }
 
@@ -272,9 +281,11 @@ public class UserAndGroupsProvider {
         }
     }
 
-    public void updateGroup(Group g) {
+    public void updateGroup(Group g, boolean reload) {
         backboneGroups.updateGroup(g);
-        reloadGroups();
+        if(reload) {
+            reloadGroups();
+        }
     }
 
     /**
