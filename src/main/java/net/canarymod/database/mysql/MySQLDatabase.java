@@ -72,9 +72,9 @@ public class MySQLDatabase extends Database {
             for (Column c : columns.keySet()) {
                 if (!c.autoIncrement()) {
                     if (c.isList()) {
-                        ps.setString(i, this.getString((List<?>) columns.get(c)));
+                        setToStatement(i, this.getString((List<?>) columns.get(c)), ps, c.dataType());
                     }
-                    ps.setObject(i, this.convert(columns.get(c)));
+                    setToStatement(i, columns.get(c), ps, c.dataType());
                     i++;
                 }
             }
@@ -462,13 +462,17 @@ public class MySQLDatabase extends Database {
             while (it.hasNext()) {
                 column = it.next();
                 if (!column.autoIncrement()) {
+                    Object o = columns.get(column);
+                    if(o == null) {
+                        continue;
+                    }
                     if (sb.length() > 0) {
-                        sb.append(" AND '").append(column.columnName());
+                        sb.append(" AND `").append(column.columnName()).append("`");
                     }
                     else {
-                        sb.append("'").append(column.columnName());
+                        sb.append("`").append(column.columnName()).append("`");
                     }
-                    sb.append("' = ?");
+                    sb.append(" = ?");
                     // if (it.hasNext()) {
                     // sb.append("' = ? AND ");
                     // } else {
@@ -484,6 +488,10 @@ public class MySQLDatabase extends Database {
             while (it.hasNext()) {
                 column = it.next();
                 if (!column.autoIncrement()) {
+                    Object o = columns.get(column);
+                    if(o == null) {
+                        continue;
+                    }
                     setToStatement(index, columns.get(column), ps, column.dataType());
 //                    ps.setObject(index, this.convert(columns.get(column)));
                     index++;
@@ -643,20 +651,28 @@ public class MySQLDatabase extends Database {
             switch (t) {
                 case BYTE:
                     ps.setByte(index, (Byte) o);
+                    break;
                 case INTEGER:
                     ps.setInt(index, (Integer)o);
+                    break;
                 case FLOAT:
                     ps.setFloat(index, (Float)o);
+                    break;
                 case DOUBLE:
                     ps.setDouble(index, (Double) o);
+                    break;
                 case LONG:
                     ps.setLong(index, (Long) o);
+                    break;
                 case SHORT:
                     ps.setShort(index, (Short) o);
+                    break;
                 case STRING:
                     ps.setString(index, (String)o);
+                    break;
                 case BOOLEAN:
                     ps.setBoolean(index, (Boolean) o);
+                    break;
             }
         }
         catch(SQLException e) {
