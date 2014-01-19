@@ -71,10 +71,7 @@ public class MySQLDatabase extends Database {
             int i = 1;
             for (Column c : columns.keySet()) {
                 if (!c.autoIncrement()) {
-                    if (c.isList()) {
-                        setToStatement(i, this.getString((List<?>) columns.get(c)), ps, c.dataType());
-                    }
-                    setToStatement(i, columns.get(c), ps, c.dataType());
+                    setToStatement(i, columns.get(c), ps, c);
                     i++;
                 }
             }
@@ -492,7 +489,7 @@ public class MySQLDatabase extends Database {
                     if(o == null) {
                         continue;
                     }
-                    setToStatement(index, columns.get(column), ps, column.dataType());
+                    setToStatement(index, columns.get(column), ps, column);
 //                    ps.setObject(index, this.convert(columns.get(column)));
                     index++;
                 }
@@ -544,7 +541,7 @@ public class MySQLDatabase extends Database {
                     if(col == null) {
                         throw new DatabaseReadException("Error fetching MySQL ResultSet in " + data.getName() + ". Column " + fieldNames[i] + " does not exist!");
                     }
-                    setToStatement(i + 1, filters.get(fieldName), ps, col.dataType());
+                    setToStatement(i + 1, filters.get(fieldName), ps, col);
                 }
 
             }
@@ -646,33 +643,38 @@ public class MySQLDatabase extends Database {
      * @param t the DataType hint
      * @throws DatabaseWriteException when an SQLException was raised or when the data type doesn't match the objects type
      */
-    private void setToStatement(int index, Object o, PreparedStatement ps, Column.DataType t) throws DatabaseWriteException {
+    private void setToStatement(int index, Object o, PreparedStatement ps, Column t) throws DatabaseWriteException {
         try {
-            switch (t) {
-                case BYTE:
-                    ps.setByte(index, (Byte) o);
-                    break;
-                case INTEGER:
-                    ps.setInt(index, (Integer)o);
-                    break;
-                case FLOAT:
-                    ps.setFloat(index, (Float)o);
-                    break;
-                case DOUBLE:
-                    ps.setDouble(index, (Double) o);
-                    break;
-                case LONG:
-                    ps.setLong(index, (Long) o);
-                    break;
-                case SHORT:
-                    ps.setShort(index, (Short) o);
-                    break;
-                case STRING:
-                    ps.setString(index, (String)o);
-                    break;
-                case BOOLEAN:
-                    ps.setBoolean(index, (Boolean) o);
-                    break;
+            if(t.isList()) {
+                ps.setString(index, getString((List<?>)o));
+            }
+            else {
+                switch (t.dataType()) {
+                    case BYTE:
+                        ps.setByte(index, (Byte) o);
+                        break;
+                    case INTEGER:
+                        ps.setInt(index, (Integer)o);
+                        break;
+                    case FLOAT:
+                        ps.setFloat(index, (Float)o);
+                        break;
+                    case DOUBLE:
+                        ps.setDouble(index, (Double) o);
+                        break;
+                    case LONG:
+                        ps.setLong(index, (Long) o);
+                        break;
+                    case SHORT:
+                        ps.setShort(index, (Short) o);
+                        break;
+                    case STRING:
+                        ps.setString(index, (String)o);
+                        break;
+                    case BOOLEAN:
+                        ps.setBoolean(index, (Boolean) o);
+                        break;
+                }
             }
         }
         catch(SQLException e) {
