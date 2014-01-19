@@ -1,5 +1,9 @@
 package net.canarymod.database.mysql;
 
+import java.sql.*;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.canarymod.Canary;
 import net.canarymod.database.Column;
 import net.canarymod.database.DataAccess;
@@ -9,11 +13,6 @@ import net.canarymod.database.exceptions.DatabaseAccessException;
 import net.canarymod.database.exceptions.DatabaseReadException;
 import net.canarymod.database.exceptions.DatabaseTableInconsistencyException;
 import net.canarymod.database.exceptions.DatabaseWriteException;
-
-import java.sql.*;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Represents access to a MySQL database
@@ -148,14 +147,32 @@ public class MySQLDatabase extends Database {
     @Override
     public void remove(DataAccess dataAccess, Map<String, Object> filters) throws DatabaseWriteException {
         Connection conn = JdbcConnectionManager.getConnection();
-        ResultSet rs = null;
+        PreparedStatement ps = null;
 
         try {
-            rs = this.getResultSet(conn, dataAccess, filters, true);
-            if (rs != null) {
-                if (rs.next()) {
-                    rs.deleteRow();
+           if (filters.size() > 0) {
+                StringBuilder sb = new StringBuilder();
+                Object[] fieldNames = filters.keySet().toArray();
+                for (int i = 0; i < fieldNames.length && i < fieldNames.length; i++) {
+                    sb.append("`").append(fieldNames[i]);
+                    if (i + 1 < fieldNames.length) {
+                        sb.append("`=? AND ");
+                    }
+                    else {
+                        sb.append("`=?");
+                    }
                 }
+
+                ps = conn.prepareStatement("DELETE FROM `" + dataAccess.getName() + "` WHERE " + sb.toString() + "LIMIT 1");
+                for (int i = 0; i < fieldNames.length && i < fieldNames.length; i++) {
+                    String fieldName = String.valueOf(fieldNames[i]);
+                    Column col = dataAccess.getColumnForName(fieldName);
+                    if(col == null) {
+                        throw new DatabaseReadException("Error deleting MySQL row in " + dataAccess.getName() + ". Column " + fieldNames[i] + " does not exist!");
+                    }
+                    setToStatement(i + 1, filters.get(fieldName), ps, col);
+                }
+
             }
 
         }
@@ -166,27 +183,39 @@ public class MySQLDatabase extends Database {
             Canary.logStacktrace(ex.getMessage(), ex);
         }
         finally {
-            try {
-                PreparedStatement st = rs != null && rs.getStatement() instanceof PreparedStatement ? (PreparedStatement) rs.getStatement() : null;
-                close(conn, st, rs);
-            }
-            catch (SQLException ex) {
-                Canary.logStacktrace(ex.getMessage(), ex);
-            }
+            close(conn, ps, null);
         }
     }
 
     @Override
     public void removeAll(DataAccess dataAccess, Map<String, Object> filters) throws DatabaseWriteException {
         Connection conn = JdbcConnectionManager.getConnection();
-        ResultSet rs = null;
+        PreparedStatement ps = null;
 
         try {
-            rs = this.getResultSet(conn, dataAccess, filters, false);
-            if (rs != null) {
-                if (rs.next()) {
-                    rs.deleteRow();
+           if (filters.size() > 0) {
+                StringBuilder sb = new StringBuilder();
+                Object[] fieldNames = filters.keySet().toArray();
+                for (int i = 0; i < fieldNames.length && i < fieldNames.length; i++) {
+                    sb.append("`").append(fieldNames[i]);
+                    if (i + 1 < fieldNames.length) {
+                        sb.append("`=? AND ");
+                    }
+                    else {
+                        sb.append("`=?");
+                    }
                 }
+
+                ps = conn.prepareStatement("DELETE FROM `" + dataAccess.getName() + "` WHERE " + sb.toString());
+                for (int i = 0; i < fieldNames.length && i < fieldNames.length; i++) {
+                    String fieldName = String.valueOf(fieldNames[i]);
+                    Column col = dataAccess.getColumnForName(fieldName);
+                    if(col == null) {
+                        throw new DatabaseReadException("Error deleting MySQL row in " + dataAccess.getName() + ". Column " + fieldNames[i] + " does not exist!");
+                    }
+                    setToStatement(i + 1, filters.get(fieldName), ps, col);
+                }
+
             }
 
         }
@@ -197,13 +226,7 @@ public class MySQLDatabase extends Database {
             Canary.logStacktrace(ex.getMessage(), ex);
         }
         finally {
-            try {
-                PreparedStatement st = rs != null && rs.getStatement() instanceof PreparedStatement ? (PreparedStatement) rs.getStatement() : null;
-                close(conn, st, rs);
-            }
-            catch (SQLException ex) {
-                Canary.logStacktrace(ex.getMessage(), ex);
-            }
+            close(conn, ps, null);
         }
     }
 
