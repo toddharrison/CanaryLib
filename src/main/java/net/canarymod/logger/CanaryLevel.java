@@ -1,7 +1,5 @@
 package net.canarymod.logger;
 
-import java.util.logging.Level;
-
 import net.canarymod.chat.MessageReceiver;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
@@ -11,27 +9,11 @@ import org.apache.logging.log4j.MarkerManager;
  *
  * @author Jason (darkdiplomat)
  * @author Larry1123
- * Updated to make use of log4j
+ *         Updated to make use of log4j
  */
 public final class CanaryLevel implements Marker {
 
     private final Marker marker;
-
-    /* Level notes
-     *
-     * SEVERE: 1000
-     * WARNING: 900
-     * INFO: 800
-     * CONFIG: 700
-     * ____: 600 *
-     * FINE: 500
-     * FINER: 400
-     * FINEST: 300
-     * DEBUG: 200 **
-     *
-     *  * No Level Assigned
-     *  ** UnOfficial Level Assignment
-     */
 
     /** Canary SERVERMESSAGE Level (801), For use with {@link MessageReceiver#message(String)} */
     public static final CanaryLevel SERVERMESSAGE = new CanaryLevel("SERVERMESSAGE");
