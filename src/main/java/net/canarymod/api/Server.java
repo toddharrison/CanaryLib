@@ -1,7 +1,5 @@
 package net.canarymod.api;
 
-import java.util.List;
-
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.gui.GUIControl;
 import net.canarymod.api.inventory.recipes.CraftingRecipe;
@@ -11,12 +9,13 @@ import net.canarymod.api.inventory.recipes.ShapelessRecipe;
 import net.canarymod.api.inventory.recipes.SmeltRecipe;
 import net.canarymod.api.world.World;
 import net.canarymod.api.world.WorldManager;
-import net.canarymod.api.world.blocks.CommandBlock;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.CommandOwner;
 import net.canarymod.motd.MOTDOwner;
 import net.canarymod.tasks.ServerTask;
 import net.canarymod.tasks.TaskOwner;
+
+import java.util.List;
 
 /**
  * CanaryMod Server.<br />
@@ -107,12 +106,12 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @param command
      *         the command
-     * @param cmdBlock
-     *         the {@link CommandBlock} to act as
+     * @param cmdBlockLogic
+     *         the {@link CommandBlockLogic} to act as
      *
      * @return {@code true} if command has been parsed by CanaryMod; {@code false} otherwise
      */
-    public boolean consoleCommand(String command, CommandBlock cmdBlock);
+    public boolean consoleCommand(String command, CommandBlockLogic cmdBlockLogic);
 
     /**
      * Set a timer in the built-in vanilla Timer System.

@@ -2,6 +2,7 @@ package net.canarymod.api.world;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This is a container for all of the worlds.
@@ -139,4 +140,25 @@ public interface WorldManager {
      * @return
      */
     public List<String> getExistingWorlds();
+
+    /**
+     * Returns a {@code String[]} of all existing worlds
+     *
+     * @return existing world names as a {@code String[]}
+     */
+    public String[] getExistingWorldsArray();
+
+    /**
+     * Gets a {@link Set} of loaded worlds' names
+     *
+     * @return loaded worlds' names set
+     */
+    public Set<String> getLoadedWorldsNames();
+
+    /**
+     * Gets a {@code String[]} of laded worlds' names
+     *
+     * @return array of loaded worlds' names
+     */
+    public String[] getLoadedWorldsNamesArray();
 }
