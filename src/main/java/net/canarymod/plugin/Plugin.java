@@ -2,11 +2,14 @@ package net.canarymod.plugin;
 
 import net.canarymod.Canary;
 import net.canarymod.api.world.World;
+import net.canarymod.commandsys.CommandDependencyException;
+import net.canarymod.commandsys.CommandListener;
 import net.canarymod.commandsys.CommandOwner;
 import net.canarymod.config.Configuration;
 import net.canarymod.logger.Logman;
 import net.canarymod.motd.MOTDOwner;
 import net.canarymod.tasks.TaskOwner;
+import net.visualillusionsent.utils.LocaleHelper;
 import net.visualillusionsent.utils.PropertiesFile;
 
 import java.util.ArrayList;
@@ -201,6 +204,51 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
      */
     public final boolean isDisabled() {
         return disabled;
+    }
+
+    /**
+     * Register your CommandListener.
+     * This will make all annotated commands available to CanaryMod and the help system.
+     * Sub Command relations can only be sorted out after availability.
+     * That means if you try to register a command that is a sub-command of something
+     * that is not registered yet, it will fail.
+     * So make sure you add commands in the correct order.
+     *
+     * @param listener
+     *         the {@link CommandListener}
+     * @param force
+     *         {@code true} to override existing commands; {@code false} for not
+     *
+     * @throws CommandDependencyException
+     */
+    public final void registerCommands(CommandListener listener, boolean force) throws CommandDependencyException {
+        Canary.commands().registerCommands(listener, this, force);
+    }
+
+    /**
+     * Register your CommandListener.
+     * This will make all annotated commands available to CanaryMod and the help system.
+     * Sub Command relations can only be sorted out after availability.
+     * That means if you try to register a command that is a sub-command of something
+     * that is not registered yet, it will fail.
+     * So make sure you add commands in the correct order.
+     *
+     * @param listener
+     *         the {@link CommandListener}
+     * @param translator
+     *         the {@link LocaleHelper} instance used in Translations
+     * @param force
+     *         {@code true} to override existing commands; {@code false} for not
+     *
+     * @throws CommandDependencyException
+     */
+    public final void registerCommands(CommandListener listener, LocaleHelper translator, boolean force) throws CommandDependencyException {
+        Canary.commands().registerCommands(listener, this, translator, force);
+    }
+
+    /** Register a {@link PluginListener} for a system hook */
+    public final void registerListener(PluginListener listener) {
+        Canary.hooks().registerListener(listener, this);
     }
 
     /** Toggles the disabled state of the Plugin */
