@@ -2,70 +2,9 @@ package net.canarymod.commandsys;
 
 import net.canarymod.Canary;
 import net.canarymod.chat.MessageReceiver;
-import net.canarymod.commandsys.commands.BanCommand;
-import net.canarymod.commandsys.commands.CanaryModCommand;
-import net.canarymod.commandsys.commands.ClearInventoryCommand;
-import net.canarymod.commandsys.commands.Compass;
-import net.canarymod.commandsys.commands.CreateVanilla;
-import net.canarymod.commandsys.commands.EmoteChat;
-import net.canarymod.commandsys.commands.GetPosition;
-import net.canarymod.commandsys.commands.Give;
-import net.canarymod.commandsys.commands.GodCommand;
-import net.canarymod.commandsys.commands.HelpCommand;
-import net.canarymod.commandsys.commands.Home;
-import net.canarymod.commandsys.commands.IpBanCommand;
-import net.canarymod.commandsys.commands.Kick;
-import net.canarymod.commandsys.commands.Kill;
-import net.canarymod.commandsys.commands.KitCommand;
-import net.canarymod.commandsys.commands.ListPlugins;
-import net.canarymod.commandsys.commands.MobspawnCommand;
-import net.canarymod.commandsys.commands.Mode;
-import net.canarymod.commandsys.commands.Motd;
-import net.canarymod.commandsys.commands.Mute;
-import net.canarymod.commandsys.commands.PlayerInformation;
-import net.canarymod.commandsys.commands.PlayerList;
-import net.canarymod.commandsys.commands.PluginCommand;
-import net.canarymod.commandsys.commands.PrivateMessage;
-import net.canarymod.commandsys.commands.ReloadCommand;
-import net.canarymod.commandsys.commands.ReservelistCommand;
-import net.canarymod.commandsys.commands.SetHome;
-import net.canarymod.commandsys.commands.SetSpawn;
-import net.canarymod.commandsys.commands.SpawnCommand;
-import net.canarymod.commandsys.commands.StopServer;
-import net.canarymod.commandsys.commands.SystemInformation;
-import net.canarymod.commandsys.commands.TeleportCommand;
-import net.canarymod.commandsys.commands.TeleportHereCommand;
-import net.canarymod.commandsys.commands.TimeCommand;
-import net.canarymod.commandsys.commands.UnbanCommand;
-import net.canarymod.commandsys.commands.Uptime;
-import net.canarymod.commandsys.commands.WeatherCommand;
-import net.canarymod.commandsys.commands.WhitelistCommand;
-import net.canarymod.commandsys.commands.groupmod.GroupBase;
-import net.canarymod.commandsys.commands.groupmod.GroupCheck;
-import net.canarymod.commandsys.commands.groupmod.GroupCreate;
-import net.canarymod.commandsys.commands.groupmod.GroupList;
-import net.canarymod.commandsys.commands.groupmod.GroupParent;
-import net.canarymod.commandsys.commands.groupmod.GroupPermissionAdd;
-import net.canarymod.commandsys.commands.groupmod.GroupPermissionCheck;
-import net.canarymod.commandsys.commands.groupmod.GroupPermissionFlush;
-import net.canarymod.commandsys.commands.groupmod.GroupPermissionList;
-import net.canarymod.commandsys.commands.groupmod.GroupPermissionRemove;
-import net.canarymod.commandsys.commands.groupmod.GroupPrefix;
-import net.canarymod.commandsys.commands.groupmod.GroupRemove;
-import net.canarymod.commandsys.commands.groupmod.GroupRename;
-import net.canarymod.commandsys.commands.playermod.PlayerCreate;
-import net.canarymod.commandsys.commands.playermod.PlayerGroupAdd;
-import net.canarymod.commandsys.commands.playermod.PlayerGroupCheck;
-import net.canarymod.commandsys.commands.playermod.PlayerGroupList;
-import net.canarymod.commandsys.commands.playermod.PlayerGroupRemove;
-import net.canarymod.commandsys.commands.playermod.PlayerGroupSet;
-import net.canarymod.commandsys.commands.playermod.PlayerPermissionAdd;
-import net.canarymod.commandsys.commands.playermod.PlayerPermissionCheck;
-import net.canarymod.commandsys.commands.playermod.PlayerPermissionList;
-import net.canarymod.commandsys.commands.playermod.PlayerPermissionRemove;
-import net.canarymod.commandsys.commands.playermod.PlayerPrefix;
-import net.canarymod.commandsys.commands.playermod.PlayerRemove;
-import net.canarymod.commandsys.commands.playermod.PlayermodBase;
+import net.canarymod.commandsys.commands.*;
+import net.canarymod.commandsys.commands.groupmod.*;
+import net.canarymod.commandsys.commands.playermod.*;
 import net.canarymod.commandsys.commands.warp.WarpList;
 import net.canarymod.commandsys.commands.warp.WarpRemove;
 import net.canarymod.commandsys.commands.warp.WarpSet;
@@ -73,7 +12,11 @@ import net.canarymod.commandsys.commands.warp.WarpUse;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import static net.canarymod.commandsys.TabCompleteHelper.matchTo;
+import static net.canarymod.commandsys.TabCompleteHelper.matchToGroup;
 
 /**
  * Canary "native" commands
@@ -228,9 +171,33 @@ public class CommandList implements CommandListener {
             description = "groupmod info",
             permissions = { "canary.command.super.groupmod" },
             toolTip = "/groupmod <add|delete|rename|permission|list> [parameters...] [--help]",
-            min = 1)
+            min = 1,
+            tabCompleteMethod = "groupBaseTabComplete"
+    )
     public void groupBase(MessageReceiver caller, String[] parameters) {
         natives.get("groupmod_base").execute(caller, parameters);
+    }
+
+    @TabComplete
+    public List<String> groupBaseTabComplete(MessageReceiver caller, String[] parameters) {
+        //TODO: finish implemeting arugments
+        switch (parameters.length) {
+            case 1:
+                return matchTo(parameters, new String[]{ "add", "delete", "rename", "permission", "list" });
+            case 2:
+                if (parameters[0].matches("(delete|remove|rename)")) {
+                    return matchToGroup(parameters);
+                }
+            case 3:
+                if (parameters[1].matches("(add|create)")) {
+                    return matchToGroup(parameters);
+                }
+                else if (parameters[1].equals("permission")) {
+                    return matchTo(parameters, new String[]{ "add", "delete", "check", "list" });
+                }
+            default:
+                return null;
+        }
     }
 
     @Command(aliases = { "add", "create" },
@@ -240,7 +207,8 @@ public class CommandList implements CommandListener {
             permissions = { "canary.command.super.groupmod.add" },
             toolTip = "/groupmod add <name> [[parent] [world[:dimension]]]",
             min = 2,
-            max = 4)
+            max = 4
+    )
     public void groupAdd(MessageReceiver caller, String[] parameters) {
         natives.get("groupmod_add").execute(caller, parameters);
     }
@@ -365,11 +333,11 @@ public class CommandList implements CommandListener {
         natives.get("groupmod_prefix").execute(caller, parameters);
     }
 
-    @Command(aliases = {"parent"},
+    @Command(aliases = { "parent" },
             parent = "groupmod",
             helpLookup = "groupmod parent",
             description = "group parent info",
-            permissions = {"canary.command.super.groupmod.parent"},
+            permissions = { "canary.command.super.groupmod.parent" },
             toolTip = "/groupmod parent <group> <parent group>",
             min = 3)
     public void groupParent(MessageReceiver caller, String[] parameters) {
@@ -583,7 +551,8 @@ public class CommandList implements CommandListener {
             description = "kill info",
             permissions = { "canary.command.player.kill" },
             toolTip = "/kill [playername]",
-            min = 1)
+            min = 1
+    )
     public void killCommand(MessageReceiver caller, String[] parameters) {
         natives.get("kill").execute(caller, parameters);
     }
@@ -766,6 +735,7 @@ public class CommandList implements CommandListener {
         natives.get("stop").execute(caller, parameters);
     }
 
+    /* TODO: Remove fully
     @Command(aliases = { "time", "thetime" },
             description = "time info",
             permissions = { "canary.command.time" },
@@ -775,6 +745,7 @@ public class CommandList implements CommandListener {
     public void timeCommand(MessageReceiver caller, String[] parameters) {
         natives.get("time").execute(caller, parameters);
     }
+    */
 
     @Command(aliases = { "tp", "teleport" },
             description = "tp info",
@@ -794,6 +765,7 @@ public class CommandList implements CommandListener {
         natives.get("teleporthere").execute(caller, parameters);
     }
 
+    /* TODO: Remove fully
     @Command(aliases = { "weather" },
             description = "weather info",
             permissions = { "canary.command.weather" },
@@ -803,6 +775,7 @@ public class CommandList implements CommandListener {
     public void weatherCommand(MessageReceiver caller, String[] parameters) {
         natives.get("weather").execute(caller, parameters);
     }
+    */
 
     @Command(aliases = { "whitelist", "wlist", "wl" },
             description = "whitelist info",

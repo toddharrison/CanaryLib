@@ -1,16 +1,18 @@
 package net.canarymod.commandsys;
 
+import net.canarymod.Canary;
+import net.canarymod.Translator;
+import net.canarymod.chat.MessageReceiver;
+import net.visualillusionsent.utils.LocaleHelper;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-
-import net.canarymod.Canary;
-import net.canarymod.Translator;
-import net.canarymod.chat.MessageReceiver;
-import net.visualillusionsent.utils.LocaleHelper;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Manages all commands.
@@ -291,8 +293,46 @@ public class CommandManager {
                 Canary.logWarning("You have a Command method with invalid argument types! - " + method.getName());
                 continue;
             }
+
             Command meta = method.getAnnotation(Command.class);
-            CanaryCommand command = new CanaryCommand(meta, owner, translator) {
+            TabCompleteDispatch tabComplete = null;
+
+            darkdiplomatIsAWizard:
+            //If tab complete method fails, it shouldn't kill the command itself
+            if (!meta.tabCompleteMethod().isEmpty()) {
+                final Method tabCompMeth;
+                try {
+                    tabCompMeth = listener.getClass().getMethod(meta.tabCompleteMethod(), MessageReceiver.class, String[].class);
+                }
+                catch (NoSuchMethodException e) {
+                    Canary.logWarning(String.format("[%s/%s/%s] TabComplete initialization failure: Unable to locate specified Method", owner.getName(), listener.getClass().getSimpleName(), meta.tabCompleteMethod()));
+                    break darkdiplomatIsAWizard;
+                }
+
+                if (!tabCompMeth.isAnnotationPresent(TabComplete.class)) {
+                    Canary.logWarning(String.format("[%s/%s/%s] TabComplete initialization failure: TabComplete annotation missing", owner.getName(), listener.getClass().getSimpleName(), meta.tabCompleteMethod()));
+                    break darkdiplomatIsAWizard;
+                }
+
+                if (!List.class.isAssignableFrom(tabCompMeth.getReturnType())) {
+                    Canary.logWarning(String.format("[%s/%s/%s] AutoComplete initialization failure: Return type was not of List", owner.getName(), listener.getClass().getSimpleName(), meta.tabCompleteMethod()));
+                    break darkdiplomatIsAWizard;
+                }
+
+                tabComplete = new TabCompleteDispatch() {
+                    @Override
+                    List<String> complete(MessageReceiver msgrec, String[] args) throws TabCompleteException {
+                        try {
+                            return (List<String>) tabCompMeth.invoke(listener, msgrec, args);
+                        }
+                        catch (Exception ex) {
+                            throw new TabCompleteException("AutoComplete failed to execute...", ex);
+                        }
+                    }
+                };
+            }
+
+            CanaryCommand command = new CanaryCommand(meta, owner, translator, tabComplete) {
                 @Override
                 protected void execute(MessageReceiver caller, String[] parameters) {
                     try {
@@ -303,6 +343,7 @@ public class CommandManager {
                     }
                 }
             };
+
             newCommands.add(command);
         }
         // Sort load order so dependencies can be resolved properly
@@ -470,5 +511,50 @@ public class CommandManager {
             }
         }
         return matching;
+    }
+
+    /**
+     * Gets a list of matching {@link net.canarymod.commandsys.CanaryCommand} names a {@link net.canarymod.chat.MessageReceiver} can use
+     *
+     * @param caller
+     *         the {@link net.canarymod.chat.MessageReceiver} to check permission on
+     * @param partial
+     *         the partial command name to match (or empty to match all commands)
+     * @param includeSubs
+     *         {@code true} to include sub commands; {@code false} to not include them
+     *
+     * @return a list of matching command names
+     */
+    public List<String> matchCommandNames(MessageReceiver caller, String partial, boolean includeSubs) {
+        ArrayList<String> names = new ArrayList<String>();
+        for (Map.Entry<String, CanaryCommand> entry : commands.entrySet()) {
+            if (entry.getValue().getParent() != null && !includeSubs) {
+                continue;
+            }
+            if (entry.getValue().canUse(caller) && TabCompleteHelper.startsWith(partial, entry.getKey())) {
+                names.add(entry.getKey());
+            }
+        }
+        return names;
+    }
+
+    /**
+     * Gets the tabComplete for a specified Command name
+     *
+     * @param msgrec
+     *         the caller of the tab complete
+     * @param command
+     *         the name of the command to get a tab complete for
+     * @param args
+     *         the current command arguments
+     *
+     * @return list string of possible completion
+     */
+    public List<String> tabComplete(MessageReceiver msgrec, String command, String[] args) {
+        CanaryCommand cmd = commands.get(command);
+        if (cmd != null) {
+            return cmd.tabComplete(msgrec, args);
+        }
+        return null;
     }
 }

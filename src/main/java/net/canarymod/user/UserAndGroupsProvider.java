@@ -88,7 +88,8 @@ public class UserAndGroupsProvider {
     /**
      * Remove this group
      *
-     * @param g the group to remove
+     * @param g
+     *         the group to remove
      */
     public void removeGroup(Group g) {
         // Move children up to the next parent
@@ -105,7 +106,7 @@ public class UserAndGroupsProvider {
             backboneGroups.removeGroup(g);
             groups.remove(g);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             Canary.logWarning(e.getMessage(), e);
         }
     }
@@ -163,6 +164,20 @@ public class UserAndGroupsProvider {
         Group[] grp = new Group[groups.size()];
 
         return groups.toArray(grp);
+    }
+
+    /**
+     * Return array of all existent group names
+     *
+     * @return group names
+     */
+    public String[] getGroupNames() {
+        String[] grpNames = new String[groups.size()];
+        int index = 0;
+        for (Group grp : groups) {
+            grpNames[index++] = grp.getName();
+        }
+        return grpNames;
     }
 
     /**
@@ -283,7 +298,7 @@ public class UserAndGroupsProvider {
 
     public void updateGroup(Group g, boolean reload) {
         backboneGroups.updateGroup(g);
-        if(reload) {
+        if (reload) {
             reloadGroups();
         }
     }

@@ -1,10 +1,10 @@
 package net.canarymod.commandsys;
 
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+
+import static java.lang.annotation.ElementType.METHOD;
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Used to annotate {@link CommandListener} methods and describe how a command should be handled within the {@link CommandManager} {@link CanaryCommand}
@@ -87,4 +87,24 @@ public @interface Command {
      * @return maximum parameters
      */
     int max() default -1;
+
+    /**
+     * The name of the method to use for this command's TabComplete.
+     * <p/>
+     * Specified method should have the return type of {@code List<String>}<br/>
+     * and the parameters {@link net.canarymod.chat.MessageReceiver} and {@link String[]}
+     * <p/>
+     * Example:
+     * <pre>
+     *     @TabComplete //Annotation is required for safety, its also helps identify what is a tab complete in source
+     *     public List<String> tabCompleteForCommand(MessageReceiver msgrec, String[] args){
+     *         return args.length == 1 ? TabCompleteHelper.matchTo(args, new String[]{ "tabA", "tabB", "tabC" }) : null;
+     *     }
+     * </pre>
+     * <p/>
+     * NOTE: This does not work on Commands specified with a parent, the parent will need to handle all children command completes
+     *
+     * @return method name
+     */
+    String tabCompleteMethod() default "";
 }

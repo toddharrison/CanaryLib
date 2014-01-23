@@ -2,12 +2,12 @@ package net.canarymod.api.world;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 /**
  * This is a container for all of the worlds.
  *
  * @author Jos Kuijpers
+ * @author Jason (darkdiplomat)
  */
 public interface WorldManager {
 
@@ -107,7 +107,8 @@ public interface WorldManager {
      * Check if a world with the given name is loaded.
      * This will perform a check for the fq name only!
      *
-     * @param name fully qualified world name. For instance default_NORMAL
+     * @param name
+     *         fully qualified world name. For instance default_NORMAL
      *
      * @return true if world exists, false otherwise
      */
@@ -117,8 +118,11 @@ public interface WorldManager {
      * Check if a world with the given base name and the DimensionType is loaded.
      * This will perform a check for the name+type.getName()
      *
-     * @param name the base world name. For instance "default"
-     * @param type the dimension type to look for
+     * @param name
+     *         the base world name. For instance "default"
+     * @param type
+     *         the dimension type to look for
+     *
      * @return
      */
     public boolean worldIsLoaded(String name, DimensionType type);
@@ -149,16 +153,19 @@ public interface WorldManager {
     public String[] getExistingWorldsArray();
 
     /**
-     * Gets a {@link Set} of loaded worlds' names
-     *
-     * @return loaded worlds' names set
-     */
-    public Set<String> getLoadedWorldsNames();
-
-    /**
-     * Gets a {@code String[]} of laded worlds' names
+     * Gets a {@code String[]} of loaded worlds' names
      *
      * @return array of loaded worlds' names
      */
-    public String[] getLoadedWorldsNamesArray();
+    public String[] getLoadedWorldsNames();
+
+    /**
+     * Gets a {@code String[]} of loaded worlds' names of the specified {@link net.canarymod.api.world.DimensionType}
+     *
+     * @param dimensionType
+     *         the {@link net.canarymod.api.world.DimensionType} of the worlds whose names are to be retrieved
+     *
+     * @return array of loaded worlds' names
+     */
+    public String[] getLoadedWorldsNamesOfDimension(DimensionType dimensionType);
 }

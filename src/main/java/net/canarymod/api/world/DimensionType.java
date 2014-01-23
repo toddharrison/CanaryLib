@@ -1,8 +1,8 @@
 package net.canarymod.api.world;
 
-import java.util.HashMap;
-
 import net.canarymod.Canary;
+
+import java.util.HashMap;
 
 /**
  * Dynamic worldType list
@@ -95,6 +95,24 @@ public class DimensionType {
             }
         }
         return null;
+    }
+
+    /**
+     * Gets a {@link String[]} of known Dimension names
+     *
+     * @return {@link String[]} of known Dimension names
+     */
+    public static String[] knownDimensionNames() {
+        return typeList.keySet().toArray(new String[typeList.size()]);
+    }
+
+    /**
+     * Gets a {@link net.canarymod.api.world.DimensionType[]} of known Dimensions
+     *
+     * @return {@link net.canarymod.api.world.DimensionType[]} of known Dimensions
+     */
+    public static DimensionType[] knownDimensions() {
+        return typeList.values().toArray(new DimensionType[typeList.size()]);
     }
 
     /**

@@ -1,13 +1,13 @@
 package net.canarymod.commandsys;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.canarymod.Canary;
 import net.canarymod.Translator;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.config.Configuration;
 import net.visualillusionsent.utils.LocaleHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Contains methods common to all types of chat commands.
@@ -20,6 +20,7 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
     public final Command meta;
     public final CommandOwner owner;
     public final LocaleHelper translator;
+    private final TabCompleteDispatch tabComplete;
 
     private List<CanaryCommand> subcommands = new ArrayList<CanaryCommand>();
 
@@ -35,14 +36,19 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
      *         the {@link CommandOwner}
      * @param translator
      *         the {@link LocaleHelper} translator instance
+     * @param tabComplete
+     *         the {@link net.canarymod.commandsys.CanaryCommand.TabCompleteDispatch} if one is specified and usable (can be null)<br/>
+     *         If no TabCompleteDispatch is present, an implementation can override {@link #tabComplete(net.canarymod.chat.MessageReceiver, String[])} instead
      *
      * @see LocaleHelper
      */
-    public CanaryCommand(Command meta, CommandOwner owner, LocaleHelper translator) {
+    public CanaryCommand(Command meta, CommandOwner owner, LocaleHelper translator, TabCompleteDispatch tabComplete) {
         this.meta = meta;
         this.owner = owner;
         this.translator = translator;
+        this.tabComplete = tabComplete;
     }
+
 
     /**
      * Parses this command using the specified parameters.
@@ -91,7 +97,7 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
     }
 
     public String getLocaleDescription() {
-        if(this.translator == null) {
+        if (this.translator == null) {
             return meta.description();
         }
         return translator.systemTranslate(meta.description());
@@ -222,6 +228,28 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
     }
 
     /**
+     * Called when a AutoComplete is asked for
+     *
+     * @param msgrec
+     *         the {@link net.canarymod.chat.MessageReceiver} using tabComplete
+     * @param args
+     *         the current arguments of the command
+     *
+     * @return list of possible completions
+     */
+    protected List<String> tabComplete(MessageReceiver msgrec, String[] args) {
+        if (tabComplete != null) {
+            try {
+                return tabComplete.complete(msgrec, args);
+            }
+            catch (TabCompleteException acex) {
+                Canary.logWarning("Fail:", acex);
+            }
+        }
+        return null;
+    }
+
+    /**
      * Executes a command.
      * NOTE: should not be called directly. Use parseCommand() instead!
      *
@@ -249,5 +277,4 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
         int b = o.meta.parent().split("\\.").length;
         return a > b ? 1 : a < b ? -1 : 0;
     }
-
 }
