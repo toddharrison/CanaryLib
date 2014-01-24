@@ -24,7 +24,7 @@ public class GetPosition implements NativeCommand {
     }
 
     private void console(MessageReceiver caller) {
-        caller.notice(Translator.translate("getpos console") + "(" + TextFormat.RANDOM + "Altitude: 30000km " + TextFormat.RESET + ")");
+        caller.notice(Translator.translate("getpos console") + "(" + TextFormat.RANDOM + String.format("Altitude: %dkm ", Long.MAX_VALUE) + TextFormat.RESET + ")");
     }
 
     private void player(Player player) {

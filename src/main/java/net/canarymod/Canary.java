@@ -447,7 +447,7 @@ public abstract class Canary implements TaskOwner {
      *         the message to be logged
      */
     public static void logNotice(String message) {
-        logger.debug(CanaryLevel.NOTICE, message);
+        logger.info(CanaryLevel.NOTICE, message);
     }
 
     /**
@@ -462,10 +462,11 @@ public abstract class Canary implements TaskOwner {
 
     /**
      * Use the standard CanaryMod logger for logging exceptions that should normally never occur.
+     *
      * @param message
-     *          the message to be logged
+     *         the message to be logged
      * @param t
-     *          the Throwable object to be logged
+     *         the Throwable object to be logged
      */
     public static void logDerp(String message, Throwable t) {
         logger.info(CanaryLevel.DERP, message, t);

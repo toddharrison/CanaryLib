@@ -163,6 +163,16 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
     public OfflinePlayer getOfflinePlayer(String player);
 
     /**
+     * Gets a {@link PlayerReference} of a known player
+     *
+     * @param player
+     *         the name of the player to get a reference for
+     *
+     * @return the {@link PlayerReference} if found; {@code null} if no player found
+     */
+    public PlayerReference matchKnownPlayer(String player);
+
+    /**
      * Like matchPlayer, this returns a player according to a name String.
      * However, no matching is performed here so you need to pass the exact
      * player name

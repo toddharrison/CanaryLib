@@ -39,7 +39,6 @@ public class CommandList implements CommandListener {
         temp.put("unban", new UnbanCommand());
         temp.put("compass", new Compass());
         temp.put("createvanilla", new CreateVanilla());
-        temp.put("emote", new EmoteChat());
         temp.put("pos", new GetPosition());
         temp.put("give", new Give());
         temp.put("groupmod_base", new GroupBase());
@@ -76,7 +75,6 @@ public class CommandList implements CommandListener {
         temp.put("kit", new KitCommand());
         temp.put("listplugins", new ListPlugins());
         temp.put("mobspawn", new MobspawnCommand());
-        temp.put("mode", new Mode());
         temp.put("motd", new Motd());
         temp.put("msg", new PrivateMessage());
         temp.put("mute", new Mute());
@@ -158,15 +156,6 @@ public class CommandList implements CommandListener {
         natives.get("createvanilla").execute(caller, parameters);
     }
 
-    @Command(aliases = { "me" },
-            description = "emote info",
-            permissions = { "canary.command.player.emote", "canary.command.player.me" },
-            toolTip = "/me <message>",
-            min = 2)
-    public void emoteCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("emote").execute(caller, parameters);
-    }
-
     @Command(aliases = { "pos", "getpos" },
             description = "getpos info",
             permissions = { "canary.command.player.getpos" },
@@ -199,7 +188,7 @@ public class CommandList implements CommandListener {
 
     @TabComplete
     public List<String> groupBaseTabComplete(MessageReceiver caller, String[] parameters) {
-        //TODO: finish implemeting arugments
+        //TODO: finish implemeting arguments
         switch (parameters.length) {
             case 1:
                 return matchTo(parameters, new String[]{ "add", "delete", "rename", "permission", "list" });
@@ -632,16 +621,6 @@ public class CommandList implements CommandListener {
             max = 4)
     public void mobSpawnCommand(MessageReceiver caller, String[] parameters) {
         natives.get("mobspawn").execute(caller, parameters);
-    }
-
-    @Command(aliases = { "mode", "gm" },
-            description = "mode info",
-            permissions = { "canary.command.player.mode" },
-            toolTip = "/mode <mode id> [playername] (0 = normal, 1 = creative, 2 = adventure)",
-            min = 2,
-            max = 3)
-    public void gameModeCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("mode").execute(caller, parameters);
     }
 
     @Command(aliases = { "motd" },

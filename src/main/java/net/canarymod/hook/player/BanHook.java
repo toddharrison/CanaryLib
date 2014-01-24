@@ -1,6 +1,7 @@
 package net.canarymod.hook.player;
 
-import net.canarymod.api.entity.living.humanoid.Player;
+import net.canarymod.api.PlayerReference;
+import net.canarymod.chat.MessageReceiver;
 import net.canarymod.hook.Hook;
 
 /**
@@ -10,14 +11,14 @@ import net.canarymod.hook.Hook;
  * @author Jason (darkdiplomat)
  */
 public final class BanHook extends Hook {
-    private Player banned;
-    private Player moderator;
+    private PlayerReference banned;
+    private MessageReceiver moderator;
     private String ip;
     private String reason;
     private boolean ipban;
     private long bantime;
 
-    public BanHook(Player banned, String ip, Player moderator, String reason, long bantime) {
+    public BanHook(PlayerReference banned, String ip, MessageReceiver moderator, String reason, long bantime) {
         this.banned = banned;
         this.moderator = moderator;
         this.reason = reason;
@@ -27,12 +28,12 @@ public final class BanHook extends Hook {
     }
 
     /**
-     * Get the {@link Player} that has been banned.
+     * Get the {@link PlayerReference} that has been banned.
      * This might be null if the banned player is offline/not currently on the server
      *
      * @return banned if not ipban, null otherwise
      */
-    public Player getBannedPlayer() {
+    public PlayerReference getBannedPlayer() {
         return banned;
     }
 
@@ -55,12 +56,11 @@ public final class BanHook extends Hook {
     }
 
     /**
-     * Get the {@link Player} that has issued the ban.
-     * This may be null if the ban was issued from the console
+     * Get the {@link MessageReceiver} that has issued the ban.
      *
      * @return moderator
      */
-    public Player getModerator() {
+    public MessageReceiver getModerator() {
         return moderator;
     }
 
