@@ -120,7 +120,7 @@ public class CommandList implements CommandListener {
     @TabComplete
     public List<String> banTabComplete(MessageReceiver caller, String[] parameters) {
         return parameters.length == 1 ? matchToKnownPlayer(parameters)
-                : parameters.length >= 2 && parameters[parameters.length - 2].matches("#\\d+") ? matchTo(parameters, new String[]{ "hour", "day", "week", "month" })
+                : parameters.length >= 2 && parameters[parameters.length - 2].matches("\\d+") ? matchTo(parameters, new String[]{ "hour", "day", "week", "month" })
                 : null;
     }
 

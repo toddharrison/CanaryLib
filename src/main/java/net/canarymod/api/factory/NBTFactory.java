@@ -1,18 +1,6 @@
 package net.canarymod.api.factory;
 
-import net.canarymod.api.nbt.BaseTag;
-import net.canarymod.api.nbt.ByteArrayTag;
-import net.canarymod.api.nbt.ByteTag;
-import net.canarymod.api.nbt.CompoundTag;
-import net.canarymod.api.nbt.DoubleTag;
-import net.canarymod.api.nbt.FloatTag;
-import net.canarymod.api.nbt.IntArrayTag;
-import net.canarymod.api.nbt.IntTag;
-import net.canarymod.api.nbt.ListTag;
-import net.canarymod.api.nbt.LongTag;
-import net.canarymod.api.nbt.NBTTagType;
-import net.canarymod.api.nbt.ShortTag;
-import net.canarymod.api.nbt.StringTag;
+import net.canarymod.api.nbt.*;
 
 /**
  * NamedBinaryTag Manufacturing Factory
@@ -162,5 +150,15 @@ public interface NBTFactory {
      * @return new {@link BaseTag} or null if invalid
      */
     BaseTag newTagFromType(NBTTagType type, String name, Object value);
+
+    /**
+     * Creates a new {@link BaseTag} from the specifed JSON string
+     *
+     * @param json
+     *         the json string
+     *
+     * @return new {@link BaseTag} or {@code null} if the json syntax is incorrect
+     */
+    BaseTag newTagFromJSON(String json);
 
 }
