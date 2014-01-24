@@ -36,6 +36,23 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
      *         the {@link CommandOwner}
      * @param translator
      *         the {@link LocaleHelper} translator instance
+     *
+     * @see LocaleHelper
+     */
+    public CanaryCommand(Command meta, CommandOwner owner, LocaleHelper translator) {
+        this(meta, owner, translator, null);
+    }
+
+    /**
+     * Creates a new CanaryMod command complete with localehelper for translating meta info,
+     * command owner and the meta data from the Command annotation
+     *
+     * @param meta
+     *         the {@link Command}
+     * @param owner
+     *         the {@link CommandOwner}
+     * @param translator
+     *         the {@link LocaleHelper} translator instance
      * @param tabComplete
      *         the {@link net.canarymod.commandsys.CanaryCommand.TabCompleteDispatch} if one is specified and usable (can be null)<br/>
      *         If no TabCompleteDispatch is present, an implementation can override {@link #tabComplete(net.canarymod.chat.MessageReceiver, String[])} instead

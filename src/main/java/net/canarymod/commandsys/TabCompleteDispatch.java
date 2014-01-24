@@ -9,6 +9,6 @@ import java.util.List;
  *
  * @author Jason (darkdiplomat)
  */
-public abstract class TabCompleteDispatch {
+abstract class TabCompleteDispatch {
     abstract List<String> complete(MessageReceiver msgrec, String[] args) throws TabCompleteException;
 }
