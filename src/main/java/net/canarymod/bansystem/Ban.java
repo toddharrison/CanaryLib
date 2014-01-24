@@ -1,6 +1,6 @@
 package net.canarymod.bansystem;
 
-import net.canarymod.api.entity.living.humanoid.Player;
+import net.canarymod.api.PlayerReference;
 
 /**
  * Contains information regarding a ban
@@ -30,7 +30,7 @@ public class Ban {
         setIsIpBan(false);
     }
 
-    public Ban(Player player, String reason, boolean ipBan) {
+    public Ban(PlayerReference player, String reason, boolean ipBan) {
         setSubject(player.getName());
         if (ipBan) {
             setIp(player.getIP());
@@ -44,7 +44,7 @@ public class Ban {
         setTimestamp(-1);
     }
 
-    public Ban(Player player, String reason, long timestamp, boolean ipBan) {
+    public Ban(PlayerReference player, String reason, long timestamp, boolean ipBan) {
         setSubject(player.getName());
         if (ipBan) {
             setIp(player.getIP());

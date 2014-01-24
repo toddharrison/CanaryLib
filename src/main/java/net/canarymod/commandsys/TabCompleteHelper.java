@@ -1,7 +1,12 @@
 package net.canarymod.commandsys;
 
 import net.canarymod.Canary;
+import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.DimensionType;
+import net.canarymod.bansystem.Ban;
+import net.canarymod.chat.MessageReceiver;
+import net.canarymod.kit.Kit;
+import net.canarymod.warp.Warp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -106,10 +111,34 @@ public final class TabCompleteHelper {
      * @param args
      *         the arguments to grab the last argument of
      *
-     * @return a list of matching {@link net.canarymod.api.entity.living.humanoid.Player} names found
+     * @return a list of matching online {@link net.canarymod.api.entity.living.humanoid.Player} names found
      */
     public static List<String> matchToOnlinePlayer(String[] args) {
         return matchTo(args, Canary.getServer().getPlayerNameList());
+    }
+
+    /**
+     * Matches the argument to possible {@link net.canarymod.api.entity.living.humanoid.Player} names, including offline players
+     *
+     * @param arg
+     *         the argument to get matches for
+     *
+     * @return list of matching {@link net.canarymod.api.entity.living.humanoid.Player} names found
+     */
+    public static List<String> matchToKnownPlayer(String arg) {
+        return matchTo(arg, Canary.getServer().getKnownPlayerNames());
+    }
+
+    /**
+     * Matches the last argument of specified arguments to possible {@link net.canarymod.api.entity.living.humanoid.Player} names, including offline players
+     *
+     * @param args
+     *         the arguments to grab the last argument of
+     *
+     * @return a list of matching {@link net.canarymod.api.entity.living.humanoid.Player} names found
+     */
+    public static List<String> matchToKnownPlayer(String[] args) {
+        return matchTo(args, Canary.getServer().getKnownPlayerNames());
     }
 
     /**
@@ -186,5 +215,131 @@ public final class TabCompleteHelper {
      */
     public static List<String> matchToDimension(String[] args) {
         return matchTo(args, DimensionType.knownDimensionNames());
+    }
+
+    /**
+     * Matches the argument to possible banned subjects
+     *
+     * @param arg
+     *         the argument to get matches for
+     *
+     * @return list of matching banned subjects found
+     */
+    public static List<String> matchToBannedSubject(String arg) {
+        ArrayList<String> banned = new ArrayList<String>();
+        for (Ban ban : Canary.bans().getAllBans()) {
+            banned.add(ban.getSubject());
+        }
+        return matchTo(arg, banned.toArray(new String[banned.size()]));
+    }
+
+    /**
+     * Matches the last argument of specified arguments to possible banned subjects
+     *
+     * @param args
+     *         the arguments to grab the last argument of
+     *
+     * @return a list of matching banned subjects found
+     */
+    public static List<String> matchToBannedSubject(String[] args) {
+        ArrayList<String> banned = new ArrayList<String>();
+        for (Ban ban : Canary.bans().getAllBans()) {
+            banned.add(ban.getSubject());
+        }
+        return matchTo(args, banned.toArray(new String[banned.size()]));
+    }
+
+    /**
+     * Matches the argument to possible {@link net.canarymod.kit.Kit} names
+     *
+     * @param arg
+     *         the argument to get matches for
+     * @param caller
+     *         the {@link net.canarymod.chat.MessageReceiver} to use for giving checks
+     *
+     * @return list of matching {@link net.canarymod.kit.Kit} names found
+     */
+    public static List<String> matchToKitNames(String arg, MessageReceiver caller) {
+        Player subject = caller instanceof Player ? (Player) caller : null;
+        ArrayList<String> kitNames = new ArrayList<String>();
+        for (Kit kit : Canary.kits().getAllKits()) {
+            if (subject != null && !kit.canBeGiven(subject)) {
+                continue;
+            }
+            kitNames.add(kit.getName());
+        }
+        return matchTo(arg, kitNames.toArray(new String[kitNames.size()]));
+    }
+
+    /**
+     * Matches the last argument of specified arguments to possible {@link net.canarymod.kit.Kit} names
+     *
+     * @param args
+     *         the arguments to grab the last argument of
+     * @param caller
+     *         the {@link net.canarymod.chat.MessageReceiver} to use for giving checks
+     *
+     * @return a list of matching {@link net.canarymod.kit.Kit} names found
+     */
+    public static List<String> matchToKitNames(String[] args, MessageReceiver caller) {
+        Player subject = caller instanceof Player ? (Player) caller : null;
+        ArrayList<String> kitNames = new ArrayList<String>();
+        for (Kit kit : Canary.kits().getAllKits()) {
+            if (subject != null && !kit.canBeGiven(subject)) {
+                continue;
+            }
+            kitNames.add(kit.getName());
+        }
+        return matchTo(args, kitNames.toArray(new String[kitNames.size()]));
+    }
+
+    /**
+     * Matches the argument to possible {@link net.canarymod.warp.Warp} names
+     *
+     * @param arg
+     *         the argument to get matches for
+     * @param caller
+     *         the {@link net.canarymod.chat.MessageReceiver} to use for permission checks
+     *
+     * @return list of matching {@link net.canarymod.warp.Warp} names found
+     */
+    public static List<String> matchToWarpNames(String arg, MessageReceiver caller) {
+        Player subject = caller instanceof Player ? (Player) caller : null;
+        ArrayList<String> warpNames = new ArrayList<String>();
+        for (Warp warp : Canary.warps().getAllWarps()) {
+            if (warp.isPlayerHome()) {
+                continue;
+            }
+            if (subject != null && !warp.canWarp(subject)) {
+                continue;
+            }
+            warpNames.add(warp.getName());
+        }
+        return matchTo(arg, warpNames.toArray(new String[warpNames.size()]));
+    }
+
+    /**
+     * Matches the last argument of specified arguments to possible {@link net.canarymod.warp.Warp} names
+     *
+     * @param args
+     *         the arguments to grab the last argument of
+     * @param caller
+     *         the {@link net.canarymod.chat.MessageReceiver} to use for giving checks
+     *
+     * @return a list of matching {@link net.canarymod.warp.Warp} names found
+     */
+    public static List<String> matchToWarpNames(String[] args, MessageReceiver caller) {
+        Player subject = caller instanceof Player ? (Player) caller : null;
+        ArrayList<String> warpNames = new ArrayList<String>();
+        for (Warp warp : Canary.warps().getAllWarps()) {
+            if (warp.isPlayerHome()) {
+                continue;
+            }
+            if (subject != null && !warp.canWarp(subject)) {
+                continue;
+            }
+            warpNames.add(warp.getName());
+        }
+        return matchTo(args, warpNames.toArray(new String[warpNames.size()]));
     }
 }

@@ -73,6 +73,37 @@ public class Kit {
     }
 
     /**
+     * Tests if a given {@link Player} can receive this kit
+     *
+     * @param player
+     *         the {@link Player} to check
+     *
+     * @return {@code true} if can be given; {@code false} if not
+     */
+    public boolean canBeGiven(Player player) {
+        if (owners != null && owners.length > 0) {
+            for (String owner : owners) {
+                if (owner.equals(player.getName())) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        if (groups != null && groups.length > 0) {
+            for (String g : groups) {
+                if (player.getGroup().hasControlOver(Canary.usersAndGroups().getGroup(g))) {
+                    return true;
+                }
+                else if (player.isInGroup(g, false)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * Give this kit to player, if possible
      *
      * @param player
@@ -94,40 +125,17 @@ public class Kit {
             lastUsages.put(player.getName(), lastUsed);
         }
         if (lastUsed + delay < ToolBox.getUnixTimestamp()) {
-            if (owners != null && owners.length > 0) {
-                for (String owner : owners) {
-                    if (owner.equals(player.getName())) {
-                        lastUsages.put(player.getName(), ToolBox.getUnixTimestamp());
-                        apply(player);
-                        return true;
-                    }
-                }
-                return false;
+            if (canBeGiven(player)) {
+                lastUsages.put(player.getName(), ToolBox.getUnixTimestamp());
+                apply(player);
+                return true;
             }
-            if (groups != null && groups.length > 0) {
-                for (String g : groups) {
-                    if (player.getGroup().hasControlOver(Canary.usersAndGroups().getGroup(g))) {
-                        lastUsages.put(player.getName(), ToolBox.getUnixTimestamp());
-                        apply(player);
-                        return true;
-                    }
-                    else if (player.isInGroup(g, false)) {
-                        apply(player);
-                        lastUsages.put(player.getName(), ToolBox.getUnixTimestamp());
-                        return true;
-                    }
-                }
-                return false;
-            }
-            // Both null, must be public
-            lastUsages.put(player.getName(), ToolBox.getUnixTimestamp());
-            apply(player);
-            return true;
         }
         else {
             player.notice("You have to wait " + TextFormat.ORANGE + ToolBox.getTimeUntil(lastUsed, delay) + TextFormat.LIGHT_RED + " before using again.");
             return false;
         }
+        return false;
     }
 
     private void apply(Player player) {

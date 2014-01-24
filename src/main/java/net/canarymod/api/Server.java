@@ -57,6 +57,13 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
     public String[] getPlayerNameList();
 
     /**
+     * Gets a {@code String[]} of known {@link Player} names, including {@link net.canarymod.api.OfflinePlayer} names
+     *
+     * @return {@code String[]} of known player names
+     */
+    public String[] getKnownPlayerNames();
+
+    /**
      * Get a list of online {@link Player}s
      *
      * @return an {@link List} of {@link Player}s

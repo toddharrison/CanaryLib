@@ -1,12 +1,12 @@
 package net.canarymod.warp;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.canarymod.Canary;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.position.Location;
 import net.canarymod.user.Group;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Contains information regarding warp points
@@ -95,6 +95,30 @@ public class Warp {
     }
 
     /**
+     * Checks if a given {@link Player} can warp
+     *
+     * @param player
+     *         the {@link Player} to check
+     *
+     * @return {@code true} if can warp; {@code false} if not
+     */
+    public boolean canWarp(Player player) {
+        if (owner != null) {
+            if (player.getName().equals(owner) || (player.isAdmin() || player.hasPermission("canary.command.warp.admin"))) {
+                return true;
+            }
+        }
+        else if (allowedGroups != null) {
+            for (Group gr : allowedGroups) {
+                if (player.getGroup().hasControlOver(gr)) {
+                    return true;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
      * Check preconditions and warp a player to this warps location
      *
      * @param player
@@ -102,28 +126,11 @@ public class Warp {
      * @return True if warped, false otherwise
      */
     public boolean warp(Player player) {
-        if (owner != null) {
-            if (player.getName().equals(owner) || (player.isAdmin() || player.hasPermission("canary.command.warp.admin"))) {
-                player.teleportTo(location);
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-        else {
-            if (allowedGroups == null) {
-                player.teleportTo(location);
-                return true;
-            }
-            for (Group gr : allowedGroups) {
-                if (player.getGroup().hasControlOver(gr)) {
-                    player.teleportTo(location);
-                    return true;
-                }
-            }
+        if (!canWarp(player)) {
             return false;
         }
+        player.teleportTo(location);
+        return true;
     }
 
     /**
