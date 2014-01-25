@@ -10,6 +10,7 @@ import static net.canarymod.Canary.log;
  * @author Chris (damagefilter)
  */
 public class DimensionType {
+
     // *** STATIC STUFF ***
     private static HashMap<String, DimensionType> typeList = new HashMap<String, DimensionType>(5); // 3 std dims and 2 extras
 
@@ -19,7 +20,7 @@ public class DimensionType {
 
     /**
      * Registers a shallow {@link DimensionType} (only the name without attached Generator) to the system.
-     * using a Dimensiontype like this will not have any effect on the world generation.
+     * using a DimensionType like this will not have any effect on the world generation.
      * A default generator, based on the ID will be used. If there is none,
      * the default Minecraft world generator is used.
      *
@@ -30,8 +31,8 @@ public class DimensionType {
      */
     public static DimensionType registerType(String name, int id) {
         if (typeList.containsKey(name.toLowerCase())) {
-            log.error("Tried to add existing dimension type, aborting! DimensionType: " + name);
-            return null;
+            log.warn("Tried to add existing dimension type, aborting! DimensionType: " + name);
+            return fromName(name);
         }
         if (validateId(id)) {
             return typeList.put(name.toLowerCase(), new DimensionType(name, id));
@@ -56,14 +57,14 @@ public class DimensionType {
      */
     public static DimensionType registerType(String name, int id, Class<? extends ChunkProviderCustom> cpc) {
         if (typeList.containsKey(name.toLowerCase())) {
-            log.error("Tried to add existing dimension type, aborting! DimensionType: " + name);
-            return null;
+            log.warn("Tried to add existing dimension type, aborting! DimensionType: " + name);
+            return fromName(name);
         }
         if (validateId(id)) {
             return typeList.put(name.toLowerCase(), new DimensionType(name, id, cpc));
         }
         else {
-            log.warn("DimensionType ID is not unique! Id: " + id + ", Type: " + name + " - Creating unique ID from hashCode!");
+            log.warn("WorldType ID is not unique! Id: " + id + ", Type: " + name + " - Creating unique ID from hashCode!");
             return typeList.put(name.toLowerCase(), new DimensionType(name, name.hashCode(), cpc));
         }
     }
