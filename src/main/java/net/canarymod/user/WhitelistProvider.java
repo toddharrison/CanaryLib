@@ -66,4 +66,8 @@ public class WhitelistProvider {
     public int getSize() {
         return whitelist.size();
     }
+
+    public String[] getWhitelisted() {
+        return whitelist.toArray(new String[getSize()]);
+    }
 }

@@ -1,9 +1,8 @@
 package net.canarymod.user;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.canarymod.backbone.BackboneReservelist;
+
+import java.util.List;
 
 /**
  * Reserve List Provider
@@ -67,5 +66,14 @@ public class ReservelistProvider {
      */
     public int getSize() {
         return reservelist.size();
+    }
+
+    /**
+     * Gets all reservations
+     *
+     * @return
+     */
+    public String[] getReservations() {
+        return reservelist.toArray(new String[reservelist.size()]);
     }
 }
