@@ -12,7 +12,6 @@ import org.apache.logging.log4j.MarkerManager;
  *         Updated to make use of log4j
  */
 public final class CanaryLevel implements Marker {
-
     private final Marker marker;
 
     /** Canary SERVERMESSAGE Level (801), For use with {@link MessageReceiver#message(String)} */
@@ -74,4 +73,18 @@ public final class CanaryLevel implements Marker {
         return marker.isInstanceOf(name);
     }
 
+    @Override
+    public String toString() {
+        return marker.toString();
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        return marker.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return marker.hashCode();
+    }
 }

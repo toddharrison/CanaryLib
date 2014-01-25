@@ -9,8 +9,8 @@ import net.canarymod.bansystem.Ban;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.hook.player.BanHook;
+import net.visualillusionsent.utils.IPAddressUtils;
 import net.visualillusionsent.utils.StringUtils;
-import sun.net.util.IPAddressUtil;
 
 /**
  * Command to ban players by ip
@@ -27,7 +27,7 @@ public class IpBanCommand implements NativeCommand {
         }
 
         PlayerReference ref = Canary.getServer().matchKnownPlayer(parameters[1]);
-        if (ref == null && !IPAddressUtil.isIPv4LiteralAddress(parameters[1])) {
+        if (ref == null && !IPAddressUtils.isIPv4Address(parameters[1])) {
             caller.notice(Translator.translate("ban failed") + " " + Translator.translateAndFormat("unknown player", parameters[1]));
             return;
         }
