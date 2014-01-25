@@ -66,6 +66,7 @@ public abstract class Canary implements TaskOwner {
     protected static Canary instance;
 
     static {
+        System.out.println("Please wait while the libraries initialize...");
         logger = Logman.getLogman("CanaryMod");
     }
 
@@ -357,7 +358,7 @@ public abstract class Canary implements TaskOwner {
      *         the {@link Throwable} thrown
      */
     public static void logStacktrace(String message, Throwable thrown) {
-        logger.info(CanaryLevel.SERVERMESSAGE, message, thrown);
+        logger.error(message, thrown);
     }
 
     /**
@@ -367,7 +368,7 @@ public abstract class Canary implements TaskOwner {
      *         the message to be logged
      */
     public static void logSevere(String message) {
-        logger.fatal(message);
+        logger.error(message);
     }
 
     /**
@@ -379,7 +380,7 @@ public abstract class Canary implements TaskOwner {
      *         The Exception that caused the logging of this message
      */
     public static void logSevere(String message, Throwable ex) {
-        logger.fatal(message, ex);
+        logger.error(message, ex);
     }
 
     /**
