@@ -136,7 +136,7 @@ public class ToolBox {
                 return Canary.getServer().getWorldManager().getWorld(nameOnly, t, false);
             }
             else {
-                return Canary.getServer().getWorldManager().getWorld(nameOnly, DimensionType.fromId(0), false);
+                return Canary.getServer().getWorldManager().getWorld(nameOnly, DimensionType.NORMAL, false);
             }
         }
         catch (UnknownWorldException e) {

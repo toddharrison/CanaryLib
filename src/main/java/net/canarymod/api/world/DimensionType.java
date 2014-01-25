@@ -1,8 +1,8 @@
 package net.canarymod.api.world;
 
-import net.canarymod.Canary;
-
 import java.util.HashMap;
+
+import static net.canarymod.Canary.log;
 
 /**
  * Dynamic worldType list
@@ -10,9 +10,12 @@ import java.util.HashMap;
  * @author Chris (damagefilter)
  */
 public class DimensionType {
-
     // *** STATIC STUFF ***
     private static HashMap<String, DimensionType> typeList = new HashMap<String, DimensionType>(5); // 3 std dims and 2 extras
+
+    public static final DimensionType NETHER = registerType("NETHER", -1);
+    public static final DimensionType NORMAL = registerType("NORMAL", 0);
+    public static final DimensionType END = registerType("END", 1);
 
     /**
      * Registers a shallow {@link DimensionType} (only the name without attached Generator) to the system.
@@ -25,17 +28,17 @@ public class DimensionType {
      * @param id
      *         The id. If the ID is already taken, a unique one is auto-generated
      */
-    public static void registerType(String name, int id) {
+    public static DimensionType registerType(String name, int id) {
         if (typeList.containsKey(name.toLowerCase())) {
-            Canary.logWarning("Tried to add existing world type, aborting! WorldType: " + name);
-            return;
+            log.error("Tried to add existing dimension type, aborting! DimensionType: " + name);
+            return null;
         }
         if (validateId(id)) {
-            typeList.put(name.toLowerCase(), new DimensionType(name, id));
+            return typeList.put(name.toLowerCase(), new DimensionType(name, id));
         }
         else {
-            Canary.logWarning("WorldType ID is not unique! Id: " + id + ", Type: " + name + " - Creating unique ID from hashCode!");
-            typeList.put(name.toLowerCase(), new DimensionType(name, name.hashCode()));
+            log.warn("DimensionType ID is not unique! Id: " + id + ", Type: " + name + " - Creating unique ID from hashCode!");
+            return typeList.put(name.toLowerCase(), new DimensionType(name, name.hashCode()));
         }
     }
 
@@ -51,17 +54,17 @@ public class DimensionType {
      * @param cpc
      *         The Class instance of the custom world generator
      */
-    public static void registerType(String name, int id, Class<? extends ChunkProviderCustom> cpc) {
+    public static DimensionType registerType(String name, int id, Class<? extends ChunkProviderCustom> cpc) {
         if (typeList.containsKey(name.toLowerCase())) {
-            Canary.logWarning("Tried to add existing world type, aborting! WorldType: " + name);
-            return;
+            log.error("Tried to add existing dimension type, aborting! DimensionType: " + name);
+            return null;
         }
         if (validateId(id)) {
-            typeList.put(name.toLowerCase(), new DimensionType(name, id, cpc));
+            return typeList.put(name.toLowerCase(), new DimensionType(name, id, cpc));
         }
         else {
-            Canary.logWarning("WorldType ID is not unique! Id: " + id + ", Type: " + name + " - Creating unique ID from hashCode!");
-            typeList.put(name.toLowerCase(), new DimensionType(name, name.hashCode(), cpc));
+            log.warn("DimensionType ID is not unique! Id: " + id + ", Type: " + name + " - Creating unique ID from hashCode!");
+            return typeList.put(name.toLowerCase(), new DimensionType(name, name.hashCode(), cpc));
         }
     }
 
@@ -201,10 +204,10 @@ public class DimensionType {
             return cpc.newInstance();
         }
         catch (InstantiationException ex) {
-            Canary.logSevere(ex.getMessage());
+            log.error(ex.getMessage());
         }
         catch (IllegalAccessException ex) {
-            Canary.logSevere(ex.getMessage());
+            log.error(ex.getMessage());
         }
         return null;
     }

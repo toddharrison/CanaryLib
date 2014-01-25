@@ -54,7 +54,7 @@ public class Location extends Vector3D {
     public Location(double x, double y, double z) {
         super(x, y, z);
         world = Configuration.getServerConfig().getDefaultWorldName();
-        dimension = DimensionType.fromName("NORMAL");
+        dimension = DimensionType.NORMAL;
         pitch = rotation = 0f;
     }
 

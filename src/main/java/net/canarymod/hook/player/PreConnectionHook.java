@@ -20,7 +20,6 @@ public final class PreConnectionHook extends Hook {
         this.name = name;
         this.setWorld(world);
         this.setWorldType(dimType);
-
     }
 
     /**

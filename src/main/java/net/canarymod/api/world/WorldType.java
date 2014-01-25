@@ -12,6 +12,7 @@ public class WorldType {
     public static WorldType SUPERFLAT = new WorldType("FLAT");
     public static WorldType DEFAULT_1_1 = new WorldType("DEFAULT_1_1");
     public static WorldType LARGEBIOMES = new WorldType("LARGEBIOMES");
+    public static WorldType AMPLIFIED = new WorldType("AMPLIFIED");
 
     private String string;
     private static HashMap<String, WorldType> types;

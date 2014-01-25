@@ -12,7 +12,7 @@ import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.hook.player.TeleportHook;
 
 /**
- * Command to teleport a player to a player or x, y, z  
+ * Command to teleport a player to a player or x, y, z
  *
  * @author Chris (damagefilter)
  */
@@ -58,7 +58,7 @@ public class TeleportCommand implements NativeCommand {
                         DimensionType dType = DimensionType.fromName(dTypeName);
                         String correctedName = dType == null ? args[4] : args[4].replaceAll("_(\\w+)$", "");
                         if (dType == null) {
-                            dType = DimensionType.fromName("NORMAL");
+                            dType = DimensionType.NORMAL;
                         }
                         World world = Canary.getServer().getWorldManager().getWorld(correctedName, dType, args.length > 5 && player.hasPermission("canary.command.teleport.self.world.load") ? Boolean.valueOf(args[5]) : false);
                         if (world != null) {
