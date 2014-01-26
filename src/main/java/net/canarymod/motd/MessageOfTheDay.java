@@ -1,8 +1,6 @@
 package net.canarymod.motd;
 
-import net.canarymod.Canary;
 import net.canarymod.chat.MessageReceiver;
-import net.canarymod.commandsys.DuplicateCommandException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,6 +13,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
+
+import static net.canarymod.Canary.log;
 
 /**
  * Message of the Day container
@@ -37,7 +37,7 @@ public class MessageOfTheDay {
             loadMOTD();
         }
         catch (Exception ex) {
-            Canary.logSevere("Failed to read/write Message of the Day from/to the motd.txt file.", ex);
+            log.error("Failed to read/write Message of the Day from/to the motd.txt file.", ex);
         }
     }
 
@@ -90,7 +90,7 @@ public class MessageOfTheDay {
                         toSend = toSend.replace(motdp.key(), motdp.parse(msgrec));
                     }
                     catch (Exception ex) {
-                        Canary.logStacktrace("Failed to parse MessageOfTheDay Variable from MOTDOwner: " + motdp.getOwner().getName(), ex.getCause());
+                        log.error("Failed to parse MessageOfTheDay Variable from MOTDOwner: " + motdp.getOwner().getName(), ex.getCause());
                     }
                 }
             }
@@ -120,16 +120,16 @@ public class MessageOfTheDay {
                 continue;
             }
             if (method.getReturnType() != String.class) {
-                Canary.logWarning("You have a MOTD Listner method with invalid return type! (" + method.getName() + ") (Expected: String Got: " + method.getReturnType().getName() + ")");
+                log.warn("You have a MOTD Listner method with invalid return type! (" + method.getName() + ") (Expected: String Got: " + method.getReturnType().getName() + ")");
                 continue;
             }
             Class<?>[] params = method.getParameterTypes();
             if (params.length != 1) {
-                Canary.logWarning("You have a MOTD Listner method with invalid number of arguments! (" + method.getName() + ") (Expected: 1 Got: " + params.length + ")");
+                log.warn("You have a MOTD Listner method with invalid number of arguments! (" + method.getName() + ") (Expected: 1 Got: " + params.length + ")");
                 continue;
             }
             if (!MessageReceiver.class.isAssignableFrom(params[0])) {
-                Canary.logWarning("You have a MOTD method with invalid argument types! - " + method.getName());
+                log.warn("You have a MOTD method with invalid argument types! - " + method.getName());
                 continue;
             }
             MOTDKey meta = method.getAnnotation(MOTDKey.class);
@@ -143,7 +143,7 @@ public class MessageOfTheDay {
             // Check for duplicate keys
             for (MOTDParser parser : motd_vars) {
                 if (meta.key().equals(parser.key()) && !force) {
-                    Canary.logWarning(owner.getName() + " attempted to register MOTDKey: '" + meta.key() + "' but it is already registered to " + parser.getOwner().getName());
+                    log.warn(owner.getName() + " attempted to register MOTDKey: '" + meta.key() + "' but it is already registered to " + parser.getOwner().getName());
                     continue;
                 }
             }

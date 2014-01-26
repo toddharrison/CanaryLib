@@ -1,9 +1,10 @@
 package net.canarymod.config;
 
-import net.canarymod.Canary;
 import net.visualillusionsent.utils.PropertiesFile;
 
 import java.io.File;
+
+import static net.canarymod.Canary.log;
 
 /**
  * Server Configuration Container
@@ -18,7 +19,7 @@ public class ServerConfiguration implements ConfigurationContainer {
         File test = new File(path);
 
         if (!test.exists()) {
-            Canary.logInfo("Could not find the server configuration at " + path + ", creating default.");
+            log.info("Could not find the server configuration at " + path + ", creating default.");
         }
         this.cfg = new PropertiesFile("config" + File.separatorChar + "server.cfg");
         verifyConfig();

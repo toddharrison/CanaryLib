@@ -1,6 +1,5 @@
 package net.canarymod.database.sqlite;
 
-import net.canarymod.Canary;
 import net.canarymod.database.Column;
 import net.canarymod.database.Column.DataType;
 import net.canarymod.database.DataAccess;
@@ -12,10 +11,23 @@ import net.canarymod.database.exceptions.DatabaseTableInconsistencyException;
 import net.canarymod.database.exceptions.DatabaseWriteException;
 
 import java.io.File;
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static net.canarymod.Canary.log;
 
 /**
  * SQLite Database
@@ -39,8 +51,8 @@ public class SQLiteDatabase extends Database {
             ps.execute();
             ps.close();
         }
-        catch(SQLException e) {
-            Canary.logWarning("Error while instantiating a new SQLiteDatabase!", e);
+        catch (SQLException e) {
+            log.error("Error while instantiating a new SQLiteDatabase!", e);
         }
 
     }
@@ -98,10 +110,10 @@ public class SQLiteDatabase extends Database {
             }
         }
         catch (SQLException ex) {
-            Canary.logStacktrace(ex.getMessage(), ex);
+            log.error(ex.getMessage(), ex);
         }
         catch (DatabaseTableInconsistencyException dtie) {
-            Canary.logStacktrace(dtie.getMessage(), dtie);
+            log.error(dtie.getMessage(), dtie);
         }
         finally {
             close(null, ps, null);
@@ -141,13 +153,13 @@ public class SQLiteDatabase extends Database {
             }
         }
         catch (SQLException ex) {
-            Canary.logWarning(ex.getMessage(), ex);
+            log.error(ex.getMessage(), ex);
         }
         catch (DatabaseTableInconsistencyException dtie) {
-            Canary.logWarning(dtie.getMessage(), dtie);
+            log.error(dtie.getMessage(), dtie);
         }
         catch (DatabaseReadException e) {
-            Canary.logWarning(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         finally {
             PreparedStatement st = null;
@@ -155,7 +167,7 @@ public class SQLiteDatabase extends Database {
                 st = rs != null && rs.getStatement() instanceof PreparedStatement ? (PreparedStatement) rs.getStatement() : null;
             }
             catch (SQLException e) {
-                Canary.logWarning(e.getMessage(), e);
+                log.error(e.getMessage(), e);
             }
             close(conn, st, rs);
         }
@@ -169,7 +181,7 @@ public class SQLiteDatabase extends Database {
             this.deleteRows(conn, dataAccess, filters, false);
         }
         catch (DatabaseReadException dre) {
-            Canary.logStacktrace(dre.getMessage(), dre);
+            log.error(dre.getMessage(), dre);
         }
     }
 
@@ -181,7 +193,7 @@ public class SQLiteDatabase extends Database {
             this.deleteRows(conn, dataAccess, filters, true);
         }
         catch (DatabaseReadException dre) {
-            Canary.logStacktrace(dre.getMessage(), dre);
+            log.error(dre.getMessage(), dre);
         }
     }
 
@@ -208,13 +220,13 @@ public class SQLiteDatabase extends Database {
             }
         }
         catch (DatabaseReadException dre) {
-            Canary.logStacktrace(dre.getMessage(), dre);
+            log.error(dre.getMessage(), dre);
         }
         catch (SQLException ex) {
-            Canary.logStacktrace(ex.getMessage(), ex);
+            log.error(ex.getMessage(), ex);
         }
         catch (DatabaseTableInconsistencyException dtie) {
-            Canary.logStacktrace(dtie.getMessage(), dtie);
+            log.error(dtie.getMessage(), dtie);
         }
         finally {
             try {
@@ -224,7 +236,7 @@ public class SQLiteDatabase extends Database {
                 }
             }
             catch (SQLException ex) {
-                Canary.logStacktrace(ex.getMessage(), ex);
+                log.error(ex.getMessage(), ex);
             }
         }
         try {
@@ -233,7 +245,7 @@ public class SQLiteDatabase extends Database {
             }
         }
         catch (DatabaseAccessException ex) {
-            Canary.logStacktrace(ex.getMessage(), ex);
+            log.error(ex.getMessage(), ex);
         }
     }
 
@@ -263,13 +275,13 @@ public class SQLiteDatabase extends Database {
 
         }
         catch (DatabaseReadException dre) {
-            Canary.logStacktrace(dre.getMessage(), dre);
+            log.error(dre.getMessage(), dre);
         }
         catch (SQLException ex) {
-            Canary.logStacktrace(ex.getMessage(), ex);
+            log.error(ex.getMessage(), ex);
         }
         catch (DatabaseTableInconsistencyException dtie) {
-            Canary.logStacktrace(dtie.getMessage(), dtie);
+            log.error(dtie.getMessage(), dtie);
         }
         finally {
             try {
@@ -279,7 +291,7 @@ public class SQLiteDatabase extends Database {
                 }
             }
             catch (SQLException ex) {
-                Canary.logStacktrace(ex.getMessage(), ex);
+                log.error(ex.getMessage(), ex);
             }
         }
         try {
@@ -291,7 +303,7 @@ public class SQLiteDatabase extends Database {
 
         }
         catch (DatabaseAccessException dae) {
-            Canary.logStacktrace(dae.getMessage(), dae);
+            log.error(dae.getMessage(), dae);
         }
     }
 
@@ -340,7 +352,7 @@ public class SQLiteDatabase extends Database {
             throw new DatabaseWriteException("Error updating SQLite schema: " + sqle.getMessage());
         }
         catch (DatabaseTableInconsistencyException dtie) {
-            Canary.logStacktrace("Error updating SQLite schema." + dtie.getMessage(), dtie);
+            log.error("Error updating SQLite schema." + dtie.getMessage(), dtie);
         }
         finally {
             close(null, null, rs);
@@ -382,14 +394,14 @@ public class SQLiteDatabase extends Database {
             String state = "CREATE TABLE IF NOT EXISTS `" + data.getName() + "` (" + fields.toString() + ")";
             ps = JdbcConnectionManager.getConnection().prepareStatement(state);
             if (ps.execute()) {
-                Canary.logDebug("Statment Executed!");
+                log.debug("Statment Executed!");
             }
         }
         catch (SQLException ex) {
             throw new DatabaseWriteException("Error creating SQLite table '" + data.getName() + "'. " + ex.getMessage());
         }
         catch (DatabaseTableInconsistencyException ex) {
-            Canary.logStacktrace(ex.getMessage() + " Error creating SQLite table '" + data.getName() + "'. ", ex);
+            log.error(ex.getMessage() + " Error creating SQLite table '" + data.getName() + "'. ", ex);
         }
         finally {
             close(null, ps, null);
@@ -490,9 +502,12 @@ public class SQLiteDatabase extends Database {
      * This will return all the data to the connection pool.
      * You can pass null for objects that are not relevant in your given context
      *
-     * @param c  the connection object
-     * @param ps the prepared statement
-     * @param rs the result set
+     * @param c
+     *         the connection object
+     * @param ps
+     *         the prepared statement
+     * @param rs
+     *         the result set
      */
     private void close(Connection c, PreparedStatement ps, ResultSet rs) {
         try {
@@ -507,7 +522,7 @@ public class SQLiteDatabase extends Database {
             }
         }
         catch (SQLException e) {
-            Canary.logWarning(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
 
     }
@@ -617,11 +632,17 @@ public class SQLiteDatabase extends Database {
      * Sets the given object as the given type to the given index
      * of the given PreparedStatement.
      *
-     * @param index the index to set to
-     * @param o     the object to set
-     * @param ps    the prepared statement
-     * @param t     the DataType hint
-     * @throws DatabaseWriteException when an SQLException was raised or when the data type doesn't match the objects type
+     * @param index
+     *         the index to set to
+     * @param o
+     *         the object to set
+     * @param ps
+     *         the prepared statement
+     * @param t
+     *         the DataType hint
+     *
+     * @throws DatabaseWriteException
+     *         when an SQLException was raised or when the data type doesn't match the objects type
      */
     private void setToStatement(int index, Object o, PreparedStatement ps, Column.DataType t) throws DatabaseWriteException {
         try {
@@ -664,7 +685,7 @@ public class SQLiteDatabase extends Database {
             }
         }
         catch (SQLException ex) {
-            Canary.logStacktrace(ex.getMessage(), ex);
+            log.error(ex.getMessage(), ex);
         }
         finally {
             close(null, null, rs);
@@ -814,7 +835,7 @@ public class SQLiteDatabase extends Database {
      * @return a string representation of the passed list.
      */
     public String getString(List<?> list) {
-        if(list == null) {
+        if (list == null) {
             return NULL_STRING;
         }
         StringBuilder sb = new StringBuilder();

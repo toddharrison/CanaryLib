@@ -1,11 +1,12 @@
 package net.canarymod.tasks;
 
+import net.canarymod.plugin.Plugin;
+
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-import net.canarymod.Canary;
-import net.canarymod.plugin.Plugin;
+import static net.canarymod.Canary.log;
 
 /**
  * Server Task Manager
@@ -90,7 +91,7 @@ public final class ServerTaskManager {
                         task.run();
                     }
                     catch (Throwable thrown) {
-                        Canary.logStacktrace("An Exception occured while executing ServerTask: " + task.getClass().getSimpleName(), thrown);
+                        log.error("An Exception occured while executing ServerTask: " + task.getClass().getSimpleName(), thrown);
                         taskIter.remove();
                         continue;
                     }

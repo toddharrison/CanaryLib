@@ -12,7 +12,6 @@ import net.canarymod.database.Database;
 import net.canarymod.help.HelpManager;
 import net.canarymod.hook.HookExecutor;
 import net.canarymod.kit.KitProvider;
-import net.canarymod.logger.CanaryLevel;
 import net.canarymod.logger.Logman;
 import net.canarymod.motd.MessageOfTheDay;
 import net.canarymod.permissionsystem.PermissionManager;
@@ -34,9 +33,10 @@ import java.util.HashMap;
  * @author Chris (damagefilter)
  * @author Jos Kuijpers
  * @author Brian (WWOL)
+ * @author Jason (darkdiplomat)
  */
 public abstract class Canary implements TaskOwner {
-    final private static Logman logger;
+    public final static Logman log;
     private static boolean pluginsUp;
     private static String jarPath;
     protected Server server;
@@ -67,7 +67,7 @@ public abstract class Canary implements TaskOwner {
 
     static {
         System.out.println("Please wait while the libraries initialize...");
-        logger = Logman.getLogman("CanaryMod");
+        log = Logman.getLogman("CanaryMod");
     }
 
     /**
@@ -255,7 +255,7 @@ public abstract class Canary implements TaskOwner {
     /** Enables all plugins */
     public static void enablePlugins() {
         if (!pluginsUp && instance.server != null) {
-            logInfo("Enabling Plugins...");
+            log.info("Enabling Plugins...");
             loader().enableAllPlugins();
             pluginsUp = true;
         }
@@ -307,7 +307,7 @@ public abstract class Canary implements TaskOwner {
                 return ser.deserialize(data);
             }
             catch (CanaryDeserializeException e) {
-                Canary.logStacktrace("Deserialization failure.", e);
+                log.error("Deserialization failure.", e);
             }
         }
         return null;
@@ -322,7 +322,7 @@ public abstract class Canary implements TaskOwner {
      *         The type this serializer can process
      */
     public static void addSerializer(Serializer<?> serializer, Class<?> type) {
-        Canary.logDebug("Adding a new Serializer: " + type);
+        log.debug("Adding a new Serializer: " + type);
         instance.serializers.put(type, serializer);
     }
 
@@ -347,150 +347,6 @@ public abstract class Canary implements TaskOwner {
         for (Player p : getServer().getPlayerList()) {
             p.initPlayerData();
         }
-    }
-
-    /**
-     * Use the standard CanaryMod logger to dump a Stacktrace with WARNING level
-     *
-     * @param message
-     *         the message to be logged
-     * @param thrown
-     *         the {@link Throwable} thrown
-     */
-    public static void logStacktrace(String message, Throwable thrown) {
-        logger.error(message, thrown);
-    }
-
-    /**
-     * Use the standard CanaryMod logger to log with SEVERE level
-     *
-     * @param message
-     *         the message to be logged
-     */
-    public static void logSevere(String message) {
-        logger.error(message);
-    }
-
-    /**
-     * Use the standard CanaryMod logger to log with SEVERE level
-     *
-     * @param message
-     *         the message to be logged
-     * @param ex
-     *         The Exception that caused the logging of this message
-     */
-    public static void logSevere(String message, Throwable ex) {
-        logger.error(message, ex);
-    }
-
-    /**
-     * Use the standard CanaryMod logger to log with WARNING level
-     *
-     * @param message
-     *         the message to be logged
-     */
-    public static void logWarning(String message) {
-        logger.warn(message);
-    }
-
-    /**
-     * Use the standard CanaryMod logger to log with WARNING level
-     *
-     * @param message
-     *         the message to be logged
-     * @param ex
-     *         The Exception that caused the logging of this message
-     */
-    public static void logWarning(String message, Throwable ex) {
-        logger.warn(message, ex);
-    }
-
-    /**
-     * Use the standard CanaryMod logger to log with INFO level
-     *
-     * @param message
-     *         the message to be logged
-     */
-    public static void logInfo(String message) {
-        logger.info(message);
-    }
-
-    /**
-     * Use the standard CanaryMod logger to log messages in debug mode as DEBUG
-     *
-     * @param message
-     *         the message to be logged
-     */
-    public static void logDebug(String message) {
-        if (Configuration.getServerConfig().isDebugMode()) {
-            logger.debug(message);
-        }
-    }
-
-    /**
-     * Use the standard CanaryMod logger to log messages in debug mode as DEBUG
-     *
-     * @param message
-     *         the message to be logged
-     * @param thrown
-     *         the Throwable thrown
-     */
-    public static void logDebug(String message, Throwable thrown) {
-        if (Configuration.getServerConfig().isDebugMode()) {
-            logger.debug(message, thrown);
-        }
-    }
-
-    /**
-     * Use the standard CanaryMod logger to log messages with NOTICE level
-     *
-     * @param message
-     *         the message to be logged
-     */
-    public static void logNotice(String message) {
-        logger.info(CanaryLevel.NOTICE, message);
-    }
-
-    /**
-     * Use the standard CanaryMod logger to log situations that should normally never occur.
-     *
-     * @param message
-     *         the message to be logged
-     */
-    public static void logDerp(String message) {
-        logger.logDerp(message);
-    }
-
-    /**
-     * Use the standard CanaryMod logger for logging exceptions that should normally never occur.
-     *
-     * @param message
-     *         the message to be logged
-     * @param t
-     *         the Throwable object to be logged
-     */
-    public static void logDerp(String message, Throwable t) {
-        logger.info(CanaryLevel.DERP, message, t);
-    }
-
-    /**
-     * Use the standard CanaryMod logger to log messages with SERVERMESSAGE level
-     *
-     * @param message
-     *         the message to be logged
-     */
-    public static void logServerMessage(String message) {
-        logger.info(CanaryLevel.SERVERMESSAGE, message);
-    }
-
-    /**
-     * Use the standard CanaryMod logger to log messages with CHAT level
-     *
-     * @param message
-     *         the message to be logged
-     */
-    public static void logChat(String message) {
-        logger.info(CanaryLevel.CHAT, message);
     }
 
     /**

@@ -1,6 +1,5 @@
 package net.canarymod.backbone;
 
-import net.canarymod.Canary;
 import net.canarymod.database.DataAccess;
 import net.canarymod.database.Database;
 import net.canarymod.database.exceptions.DatabaseReadException;
@@ -9,6 +8,8 @@ import net.canarymod.database.exceptions.DatabaseWriteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static net.canarymod.Canary.log;
 
 /**
  * Backbone to the ops system. This contains NO logic, it is only the data
@@ -20,13 +21,14 @@ import java.util.List;
 public class BackboneOperators extends Backbone {
 
     public static OperatorsDataAccess schema = new OperatorsDataAccess();
+
     public BackboneOperators() {
         super(Backbone.System.OPERATORS);
         try {
             Database.get().updateSchema(schema);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace("Failed to update database schema", e);
+            log.error("Failed to update database schema", e);
         }
     }
 
@@ -40,7 +42,7 @@ public class BackboneOperators extends Backbone {
             Database.get().load(data, filter);
         }
         catch (DatabaseReadException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         return data.hasData();
     }
@@ -62,7 +64,7 @@ public class BackboneOperators extends Backbone {
             Database.get().insert(data);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -79,7 +81,7 @@ public class BackboneOperators extends Backbone {
             Database.get().remove(schema, filter);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -100,7 +102,7 @@ public class BackboneOperators extends Backbone {
             }
         }
         catch (DatabaseReadException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         return ops;
     }

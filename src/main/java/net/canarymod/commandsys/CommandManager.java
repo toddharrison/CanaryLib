@@ -14,12 +14,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import static net.canarymod.Canary.log;
+
 /**
  * Manages all commands.
  * Add commands using one of the methods below.
  *
  * @author Willem (l4mRh4X0r)
  * @author Chris (damagefilter)
+ * @author Jason (darkdiplomat)
  */
 public class CommandManager {
     HashMap<String, CanaryCommand> commands = new HashMap<String, CanaryCommand>();
@@ -286,11 +289,11 @@ public class CommandManager {
             }
             Class<?>[] params = method.getParameterTypes();
             if (params.length != 2) {
-                Canary.logWarning("You have a Command method with invalid number of arguments! - " + method.getName());
+                log.warn("You have a Command method with invalid number of arguments! - " + method.getName());
                 continue;
             }
             if (!(MessageReceiver.class.isAssignableFrom(params[0]) && String[].class.isAssignableFrom(params[1]))) {
-                Canary.logWarning("You have a Command method with invalid argument types! - " + method.getName());
+                log.warn("You have a Command method with invalid argument types! - " + method.getName());
                 continue;
             }
 
@@ -305,17 +308,17 @@ public class CommandManager {
                     tabCompMeth = listener.getClass().getMethod(meta.tabCompleteMethod(), MessageReceiver.class, String[].class);
                 }
                 catch (NoSuchMethodException e) {
-                    Canary.logWarning(String.format("[%s/%s/%s] TabComplete initialization failure: Unable to locate specified Method", owner.getName(), listener.getClass().getSimpleName(), meta.tabCompleteMethod()));
+                    log.warn(String.format("[%s/%s/%s] TabComplete initialization failure: Unable to locate specified Method", owner.getName(), listener.getClass().getSimpleName(), meta.tabCompleteMethod()));
                     break darkdiplomatIsAWizard;
                 }
 
                 if (!tabCompMeth.isAnnotationPresent(TabComplete.class)) {
-                    Canary.logWarning(String.format("[%s/%s/%s] TabComplete initialization failure: TabComplete annotation missing", owner.getName(), listener.getClass().getSimpleName(), meta.tabCompleteMethod()));
+                    log.warn(String.format("[%s/%s/%s] TabComplete initialization failure: TabComplete annotation missing", owner.getName(), listener.getClass().getSimpleName(), meta.tabCompleteMethod()));
                     break darkdiplomatIsAWizard;
                 }
 
                 if (!List.class.isAssignableFrom(tabCompMeth.getReturnType())) {
-                    Canary.logWarning(String.format("[%s/%s/%s] AutoComplete initialization failure: Return type was not of List", owner.getName(), listener.getClass().getSimpleName(), meta.tabCompleteMethod()));
+                    log.warn(String.format("[%s/%s/%s] AutoComplete initialization failure: Return type was not of List", owner.getName(), listener.getClass().getSimpleName(), meta.tabCompleteMethod()));
                     break darkdiplomatIsAWizard;
                 }
 
@@ -339,7 +342,7 @@ public class CommandManager {
                         method.invoke(listener, new Object[]{ caller, parameters });
                     }
                     catch (Exception ex) {
-                        Canary.logStacktrace("Could not execute command...", ex.getCause());
+                        log.error("Could not execute command...", ex.getCause());
                     }
                 }
             };

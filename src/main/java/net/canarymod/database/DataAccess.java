@@ -1,6 +1,5 @@
 package net.canarymod.database;
 
-import net.canarymod.Canary;
 import net.canarymod.ToolBox;
 import net.canarymod.database.exceptions.DatabaseAccessException;
 import net.canarymod.database.exceptions.DatabaseTableInconsistencyException;
@@ -12,6 +11,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+
+import static net.canarymod.Canary.log;
 
 /**
  * Handle the layout and creation of tables
@@ -84,7 +85,6 @@ public abstract class DataAccess {
      * @return HashMap that maps the Column meta data to the data present in database.
      *
      * @throws DatabaseTableInconsistencyException
-     *
      */
     public final HashMap<Column, Object> toDatabaseEntryList() throws DatabaseTableInconsistencyException {
         List<Field> fields = Arrays.asList(ToolBox.safeArrayMerge(getClass().getFields(), getClass().getDeclaredFields(), new Field[1]));
@@ -105,7 +105,7 @@ public abstract class DataAccess {
                 fieldMap.put(colInfo, field.get(this));
             }
             catch (IllegalArgumentException e) {
-                Canary.logStacktrace(e.getMessage(), e);
+                log.error(e.getMessage(), e);
             }
             catch (IllegalAccessException e) {
                 isInconsistent = true;
@@ -147,7 +147,6 @@ public abstract class DataAccess {
      * @return a HashSet containing all Columns as defined in this {@link DataAccess} object
      *
      * @throws DatabaseTableInconsistencyException
-     *
      */
     public final HashSet<Column> getTableLayout() throws DatabaseTableInconsistencyException {
         Field[] fields = ToolBox.safeArrayMerge(getClass().getFields(), getClass().getDeclaredFields(), new Field[1]);
@@ -232,7 +231,7 @@ public abstract class DataAccess {
             return false;
         }
         catch (DatabaseTableInconsistencyException e) {
-            Canary.logSevere("Could not finish column name lookup in database for " + tableName, e);
+            log.error("Could not finish column name lookup in database for " + tableName, e);
             return false;
         }
     }
@@ -240,7 +239,9 @@ public abstract class DataAccess {
     /**
      * Retrieves a Column with the given name from this DataAccess.
      *
-     * @param name the column name
+     * @param name
+     *         the column name
+     *
      * @return a column or null if there is no column with the name given
      */
     public final Column getColumnForName(String name) {
@@ -253,7 +254,7 @@ public abstract class DataAccess {
             return null;
         }
         catch (DatabaseTableInconsistencyException e) {
-            Canary.logSevere("Could not finish column name lookup in database for " + tableName, e);
+            log.error("Could not finish column name lookup in database for " + tableName, e);
             return null;
         }
     }
@@ -264,7 +265,7 @@ public abstract class DataAccess {
             Database.get().updateSchema(this);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 

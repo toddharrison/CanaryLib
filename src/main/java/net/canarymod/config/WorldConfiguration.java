@@ -1,6 +1,5 @@
 package net.canarymod.config;
 
-import net.canarymod.Canary;
 import net.canarymod.MathHelp;
 import net.canarymod.api.GameMode;
 import net.canarymod.api.world.World;
@@ -9,6 +8,8 @@ import net.visualillusionsent.utils.PropertiesFile;
 
 import java.io.File;
 import java.util.HashMap;
+
+import static net.canarymod.Canary.log;
 
 /**
  * @author Jason (darkdiplomat)
@@ -35,7 +36,7 @@ public class WorldConfiguration implements ConfigurationContainer {
         File test = new File(path);
 
         if (!test.exists()) {
-            Canary.logInfo("Could not find the world configuration for " + worldname + " at " + path + ", creating default.");
+            log.info("Could not find the world configuration for " + worldname + " at " + path + ", creating default.");
         }
         cfg = new PropertiesFile(path + File.separatorChar + worldname + ".cfg");
         verifyConfig();

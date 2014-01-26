@@ -1,10 +1,11 @@
 package net.canarymod.config;
 
-import net.canarymod.Canary;
 import net.canarymod.database.JdbcConnectionManager;
 import net.visualillusionsent.utils.PropertiesFile;
 
 import java.io.File;
+
+import static net.canarymod.Canary.log;
 
 /**
  * Database Configuration settings
@@ -19,7 +20,7 @@ public class DatabaseConfiguration implements ConfigurationContainer {
         File test = new File(path);
 
         if (!test.exists()) {
-            Canary.logInfo("Could not find the database configuration at " + path + ", creating default.");
+            log.info("Could not find the database configuration at " + path + ", creating default.");
         }
         this.cfg = new PropertiesFile(path);
         verifyConfig();
@@ -102,7 +103,7 @@ public class DatabaseConfiguration implements ConfigurationContainer {
      */
     public String getDatabaseUrl(String driver) {
         int port = getDatabasePort();
-        if(driver.equals(JdbcConnectionManager.Type.SQLITE.getIdentifier())) {
+        if (driver.equals(JdbcConnectionManager.Type.SQLITE.getIdentifier())) {
             return "jdbc:" + driver + ":db/" + getDatabaseName() + ".db";
         }
         else {
@@ -179,9 +180,9 @@ public class DatabaseConfiguration implements ConfigurationContainer {
     }
 
     /**
-     *  Defines how many statements each pooled Connection is allowed to own.
-     *  You can set this to a bit more than the number of PreparedStatements
-     *  your application frequently uses, to avoid churning.
+     * Defines how many statements each pooled Connection is allowed to own.
+     * You can set this to a bit more than the number of PreparedStatements
+     * your application frequently uses, to avoid churning.
      *
      * @return config for max num of pooled statements per connection
      */
@@ -238,6 +239,7 @@ public class DatabaseConfiguration implements ConfigurationContainer {
 
     /**
      * Defines the maximum allowed number of connections in the connection pool.
+     *
      * @return max allowed connections in pool
      */
     public int getMaxPoolSize() {

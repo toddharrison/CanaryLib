@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static net.canarymod.Canary.log;
+
 /**
  * Access to the backbone for users and groups
  *
@@ -107,7 +109,7 @@ public class UserAndGroupsProvider {
             groups.remove(g);
         }
         catch (Exception e) {
-            Canary.logWarning(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 

@@ -1,7 +1,6 @@
 package net.canarymod.database;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import net.canarymod.Canary;
 import net.canarymod.config.Configuration;
 import net.canarymod.config.DatabaseConfiguration;
 import net.canarymod.database.exceptions.DatabaseAccessException;
@@ -9,6 +8,8 @@ import net.canarymod.database.exceptions.DatabaseAccessException;
 import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import static net.canarymod.Canary.log;
 
 /**
  * Represents a connection (pool) manager for all sorts of JDBC connections.
@@ -43,8 +44,8 @@ public class JdbcConnectionManager {
         }
 
         public static Type forName(String name) {
-            for(Type t : Type.values()) {
-                if(t.getIdentifier().equalsIgnoreCase(name)) {
+            for (Type t : Type.values()) {
+                if (t.getIdentifier().equalsIgnoreCase(name)) {
                     return t;
                 }
             }
@@ -66,7 +67,9 @@ public class JdbcConnectionManager {
     /**
      * Instantiates the connection manager
      *
-     * @param type the database type
+     * @param type
+     *         the database type
+     *
      * @throws SQLException
      */
     private JdbcConnectionManager(Type type) throws SQLException {
@@ -75,12 +78,7 @@ public class JdbcConnectionManager {
         this.type = type;
         try {
             cpds.setDriverClass(type.getClassPath());
-            if(type == Type.SQLITE) {
-                cpds.setJdbcUrl(cfg.getDatabaseUrl(type.getIdentifier()));
-            }
-            else {
-                cpds.setJdbcUrl(cfg.getDatabaseUrl(type.getIdentifier()));
-            }
+            cpds.setJdbcUrl(cfg.getDatabaseUrl(type.getIdentifier()));
             cpds.setUser(cfg.getDatabaseUser());
             cpds.setPassword(cfg.getDatabasePassword());
 
@@ -103,8 +101,9 @@ public class JdbcConnectionManager {
             cpds.setMaxStatementsPerConnection(cfg.getMaxCachedStatementsPerConnection());
             cpds.setStatementCacheNumDeferredCloseThreads(cfg.getNumStatementCloseThreads());
 
-        } catch (PropertyVetoException e) {
-            Canary.logDerp("Failed to configure the connection pool!", e);
+        }
+        catch (PropertyVetoException e) {
+            log.error("Failed to configure the connection pool!", e);
         }
         //Test connection...
         //If this fails it throws an SQLException so we're notified
@@ -114,6 +113,7 @@ public class JdbcConnectionManager {
 
     /**
      * Get the Database type.
+     *
      * @return the type
      */
     public Type getType() {
@@ -128,15 +128,15 @@ public class JdbcConnectionManager {
      * @throws DatabaseAccessException
      */
     private static JdbcConnectionManager getInstance() throws DatabaseAccessException {
-        if(instance == null) {
+        if (instance == null) {
             try {
                 Type t = Type.forName(Configuration.getServerConfig().getDatasourceType());
-                if(t == Type.XML) {
+                if (t == Type.XML) {
                     throw new DatabaseAccessException("XML is not a valid JDBC Database type");
                 }
                 instance = new JdbcConnectionManager(t);
             }
-            catch(SQLException e) {
+            catch (SQLException e) {
                 throw new DatabaseAccessException("Unable to instantiate Connection Pool!", e);
             }
 
@@ -152,9 +152,9 @@ public class JdbcConnectionManager {
     public static Connection getConnection() {
         try {
             JdbcConnectionManager cman = getInstance();
-            if(cman.type == Type.SQLITE) {
-                if(cman.sqliteConnection != null) {
-                    if(!cman.sqliteConnection.isClosed()) {
+            if (cman.type == Type.SQLITE) {
+                if (cman.sqliteConnection != null) {
+                    if (!cman.sqliteConnection.isClosed()) {
                         return cman.sqliteConnection;
                     }
 //                    cman.sqliteConnection.close();
@@ -163,11 +163,13 @@ public class JdbcConnectionManager {
                 return cman.sqliteConnection;
             }
             return cman.cpds.getConnection();
-        } catch (SQLException e) {
-            Canary.logSevere("Couldn't get a Connection from pool!", e);
+        }
+        catch (SQLException e) {
+            log.error("Couldn't get a Connection from pool!", e);
             return null;
-        } catch (DatabaseAccessException e) {
-            Canary.logSevere("Couldn't get a Connection from pool!", e);
+        }
+        catch (DatabaseAccessException e) {
+            log.error("Couldn't get a Connection from pool!", e);
             return null;
         }
     }
@@ -177,17 +179,17 @@ public class JdbcConnectionManager {
      * Should be called when the system is reloaded or goes down to prevent data loss.
      */
     public static void shutdown() {
-        if(instance == null) {
+        if (instance == null) {
             // already shut down or never instantiated (perhaps because we're running on a non-jdbc database)
             return;
         }
         instance.cpds.close();
-        if(instance.sqliteConnection != null) {
+        if (instance.sqliteConnection != null) {
             try {
                 instance.sqliteConnection.close();
             }
             catch (SQLException e) {
-                Canary.logWarning("SQLite connection could not be closed. Whoops!", e);
+                log.warn("SQLite connection could not be closed. Whoops!", e);
             }
         }
         instance = null;

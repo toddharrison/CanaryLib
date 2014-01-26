@@ -1,13 +1,14 @@
 package net.canarymod.logger;
 
-import java.util.HashMap;
-
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 import org.apache.logging.log4j.message.Message;
 import org.apache.logging.log4j.message.MessageFactory;
+
+import java.util.HashMap;
 
 /**
  * CanaryMod Log manager.
@@ -18,15 +19,18 @@ import org.apache.logging.log4j.message.MessageFactory;
  * @author Jos Kuijpers
  * @author Jason (darkdiplomat)
  * @author Larry1123
- * Updated to make use of log4j
+ *         Updated to make use of log4j
  */
 public class Logman implements Logger {
-
     private final static HashMap<String, Logman> loggers = new HashMap<String, Logman>();
-
     private final Logger logger;
 
-    public Logman(String name) {
+    public static final Marker NOTICE = MarkerManager.getMarker("NOTICE");
+    public static final Marker MESSAGE = MarkerManager.getMarker("MESSAGE");
+    public static final Marker DERP = MarkerManager.getMarker("DERP");
+    public static final Marker PLUGINDEBUG = MarkerManager.getMarker("PLUGINDEBUG");
+
+    private Logman(String name) {
         this.logger = LogManager.getLogger(name);
         loggers.put(name, this);
     }
@@ -46,78 +50,6 @@ public class Logman implements Logger {
             loggers.put(name, logman);
         }
         return loggers.get(name);
-    }
-
-    /**
-     * Log a message with INFO level.
-     *
-     * @param message
-     *         the message to be logged
-     */
-    public void logInfo(String message) {
-        info(message);
-    }
-
-    /**
-     * Log a message with WARNING level
-     *
-     * @param message
-     *         the message to be logged
-     */
-    public void logWarning(String message) {
-        warn(message);
-    }
-
-    /**
-     * Log a message with SEVERE level
-     *
-     * @param message
-     *         the message to be logged
-     */
-    public void logSevere(String message) {
-        log(Level.FATAL, message);
-    }
-
-    /**
-     * Logs a debug message.
-     *
-     * @param message
-     *         the message to be logged
-     */
-    public void logDebug(String message) {
-        debug(message);
-    }
-
-    /**
-     * Log a derpy message
-     *
-     * @param message
-     *         the message to be logged
-     */
-    public void logDerp(String message) {
-        error(CanaryLevel.DERP, message);
-    }
-
-    /**
-     * Log a Plugin Debug message
-     *
-     * @param message
-     *         the message to be logged
-     */
-    public void logPluginDebug(String message) {
-        debug(CanaryLevel.PLUGIN_DEBUG, message);
-    }
-
-    /**
-     * Dump a stacktrace to the log
-     *
-     * @param message
-     *         the message to be logged
-     * @param thrown
-     *         the {@link Throwable} thrown
-     */
-    public void logStacktrace(String message, Throwable thrown) {
-        trace(message, thrown);
     }
 
     /**
@@ -877,6 +809,7 @@ public class Logman implements Logger {
     public void log(Level level, String message, Throwable t) {
         logger.log(level, message, t);
     }
+
 
     /**
      * {@inheritDoc}

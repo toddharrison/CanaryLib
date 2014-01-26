@@ -1,6 +1,5 @@
 package net.canarymod.backbone;
 
-import net.canarymod.Canary;
 import net.canarymod.bansystem.Ban;
 import net.canarymod.database.DataAccess;
 import net.canarymod.database.Database;
@@ -11,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static net.canarymod.Canary.log;
+
 /**
  * Backbone to the ban System. This contains NO logic, it is only the data
  * source access!
@@ -20,13 +21,14 @@ import java.util.List;
 public class BackboneBans extends Backbone {
 
     private static BanDataAccess schema = new BanDataAccess();
+
     public BackboneBans() {
         super(Backbone.System.BANS);
         try {
             Database.get().updateSchema(schema);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace("Failed to update Database Schema!", e);
+            log.error("Failed to update Database Schema!", e);
         }
     }
 
@@ -39,7 +41,7 @@ public class BackboneBans extends Backbone {
             Database.get().load(data, filter);
         }
         catch (DatabaseReadException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         return data.hasData();
     }
@@ -66,7 +68,7 @@ public class BackboneBans extends Backbone {
             Database.get().insert(data);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -83,7 +85,7 @@ public class BackboneBans extends Backbone {
             Database.get().remove(schema, filter);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -100,7 +102,7 @@ public class BackboneBans extends Backbone {
             Database.get().remove(schema, filter);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -122,7 +124,7 @@ public class BackboneBans extends Backbone {
             Database.get().load(data, filter);
         }
         catch (DatabaseReadException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         if (!data.hasData()) {
             return null;
@@ -161,10 +163,10 @@ public class BackboneBans extends Backbone {
 
         }
         catch (DatabaseReadException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
 
     }
@@ -194,7 +196,7 @@ public class BackboneBans extends Backbone {
             }
         }
         catch (DatabaseReadException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         return banList;
     }

@@ -1,7 +1,5 @@
 package net.canarymod.commandsys.commands.warp;
 
-import java.util.List;
-
 import net.canarymod.Canary;
 import net.canarymod.Translator;
 import net.canarymod.api.Server;
@@ -12,8 +10,12 @@ import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.warp.Warp;
 
+import java.util.List;
+
+import static net.canarymod.Canary.log;
+
 /**
- * Command to list all warps     
+ * Command to list all warps
  *
  * @author Chris (damagefilter)
  */
@@ -30,10 +32,10 @@ public class WarpList implements NativeCommand {
             }
             if (warpList.length() > 0) {
                 warpList.deleteCharAt(warpList.length() - 1);
-                Canary.logInfo(warpList.toString());
+                log.info(warpList.toString());
             }
             else {
-                Canary.logInfo(Translator.translate("no warps"));
+                log.info(Translator.translate("no warps"));
             }
         }
         else {

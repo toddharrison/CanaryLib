@@ -1,10 +1,5 @@
 package net.canarymod.database.mysql;
 
-import java.sql.*;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import net.canarymod.Canary;
 import net.canarymod.database.Column;
 import net.canarymod.database.DataAccess;
 import net.canarymod.database.Database;
@@ -13,6 +8,23 @@ import net.canarymod.database.exceptions.DatabaseAccessException;
 import net.canarymod.database.exceptions.DatabaseReadException;
 import net.canarymod.database.exceptions.DatabaseTableInconsistencyException;
 import net.canarymod.database.exceptions.DatabaseWriteException;
+
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static net.canarymod.Canary.log;
 
 /**
  * Represents access to a MySQL database
@@ -81,10 +93,10 @@ public class MySQLDatabase extends Database {
 
         }
         catch (SQLException ex) {
-            Canary.logWarning(ex.getMessage(), ex);
+            log.error(ex.getMessage(), ex);
         }
         catch (DatabaseTableInconsistencyException dtie) {
-            Canary.logWarning(dtie.getMessage(), dtie);
+            log.error(dtie.getMessage(), dtie);
         }
         finally {
             close(conn, ps, null);
@@ -124,20 +136,21 @@ public class MySQLDatabase extends Database {
             }
         }
         catch (SQLException ex) {
-            Canary.logWarning(ex.getMessage(), ex);
+            log.error(ex.getMessage(), ex);
         }
         catch (DatabaseTableInconsistencyException dtie) {
-            Canary.logWarning(dtie.getMessage(), dtie);
+            log.error(dtie.getMessage(), dtie);
         }
         catch (DatabaseReadException e) {
-            Canary.logWarning(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         finally {
             PreparedStatement st = null;
             try {
                 st = rs != null && rs.getStatement() instanceof PreparedStatement ? (PreparedStatement) rs.getStatement() : null;
-            } catch (SQLException e) {
-                Canary.logWarning(e.getMessage(), e);
+            }
+            catch (SQLException e) {
+                log.error(e.getMessage(), e);
             }
             close(conn, st, rs);
         }
@@ -150,7 +163,7 @@ public class MySQLDatabase extends Database {
         PreparedStatement ps = null;
 
         try {
-           if (filters.size() > 0) {
+            if (filters.size() > 0) {
                 StringBuilder sb = new StringBuilder();
                 Object[] fieldNames = filters.keySet().toArray();
                 for (int i = 0; i < fieldNames.length && i < fieldNames.length; i++) {
@@ -167,7 +180,7 @@ public class MySQLDatabase extends Database {
                 for (int i = 0; i < fieldNames.length && i < fieldNames.length; i++) {
                     String fieldName = String.valueOf(fieldNames[i]);
                     Column col = dataAccess.getColumnForName(fieldName);
-                    if(col == null) {
+                    if (col == null) {
                         throw new DatabaseReadException("Error deleting MySQL row in " + dataAccess.getName() + ". Column " + fieldNames[i] + " does not exist!");
                     }
                     setToStatement(i + 1, filters.get(fieldName), ps, col);
@@ -177,10 +190,10 @@ public class MySQLDatabase extends Database {
 
         }
         catch (DatabaseReadException dre) {
-            Canary.logStacktrace(dre.getMessage(), dre);
+            log.error(dre.getMessage(), dre);
         }
         catch (SQLException ex) {
-            Canary.logStacktrace(ex.getMessage(), ex);
+            log.error(ex.getMessage(), ex);
         }
         finally {
             close(conn, ps, null);
@@ -193,7 +206,7 @@ public class MySQLDatabase extends Database {
         PreparedStatement ps = null;
 
         try {
-           if (filters.size() > 0) {
+            if (filters.size() > 0) {
                 StringBuilder sb = new StringBuilder();
                 Object[] fieldNames = filters.keySet().toArray();
                 for (int i = 0; i < fieldNames.length && i < fieldNames.length; i++) {
@@ -210,7 +223,7 @@ public class MySQLDatabase extends Database {
                 for (int i = 0; i < fieldNames.length && i < fieldNames.length; i++) {
                     String fieldName = String.valueOf(fieldNames[i]);
                     Column col = dataAccess.getColumnForName(fieldName);
-                    if(col == null) {
+                    if (col == null) {
                         throw new DatabaseReadException("Error deleting MySQL row in " + dataAccess.getName() + ". Column " + fieldNames[i] + " does not exist!");
                     }
                     setToStatement(i + 1, filters.get(fieldName), ps, col);
@@ -220,10 +233,10 @@ public class MySQLDatabase extends Database {
 
         }
         catch (DatabaseReadException dre) {
-            Canary.logStacktrace(dre.getMessage(), dre);
+            log.error(dre.getMessage(), dre);
         }
         catch (SQLException ex) {
-            Canary.logStacktrace(ex.getMessage(), ex);
+            log.error(ex.getMessage(), ex);
         }
         finally {
             close(conn, ps, null);
@@ -255,16 +268,16 @@ public class MySQLDatabase extends Database {
             }
         }
         catch (DatabaseReadException dre) {
-            Canary.logWarning(dre.getMessage(), dre);
+            log.error(dre.getMessage(), dre);
         }
         catch (SQLException ex) {
-            Canary.logWarning(ex.getMessage(), ex);
+            log.error(ex.getMessage(), ex);
         }
         catch (DatabaseTableInconsistencyException dtie) {
-            Canary.logWarning(dtie.getMessage(), dtie);
+            log.error(dtie.getMessage(), dtie);
         }
         catch (DatabaseAccessException e) {
-            Canary.logWarning(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         finally {
             try {
@@ -272,7 +285,7 @@ public class MySQLDatabase extends Database {
                 close(conn, st, rs);
             }
             catch (SQLException ex) {
-                Canary.logWarning(ex.getMessage(), ex);
+                log.error(ex.getMessage(), ex);
             }
         }
     }
@@ -304,13 +317,13 @@ public class MySQLDatabase extends Database {
 
         }
         catch (DatabaseReadException dre) {
-            Canary.logStacktrace(dre.getMessage(), dre);
+            log.error(dre.getMessage(), dre);
         }
         catch (SQLException ex) {
-            Canary.logStacktrace(ex.getMessage(), ex);
+            log.error(ex.getMessage(), ex);
         }
         catch (DatabaseTableInconsistencyException dtie) {
-            Canary.logStacktrace(dtie.getMessage(), dtie);
+            log.error(dtie.getMessage(), dtie);
         }
         finally {
             try {
@@ -318,7 +331,7 @@ public class MySQLDatabase extends Database {
                 close(conn, st, rs);
             }
             catch (SQLException ex) {
-                Canary.logStacktrace(ex.getMessage(), ex);
+                log.error(ex.getMessage(), ex);
             }
         }
         try {
@@ -330,7 +343,7 @@ public class MySQLDatabase extends Database {
 
         }
         catch (DatabaseAccessException dae) {
-            Canary.logStacktrace(dae.getMessage(), dae);
+            log.error(dae.getMessage(), dae);
         }
     }
 
@@ -381,7 +394,7 @@ public class MySQLDatabase extends Database {
             throw new DatabaseWriteException("Error updating MySQL schema: " + sqle.getMessage());
         }
         catch (DatabaseTableInconsistencyException dtie) {
-            Canary.logStacktrace("Error updating MySQL schema." + dtie.getMessage(), dtie);
+            log.error("Error updating MySQL schema." + dtie.getMessage(), dtie);
         }
         finally {
             close(conn, ps, rs);
@@ -423,7 +436,7 @@ public class MySQLDatabase extends Database {
             throw new DatabaseWriteException("Error creating MySQL table '" + data.getName() + "'. " + ex.getMessage());
         }
         catch (DatabaseTableInconsistencyException ex) {
-            Canary.logStacktrace(ex.getMessage() + " Error creating MySQL table '" + data.getName() + "'. ", ex);
+            log.error(ex.getMessage() + " Error creating MySQL table '" + data.getName() + "'. ", ex);
         }
         finally {
             close(conn, ps, null);
@@ -483,7 +496,7 @@ public class MySQLDatabase extends Database {
                 column = it.next();
                 if (!column.autoIncrement()) {
                     Object o = columns.get(column);
-                    if(o == null) {
+                    if (o == null) {
                         continue;
                     }
                     if (sb.length() > 0) {
@@ -509,7 +522,7 @@ public class MySQLDatabase extends Database {
                 column = it.next();
                 if (!column.autoIncrement()) {
                     Object o = columns.get(column);
-                    if(o == null) {
+                    if (o == null) {
                         continue;
                     }
                     setToStatement(index, columns.get(column), ps, column);
@@ -561,7 +574,7 @@ public class MySQLDatabase extends Database {
                 for (int i = 0; i < fieldNames.length && i < fieldNames.length; i++) {
                     String fieldName = String.valueOf(fieldNames[i]);
                     Column col = data.getColumnForName(fieldName);
-                    if(col == null) {
+                    if (col == null) {
                         throw new DatabaseReadException("Error fetching MySQL ResultSet in " + data.getName() + ". Column " + fieldNames[i] + " does not exist!");
                     }
                     setToStatement(i + 1, filters.get(fieldName), ps, col);
@@ -605,7 +618,7 @@ public class MySQLDatabase extends Database {
             }
         }
         catch (SQLException ex) {
-            Canary.logStacktrace(ex.getMessage(), ex);
+            log.error(ex.getMessage(), ex);
         }
         finally {
             if (statement != null) {
@@ -613,7 +626,7 @@ public class MySQLDatabase extends Database {
                     statement.close();
                 }
                 catch (SQLException e) {
-                    Canary.logWarning(e.getMessage(), e);
+                    log.error(e.getMessage(), e);
                 }
             }
             close(connection, null, resultSet);
@@ -660,16 +673,23 @@ public class MySQLDatabase extends Database {
     /**
      * Sets the given object as the given type to the given index
      * of the given PreparedStatement.
-     * @param index the index to set to
-     * @param o the object to set
-     * @param ps the prepared statement
-     * @param t the DataType hint
-     * @throws DatabaseWriteException when an SQLException was raised or when the data type doesn't match the objects type
+     *
+     * @param index
+     *         the index to set to
+     * @param o
+     *         the object to set
+     * @param ps
+     *         the prepared statement
+     * @param t
+     *         the DataType hint
+     *
+     * @throws DatabaseWriteException
+     *         when an SQLException was raised or when the data type doesn't match the objects type
      */
     private void setToStatement(int index, Object o, PreparedStatement ps, Column t) throws DatabaseWriteException {
         try {
-            if(t.isList()) {
-                ps.setString(index, getString((List<?>)o));
+            if (t.isList()) {
+                ps.setString(index, getString((List<?>) o));
             }
             else {
                 switch (t.dataType()) {
@@ -677,10 +697,10 @@ public class MySQLDatabase extends Database {
                         ps.setByte(index, (Byte) o);
                         break;
                     case INTEGER:
-                        ps.setInt(index, (Integer)o);
+                        ps.setInt(index, (Integer) o);
                         break;
                     case FLOAT:
-                        ps.setFloat(index, (Float)o);
+                        ps.setFloat(index, (Float) o);
                         break;
                     case DOUBLE:
                         ps.setDouble(index, (Double) o);
@@ -692,7 +712,7 @@ public class MySQLDatabase extends Database {
                         ps.setShort(index, (Short) o);
                         break;
                     case STRING:
-                        ps.setString(index, (String)o);
+                        ps.setString(index, (String) o);
                         break;
                     case BOOLEAN:
                         ps.setBoolean(index, (Boolean) o);
@@ -700,10 +720,10 @@ public class MySQLDatabase extends Database {
                 }
             }
         }
-        catch(SQLException e) {
+        catch (SQLException e) {
             throw new DatabaseWriteException("Failed to set property to prepared statement!", e);
         }
-        catch(ClassCastException e) {
+        catch (ClassCastException e) {
             throw new DatabaseWriteException("Failed to set property to prepared statement!", e);
         }
 
@@ -807,7 +827,7 @@ public class MySQLDatabase extends Database {
      * @return a string representation of the passed list.
      */
     public String getString(List<?> list) {
-        if(list == null) {
+        if (list == null) {
             return NULL_STRING;
         }
         StringBuilder sb = new StringBuilder();
@@ -820,7 +840,7 @@ public class MySQLDatabase extends Database {
             }
             sb.append(this.LIST_REGEX);
         }
-        if(sb.length() > 0) {
+        if (sb.length() > 0) {
             sb.deleteCharAt(sb.length() - 1);
         }
         return sb.toString();
@@ -830,24 +850,28 @@ public class MySQLDatabase extends Database {
      * Close a set of working data.
      * This will return all the data to the connection pool.
      * You can pass null for objects that are not relevant in your given context
-     * @param c the connection object
-     * @param ps the prepared statement
-     * @param rs the result set
+     *
+     * @param c
+     *         the connection object
+     * @param ps
+     *         the prepared statement
+     * @param rs
+     *         the result set
      */
     private void close(Connection c, PreparedStatement ps, ResultSet rs) {
         try {
-            if(ps != null) {
+            if (ps != null) {
                 ps.close();
             }
-            if(rs != null) {
+            if (rs != null) {
                 rs.close();
             }
-            if(c != null) {
+            if (c != null) {
                 c.close();
             }
         }
-        catch(SQLException e) {
-            Canary.logWarning(e.getMessage(), e);
+        catch (SQLException e) {
+            log.error(e.getMessage(), e);
         }
 
     }

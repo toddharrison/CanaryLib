@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static net.canarymod.Canary.log;
+
 /**
  * Backbone to the groups System. This contains NO logic, it is only the data
  * source access!
@@ -22,13 +24,14 @@ import java.util.List;
 public class BackboneGroups extends Backbone {
 
     private static GroupDataAccess schema = new GroupDataAccess();
+
     public BackboneGroups() {
         super(Backbone.System.GROUPS);
         try {
             Database.get().updateSchema(schema);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace("Failed to update database schema", e);
+            log.error("Failed to update database schema", e);
         }
     }
 
@@ -56,7 +59,7 @@ public class BackboneGroups extends Backbone {
             Database.get().insert(data);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -69,7 +72,7 @@ public class BackboneGroups extends Backbone {
             Database.get().load(data, filter);
         }
         catch (DatabaseReadException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
 
         return data.hasData();
@@ -90,7 +93,7 @@ public class BackboneGroups extends Backbone {
             Canary.permissionManager().removeAllGroupPermissions(group);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
 
     }
@@ -112,19 +115,20 @@ public class BackboneGroups extends Backbone {
             subject.setName(newname);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
     /**
      * Update a Group and all its child groups.
      * This will not perform rename operations properly. For renaming groups, use renameGroup()
+     *
      * @param group
      *         The group instance to update to the database.
      */
     public void updateGroup(Group group) {
         if (!groupExists(group)) {
-            Canary.logWarning("Group " + group.getName() + " was not updated, it does not exist!");
+            log.warn("Group " + group.getName() + " was not updated, it does not exist!");
             return;
         }
         GroupDataAccess updatedData = new GroupDataAccess();
@@ -147,7 +151,7 @@ public class BackboneGroups extends Backbone {
             }
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
 
     }
@@ -179,11 +183,11 @@ public class BackboneGroups extends Backbone {
                 return g;
             }
             else {
-                Canary.logWarning(parent + " group was requested but could not be loaded! DataAccess was empty!");
+                log.warn(parent + " group was requested but could not be loaded! DataAccess was empty!");
             }
         }
         catch (DatabaseReadException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         return null;
     }
@@ -198,7 +202,7 @@ public class BackboneGroups extends Backbone {
      *         list of groups to check in.
      *
      * @return true - the group is in the list<br>
-     *         false - the group is not in the list.
+     * false - the group is not in the list.
      */
     private boolean alreadyInList(String name, List<Group> list) {
         for (Group g : list) {
@@ -239,7 +243,7 @@ public class BackboneGroups extends Backbone {
             }
         }
         catch (DatabaseReadException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
 
         return groups;
@@ -286,7 +290,7 @@ public class BackboneGroups extends Backbone {
             Database.get().insert(admins);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         BackbonePermissions.createDefaultPermissionSet();
     }

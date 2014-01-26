@@ -1,6 +1,5 @@
 package net.canarymod.database;
 
-import net.canarymod.Canary;
 import net.canarymod.CanaryClassLoader;
 import net.canarymod.database.exceptions.DatabaseException;
 import net.visualillusionsent.utils.PropertiesFile;
@@ -8,6 +7,8 @@ import net.visualillusionsent.utils.UtilityException;
 
 import java.io.File;
 import java.net.MalformedURLException;
+
+import static net.canarymod.Canary.log;
 
 /**
  * Checks a database folder in CanaryMods root folder for
@@ -44,26 +45,26 @@ public class DatabaseLoader {
                 }
             }
             catch (UtilityException e) {
-                Canary.logStacktrace("Could not find databases mainclass", e);
+                log.error("Could not find databases mainclass", e);
                 return;
             }
             catch (ClassNotFoundException e) {
-                Canary.logStacktrace("Could not find databases mainclass", e);
+                log.error("Could not find databases mainclass", e);
             }
             catch (IllegalAccessException e) {
-                Canary.logStacktrace("Could not create database", e);
+                log.error("Could not create database", e);
             }
             catch (DatabaseException e) {
-                Canary.logStacktrace("Could not add database", e);
+                log.error("Could not add database", e);
             }
             catch (SecurityException e) {
-                Canary.logStacktrace(e.getMessage(), e);
+                log.error(e.getMessage(), e);
             }
             catch (InstantiationException e) {
-                Canary.logStacktrace(e.getMessage(), e);
+                log.error(e.getMessage(), e);
             }
             catch (MalformedURLException e) {
-                Canary.logStacktrace(e.getMessage(), e);
+                log.error(e.getMessage(), e);
             }
         }
     }

@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static net.canarymod.Canary.log;
+
 /**
  * Backbone to the permissions System. This contains NO logic, it is only the
  * data source access!
@@ -25,6 +27,7 @@ import java.util.List;
 public class BackbonePermissions extends Backbone {
 
     private static PermissionDataAccess schema = new PermissionDataAccess(null);
+
     public BackbonePermissions() {
         super(Backbone.System.PERMISSIONS);
         try {
@@ -34,7 +37,7 @@ public class BackbonePermissions extends Backbone {
             Database.get().updateSchema(schema);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace("Failed to update database schema", e);
+            log.error("Failed to update database schema", e);
         }
     }
 
@@ -54,7 +57,7 @@ public class BackbonePermissions extends Backbone {
         }
         PermissionProvider provider = new MultiworldPermissionProvider(world, false, name);
         ArrayList<DataAccess> dataList = new ArrayList<DataAccess>();
-        Canary.logDebug("Loading permissions for " + name + ". World: " + ((world != null && !world.isEmpty()) ? world : "none"));
+        log.debug("Loading permissions for " + name + ". World: " + ((world != null && !world.isEmpty()) ? world : "none"));
         try {
             HashMap<String, Object> filter = new HashMap<String, Object>();
             filter.put("owner", name);
@@ -67,7 +70,7 @@ public class BackbonePermissions extends Backbone {
             }
         }
         catch (DatabaseReadException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
 
         return provider;
@@ -103,7 +106,7 @@ public class BackbonePermissions extends Backbone {
             }
         }
         catch (DatabaseReadException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
 
         return provider;
@@ -146,10 +149,10 @@ public class BackbonePermissions extends Backbone {
             }
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         catch (DatabaseReadException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
 
     }
@@ -190,10 +193,10 @@ public class BackbonePermissions extends Backbone {
             }
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         catch (DatabaseReadException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -219,7 +222,7 @@ public class BackbonePermissions extends Backbone {
             }
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -261,12 +264,13 @@ public class BackbonePermissions extends Backbone {
             }
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
     /**
      * Remove all permissions that belong to the given group!
+     *
      * @param group
      */
     public void removePermissions(Group group) {
@@ -277,7 +281,7 @@ public class BackbonePermissions extends Backbone {
             Database.get().remove(new PermissionDataAccess(group.getWorldName()), filter);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -321,10 +325,10 @@ public class BackbonePermissions extends Backbone {
             return data.id;
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         catch (DatabaseReadException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         return data.id;
     }
@@ -363,10 +367,10 @@ public class BackbonePermissions extends Backbone {
             Database.get().update(data, filter);
         }
         catch (DatabaseReadException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         return data.id;
     }
@@ -382,7 +386,7 @@ public class BackbonePermissions extends Backbone {
             Database.get().load(data, filter);
         }
         catch (DatabaseReadException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         return data.hasData();
     }
@@ -414,7 +418,7 @@ public class BackbonePermissions extends Backbone {
             Database.get().insert(players);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 }

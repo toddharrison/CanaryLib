@@ -9,6 +9,8 @@ import net.visualillusionsent.utils.LocaleHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import static net.canarymod.Canary.log;
+
 /**
  * Contains methods common to all types of chat commands.
  *
@@ -260,7 +262,7 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
                 return tabComplete.complete(msgrec, args);
             }
             catch (TabCompleteException acex) {
-                Canary.logWarning("Fail:", acex);
+                log.warn("Fail:", acex);
             }
         }
         return null;

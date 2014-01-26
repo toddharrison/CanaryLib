@@ -1,5 +1,10 @@
 package net.canarymod.hook;
 
+import net.canarymod.ToolBox;
+import net.canarymod.plugin.Plugin;
+import net.canarymod.plugin.PluginListener;
+import net.canarymod.plugin.RegisteredPluginListener;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,11 +12,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import net.canarymod.Canary;
-import net.canarymod.ToolBox;
-import net.canarymod.plugin.Plugin;
-import net.canarymod.plugin.PluginListener;
-import net.canarymod.plugin.RegisteredPluginListener;
+import static net.canarymod.Canary.log;
 
 /**
  * Stores registered listeners and performs hook dispatches.
@@ -107,7 +108,7 @@ public class HookExecutor implements HookExecutorInterface {
                     l.execute(hook);
                 }
                 catch (HookExecutionException hexex) {
-                    Canary.logStacktrace("Exception while executing Hook: " + hook.getName() + " in PluginListener: " +
+                    log.error("Exception while executing Hook: " + hook.getName() + " in PluginListener: " +
                             l.getListener().getClass().getSimpleName() + " (Plugin: " + l.getPlugin().getName() + ")", hexex.getCause());
                 }
             }

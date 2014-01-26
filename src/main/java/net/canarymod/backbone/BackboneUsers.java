@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static net.canarymod.Canary.log;
+
 /**
  * Backbone to the Player System. This contains NO logic, it is only the data
  * source access!
@@ -23,13 +25,14 @@ import java.util.Map;
 public class BackboneUsers extends Backbone {
 
     private static PlayerDataAccess schema = new PlayerDataAccess();
+
     public BackboneUsers() {
         super(Backbone.System.USERS);
         try {
             Database.get().updateSchema(new PlayerDataAccess());
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace("Failed to update database schema", e);
+            log.error("Failed to update database schema", e);
         }
     }
 
@@ -41,7 +44,7 @@ public class BackboneUsers extends Backbone {
      */
     public void addUser(Player player) {
         if (userExists(player.getName())) {
-            Canary.logWarning("Player " + player.getName() + " already exists. Updating it instead!");
+            log.warn("Player " + player.getName() + " already exists. Updating it instead!");
             updatePlayer(player);
             return;
         }
@@ -67,7 +70,7 @@ public class BackboneUsers extends Backbone {
             Database.get().insert(data);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -82,7 +85,7 @@ public class BackboneUsers extends Backbone {
      */
     public void addUser(String name, String group) {
         if (userExists(name)) {
-            Canary.logWarning("Player " + name + " already exists. Skipping!");
+            log.warn("Player " + name + " already exists. Skipping!");
             return;
         }
         PlayerDataAccess data = new PlayerDataAccess();
@@ -95,7 +98,7 @@ public class BackboneUsers extends Backbone {
             Database.get().insert(data);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
 
     }
@@ -117,7 +120,7 @@ public class BackboneUsers extends Backbone {
             Database.get().load(data, filter);
         }
         catch (DatabaseReadException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
 
         return data.hasData();
@@ -136,7 +139,7 @@ public class BackboneUsers extends Backbone {
             Database.get().remove(schema, filter);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -171,7 +174,7 @@ public class BackboneUsers extends Backbone {
             Database.get().update(data, filter);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -190,7 +193,7 @@ public class BackboneUsers extends Backbone {
             Database.get().load(data, filter);
         }
         catch (DatabaseReadException e) {
-            Canary.logStacktrace(e.getCause().getMessage(), e);
+            log.error(e.getCause().getMessage(), e);
         }
         if (!data.hasData()) {
             return;
@@ -217,7 +220,7 @@ public class BackboneUsers extends Backbone {
             Database.get().update(data, filter);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getCause().getMessage(), e);
+            log.error(e.getCause().getMessage(), e);
         }
     }
 
@@ -226,7 +229,7 @@ public class BackboneUsers extends Backbone {
      * Each Array in the hashMap value has prefix, group and isMuted for a player, in that order.
      *
      * @return A hashmap with a key of player name, and string array value with
-     *         a prefix and group for a player, in that order.
+     * a prefix and group for a player, in that order.
      */
     public Map<String, String[]> loadUsers() {
         Map<String, String[]> players = new HashMap<String, String[]>();
@@ -246,7 +249,7 @@ public class BackboneUsers extends Backbone {
             return players;
         }
         catch (DatabaseReadException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
 
         return null;
@@ -266,10 +269,10 @@ public class BackboneUsers extends Backbone {
         try {
             HashMap<String, Object> filter = new HashMap<String, Object>();
             filter.put("name", player);
-            Database.get().load(data,filter);
+            Database.get().load(data, filter);
         }
         catch (DatabaseReadException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         if (!data.hasData()) {
             return new Group[0];
@@ -303,7 +306,7 @@ public class BackboneUsers extends Backbone {
             Database.get().insert(admin);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 }

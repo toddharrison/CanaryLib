@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static net.canarymod.Canary.log;
+
 /**
  * Backbone to the warps system This contains NO logic, it is only the data
  * source access!
@@ -23,13 +25,14 @@ import java.util.List;
 public class BackboneWarps extends Backbone {
 
     private static WarpDataAccess schema = new WarpDataAccess();
+
     public BackboneWarps() {
         super(Backbone.System.WARPS);
         try {
             Database.get().updateSchema(new WarpDataAccess());
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace("Failed to update database schema", e);
+            log.error("Failed to update database schema", e);
         }
     }
 
@@ -37,12 +40,12 @@ public class BackboneWarps extends Backbone {
         WarpDataAccess data = new WarpDataAccess();
 
         try {
-            HashMap<String,Object> filter = new HashMap<String, Object>();
+            HashMap<String, Object> filter = new HashMap<String, Object>();
             filter.put("name", warp.getName());
             Database.get().load(data, filter);
         }
         catch (DatabaseReadException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         return data.hasData();
     }
@@ -88,7 +91,7 @@ public class BackboneWarps extends Backbone {
             Database.get().insert(data);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -106,7 +109,7 @@ public class BackboneWarps extends Backbone {
             Database.get().remove(schema, filter);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -130,7 +133,7 @@ public class BackboneWarps extends Backbone {
             Database.get().update(data, filter);
         }
         catch (DatabaseWriteException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -168,7 +171,7 @@ public class BackboneWarps extends Backbone {
             }
         }
         catch (DatabaseReadException e) {
-            Canary.logStacktrace(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
 
         return warps;

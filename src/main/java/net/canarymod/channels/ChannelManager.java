@@ -1,13 +1,14 @@
 package net.canarymod.channels;
 
+import net.canarymod.api.NetServerHandler;
+import net.canarymod.api.entity.living.humanoid.Player;
+import net.canarymod.plugin.Plugin;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import net.canarymod.Canary;
-import net.canarymod.api.NetServerHandler;
-import net.canarymod.api.entity.living.humanoid.Player;
-import net.canarymod.plugin.Plugin;
+import static net.canarymod.Canary.log;
 
 /**
  * This class manages incoming and outgoing Packet250CustomPayload's. This allows
@@ -56,7 +57,7 @@ public abstract class ChannelManager implements ChannelManagerInterface {
             }
         }
         catch (CustomPayloadChannelException ex) {
-            Canary.logStacktrace(ex.getMessage(), ex);
+            log.error(ex.getMessage(), ex);
         }
     }
 
@@ -112,7 +113,7 @@ public abstract class ChannelManager implements ChannelManagerInterface {
             }
         }
         catch (CustomPayloadChannelException ex) {
-            Canary.logStacktrace(ex.getMessage(), ex);
+            log.error(ex.getMessage(), ex);
         }
     }
 
@@ -122,7 +123,7 @@ public abstract class ChannelManager implements ChannelManagerInterface {
         if (clients.containsKey(channel)) {
             synchronized (clients.get(channel)) {
                 if (clients.get(channel).remove(handler)) {
-                    Canary.logInfo(String.format("Client Custom Payload channel '%s' has been unregistered for client '%s'", channel, handler.getUser().getName()));
+                    log.info(String.format("Client Custom Payload channel '%s' has been unregistered for client '%s'", channel, handler.getUser().getName()));
                     return true;
                 }
             }

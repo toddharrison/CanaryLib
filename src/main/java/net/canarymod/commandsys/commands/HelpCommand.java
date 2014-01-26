@@ -1,15 +1,16 @@
 package net.canarymod.commandsys.commands;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import net.canarymod.Canary;
 import net.canarymod.Translator;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.chat.TextFormat;
 import net.canarymod.commandsys.NativeCommand;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static net.canarymod.Canary.log;
 
 /**
  * Command to access help about all commands
@@ -62,13 +63,12 @@ public class HelpCommand implements NativeCommand {
         }
 
         if (lines == null) {
-            Canary.logInfo(Translator.translate("help not found"));
+            log.info(Translator.translate("help not found"));
             return;
         }
         // Send all lines
         for (String l : lines) {
-
-            Canary.logInfo(TextFormat.removeFormatting(l));
+            log.info(TextFormat.removeFormatting(l));
         }
     }
 

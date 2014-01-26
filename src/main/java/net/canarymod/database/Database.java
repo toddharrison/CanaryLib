@@ -1,6 +1,5 @@
 package net.canarymod.database;
 
-import net.canarymod.Canary;
 import net.canarymod.config.Configuration;
 import net.canarymod.database.exceptions.DatabaseException;
 import net.canarymod.database.exceptions.DatabaseReadException;
@@ -12,6 +11,8 @@ import net.canarymod.database.xml.XmlDatabase;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static net.canarymod.Canary.log;
 
 /**
  * A database representation, used to store any kind of data
@@ -33,7 +34,7 @@ public abstract class Database {
                 throw new DatabaseException(name + " cannot be registered. Type already exists");
             }
             registeredDatabases.put(name, db);
-            Canary.logInfo(String.format("Registered %s Database", name));
+            log.info(String.format("Registered %s Database", name));
         }
 
         public static Database getDatabaseFromType(String name) {
@@ -43,7 +44,7 @@ public abstract class Database {
         static {
             try {
                 String dbname = Configuration.getServerConfig().getDatasourceType();
-                if("xml".equalsIgnoreCase(dbname)) {
+                if ("xml".equalsIgnoreCase(dbname)) {
                     Database.Type.registerDatabase("xml", XmlDatabase.getInstance());
                 }
                 else if ("mysql".equalsIgnoreCase(dbname)) {
@@ -54,7 +55,7 @@ public abstract class Database {
                 }
             }
             catch (Exception e) {
-                Canary.logWarning("Exception occured while trying to prepare databases!", e);
+                log.error("Exception occured while trying to prepare databases!", e);
             }
         }
     }
@@ -65,7 +66,7 @@ public abstract class Database {
             return ret;
         }
         else {
-            Canary.logWarning("Database type " + Configuration.getServerConfig().getDatasourceType() + " is not available, falling back to XML! Fix your server.cfg");
+            log.warn("Database type " + Configuration.getServerConfig().getDatasourceType() + " is not available, falling back to XML! Fix your server.cfg");
             return XmlDatabase.getInstance();
         }
     }
@@ -93,25 +94,28 @@ public abstract class Database {
      *
      * @throws DatabaseWriteException
      */
-    public abstract void update(DataAccess data, Map<String,Object> filters) throws DatabaseWriteException;
+    public abstract void update(DataAccess data, Map<String, Object> filters) throws DatabaseWriteException;
 
     /**
      * Removes the data set from the given table that suits the given field names and values.
      *
      * @param da
-     *          the DataAccess object that specifies the data that should be removed
+     *         the DataAccess object that specifies the data that should be removed
      * @param filters
-     *          FieldName->Value map to filter which rows should be deleted
+     *         FieldName->Value map to filter which rows should be deleted
      *
      * @throws DatabaseWriteException
      */
-    public abstract void remove(DataAccess da, Map<String,Object> filters) throws DatabaseWriteException;
+    public abstract void remove(DataAccess da, Map<String, Object> filters) throws DatabaseWriteException;
 
     /**
      * Removes the data set from the given table that suits the given field names and values.
      *
-     * @param da      the DataAccess object that specifies the data that should be removed
-     * @param filters FieldName->Value map to filter which rows should be deleted
+     * @param da
+     *         the DataAccess object that specifies the data that should be removed
+     * @param filters
+     *         FieldName->Value map to filter which rows should be deleted
+     *
      * @throws DatabaseWriteException
      */
     public abstract void removeAll(DataAccess da, Map<String, Object> filters) throws DatabaseWriteException;

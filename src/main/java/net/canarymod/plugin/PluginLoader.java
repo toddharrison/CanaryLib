@@ -1,16 +1,25 @@
 package net.canarymod.plugin;
 
-import java.io.File;
-import java.util.*;
-
 import net.canarymod.Canary;
 import net.canarymod.CanaryClassLoader;
-import net.canarymod.motd.MessageOfTheDay;
 import net.canarymod.chat.Colors;
 import net.canarymod.hook.system.PluginDisableHook;
 import net.canarymod.hook.system.PluginEnableHook;
 import net.canarymod.tasks.ServerTaskManager;
 import net.visualillusionsent.utils.PropertiesFile;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import static net.canarymod.Canary.log;
 
 /**
  * Plugin Loading and Management Class
@@ -37,15 +46,15 @@ public final class PluginLoader {
         if (!plugins.isEmpty()) {
             return;
         }
-        Canary.logInfo("Scanning for plugins ...");
+        log.info("Scanning for plugins ...");
         File dir = new File("plugins/");
         if (!dir.exists()) {
-            Canary.logSevere("Failed to scan for plugins. 'plugins/' is not a directory. Creating...");
+            log.warn("Failed to scan for plugins. 'plugins/' is not a directory. Creating...");
             dir.mkdir();
             return;
         }
         else if (!dir.isDirectory()) {
-            Canary.logSevere("Failed to scan for plugins. 'plugins/' is not a directory but a file...");
+            log.error("Failed to scan for plugins. 'plugins/' is not a directory but a file...");
             return;
         }
         ArrayList<String> jars = new ArrayList<String>();
@@ -70,7 +79,7 @@ public final class PluginLoader {
         LinkedList<DependencyNode> loadOrder = new LinkedList<DependencyNode>();
         buildDepTree(canLoad, loadOrder);
 
-        Canary.logInfo("Found " + loadOrder.size() + " loadable plugins. Attempting load...");
+        log.info("Found " + loadOrder.size() + " loadable plugins. Attempting load...");
         for (DependencyNode node : loadOrder) {
             load(node.getJarName(), node.getInf());
         }
@@ -93,7 +102,7 @@ public final class PluginLoader {
             inf = new PropertiesFile(file.getAbsolutePath(), "Canary.inf");
 
             if (!inf.containsKey("main-class")) {
-                Canary.logSevere("Failed to read main-class for '" + file.getName() + "' in Canary.inf Please specify a main-class entry in Canary.inf");
+                log.error("Failed to read main-class for '" + file.getName() + "' in Canary.inf Please specify a main-class entry in Canary.inf");
                 return null;
             }
             inf.setString("jarName", jarName);
@@ -111,7 +120,7 @@ public final class PluginLoader {
             }
         }
         catch (Throwable ex) {
-            Canary.logStacktrace("Exception while loading plugin jar '" + filename + "' (Canary.inf missing?)", ex);
+            log.error("Exception while loading plugin jar '" + filename + "' (Canary.inf missing?)", ex);
             return null;
         }
 
@@ -173,7 +182,7 @@ public final class PluginLoader {
 
             }
             catch (Throwable thrown) {
-                Canary.logStacktrace("Something broke. Here's what we know: ", thrown);
+                log.error("Something broke. Here's what we know: ", thrown);
             }
         }
         return null;
@@ -208,7 +217,7 @@ public final class PluginLoader {
                         continue;
                     }
                     if (!nodes.containsKey(dependency)) {
-                        Canary.logServerMessage("Cannot find dependency " + dependency + " but " + jar + " depends on it. Removing.");
+                        log.error("Cannot find dependency " + dependency + " but " + jar + " depends on it. Removing.");
                         itr.remove();
                         continue;
                     }
@@ -238,7 +247,7 @@ public final class PluginLoader {
             // then mark them as invalid so they will not be processed
             for (DependencyNode dep : node.edges) {
                 if (dep.edges.contains(node)) {
-                    Canary.logWarning("Detected circular dependency for " + node.getName() + ": " + dep.getName()
+                    log.warn("Detected circular dependency for " + node.getName() + ": " + dep.getName()
                             + ". These Plugins can not be loaded.");
                     node.setInvalid(true);
                     dep.setInvalid(true);
@@ -264,7 +273,7 @@ public final class PluginLoader {
             String name = inf.getString("name");
             String mainClass = inf.getString("main-class");
             if (plugins.containsKey(name)) {
-                Canary.logSevere(name + " is already loaded, skipping");
+                log.warn(name + " is already loaded, skipping");
                 return false; // Already loaded
             }
 
@@ -274,7 +283,7 @@ public final class PluginLoader {
             }
 
             if (deps == null) {
-                Canary.logSevere("There was a problem while fetching " + name + "'s dependency list.");
+                log.error("There was a problem while fetching " + name + "'s dependency list.");
                 return false;
             }
 
@@ -287,7 +296,7 @@ public final class PluginLoader {
                     }
                 }
                 if (!missingDeps.isEmpty()) {
-                    Canary.logSevere("To load " + name + " you need to enable the following plugins first: " + missingDeps.toString());
+                    log.warn("To load " + name + " you need to enable the following plugins first: " + missingDeps.toString());
                     return false;
                 }
             }
@@ -301,7 +310,7 @@ public final class PluginLoader {
             }
         }
         catch (Throwable ex) {
-            Canary.logStacktrace("Exception while loading plugin '" + pluginJar + "'", ex);
+            log.error("Exception while loading plugin '" + pluginJar + "'", ex);
             return false;
         }
 
@@ -317,7 +326,7 @@ public final class PluginLoader {
             PropertiesFile inf = new PropertiesFile(file.getAbsolutePath(), "Canary.inf");
             // Get the main class, or use the plugin name as class
             if (!inf.containsKey("main-class")) {
-                Canary.logSevere("Failed to read main-class for '" + file.getName() + "' in Canary.inf Please specify a main-class entry in Canary.inf");
+                log.error("Failed to read main-class for '" + file.getName() + "' in Canary.inf Please specify a main-class entry in Canary.inf");
                 return false;
             }
 
@@ -330,7 +339,7 @@ public final class PluginLoader {
             return load(file.getName(), inf);
         }
         catch (Throwable ex) {
-            Canary.logStacktrace("Exception while loading plugin", ex);
+            log.error("Exception while loading plugin", ex);
             return false;
         }
     }
@@ -383,7 +392,7 @@ public final class PluginLoader {
             }
             catch (Throwable t) {
                 // If the plugin is in development, they may need to know where something failed.
-                Canary.logStacktrace("Could not enable " + plugin.getName(), t);
+                log.error("Could not enable " + plugin.getName(), t);
             }
         }
         if (needNewInstance) {
@@ -401,7 +410,7 @@ public final class PluginLoader {
             }
             catch (Throwable t) {
                 // If the plugin is in development, they may need to know where something failed.
-                Canary.logStacktrace("Could not enable " + plugin.getName(), t);
+                log.error("Could not enable " + plugin.getName(), t);
             }
         }
 
@@ -419,13 +428,13 @@ public final class PluginLoader {
 
             // Check for dependents and re-enable them as well, if this is a new instance this will have no effect here and will be handled in the reload method
             if (plugin.hasDependents()) {
-                Canary.logInfo(String.format("%s has %d dependents that will now be re-enabled...", plugin.getName(), plugin.getDependents().size()));
+                log.info(String.format("%s has %d dependents that will now be re-enabled...", plugin.getName(), plugin.getDependents().size()));
                 for (String dependent : plugin.getDependents()) {
                     enablePlugin(dependent);
                 }
             }
 
-            Canary.logInfo("Enabled " + plugin.getName() + ", Version " + plugin.getVersion());
+            log.info("Enabled " + plugin.getName() + ", Version " + plugin.getVersion());
         }
         else {
             // Clean up anything that may have got registered
@@ -457,7 +466,7 @@ public final class PluginLoader {
         String[] deps = plugin.getCanaryInf().getStringArray("dependencies", "[,;]+");
 
         if (deps == null) {
-            Canary.logSevere("There was a problem while fetching " + plugin.getName() + "'s dependency list.");
+            log.error("There was a problem while fetching " + plugin.getName() + "'s dependency list.");
             return false;
         }
 
@@ -470,7 +479,7 @@ public final class PluginLoader {
                 }
             }
             if (!missingDeps.isEmpty()) {
-                Canary.logSevere("To enable " + plugin.getName() + " you need to enable the following plugins first: " + missingDeps.toString());
+                log.error("To enable " + plugin.getName() + " you need to enable the following plugins first: " + missingDeps.toString());
                 return false;
             }
         }
@@ -485,7 +494,7 @@ public final class PluginLoader {
                 enabled++;
             }
         }
-        Canary.logInfo("Enabled " + enabled + " plugins.");
+        log.info("Enabled " + enabled + " plugins.");
     }
 
     /**
@@ -525,7 +534,7 @@ public final class PluginLoader {
         try {
             // Check if the plugin has dependents that need disabled as well
             if (plugin.hasDependents()) {
-                Canary.logInfo(String.format("%s has %d dependents that will now be disabled...", plugin.getName(), plugin.getDependents().size()));
+                log.info(String.format("%s has %d dependents that will now be disabled...", plugin.getName(), plugin.getDependents().size()));
                 for (String dependent : plugin.getDependents()) {
                     disablePlugin(dependent);
                     // DO NOT REMOVE THEM! We need to know the dependents if this is a reload case
@@ -535,10 +544,10 @@ public final class PluginLoader {
             plugin.disable(); // Now call disable
         }
         catch (Throwable t) {
-            Canary.logStacktrace("Error while disabling " + plugin.getName(), t);
+            log.error("Error while disabling " + plugin.getName(), t);
         }
         Canary.hooks().callHook(new PluginDisableHook(plugin));
-        Canary.logInfo("Disabled " + plugin.getName() + ", Version " + plugin.getVersion());
+        log.info("Disabled " + plugin.getName() + ", Version " + plugin.getVersion());
         return true;
     }
 
@@ -581,7 +590,7 @@ public final class PluginLoader {
 
         // Plugin must exist before reloading
         if (plugin == null) {
-            Canary.logWarning("Could not reload " + name + ". It doesn't exist.");
+            log.warn("Could not reload " + name + ". It doesn't exist.");
             return false;
         }
 
@@ -602,7 +611,7 @@ public final class PluginLoader {
 
             // Check for dependents and reload them as well
             if (plugin.hasDependents()) {
-                Canary.logInfo(String.format("%s has %d dependents that will now be reloaded...", plugin.getName(), plugin.getDependents().size()));
+                log.info(String.format("%s has %d dependents that will now be reloaded...", plugin.getName(), plugin.getDependents().size()));
                 for (String dependent : plugin.getDependents()) {
                     reloadPlugin(dependent); // need to reload plugins so the class references are corrected
                 }

@@ -10,6 +10,8 @@ import java.io.FileInputStream;
 import java.util.Arrays;
 import java.util.List;
 
+import static net.canarymod.Canary.log;
+
 /**
  * This class handles internationalization (aka i18n).
  * It will look up translations from a given key to the language that is currently active.
@@ -137,7 +139,7 @@ public class Translator extends LocaleHelper {
             FileUtils.cloneFileFromJar(Canary.getCanaryJarPath(), "resources/lang/".concat(locale), canaryLang.concat(locale));
         }
         catch (UtilityException uex) {
-            Canary.logWarning("Failed to transfer lang file for locale: ".concat(locale.replace(".lang", "")));
+            log.error("Failed to transfer lang file for locale: ".concat(locale.replace(".lang", "")));
         }
     }
 
@@ -150,7 +152,7 @@ public class Translator extends LocaleHelper {
                 }
             }
             catch (Exception ex) {
-                Canary.logStacktrace("Language File Checksum failed...", ex);
+                log.error("Language File Checksum failed...", ex);
             }
         }
     }
