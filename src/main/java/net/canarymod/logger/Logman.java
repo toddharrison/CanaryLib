@@ -8,7 +8,7 @@ import org.apache.logging.log4j.MarkerManager;
 import org.apache.logging.log4j.message.Message;
 import org.apache.logging.log4j.message.MessageFactory;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * CanaryMod Log manager.
@@ -22,7 +22,7 @@ import java.util.HashMap;
  *         Updated to make use of log4j
  */
 public class Logman implements Logger {
-    private final static HashMap<String, Logman> loggers = new HashMap<String, Logman>();
+    private final static ConcurrentHashMap<String, Logman> loggers = new ConcurrentHashMap<String, Logman>();
     private final Logger logger;
 
     public static final Marker NOTICE = MarkerManager.getMarker("NOTICE");
@@ -32,7 +32,6 @@ public class Logman implements Logger {
 
     private Logman(String name) {
         this.logger = LogManager.getLogger(name);
-        loggers.put(name, this);
     }
 
     /**
@@ -41,14 +40,10 @@ public class Logman implements Logger {
      * @param name
      *         the name of the Logger to use
      *
-     * @return new Logman
+     * @return the Logman instance
      */
     public static Logman getLogman(String name) {
-        if (!loggers.containsKey(name)) {
-            Logman logman = new Logman(name);
-
-            loggers.put(name, logman);
-        }
+        loggers.putIfAbsent(name, new Logman(name));
         return loggers.get(name);
     }
 

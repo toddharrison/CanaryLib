@@ -9,15 +9,16 @@ import net.canarymod.api.entity.living.humanoid.Human;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.inventory.Item;
 import net.canarymod.api.nbt.CompoundTag;
-import net.canarymod.api.packet.Packet;
 import net.canarymod.api.packet.InvalidPacketConstructionException;
+import net.canarymod.api.packet.Packet;
 import net.canarymod.api.potion.PotionEffect;
+import net.canarymod.api.statistics.Stat;
 import net.canarymod.api.world.Chunk;
-import net.canarymod.api.world.World;
 import net.canarymod.api.world.position.Position;
 import net.canarymod.api.world.position.Vector3D;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Packet manufacturing Factory
@@ -43,11 +44,11 @@ public interface PacketFactory {
      *
      * @return the new Packet
      *
-     * @throws Exception
-     *         any of {@link InvalidPacketConstructionException}, {@link ClassCastException}, {@link IllegalArgumentException}, or any other possible exception that can occur
+     * @throws InvalidPacketConstructionException
+     *         should a Packet not be able to be constructed properly
      * @see http://wiki.vg/Protocol
      */
-    Packet createPacket(int id, Object... args) throws Exception;
+    Packet createPacket(int id, Object... args) throws InvalidPacketConstructionException;
 
     /**
      * Creates a Update Time {@link Packet}
@@ -61,23 +62,23 @@ public interface PacketFactory {
      * @param time
      *         the time of the world
      *
-     * @return a new Update Time packet
+     * @return a new Update Time packet or {@code null} if an error occurred
      */
-    Packet updateTime(long worldAge, long time);
+    Packet updateTime(long worldAge, long time); // 3
 
     /**
-     * Creates a Player Equipment {@link Packet}
+     * Creates a EntityEquipment {@link Packet}
      *
-     * @param playerID
-     *         the Player ID
+     * @param entityID
+     *         the {@link Entity} ID
      * @param slot
      *         Equipment slot: 0=held, 1-4=armor slot (1 - boots, 2 - leggings, 3 - chestplate, 4 - helmet)
      * @param item
      *         the {@link Item} in the slot
      *
-     * @return new Player Equipment Packet
+     * @return new EntityEquipment {@link Packet} or {@code null} if an error occurred
      */
-    Packet playerEquipment(int playerID, int slot, Item item);
+    Packet entityEquipment(int entityID, int slot, Item item); // 4
 
     /**
      * Creates a Spawn Position {@link Packet}
@@ -92,9 +93,9 @@ public interface PacketFactory {
      * @param z
      *         the Z coordinate
      *
-     * @return new Spawn Position {@link Packet}
+     * @return new Spawn Position {@link Packet} or {@code null} if an error occurred
      */
-    Packet spawnPosition(int x, int y, int z);
+    Packet spawnPosition(int x, int y, int z); // 5
 
     /**
      * Creates a Update Health {@link Packet}
@@ -111,17 +112,17 @@ public interface PacketFactory {
      * @param saturation
      *         the player's food saturation
      *
-     * @return new Update Health {@link Packet}
+     * @return new Update Health {@link Packet} or {@code null} if an error occurred
      */
-    Packet updateHealth(float health, int foodLevel, float saturation);
+    Packet updateHealth(float health, int foodLevel, float saturation); // 6
+
+    //Packet respawn(int, World)
 
     /**
      * Creates a Player Position and Look {@link Packet}
      *
      * @param x
      *         the X coordinate
-     * @param stance
-     *         the Player stance (Typically Y + 1.62D for standing)
      * @param y
      *         the Y coordinate
      * @param z
@@ -133,9 +134,9 @@ public interface PacketFactory {
      * @param onGround
      *         {@code true} for on ground; {@code false} for not
      *
-     * @return new PlayerLookMove {@link Packet}
+     * @return new PlayerLookMove {@link Packet} or {@code null} if an error occurred
      */
-    Packet playerPositionLook(double x, double stance, double y, double z, float yaw, float pitch, boolean onGround);
+    Packet playerPositionLook(double x, double y, double z, float yaw, float pitch, boolean onGround); // 8
 
     /**
      * Creates a HeldItemChange {@link Packet}
@@ -145,9 +146,9 @@ public interface PacketFactory {
      * @param slot
      *         The slot which the player has selected (0-8)
      *
-     * @return new HeldItemChange {@link Packet}
+     * @return new HeldItemChange {@link Packet} or {@code null} if an error occurred
      */
-    Packet heldItemChange(int slot);
+    Packet heldItemChange(int slot); // 9
 
     /**
      * Creates a UseBed {@link Packet}
@@ -165,9 +166,9 @@ public interface PacketFactory {
      * @param z
      *         Bed headboard Z as block coordinate
      *
-     * @return new UseBed {@link Packet}
+     * @return new UseBed {@link Packet} or {@code null} if an error occurred
      */
-    Packet useBed(Player player, int x, int y, int z);
+    Packet useBed(Player player, int x, int y, int z); // 10
 
     /**
      * Creates a Animation {@link Packet}
@@ -179,20 +180,19 @@ public interface PacketFactory {
      * @param animation
      *         the animation id 0: No animation 1: Swing arm 2: Damage animation 3: Leave bed 5: Eat food 6: Critical effect 7: Magic critical effect
      *
-     * @return new Animation {@link Packet}
+     * @return new Animation {@link Packet} or {@code null} if an error occurred
      */
-    Packet animation(Player player, int animation);
+    Packet animation(Player player, int animation); // 11
 
     /**
-     * Creates a NamedEntity {@link Packet}
+     * Creates a SpawnPlayer {@link Packet}
      *
      * @param human
      *         the {@link Human} to spawn (either a NPC or Player)
      *
-     * @return new SpawnNamedEntity {@link Packet}
+     * @return new SpawnPlayer {@link Packet} or {@code null} if an error occurred
      */
-    Packet spawnNamedEntity(Human human);
-
+    Packet spawnPlayer(Human human); // 12
 
     /**
      * Creates a CollectItem {@link Packet}
@@ -206,12 +206,24 @@ public interface PacketFactory {
      * @param collectorID
      *         the ID of the Player
      *
-     * @return new CollectItem packet
+     * @return new CollectItem {@link Packet} or {@code null} if an error occurred
      */
-    Packet collectItem(int entityItemID, int collectorID);
+    Packet collectItem(int entityItemID, int collectorID); // 13
 
     /**
-     * Creates a SpawnObjectVehicle {@link Packet}
+     * Creates a SpawnObject {@link Packet}
+     *
+     * @param entity
+     *         the entity being spawned
+     * @param objectID
+     *         See <a href="http://wiki.vg/Entities#Objects">wiki.vg/Entities#Objects</a>
+     *
+     * @return new SpawnObjectVehicle {@link Packet} or {@code null} if an error occurred
+     */
+    Packet spawnObject(Entity entity, int objectID); // 14
+
+    /**
+     * Creates a SpawnObject {@link Packet}
      *
      * @param entity
      *         the entity being spawned
@@ -220,9 +232,9 @@ public interface PacketFactory {
      * @param throwerID
      *         the EntityID of the Thrower (if applicable); Otherwise see <a href="http://wiki.vg/Object_Data">wiki.vg/Object_Data</a>
      *
-     * @return new SpawnObjectVehicle {@link Packet}
+     * @return new SpawnObjectVehicle {@link Packet} or {@code null} if an error occurred
      */
-    Packet spawnObjectVehicle(Entity entity, int objectID, int throwerID);
+    Packet spawnObject(Entity entity, int objectID, int throwerID); //14
 
     /**
      * Creates a SpawnMob {@link Packet}
@@ -230,9 +242,9 @@ public interface PacketFactory {
      * @param livingbase
      *         the {@link LivingBase} to spawn
      *
-     * @return new SpawnMob {@link Packet}
+     * @return new SpawnMob {@link Packet} or {@code null} if an error occurred
      */
-    Packet spawnMob(LivingBase livingbase);
+    Packet spawnMob(LivingBase livingbase); // 15
 
     /**
      * Creates a SpawnPainting {@link Packet}
@@ -240,9 +252,9 @@ public interface PacketFactory {
      * @param painting
      *         the {@link Painting} to spawn
      *
-     * @return new SpawnPainting {@link Packet}
+     * @return new SpawnPainting {@link Packet} or {@code null} if an error occurred
      */
-    Packet spawnPainting(Painting painting);
+    Packet spawnPainting(Painting painting); // 16
 
     /**
      * Creates a SpawnXPOrb {@link Packet}
@@ -250,9 +262,9 @@ public interface PacketFactory {
      * @param xporb
      *         the {@link XPOrb} to spawn
      *
-     * @return new SpawnXPOrb {@link Packet}
+     * @return new SpawnXPOrb {@link Packet} or {@code null} if an error occurred
      */
-    Packet spawnXPOrb(XPOrb xporb);
+    Packet spawnXPOrb(XPOrb xporb); // 17
 
     /**
      * Creates a EntityVelocity {@link Packet}
@@ -268,21 +280,21 @@ public interface PacketFactory {
      * @param motZ
      *         the Z-wise motion
      *
-     * @return new EntityVelocity {@link Packet}
+     * @return new EntityVelocity {@link Packet} or {@code null} if an error occurred
      */
-    Packet entityVelocity(int entityID, double motX, double motY, double motZ);
+    Packet entityVelocity(int entityID, double motX, double motY, double motZ); // 18
 
     /**
-     * Creates a EntityDestroy {@link Packet}
+     * Creates a DestroyEntities {@link Packet}
      * <p/>
      * Sent by the server when an list of Entities is to be destroyed on the client.
      *
      * @param ids
      *         the IDs of the Entities to destroy
      *
-     * @return new EntityDestroy {@link Packet}
+     * @return new DestoryEntities {@link Packet} or {@code null} if an error occurred
      */
-    Packet destroyEntity(int... ids);
+    Packet destroyEntities(int... ids); // 19
 
     /**
      * Creates a EntityRelativeMove {@link Packet}
@@ -300,9 +312,9 @@ public interface PacketFactory {
      * @param z
      *         the Z block coordinate offset
      *
-     * @return new EntityRelativeMove {@link Packet}
+     * @return new EntityRelativeMove {@link Packet} or {@code null} if an error occurred
      */
-    Packet entityRelativeMove(int entityID, byte x, byte y, byte z);
+    Packet entityRelativeMove(int entityID, byte x, byte y, byte z); // 21
 
     /**
      * Creates a EntityLook {@link Packet}
@@ -316,9 +328,9 @@ public interface PacketFactory {
      * @param pitch
      *         the pitch offset
      *
-     * @return new EntityLook {@link Packet}
+     * @return new EntityLook {@link Packet} or {@code null} if an error occurred
      */
-    Packet entityLook(int entityID, byte yaw, byte pitch);
+    Packet entityLook(int entityID, byte yaw, byte pitch); // 22
 
     /**
      * Creates a EntityLookRelativeMove {@link Packet}
@@ -338,9 +350,19 @@ public interface PacketFactory {
      * @param pitch
      *         the pitch offset
      *
-     * @return new EntityLookRelativeMove {@link Packet}
+     * @return new EntityLookRelativeMove {@link Packet} or {@code null} if an error occurred
      */
-    Packet entityLookRelativeMove(int entityID, byte x, byte y, byte z, byte yaw, byte pitch);
+    Packet entityLookRelativeMove(int entityID, byte x, byte y, byte z, byte yaw, byte pitch); // 23
+
+    /**
+     * Creates an EntityTeleport {@link Packet}
+     *
+     * @param entity
+     *         the {@link Entity} teleporting
+     *
+     * @return new EntityTeleport {@link Packet} or {@code null} if an error occurred
+     */
+    Packet entityTeleport(Entity entity); // 24
 
     /**
      * Creates a EntityTeleport {@link Packet}
@@ -358,21 +380,9 @@ public interface PacketFactory {
      * @param pitch
      *         the pitch offset
      *
-     * @return new EntityTeleport {@link Packet}
+     * @return new EntityTeleport {@link Packet} or {@code null} if an error occurred
      */
-    Packet entityTeleport(int entityID, int x, int y, int z, byte yaw, byte pitch);
-
-    /**
-     * Creates a EntityHeadLook {@link Packet}
-     *
-     * @param entityID
-     *         the Entity ID
-     * @param yaw
-     *         head yaw in steps of 2p/256
-     *
-     * @return new EntityHeadLook {@link Packet}
-     */
-    Packet entityHeadLook(int entityID, byte yaw);
+    Packet entityTeleport(int entityID, int x, int y, int z, byte yaw, byte pitch); // 24
 
     /**
      * Creates a new EntityStatus {@link Packet}
@@ -395,9 +405,9 @@ public interface PacketFactory {
      *         16: Zombie converting into a villager by shaking violently <br/>
      *         17: A firework exploding <br/>
      *
-     * @return new EntityStatus {@link Packet}
+     * @return new EntityStatus {@link Packet} or {@code null} if an error occurred
      */
-    Packet entityStatus(int entityID, byte status);
+    Packet entityStatus(int entityID, byte status); // 25
 
     /**
      * Creates a AttachEntity {@link Packet}
@@ -409,9 +419,9 @@ public interface PacketFactory {
      * @param vehicle
      *         the entity being attached to
      *
-     * @return new AttachEntity {@link Packet}
+     * @return new AttachEntity {@link Packet} or {@code null} if an error occurred
      */
-    Packet attachEntity(int leashId, Entity attaching, Entity vehicle);
+    Packet attachEntity(int leashId, Entity attaching, Entity vehicle); // 27
 
     /**
      * Creates a EntityMetaData {@link Packet}
@@ -421,9 +431,9 @@ public interface PacketFactory {
      * @param watcher
      *         the {@link DataWatcher} data
      *
-     * @return new EntityMetaData {@link Packet}
+     * @return new EntityMetaData {@link Packet} or {@code null} if an error occurred
      */
-    Packet entityMetaData(int entityID, DataWatcher watcher);
+    Packet entityMetaData(int entityID, DataWatcher watcher); // 28
 
     /**
      * Creates a EntityEffect {@link Packet}
@@ -433,9 +443,9 @@ public interface PacketFactory {
      * @param effect
      *         the {@link PotionEffect}
      *
-     * @return new EntityEffect {@link Packet}
+     * @return new EntityEffect {@link Packet} or {@code null} if an error occurred
      */
-    Packet entityEffect(int entityID, PotionEffect effect);
+    Packet entityEffect(int entityID, PotionEffect effect); // 29
 
     /**
      * Creates a RemoveEntityEffect {@link Packet}
@@ -445,9 +455,9 @@ public interface PacketFactory {
      * @param effect
      *         the {@link PotionEffect}
      *
-     * @return new RemoveEntityEffect {@link Packet}
+     * @return new RemoveEntityEffect {@link Packet} or {@code null} if an error occurred
      */
-    Packet removeEntityEffect(int entityID, PotionEffect effect);
+    Packet removeEntityEffect(int entityID, PotionEffect effect); // 30
 
     /**
      * Creates a SetExperience {@link Packet}
@@ -459,9 +469,9 @@ public interface PacketFactory {
      * @param totalXp
      *         the Total Experience
      *
-     * @return new SetExperience {@link Packet}
+     * @return new SetExperience {@link Packet} or {@code null} if an error occurred
      */
-    Packet setExperience(float bar, int level, int totalXp);
+    Packet setExperience(float bar, int level, int totalXp); // 31
 
     /**
      * Creates a ChunkData {@link Packet}
@@ -473,28 +483,24 @@ public interface PacketFactory {
      * @param bitflag
      *         unknown function at this time, either 0x0 or 0x1 observed
      *
-     * @return new ChunkData {@link Packet}
+     * @return new ChunkData {@link Packet} or {@code null} if an error occurred
      */
-    Packet chunkData(Chunk chunk, boolean initialize, int bitflag);
+    Packet chunkData(Chunk chunk, boolean initialize, int bitflag); // 33
 
     /**
      * Creates a MultiBlockChange {@link Packet}
      *
-     * @param chunkX
-     *         the Chunk X coordinate
-     * @param chunkZ
-     *         the Chunk Z coordinate
+     * @param size
+     *         the amount of blocks changed
      * @param chunkBlocks
      *         the chunk Block Coordinates compressed into a single short per block
      *         Assuming the condition: x << 12 & 15; z << 8 & 15; y & 255;
-     * @param size
-     *         the size of array (number of blocks assumed)
-     * @param world
-     *         the {@link World} of the chunk
+     * @param chunk
+     *         the {@link Chunk} being changed
      *
-     * @return new MultiBlockChange {@link Packet}
+     * @return new MultiBlockChange {@link Packet} or {@code null} if an error occurred
      */
-    Packet multiBlockChange(int chunkX, int chunkZ, short[] chunkBlocks, int size, World world);
+    Packet multiBlockChange(int size, short[] blocks, Chunk chunk); //34
 
     /**
      * Creates a BlockChange {@link Packet}
@@ -510,9 +516,9 @@ public interface PacketFactory {
      * @param data
      *         the Block Data
      *
-     * @return new BlockChange {@link Packet}
+     * @return new BlockChange {@link Packet} or {@code null} if an error occurred
      */
-    Packet blockChange(int x, int y, int z, int typeId, int data);
+    Packet blockChange(int x, int y, int z, int typeId, int data); //35
 
     /**
      * Creates a BlockAction {@link Packet}
@@ -523,18 +529,18 @@ public interface PacketFactory {
      *         the Block Y Coordinate
      * @param z
      *         the Block Z Coordinate
+     * @param targetId
+     *         the target Block ID
      * @param stat1
      *         see wiki link below
      * @param stat2
      *         see wiki link below
-     * @param targetId
-     *         the target Block ID
      *
-     * @return new BlockAction {@link Packet}
+     * @return new BlockAction {@link Packet} or {@code null} if an error occurred
      *
      * @see http://wiki.vg/Block_Actions
      */
-    Packet blockAction(int x, int y, int z, int stat1, int stat2, int targetId);
+    Packet blockAction(int x, int y, int z, int targetId, int stat1, int stat2); // 36
 
     /**
      * Creates a BlockBreakAnimation {@link Packet}
@@ -550,9 +556,9 @@ public interface PacketFactory {
      * @param state
      *         the break state (0-7)
      *
-     * @return new BlockBreakAnimation {@link Packet}
+     * @return new BlockBreakAnimation {@link Packet} or {@code null} if an error occurred
      */
-    Packet blockBreakAnimation(int entityId, int x, int y, int z, int state);
+    Packet blockBreakAnimation(int entityId, int x, int y, int z, int state); // 37
 
     /**
      * Creates a MapChunkBulk {@link Packet}
@@ -560,9 +566,9 @@ public interface PacketFactory {
      * @param chunks
      *         the list of {@link Chunk}(s)
      *
-     * @return new MapChunkBulk {@link Packet}
+     * @return new MapChunkBulk {@link Packet} or {@code null} if an error occurred
      */
-    Packet mapChunkBulk(List<Chunk> chunks);
+    Packet mapChunkBulk(List<Chunk> chunks); // 38
 
     /**
      * Creates a Explosion {@link Packet}
@@ -580,12 +586,12 @@ public interface PacketFactory {
      * @param playerVelocity
      *         the player's velocity
      *
-     * @return new Explosion {@link Packet}
+     * @return new Explosion {@link Packet} or {@code null} if an error occurred
      */
-    Packet explosion(double explodeX, double explodeY, double explodeZ, float power, List<Position> affectedPositions, Vector3D playerVelocity);
+    Packet explosion(double explodeX, double explodeY, double explodeZ, float power, List<Position> affectedPositions, Vector3D playerVelocity); // 39
 
     /**
-     * Creates a SoundParticleEffect {@link Packet}
+     * Creates a Effect {@link Packet}
      *
      * @param sfxID
      *         the sound/particle effect id
@@ -600,14 +606,14 @@ public interface PacketFactory {
      * @param disableRelVol
      *         {@code true} to disable Relative Volume; {@code false} for don't
      *
-     * @return new SoundParticleEffect {@link Packet}
+     * @return new Effect {@link Packet} or {@code null} if an error occurred
      *
      * @see http://wiki.vg/Protocol#Sound_Or_Particle_Effect_.280x3D.29
      */
-    Packet soundParticleEffect(int sfxID, int x, int y, int z, int aux, boolean disableRelVol);
+    Packet effect(int sfxID, int x, int y, int z, int aux, boolean disableRelVol); // 40
 
     /**
-     * Creates a NamedSoundEffect {@link Packet}
+     * Creates a SoundEffect {@link Packet}
      *
      * @param name
      *         name of the effect
@@ -622,9 +628,28 @@ public interface PacketFactory {
      * @param pitch
      *         the pitch (63 max)
      *
-     * @return new NamedSoundEffect {@link Packet}
+     * @return new SoundEffect {@link Packet} or {@code null} if an error occurred
      */
-    Packet namedSoundEffect(String name, double x, double y, double z, float volume, float pitch);
+    Packet soundEffect(String name, double x, double y, double z, float volume, float pitch); // 41
+
+    /**
+     * Creates a Particles {@link Packet}
+     * <p/>
+     * Information unknown at this time
+     *
+     * @param name
+     * @param f1
+     * @param f2
+     * @param f3
+     * @param f4
+     * @param f5
+     * @param f6
+     * @param f7
+     * @param i1
+     *
+     * @return
+     */
+    Packet particles(String name, float f1, float f2, float f3, float f4, float f5, float f6, float f7, int i1); // 42
 
     /**
      * Creates a GameStateChange {@link Packet}
@@ -638,9 +663,9 @@ public interface PacketFactory {
      * @param mode
      *         Used only when state = 3; GameMode 0 1 2
      *
-     * @return new ChangeGameState {@link Packet}
+     * @return new ChangeGameState {@link Packet} or {@code null} if an error occurred
      */
-    Packet changeGameState(int state, int mode);
+    Packet changeGameState(int state, int mode); // 43
 
     /**
      * Creates a SpawnGlobalEntity {@link Packet}
@@ -652,7 +677,7 @@ public interface PacketFactory {
      *
      * @return new SpawnGlobalEntity
      */
-    Packet spawnGlobalEntity(Entity entity);
+    Packet spawnGlobalEntity(Entity entity); // 44
 
     /**
      * Creates a OpenWindow {@link Packet}
@@ -674,7 +699,7 @@ public interface PacketFactory {
      *
      * @see http://wiki.vg/Inventory#Windows
      */
-    Packet openWindow(int windowId, int type, String title, int slots, boolean useTitle);
+    Packet openWindow(int windowId, int type, String title, int slots, boolean useTitle); // 45
 
     /**
      * Creates a CloseWindow {@link Packet}
@@ -684,7 +709,7 @@ public interface PacketFactory {
      *
      * @return new CloseWindow {@link Packet}
      */
-    Packet closeWindow(int windowId);
+    Packet closeWindow(int windowId); // 46
 
     /**
      * Creates a SetSlot {@link Packet}
@@ -698,7 +723,7 @@ public interface PacketFactory {
      *
      * @return new SetSlot {@link Packet}
      */
-    Packet setSlot(int windowId, int slotId, Item item);
+    Packet setSlot(int windowId, int slotId, Item item); // 47
 
     /**
      * Creates a SetWindowItems {@link Packet}
@@ -710,7 +735,7 @@ public interface PacketFactory {
      *
      * @return new SetWindowItems {@link Packet}
      */
-    Packet setWindowItems(int windowId, List<Item> items);
+    Packet setWindowItems(int windowId, List<Item> items); // 48
 
     /**
      * Creates a UpdateWindowProperty {@link Packet}
@@ -726,7 +751,7 @@ public interface PacketFactory {
      *
      * @see http://wiki.vg/Protocol#Update_Window_Property_.280x69.29
      */
-    Packet updateWindowProperty(int windowId, int bar, int value);
+    Packet updateWindowProperty(int windowId, int bar, int value); // 49
 
     /**
      * Creates a UpdateSign {@link Packet}
@@ -742,26 +767,24 @@ public interface PacketFactory {
      *
      * @return new UpdateSign {@link Packet}
      */
-    Packet updateSign(int x, int y, int z, String[] text);
+    Packet updateSign(int x, int y, int z, String[] text); // 51
 
     /**
-     * Creates an ItemData {@link Packet}<br/>
+     * Creates an Maps {@link Packet}<br/>
      * Sent to specify complex data on an item; currently used only for maps.
      * <p/>
      * Maps: If the first byte of the text is 0, the next two bytes are X start and Y start and the rest of the bytes are the colors in that column.<br/>
      * If the first byte of the text is 1, the rest of the bytes are in groups of three: (data, x, y).<br/>
      * The lower half of the data is the type (always 0 under vanilla) and the upper half is the direction.
      *
-     * @param itemId
-     *         the Item ID
-     * @param uniqueId
-     *         the Item Unique ID (like Map # or damage value)
+     * @param mapID
+     *         the Map ID (#)
      * @param data
      *         the data to specify
      *
-     * @return new ItemData {@link Packet}
+     * @return new Maps {@link Packet}
      */
-    Packet itemData(short itemId, short uniqueId, byte[] data);
+    Packet maps(short mapID, byte[] data); // 52
 
     /**
      * Creates an UpdateTileEntity {@link Packet}
@@ -779,13 +802,11 @@ public interface PacketFactory {
      *
      * @return new UpdateTileEntity {@link Packet}
      */
-    Packet updateTileEntity(int x, int y, int z, int action, CompoundTag compoundTag);
+    Packet updateTileEntity(int x, int y, int z, int action, CompoundTag compoundTag); // 53
 
     /**
-     * Creates a TileEditorOpen {@link Packet}
+     * Creates a SignEditorOpen {@link Packet}
      *
-     * @param id
-     *         the TileEntity ID
      * @param x
      *         the X coordinate
      * @param y
@@ -793,26 +814,24 @@ public interface PacketFactory {
      * @param z
      *         the Z coordinate
      *
-     * @return new TileEditorOpen {@link Packet}
+     * @return new SignEditorOpen {@link Packet}
      */
-    Packet tileEditorOpen(int id, int x, int y, int z);
+    Packet signEditorOpen(int x, int y, int z); // 54
 
     /**
-     * Creates a IncrementStatistic {@link Packet}
+     * Creates a Statistics {@link Packet}
      *
-     * @param statId
-     *         the Statistic ID
-     * @param amount
-     *         the amount to increment the stat
+     * @param stats
+     *         map of stats
      *
-     * @return new IncrementStatistic {@link Packet}
+     * @return new Statistics {@link Packet}
      *
      * @see http://www.minecraftwiki.net/wiki/Statistics
      */
-    Packet incrementStatistic(int statId, int amount);
+    Packet statistics(Map<Stat, Integer> stats); // 55
 
     /**
-     * Creates a PlayerInfo {@link Packet}
+     * Creates a playerListItem {@link Packet}
      *
      * @param name
      *         the Player's name
@@ -821,7 +840,7 @@ public interface PacketFactory {
      * @param ping
      *         the Player's Ping
      *
-     * @return new PlayerInfo {@link Packet}
+     * @return new playerListItem {@link Packet}
      */
-    Packet playerInfo(String name, boolean connected, int ping);
+    Packet playerListItem(String name, boolean connected, int ping); // 56
 }

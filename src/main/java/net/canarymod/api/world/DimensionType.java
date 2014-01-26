@@ -35,11 +35,13 @@ public class DimensionType {
             return fromName(name);
         }
         if (validateId(id)) {
-            return typeList.put(name.toLowerCase(), new DimensionType(name, id));
+            typeList.put(name.toLowerCase(), new DimensionType(name, id));
+            return fromName(name);
         }
         else {
             log.warn("DimensionType ID is not unique! Id: " + id + ", Type: " + name + " - Creating unique ID from hashCode!");
-            return typeList.put(name.toLowerCase(), new DimensionType(name, name.hashCode()));
+            typeList.put(name.toLowerCase(), new DimensionType(name, name.hashCode()));
+            return fromName(name);
         }
     }
 
@@ -61,11 +63,13 @@ public class DimensionType {
             return fromName(name);
         }
         if (validateId(id)) {
-            return typeList.put(name.toLowerCase(), new DimensionType(name, id, cpc));
+            typeList.put(name.toLowerCase(), new DimensionType(name, id, cpc));
+            return fromName(name);
         }
         else {
             log.warn("WorldType ID is not unique! Id: " + id + ", Type: " + name + " - Creating unique ID from hashCode!");
-            return typeList.put(name.toLowerCase(), new DimensionType(name, name.hashCode(), cpc));
+            typeList.put(name.toLowerCase(), new DimensionType(name, name.hashCode(), cpc));
+            return fromName(name);
         }
     }
 
