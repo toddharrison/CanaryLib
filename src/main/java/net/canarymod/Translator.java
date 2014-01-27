@@ -98,6 +98,44 @@ public class Translator extends LocaleHelper {
     }
 
     /**
+     * Uses Minecraft's native translation to translate a key
+     *
+     * @param key
+     *         the key to translate
+     *
+     * @return the translated string
+     */
+    public static String nativeTranslate(String key) {
+        return NativeTranslateBridge.$.nativeTranslate(key);
+    }
+
+    /**
+     * Uses Minecraft's native translation to translate a key
+     *
+     * @param key
+     *         the key to translate
+     * @param args
+     *         the argument objects to use with translation
+     *
+     * @return the translated string
+     */
+    public static String nativeTranslate(String key, Object... args) {
+        return NativeTranslateBridge.$.nativeTranslate(key, args);
+    }
+
+    /**
+     * Checks if a key exists for translation in Minecraft's native translation
+     *
+     * @param key
+     *         the key to check
+     *
+     * @return {@code true} if exists; {@code false} if not
+     */
+    public static boolean nativeCanTranslate(String key) {
+        return NativeTranslateBridge.$.nativeCanTranslate(key);
+    }
+
+    /**
      * Returns the instance for this Translator.
      * For translation purposes, please use the provided static methods.
      * This here is for working with the command system
