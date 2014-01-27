@@ -3,6 +3,7 @@ package net.canarymod.api.entity.living.humanoid;
 import net.canarymod.api.NetServerHandler;
 import net.canarymod.api.PlayerListEntry;
 import net.canarymod.api.PlayerReference;
+import net.canarymod.api.chat.ChatComponent;
 import net.canarymod.api.inventory.Inventory;
 import net.canarymod.api.packet.Packet;
 import net.canarymod.api.world.blocks.Sign;
@@ -219,4 +220,12 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      * @return the player's locale
      */
     public String getLocale();
+
+    /**
+     * Sends a {@link net.canarymod.api.chat.ChatComponent} to the {@code Player}
+     *
+     * @param chatComponent
+     *         the {@link net.canarymod.api.chat.ChatComponent} to send
+     */
+    public void sendChatComponent(ChatComponent chatComponent);
 }
