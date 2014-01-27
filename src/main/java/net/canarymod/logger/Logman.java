@@ -30,8 +30,9 @@ public class Logman implements Logger {
     public static final Marker DERP = MarkerManager.getMarker("DERP");
     public static final Marker PLUGINDEBUG = MarkerManager.getMarker("PLUGINDEBUG");
 
-    private Logman(String name) {
+    protected Logman(String name) {
         this.logger = LogManager.getLogger(name);
+        loggers.putIfAbsent(name, this);
     }
 
     /**
@@ -43,8 +44,7 @@ public class Logman implements Logger {
      * @return the Logman instance
      */
     public static Logman getLogman(String name) {
-        loggers.putIfAbsent(name, new Logman(name));
-        return loggers.get(name);
+        return loggers.containsKey(name) ? loggers.get(name) : new Logman(name);
     }
 
     /**
