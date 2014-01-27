@@ -1,6 +1,7 @@
 package net.canarymod.api.factory;
 
 import net.canarymod.api.DataWatcher;
+import net.canarymod.api.chat.ChatComponent;
 import net.canarymod.api.entity.Entity;
 import net.canarymod.api.entity.XPOrb;
 import net.canarymod.api.entity.hanging.Painting;
@@ -49,6 +50,16 @@ public interface PacketFactory {
      * @see http://wiki.vg/Protocol
      */
     Packet createPacket(int id, Object... args) throws InvalidPacketConstructionException;
+
+    /**
+     * Creates a Chat {@link Packet}
+     *
+     * @param chatComponent
+     *         the {@link net.canarymod.api.chat.ChatComponent}
+     *
+     * @return a new Chat packet or {@code null} if an error occurred
+     */
+    Packet chat(ChatComponent chatComponent); // 2
 
     /**
      * Creates a Update Time {@link Packet}
