@@ -51,4 +51,11 @@ public interface Factory {
      */
     public PacketFactory getPacketFactory();
 
+    /**
+     * Gets the {@link net.canarymod.api.factory.ChatComponentFactory} instance
+     *
+     * @return {@link net.canarymod.api.factory.ChatComponentFactory}
+     */
+    public ChatComponentFactory getChatComponentFactory();
+
 }
