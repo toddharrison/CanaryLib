@@ -1,6 +1,7 @@
 package net.canarymod.hook.world;
 
 import net.canarymod.api.world.blocks.Block;
+import net.canarymod.api.world.blocks.BlockType;
 import net.canarymod.hook.CancelableHook;
 
 /**
@@ -11,10 +12,18 @@ import net.canarymod.hook.CancelableHook;
 public final class LiquidDestroyHook extends CancelableHook {
 
     private Block block;
+    private final BlockType liquidType;
     private boolean forceDestroy = false;
 
+    @Deprecated
     public LiquidDestroyHook(Block block) {
         this.block = block;
+        this.liquidType = null;
+    }
+
+    public LiquidDestroyHook(BlockType liquidType, Block toDestroy) {
+        this.liquidType = liquidType;
+        this.block = toDestroy;
     }
 
     /**
@@ -24,6 +33,15 @@ public final class LiquidDestroyHook extends CancelableHook {
      */
     public Block getBlock() {
         return block;
+    }
+
+    /**
+     * Returns the {@link BlockType} of the liquid.
+     * Always returns the Flowing variant.
+     * @return The liquid's {@link BlockType}
+     */
+    public BlockType getLiquidType() {
+        return liquidType;
     }
 
     /**
