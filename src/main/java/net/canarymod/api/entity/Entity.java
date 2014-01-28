@@ -1,7 +1,5 @@
 package net.canarymod.api.entity;
 
-import java.util.UUID;
-
 import net.canarymod.api.entity.living.Golem;
 import net.canarymod.api.inventory.Item;
 import net.canarymod.api.nbt.BaseTag;
@@ -10,6 +8,8 @@ import net.canarymod.api.world.World;
 import net.canarymod.api.world.position.Location;
 import net.canarymod.api.world.position.Position;
 import net.canarymod.api.world.position.Vector3D;
+
+import java.util.UUID;
 
 /**
  * This defines an entity in the world
@@ -402,6 +402,13 @@ public interface Entity {
      * @return {@code true} if {@link Golem}; {@code false} if not
      */
     public boolean isGolem();
+
+    /**
+     * Check if this entity is a {@link net.canarymod.api.entity.living.humanoid.NonPlayableCharacter}
+     *
+     * @return {@code true} if npc; {@code false} if not
+     */
+    public boolean isNPC();
 
     /**
      * Make this entity drop the given item

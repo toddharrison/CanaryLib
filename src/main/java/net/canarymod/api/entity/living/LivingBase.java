@@ -1,13 +1,13 @@
 package net.canarymod.api.entity.living;
 
-import java.util.List;
-
 import net.canarymod.api.DamageType;
 import net.canarymod.api.entity.Entity;
 import net.canarymod.api.potion.Potion;
 import net.canarymod.api.potion.PotionEffect;
 import net.canarymod.api.potion.PotionEffectType;
 import net.canarymod.api.world.position.Location;
+
+import java.util.List;
 
 /**
  * EntityLivingBase wrapper interface
@@ -44,14 +44,16 @@ public interface LivingBase extends Entity {
 
     /**
      * Gets the Maximum allowed health for the Entity
+     *
      * @return maximum health
      */
     public double getMaxHealth();
 
     /**
      * Sets the Maximum allowed health for the Entity
+     *
      * @param maxHealth
-     * the maximum health
+     *         the maximum health
      */
     public void setMaxHealth(double maxHealth);
 
@@ -62,7 +64,7 @@ public interface LivingBase extends Entity {
      *         the {@link LivingBase} to check sight of
      *
      * @return {@code true} if the entity can see the provided entity (provided is not
-     *         hidden); {@code false} otherwise
+     * hidden); {@code false} otherwise
      */
     public boolean canSee(LivingBase entity);
 
@@ -147,11 +149,11 @@ public interface LivingBase extends Entity {
      * Add a {@link PotionEffect} to this entity using custom values
      *
      * @param type
-     *          the {@link PotionEffectType}
+     *         the {@link PotionEffectType}
      * @param duration
-     *          the duration of the effect
+     *         the duration of the effect
      * @param amplifier
-     *          the amplifier of the effect
+     *         the amplifier of the effect
      */
     public void addPotionEffect(PotionEffectType type, int duration, int amplifier);
 
@@ -159,7 +161,7 @@ public interface LivingBase extends Entity {
      * Removes a specified {@link PotionEffectType} from this entity.
      *
      * @param type
-     *          the {@link PotionEffectType} to remove
+     *         the {@link PotionEffectType} to remove
      */
     public void removePotionEffect(PotionEffectType type);
 
@@ -167,6 +169,7 @@ public interface LivingBase extends Entity {
      * Removes all potion effects from this entity
      */
     public void removeAllPotionEffects();
+
     /**
      * Is this potion active on this entity
      *
@@ -281,5 +284,20 @@ public interface LivingBase extends Entity {
      *         The amount of damage to do.
      */
     public void attackEntity(LivingBase target, float damage);
+
+    /**
+     * Gets the head rotation
+     *
+     * @return head rotation
+     */
+    public float getHeadRotation();
+
+    /**
+     * Sets the head rotation
+     *
+     * @param rot
+     *         the head rotation to set
+     */
+    public void setHeadRotation(float rot);
 
 }
