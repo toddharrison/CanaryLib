@@ -534,15 +534,10 @@ public class CommandList implements CommandListener {
             toolTip = "/home [playername]",
             min = 1,
             max = 2,
-            tabCompleteMethod = "homeTabComplete"
+            tabCompleteMethod = "matchKnownPlayer"
     )
     public void homeCommand(MessageReceiver caller, String[] parameters) {
         natives.get("home").execute(caller, parameters);
-    }
-
-    @TabComplete
-    public List<String> homeTabComplete(MessageReceiver caller, String[] parameters) {
-        return parameters.length == 1 ? matchToKnownPlayer(parameters) : null;
     }
 
     @Command(aliases = { "ipban" },
@@ -559,22 +554,18 @@ public class CommandList implements CommandListener {
             permissions = { "canary.super.kick", "canary.command.super.kick" },
             toolTip = "/kick <playername> [reason]",
             min = 2,
-            tabCompleteMethod = "kickTabComplete"
+            tabCompleteMethod = "matchOnlinePlayer"
     )
     public void kickCommand(MessageReceiver caller, String[] parameters) {
         natives.get("kick").execute(caller, parameters);
-    }
-
-    @TabComplete
-    public List<String> kickTabComplete(MessageReceiver caller, String[] parameters) {
-        return parameters.length == 1 ? matchToOnlinePlayer(parameters) : null;
     }
 
     @Command(aliases = { "kill", "murder" },
             description = "kill info",
             permissions = { "canary.command.player.kill" },
             toolTip = "/kill [playername]",
-            min = 1
+            min = 1,
+            tabCompleteMethod = "matchOnlinePlayer"
     )
     public void killCommand(MessageReceiver caller, String[] parameters) {
         natives.get("kill").execute(caller, parameters);
@@ -636,7 +627,9 @@ public class CommandList implements CommandListener {
             description = "msg info",
             permissions = { "canary.command.player.msg" },
             toolTip = "/msg <playername> <message>",
-            min = 3)
+            min = 3,
+            tabCompleteMethod = "matchOnlinePlayer"
+    )
     public void msgCommand(MessageReceiver caller, String[] parameters) {
         natives.get("msg").execute(caller, parameters);
     }
@@ -646,15 +639,10 @@ public class CommandList implements CommandListener {
             permissions = { "canary.super.mute", "canary.command.super.mute" },
             toolTip = "/mute <playername>",
             min = 2,
-            tabCompleteMethod = "muteTabComplete"
+            tabCompleteMethod = "matchOnlinePlayer"
     )
     public void muteCommand(MessageReceiver caller, String[] parameters) {
         natives.get("mute").execute(caller, parameters);
-    }
-
-    @TabComplete
-    public List<String> muteTabComplete(MessageReceiver caller, String[] parameters) {
-        return parameters.length == 1 ? matchToOnlinePlayer(parameters) : null;
     }
 
     @Command(aliases = { "playerlist", "players", "who" },
@@ -678,7 +666,9 @@ public class CommandList implements CommandListener {
             description = "plugin disable info",
             permissions = { "canary.command.plugin.disable" },
             toolTip = "/disableplugin <plugin>",
-            min = 2)
+            min = 2,
+            tabCompleteMethod = "matchPlugin"
+    )
     public void disablePluginCommand(MessageReceiver caller, String[] parameters) {
         natives.get("disableplugin").execute(caller, parameters);
     }
@@ -687,7 +677,9 @@ public class CommandList implements CommandListener {
             description = "plugin reload info",
             permissions = { "canary.command.plugin.reload" },
             toolTip = "/reloadplugin <plugin>",
-            min = 2)
+            min = 2,
+            tabCompleteMethod = "matchPlugin"
+    )
     public void reloadPluginCommand(MessageReceiver caller, String[] parameters) {
         natives.get("reloadplugin").execute(caller, parameters);
     }
@@ -705,7 +697,8 @@ public class CommandList implements CommandListener {
             permissions = { "canary.command.teleport.sethome" },
             toolTip = "/sethome [player]",
             min = 1,
-            max = 2)
+            max = 2
+    )
     public void setHomeCommand(MessageReceiver caller, String[] parameters) {
         natives.get("sethome").execute(caller, parameters);
     }
@@ -724,15 +717,10 @@ public class CommandList implements CommandListener {
             toolTip = "/warp <name>",
             min = 2,
             max = 2,
-            tabCompleteMethod = "warpTabComplete"
+            tabCompleteMethod = "matchWarpNames"
     )
     public void warpUse(MessageReceiver caller, String[] parameters) {
         natives.get("warp").execute(caller, parameters);
-    }
-
-    @TabComplete
-    public List<String> warpTabComplete(MessageReceiver caller, String[] parameters) {
-        return parameters.length == 1 ? matchToWarpNames(parameters, caller) : null;
     }
 
     @Command(aliases = { "setwarp" },
@@ -757,15 +745,10 @@ public class CommandList implements CommandListener {
             permissions = { "canary.command.warp.remove" },
             toolTip = "/delwarp <name>",
             min = 2,
-            tabCompleteMethod = "delWarpTabComplete"
+            tabCompleteMethod = "matchWarpNames"
     )
     public void delWarpCommand(MessageReceiver caller, String[] parameters) {
         natives.get("delwarp").execute(caller, parameters);
-    }
-
-    @TabComplete
-    public List<String> delWarpTabComplete(MessageReceiver caller, String[] parameters) {
-        return parameters.length == 1 ? matchToWarpNames(parameters, caller) : null;
     }
 
     @Command(aliases = { "spawn" },
@@ -773,7 +756,8 @@ public class CommandList implements CommandListener {
             permissions = { "canary.command.teleport.spawn" },
             toolTip = "/spawn [worldname] [player]",
             min = 1,
-            max = 3)
+            max = 3
+    )
     public void spawnCommand(MessageReceiver caller, String[] parameters) {
         natives.get("spawn").execute(caller, parameters);
     }
@@ -790,7 +774,9 @@ public class CommandList implements CommandListener {
             description = "tp info",
             permissions = { "canary.command.teleport.self" },
             toolTip = "/tp <player|x y z [world]> ",
-            min = 2)
+            min = 2,
+            tabCompleteMethod = "matchOnlinePlayer"
+    )
     public void teleportCommand(MessageReceiver caller, String[] parameters) {
         natives.get("teleport").execute(caller, parameters);
     }
@@ -799,7 +785,9 @@ public class CommandList implements CommandListener {
             description = "tphere info",
             permissions = { "canary.command.teleport.other" },
             toolTip = "/tphere <player>",
-            min = 2)
+            min = 2,
+            tabCompleteMethod = "matchOnlinePlayer"
+    )
     public void teleportOtherCommand(MessageReceiver caller, String[] parameters) {
         natives.get("teleporthere").execute(caller, parameters);
     }
@@ -828,15 +816,10 @@ public class CommandList implements CommandListener {
             toolTip = "/god [playername]",
             min = 1,
             max = 2,
-            tabCompleteMethod = "godTabComplete"
+            tabCompleteMethod = "matchOnlinePlayer"
     )
     public void godCommand(MessageReceiver caller, String[] parameters) {
         natives.get("god").execute(caller, parameters);
-    }
-
-    @TabComplete
-    public List<String> godTabComplete(MessageReceiver caller, String[] parameters) {
-        return parameters.length == 1 ? matchToOnlinePlayer(parameters) : null;
     }
 
     @Command(aliases = { "reservelist", "rlist", "rl" },
@@ -862,7 +845,9 @@ public class CommandList implements CommandListener {
             permissions = { "canary.command.super.clearinventory" },
             toolTip = "/clearinventory [player]",
             min = 1,
-            max = 2
+            max = 2,
+            tabCompleteMethod = "matchOnlinePlayer"
+
     )
     public void clearInventoryCommand(MessageReceiver caller, String[] parameters) {
         natives.get("clearinventory").execute(caller, parameters);
@@ -880,15 +865,10 @@ public class CommandList implements CommandListener {
             description = "Player Information",
             permissions = { "canary.command.player.information" },
             toolTip = "/playerinfo [player]",
-            tabCompleteMethod = "playerinfoTabComplete"
+            tabCompleteMethod = "matchKnownPlayer"
     )
     public void playerinfo(MessageReceiver caller, String[] parameters) {
         natives.get("playerinfo").execute(caller, parameters);
-    }
-
-    @TabComplete
-    public List<String> playerinfoTabComplete(MessageReceiver caller, String[] parameters) {
-        return parameters.length == 1 ? matchToKnownPlayer(parameters) : null;
     }
 
     @Command(aliases = { "sysinfo" },
@@ -906,4 +886,26 @@ public class CommandList implements CommandListener {
     public void uptime(MessageReceiver caller, String[] parameters) {
         natives.get("uptime").execute(caller, parameters);
     }
+
+    /* All the reused tab complete stuff */
+    @TabComplete
+    public List<String> matchKnownPlayer(MessageReceiver caller, String[] args) {
+        return args.length == 1 ? matchToKnownPlayer(args) : null;
+    }
+
+    @TabComplete
+    public List<String> matchOnlinePlayer(MessageReceiver caller, String[] args) {
+        return args.length == 1 ? matchToOnlinePlayer(args) : null;
+    }
+
+    @TabComplete
+    public List<String> matchWarpNames(MessageReceiver caller, String[] args) {
+        return args.length == 1 ? matchToWarpNames(args, caller) : null;
+    }
+
+    @TabComplete
+    public List<String> matchPluginName(MessageReceiver caller, String[] args) {
+        return args.length == 1 ? matchTo(args, Canary.loader().getPluginList()) : null;
+    }
+
 }
