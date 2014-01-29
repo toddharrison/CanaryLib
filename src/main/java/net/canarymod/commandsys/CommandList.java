@@ -667,7 +667,7 @@ public class CommandList implements CommandListener {
             permissions = { "canary.command.plugin.disable" },
             toolTip = "/disableplugin <plugin>",
             min = 2,
-            tabCompleteMethod = "matchPlugin"
+            tabCompleteMethod = "matchPluginName"
     )
     public void disablePluginCommand(MessageReceiver caller, String[] parameters) {
         natives.get("disableplugin").execute(caller, parameters);
@@ -678,7 +678,7 @@ public class CommandList implements CommandListener {
             permissions = { "canary.command.plugin.reload" },
             toolTip = "/reloadplugin <plugin>",
             min = 2,
-            tabCompleteMethod = "matchPlugin"
+            tabCompleteMethod = "matchPluginName"
     )
     public void reloadPluginCommand(MessageReceiver caller, String[] parameters) {
         natives.get("reloadplugin").execute(caller, parameters);
