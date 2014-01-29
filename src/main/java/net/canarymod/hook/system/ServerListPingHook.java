@@ -1,8 +1,8 @@
 package net.canarymod.hook.system;
 
+import com.google.common.io.BaseEncoding;
 import com.mojang.authlib.GameProfile;
 import net.canarymod.hook.CancelableHook;
-import net.canarymod.util.Base64Coder;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -118,7 +118,7 @@ public class ServerListPingHook extends CancelableHook {
     public void setFavicon(String favicon) {
         if (!favicon.startsWith("data:image/png;base64,"))
             throw new IllegalArgumentException("Favicon string must start with \"data:image/png;base64,\"");
-        Base64Coder.decode(favicon.replace("data:image/png;base64,", "")); // If the string is bad, this will throw an IllegalArgumentException
+        BaseEncoding.base64().decode(favicon.replace("data:image/png;base64,", "")); // If the string is bad, this will throw an IllegalArgumentException
         this.favicon = favicon;
     }
 
@@ -166,7 +166,7 @@ public class ServerListPingHook extends CancelableHook {
         try {
             bos = new ByteArrayOutputStream();
             ImageIO.write(image, "PNG", bos);
-            this.favicon = "data:image/png;base64," + new String(Base64Coder.encode(bos.toByteArray()));
+            this.favicon = "data:image/png;base64," + new String(BaseEncoding.base64().encode(bos.toByteArray()));
         }
         finally {
             if (bos != null)
