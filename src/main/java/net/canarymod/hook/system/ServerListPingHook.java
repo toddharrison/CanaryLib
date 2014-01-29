@@ -1,13 +1,17 @@
 package net.canarymod.hook.system;
 
+import com.mojang.authlib.GameProfile;
 import net.canarymod.hook.CancelableHook;
-import sun.misc.BASE64Encoder;
+import net.canarymod.util.Base64Coder;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Called when a client ping the server
@@ -16,15 +20,16 @@ import java.io.IOException;
  * @author Jason (darkdiplomat)
  */
 public class ServerListPingHook extends CancelableHook {
-
+    private final List<GameProfile> profiles;
     private String motd, favicon;
     private int maxPlayers, currentPlayers;
 
-    public ServerListPingHook(String motd, int currentPlayers, int maxPlayers, String favicon) {
+    public ServerListPingHook(String motd, int currentPlayers, int maxPlayers, String favicon, List<GameProfile> profiles) {
         this.motd = motd;
         this.maxPlayers = maxPlayers;
         this.currentPlayers = currentPlayers;
         this.favicon = favicon;
+        this.profiles = profiles;
     }
 
     /**
@@ -85,6 +90,15 @@ public class ServerListPingHook extends CancelableHook {
     }
 
     /**
+     * Gets the {@link com.mojang.authlib.GameProfile}s to be sent
+     *
+     * @return profile list
+     */
+    public List<GameProfile> getProfiles() {
+        return profiles;
+    }
+
+    /**
      * Returns the Favicon encoded string to be sent
      *
      * @return the favicon string
@@ -99,34 +113,87 @@ public class ServerListPingHook extends CancelableHook {
      *
      * @param favicon
      *         the base64 encoded PNG file
+     * @throws IllegalArgumentException
      */
     public void setFavicon(String favicon) {
+        if (!favicon.startsWith("data:image/png;base64,"))
+            throw new IllegalArgumentException("Favicon string must start with \"data:image/png;base64,\"");
+        Base64Coder.decode(favicon.replace("data:image/png;base64,", "")); // If the string is bad, this will throw an IllegalArgumentException
         this.favicon = favicon;
     }
 
     /**
      * Sets the server favicon from a given file path
      *
-     * @param file
+     * @param favicon
      *         the path to the png image file
      *
      * @throws IOException
      */
-    public void setFaviconFromFile(String file) throws IOException {
-        if (!file.endsWith(".png"))
-            throw new IOException("Image needs to be in PNG format");
-        File favicon = new File(".", file);
+    public void setFaviconFromFile(String favicon) throws IOException {
+        if (!favicon.endsWith(".png"))
+            throw new IOException("Image needs to be in PNG format (bad file extension detected)");
+        setFaviconFromFile(new File(favicon));
+    }
+
+    /**
+     * Sets the server favicon from a given file
+     *
+     * @param favicon
+     *         the path to the png image file
+     *
+     * @throws IOException
+     */
+    public void setFaviconFromFile(File favicon) throws IOException {
         if (!favicon.isFile())
             throw new IOException("Image does not exist");
-        BufferedImage bufferedimage = ImageIO.read(favicon);
-        if (bufferedimage.getWidth() != 64 || bufferedimage.getHeight() != 64)
-            throw new IOException("Image needs to be 64x64 pixels");
+        verifyFileSignature(favicon);
+        setFaviconFromBufferedImage(ImageIO.read(favicon));
+    }
 
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ImageIO.write(bufferedimage, "PNG", bos);
-        byte[] imageBytes = bos.toByteArray();
-        BASE64Encoder encoder = new BASE64Encoder();
-        this.favicon = "data:image/png;base64," + encoder.encode(imageBytes);
-        bos.close();
+    /**
+     * Sets the server favicon from a given {@link java.awt.image.BufferedImage}
+     *
+     * @param favicon
+     *         the path to the png image file
+     *
+     * @throws IOException
+     */
+    public void setFaviconFromBufferedImage(BufferedImage image) throws IOException {
+        if (image.getHeight() != 64 || image.getWidth() != 64)
+            throw new IOException("Image needs to be 64x64 pixels");
+        ByteArrayOutputStream bos = null;
+        try {
+            bos = new ByteArrayOutputStream();
+            ImageIO.write(image, "PNG", bos);
+            this.favicon = "data:image/png;base64," + new String(Base64Coder.encode(bos.toByteArray()));
+        }
+        finally {
+            if (bos != null)
+                bos.close();
+        }
+    }
+
+    /* A little extra checking that the File matches the header of a PNG file */
+    private void verifyFileSignature(File file) throws IOException {
+        RandomAccessFile raf = null;
+        byte[] wedontneednostinking = new byte[]{ (byte) 0x89, (byte) 0x50, (byte) 0x4E, (byte) 0x47, (byte) 0x0D, (byte) 0x0A, (byte) 0x1A, (byte) 0x0A };
+        try {
+            //And we read the first 8 bytes of the file to verify that they are "89 50 4E 47 0D 0A 1A 0A"
+            raf = new RandomAccessFile(file, "r");
+            byte[] libraries = new byte[8]; // the punchline to come...
+            raf.read(libraries, 0, 8); // Just need to read the first 8 bytes for verification
+            if (!Arrays.equals(wedontneednostinking, libraries)) // And the punchline, cause we really dont need a library for 1 function
+                throw new IOException("Image needs to be in PNG format (invalid PNG file detected)");
+        }
+        finally {
+            if (raf != null)
+                raf.close();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return String.format("ServerListPingHook[MOTD: '%s' Players[Current: '%d' Max: '%d'] Favicon: '%s' GameProfiles: '%s']", motd, currentPlayers, maxPlayers, favicon, Arrays.toString(profiles.toArray(new GameProfile[profiles.size()])));
     }
 }
