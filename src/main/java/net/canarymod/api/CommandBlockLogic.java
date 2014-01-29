@@ -1,5 +1,6 @@
 package net.canarymod.api;
 
+import net.canarymod.api.world.World;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.user.Group;
 
@@ -39,11 +40,19 @@ public interface CommandBlockLogic extends MessageReceiver {
     public String getName();
 
     /**
+     * Gets the dimension
+     *
+     * @return dimension
+     */
+    public World getWorld();
+
+    /**
      * Sets this command block's name.
      * Displayed as prefix in chat when the doCommandBlockOutput game rule is
      * true. Default value is "@".
      *
-     * @param name This command block's new name
+     * @param name
+     *         This command block's new name
      */
     public void setName(String name);
 

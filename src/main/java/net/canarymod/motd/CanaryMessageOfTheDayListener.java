@@ -2,6 +2,7 @@ package net.canarymod.motd;
 
 import net.canarymod.Canary;
 import net.canarymod.ToolBox;
+import net.canarymod.api.CommandBlockLogic;
 import net.canarymod.api.Server;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.World;
@@ -58,8 +59,8 @@ public final class CanaryMessageOfTheDayListener implements MessageOfTheDayListe
         if (msgrec instanceof Player) {
             world = ((Player) msgrec).getWorld();
         }
-        else if (msgrec instanceof CommandBlock) {
-            world = ((CommandBlock) msgrec).getWorld();
+        else if (msgrec instanceof CommandBlockLogic) {
+            world = ((CommandBlockLogic) msgrec).getWorld();
         }
         else {
             world = Canary.getServer().getDefaultWorld();
