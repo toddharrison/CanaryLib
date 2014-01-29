@@ -1,6 +1,7 @@
 package net.canarymod.api.entity.living;
 
 import net.canarymod.api.DamageType;
+import net.canarymod.api.attributes.AttributeMap;
 import net.canarymod.api.entity.Entity;
 import net.canarymod.api.potion.Potion;
 import net.canarymod.api.potion.PotionEffect;
@@ -299,5 +300,7 @@ public interface LivingBase extends Entity {
      *         the head rotation to set
      */
     public void setHeadRotation(float rot);
+
+    public AttributeMap getAttributeMap();
 
 }
