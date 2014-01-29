@@ -1,12 +1,11 @@
 package net.canarymod.channels;
 
+import com.google.common.collect.ArrayListMultimap;
 import net.canarymod.api.NetServerHandler;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.plugin.Plugin;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Iterator;
 
 import static net.canarymod.Canary.log;
 
@@ -28,8 +27,8 @@ import static net.canarymod.Canary.log;
  */
 public abstract class ChannelManager implements ChannelManagerInterface {
 
-    private HashMap<String, List<RegisteredChannelListener>> listeners = new HashMap<String, List<RegisteredChannelListener>>();
-    protected HashMap<String, List<NetServerHandler>> clients = new HashMap<String, List<NetServerHandler>>();
+    private ArrayListMultimap<String, RegisteredChannelListener> listeners = ArrayListMultimap.create();
+    protected ArrayListMultimap<String, NetServerHandler> clients = ArrayListMultimap.create();
 
     /** {@inheritDoc} */
     @Override
@@ -47,14 +46,8 @@ public abstract class ChannelManager implements ChannelManagerInterface {
             if (listener == null) {
                 throw new CustomPayloadChannelException("Invalid Registered Listener: Channel Listener is null.");
             }
-            if (listeners.containsKey(channel)) {
-                listeners.get(channel).add(new RegisteredChannelListener(plugin, listener));
-            }
-            else {
-                ArrayList<RegisteredChannelListener> forMap = new ArrayList<RegisteredChannelListener>();
-                forMap.add(new RegisteredChannelListener(plugin, listener));
-                listeners.put(channel, forMap);
-            }
+
+            listeners.put(channel, new RegisteredChannelListener(plugin, listener));
         }
         catch (CustomPayloadChannelException ex) {
             log.error(ex.getMessage(), ex);
@@ -65,13 +58,12 @@ public abstract class ChannelManager implements ChannelManagerInterface {
     @Override
     public boolean unregisterListeners(Plugin plugin) {
         boolean toRet = false;
-        for (List<RegisteredChannelListener> list : listeners.values()) {
-            synchronized (list) {
-                for (RegisteredChannelListener listener : list) {
-                    if (listener.getPlugin().equals(plugin)) {
-                        list.remove(listener);
-                        toRet = true;
-                    }
+        synchronized (listeners) {
+            Iterator<RegisteredChannelListener> itr = listeners.values().iterator();
+            while (itr.hasNext()) {
+                if (itr.next().getPlugin().equals(plugin)) {
+                    itr.remove();
+                    toRet = true;
                 }
             }
         }
@@ -103,14 +95,7 @@ public abstract class ChannelManager implements ChannelManagerInterface {
             if (handler == null) {
                 throw new CustomPayloadChannelException("Invalid Registered Client: NetServerHandler is null.");
             }
-            if (clients.containsKey(channel)) {
-                clients.get(channel).add(handler);
-            }
-            else {
-                ArrayList<NetServerHandler> forMap = new ArrayList<NetServerHandler>();
-                forMap.add(handler);
-                clients.put(channel, forMap);
-            }
+            clients.put(channel, handler);
         }
         catch (CustomPayloadChannelException ex) {
             log.error(ex.getMessage(), ex);

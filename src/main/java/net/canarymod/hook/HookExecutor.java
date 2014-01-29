@@ -1,15 +1,14 @@
 package net.canarymod.hook;
 
+import com.google.common.collect.ArrayListMultimap;
 import net.canarymod.ToolBox;
 import net.canarymod.plugin.Plugin;
 import net.canarymod.plugin.PluginListener;
 import net.canarymod.plugin.RegisteredPluginListener;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import static net.canarymod.Canary.log;
@@ -23,7 +22,7 @@ import static net.canarymod.Canary.log;
  */
 public class HookExecutor implements HookExecutorInterface {
     private final PluginComparator listener_comp = new PluginComparator();
-    HashMap<Class<? extends Hook>, ArrayList<RegisteredPluginListener>> listeners = new HashMap<Class<? extends Hook>, ArrayList<RegisteredPluginListener>>();
+    final ArrayListMultimap<Class<? extends Hook>, RegisteredPluginListener> listeners = ArrayListMultimap.create();
 
     /** Register a {@link PluginListener} for a system hook */
     @Override
@@ -48,9 +47,7 @@ public class HookExecutor implements HookExecutorInterface {
             if (!Hook.class.isAssignableFrom(hookCls)) {
                 throw new HookConsistencyException("Hook is not assignable from " + hookCls.getName());
             }
-            if (!listeners.containsKey(hookCls.asSubclass(Hook.class))) {
-                listeners.put(hookCls.asSubclass(Hook.class), new ArrayList<RegisteredPluginListener>());
-            }
+
             Dispatcher dispatcher = new Dispatcher() {
 
                 @Override
@@ -65,7 +62,7 @@ public class HookExecutor implements HookExecutorInterface {
             };
             dispatcher.ignoreCanceled = handler.ignoreCanceled();
 
-            listeners.get(hookCls.asSubclass(Hook.class)).add(new RegisteredPluginListener(listener, plugin, dispatcher, handler.priority()));
+            listeners.put(hookCls.asSubclass(Hook.class), new RegisteredPluginListener(listener, plugin, dispatcher, handler.priority()));
             Collections.sort(listeners.get(hookCls.asSubclass(Hook.class)), listener_comp);
         }
     }
@@ -78,18 +75,11 @@ public class HookExecutor implements HookExecutorInterface {
      */
     @Override
     public void unregisterPluginListeners(Plugin plugin) {
-
-        Iterator<ArrayList<RegisteredPluginListener>> iter = listeners.values().iterator();
-
+        Iterator<RegisteredPluginListener> iter = listeners.values().iterator();
         while (iter.hasNext()) {
-            Iterator<RegisteredPluginListener> regIterator = iter.next().iterator();
-
-            while (regIterator.hasNext()) {
-                RegisteredPluginListener listener = regIterator.next();
-
-                if (listener.getPlugin().equals(plugin)) {
-                    regIterator.remove();
-                }
+            RegisteredPluginListener listener = iter.next();
+            if (listener.getPlugin().equals(plugin)) {
+                iter.remove();
             }
         }
     }
@@ -101,16 +91,15 @@ public class HookExecutor implements HookExecutorInterface {
             return;
         }
         hook.hasExecuted();
-        ArrayList<RegisteredPluginListener> listeners = this.listeners.get(hook.getClass().asSubclass(Hook.class));
-        if (listeners != null) {
-            for (RegisteredPluginListener l : listeners) {
-                try {
-                    l.execute(hook);
-                }
-                catch (HookExecutionException hexex) {
-                    log.error("Exception while executing Hook: " + hook.getName() + " in PluginListener: " +
-                            l.getListener().getClass().getSimpleName() + " (Plugin: " + l.getPlugin().getName() + ")", hexex.getCause());
-                }
+        Iterator<RegisteredPluginListener> iter = this.listeners.get(hook.getClass().asSubclass(Hook.class)).iterator();
+        while (iter.hasNext()) {
+            RegisteredPluginListener listener = iter.next();
+            try {
+                listener.execute(hook);
+            }
+            catch (HookExecutionException hexex) {
+                log.error("Exception while executing Hook: " + hook.getName() + " in PluginListener: " +
+                        listener.getListener().getClass().getSimpleName() + " (Plugin: " + listener.getPlugin().getName() + ")", hexex.getCause());
             }
         }
     }

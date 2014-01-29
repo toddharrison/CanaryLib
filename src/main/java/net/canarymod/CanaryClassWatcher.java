@@ -1,9 +1,7 @@
 package net.canarymod;
 
+import com.google.common.collect.ArrayListMultimap;
 import net.canarymod.plugin.Plugin;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Canary Class Watcher
@@ -15,7 +13,7 @@ import java.util.HashMap;
  * @author Jason (darkdiplomat)
  */
 final class CanaryClassWatcher {
-    private final HashMap<CanaryClassLoader, ArrayList<Class<?>>> loadedClasses = new HashMap<CanaryClassLoader, ArrayList<Class<?>>>();
+    private final ArrayListMultimap<CanaryClassLoader, Class<?>> loadedClasses = ArrayListMultimap.create();
 
     /**
      * Finds a loaded {@link Class} from any of the {@link Plugin}'s {@link CanaryClassLoader}
@@ -26,15 +24,12 @@ final class CanaryClassWatcher {
      * @return the {@link Class} if found; {@code null} otherwise
      */
     synchronized final Class<?> findLoadedClass(String name) {
-        for (ArrayList<Class<?>> classes : loadedClasses.values()) {
-            for (Class<?> clazz : classes) {
-                if (clazz.getName().equals(name)) {
-                    return clazz;
-                }
+        for (Class<?> cls : loadedClasses.values()) {
+            if (cls.getName().equals(name)) {
+                return cls;
             }
         }
         return loadClass(name); // ClassNotFound, attempt to load it
-
     }
 
     /**
@@ -50,9 +45,9 @@ final class CanaryClassWatcher {
         for (CanaryClassLoader loader : loadedClasses.keySet()) {
             if (loader.getResource(nameTemp) != null) {
                 try {
-                    Class<?> clazz = loader.loadClass(name);
-                    addClass(loader, clazz);
-                    return clazz;
+                    Class<?> cls = loader.loadClass(name);
+                    addClass(loader, cls);
+                    return cls;
                 }
                 catch (ClassNotFoundException e) {
                     // Realistically this shouldn't happen here since we pre-checked if the jar has the resource
@@ -68,14 +63,11 @@ final class CanaryClassWatcher {
      *
      * @param loader
      *         the {@link CanaryClassLoader} the {@link Class} is from
-     * @param clazz
+     * @param cls
      *         the {@link Class} to be added
      */
-    synchronized final void addClass(CanaryClassLoader loader, Class<?> clazz) {
-        if (!loadedClasses.containsKey(loader)) {
-            loadedClasses.put(loader, new ArrayList<Class<?>>());
-        }
-        loadedClasses.get(loader).add(clazz);
+    synchronized final void addClass(CanaryClassLoader loader, Class<?> cls) {
+        loadedClasses.put(loader, cls);
     }
 
     /**
@@ -86,8 +78,7 @@ final class CanaryClassWatcher {
      */
     synchronized final void removeLoader(CanaryClassLoader loader) {
         if (loadedClasses.containsKey(loader)) {
-            loadedClasses.get(loader).clear();
-            loadedClasses.remove(loader);
+            loadedClasses.asMap().remove(loader);
         }
     }
 }
