@@ -154,4 +154,20 @@ public final class CanaryMessageOfTheDayListener implements MessageOfTheDayListe
         }
         return "N/A";
     }
+
+    @MOTDKey(key = "{player.last.join}")
+    public final String lastLogin(MessageReceiver msgrec) {
+        if (msgrec instanceof Player) {
+            return ((Player) msgrec).getLastJoined();
+        }
+        return "N/A";
+    }
+
+    @MOTDKey(key = "{player.last.ip}")
+    public final String lastIP(MessageReceiver msgrec) {
+        if (msgrec instanceof Player) {
+            return ((Player) msgrec).getPreviousIP();
+        }
+        return "N/A";
+    }
 }

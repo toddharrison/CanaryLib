@@ -381,4 +381,11 @@ public interface PlayerReference {
      */
     public String getIP();
 
+    /**
+     * Gets the timestamp of the last time the player was online
+     *
+     * @return last seen timestamp
+     */
+    public String getLastJoined();
+
 }

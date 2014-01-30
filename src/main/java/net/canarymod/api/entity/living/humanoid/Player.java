@@ -228,4 +228,11 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      *         the {@link net.canarymod.api.chat.ChatComponent} to send
      */
     public void sendChatComponent(ChatComponent chatComponent);
+
+    /**
+     * Gets the previously known IP of the {@code Player} if found
+     *
+     * @return previous IP if found
+     */
+    public String getPreviousIP();
 }

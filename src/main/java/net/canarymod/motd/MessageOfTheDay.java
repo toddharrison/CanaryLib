@@ -52,6 +52,8 @@ public class MessageOfTheDay {
             writer.println("# See forums thread http://forums.canarymod.net/?topic=3619");
             writer.println("# for the list of default variables");
             writer.println("# or the plugins threads that add-on to the Message Of The Day");
+            writer.println("# Lines may be prefixed with {permission:<[node] or ![node] or [node]&[node]&![node]>}");
+            writer.println("# Examples: {permission:canary.super.administor} {permission:canary.world.build&!canary.super.administrator}");
             writer.println("# # # # #");
             writer.flush();
             writer.close();
@@ -80,24 +82,56 @@ public class MessageOfTheDay {
      *         the {@link MessageReceiver} who will receive the MOTD
      */
     public void sendMOTD(MessageReceiver msgrec) {
-        for (String line : motd_lines) {
-            String toSend = line;
-
-            // Parse variables
-            synchronized (motd_vars) {
-                for (MOTDParser motdp : motd_vars) {
-                    try {
-                        toSend = toSend.replace(motdp.key(), motdp.parse(msgrec));
+        synchronized (motd_lines) {
+            for (String line : motd_lines) {
+                String toSend = line;
+                if (toSend.matches("\\{permissions:(.)+}.+")) {
+                    String perms = toSend.substring(toSend.indexOf(':') + 1, toSend.indexOf('}'));
+                    permsParse:
+                    {
+                        if (perms.contains("&")) {
+                            String[] permissions = perms.split("&");
+                            multiParse:
+                            {
+                                for (String permission : permissions) {
+                                    if (permission.charAt(0) == '!' && msgrec.hasPermission(permission.substring(1))) {
+                                        break multiParse; // No good, continue to next line
+                                    }
+                                    else if (!msgrec.hasPermission(permission)) {
+                                        break multiParse; // No good, continue to next line
+                                    }
+                                }
+                                break permsParse; // All good, continue regular parsing
+                            }
+                        }
+                        else if (perms.charAt(0) == '!') {
+                            if (!msgrec.hasPermission(perms.substring(1))) {
+                                break permsParse; // All good, continue regular parsing
+                            }
+                        }
+                        else if (msgrec.hasPermission(perms)) {
+                            break permsParse; // All good, continue regular parsing
+                        }
+                        continue; // No good, continue to next line
                     }
-                    catch (Exception ex) {
-                        log.error("Failed to parse MessageOfTheDay Variable from MOTDOwner: " + motdp.getOwner().getName(), ex.getCause());
+                    toSend = toSend.replace(toSend.substring(0, toSend.indexOf('}') + 1), ""); // Remove permission check substring
+                }
+                // Parse variables
+                synchronized (motd_vars) {
+                    for (MOTDParser motdp : motd_vars) {
+                        try {
+                            toSend = toSend.replace(motdp.key(), motdp.parse(msgrec));
+                        }
+                        catch (Exception ex) {
+                            log.error("Failed to parse MessageOfTheDay Variable from MOTDOwner: " + motdp.getOwner().getName(), ex);
+                        }
                     }
                 }
-            }
 
-            //Replace Color codes
-            toSend = toSend.replaceAll("&([0-9A-FK-ORa-fk-or])", "\u00A7$1");
-            msgrec.message(toSend);
+                //Replace Color codes
+                toSend = toSend.replaceAll("&([0-9A-FK-ORa-fk-or])", "\u00A7$1");
+                msgrec.message(toSend);
+            }
         }
     }
 
