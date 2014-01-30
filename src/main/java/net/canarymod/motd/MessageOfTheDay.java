@@ -24,12 +24,12 @@ import static net.canarymod.Canary.log;
  * @author Jason (darkdiplomat)
  */
 public class MessageOfTheDay {
-    private static final List<String> motd_lines;
-    private static final List<MOTDParser> motd_vars;
+    private static final List<String> motdLines;
+    private static final List<MOTDParser> motdVars;
 
     static {
-        motd_lines = Collections.synchronizedList(new ArrayList<String>());
-        motd_vars = Collections.synchronizedList(new ArrayList<MOTDParser>());
+        motdLines = Collections.synchronizedList(new ArrayList<String>());
+        motdVars = Collections.synchronizedList(new ArrayList<MOTDParser>());
     }
 
     public MessageOfTheDay() {
@@ -68,7 +68,7 @@ public class MessageOfTheDay {
                 if (line.startsWith("#")) {
                     continue;
                 }
-                motd_lines.add(line);
+                motdLines.add(line);
             }
             scanner.close();
             fis.close();
@@ -82,8 +82,8 @@ public class MessageOfTheDay {
      *         the {@link MessageReceiver} who will receive the MOTD
      */
     public void sendMOTD(MessageReceiver msgrec) {
-        synchronized (motd_lines) {
-            for (String line : motd_lines) {
+        synchronized (motdLines) {
+            for (String line : motdLines) {
                 String toSend = line;
                 if (toSend.matches("\\{permissions:(.)+}.+")) {
                     String perms = toSend.substring(toSend.indexOf(':') + 1, toSend.indexOf('}'));
@@ -117,8 +117,8 @@ public class MessageOfTheDay {
                     toSend = toSend.replace(toSend.substring(0, toSend.indexOf('}') + 1), ""); // Remove permission check substring
                 }
                 // Parse variables
-                synchronized (motd_vars) {
-                    for (MOTDParser motdp : motd_vars) {
+                synchronized (motdVars) {
+                    for (MOTDParser motdp : motdVars) {
                         try {
                             toSend = toSend.replace(motdp.key(), motdp.parse(msgrec));
                         }
@@ -175,13 +175,13 @@ public class MessageOfTheDay {
             };
 
             // Check for duplicate keys
-            for (MOTDParser parser : motd_vars) {
+            for (MOTDParser parser : motdVars) {
                 if (meta.key().equals(parser.key()) && !force) {
                     log.warn(owner.getName() + " attempted to register MOTDKey: '" + meta.key() + "' but it is already registered to " + parser.getOwner().getName());
                     continue;
                 }
             }
-            motd_vars.add(motdp);
+            motdVars.add(motdp);
         }
     }
 
@@ -192,8 +192,8 @@ public class MessageOfTheDay {
      *         the {@link MOTDOwner} to have {@link MessageOfTheDayListener} methods removed
      */
     public void unregisterMOTDListener(MOTDOwner owner) {
-        synchronized (motd_vars) {
-            Iterator<MOTDParser> motdpItr = motd_vars.iterator();
+        synchronized (motdVars) {
+            Iterator<MOTDParser> motdpItr = motdVars.iterator();
             while (motdpItr.hasNext()) {
                 if (motdpItr.next().getOwner() == owner) { // Yes, memory address exact
                     motdpItr.remove();
@@ -203,7 +203,7 @@ public class MessageOfTheDay {
     }
 
     public void reload() {
-        motd_lines.clear();
+        motdLines.clear();
         try {
             loadMOTD();
         }
