@@ -65,7 +65,7 @@ public class Translator extends LocaleHelper {
      *
      * @see MessageFormat
      */
-    public static String localtranslate(String key, String locale, Object... args) {
+    public static String localTranslate(String key, String locale, Object... args) {
         return instance.localeTranslate(key, locale, args);
     }
 

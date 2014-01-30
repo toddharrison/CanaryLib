@@ -49,7 +49,7 @@ public class Give implements NativeCommand {
             return;
         }
         target.giveItem(item);
-        target.message(Colors.YELLOW + Translator.translateAndFormat("give received", item.getType().getDisplayName()));
+        target.message(Colors.YELLOW + Translator.translateAndFormat("give received", item.getDisplayName()));
         caller.notice(Translator.translateAndFormat("give success other", target.getName()));
 
     }
@@ -92,7 +92,7 @@ public class Give implements NativeCommand {
                     return;
                 }
                 target.giveItem(item);
-                target.message(Colors.YELLOW + Translator.translateAndFormat("give received", item.getType().getDisplayName()));
+                target.message(Colors.YELLOW + Translator.translateAndFormat("give received", item.getDisplayName()));
                 player.notice(Translator.translateAndFormat("give success other", target.getName()));
             }
         }
@@ -117,7 +117,7 @@ public class Give implements NativeCommand {
                 return;
             }
             target.giveItem(item);
-            target.message(Colors.YELLOW + Translator.translateAndFormat("give received", item.getType().getDisplayName()));
+            target.message(Colors.YELLOW + Translator.translateAndFormat("give received", item.getDisplayName()));
             player.notice(Translator.translateAndFormat("give success other", target.getName()));
         }
     }
