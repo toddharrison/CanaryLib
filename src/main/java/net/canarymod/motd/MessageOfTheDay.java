@@ -167,4 +167,14 @@ public class MessageOfTheDay {
             }
         }
     }
+
+    public void reload() {
+        motd_lines.clear();
+        try {
+            loadMOTD();
+        }
+        catch (Exception ex) {
+            log.error("Failed to read/write Message of the Day from/to the motd.txt file.", ex);
+        }
+    }
 }
