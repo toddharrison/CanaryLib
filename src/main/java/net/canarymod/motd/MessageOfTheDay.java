@@ -13,6 +13,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static net.canarymod.Canary.log;
 
@@ -26,6 +28,7 @@ import static net.canarymod.Canary.log;
 public class MessageOfTheDay {
     private static final List<String> motdLines;
     private static final List<MOTDParser> motdVars;
+    private static final Matcher permMatch = Pattern.compile("\\{permissions:(.)+}.+").matcher("");
 
     static {
         motdLines = Collections.synchronizedList(new ArrayList<String>());
@@ -85,7 +88,7 @@ public class MessageOfTheDay {
         synchronized (motdLines) {
             for (String line : motdLines) {
                 String toSend = line;
-                if (toSend.matches("\\{permissions:(.)+}.+")) {
+                if (permMatch.reset(toSend).matches()) {
                     String perms = toSend.substring(toSend.indexOf(':') + 1, toSend.indexOf('}'));
                     permsParse:
                     {

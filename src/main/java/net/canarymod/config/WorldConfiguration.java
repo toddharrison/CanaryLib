@@ -26,6 +26,7 @@ public class WorldConfiguration implements ConfigurationContainer {
             wateranimals = new String[]{ "Squid" },
             monsters = new String[]{ "Enderman", "PigZombie", "Blaze", "CaveSpider", "Creeper", "Ghast", "MagamaCube", "SilverFish", "Skeleton", "Slime", "Spider", "Witch", "Zombie", "Wither", "EnderDragon", "GiantZombie" },
             golems = new String[]{ "IronGolem", "Snowman" };
+
     /* Arrays of default enderblocks and disallowed blocks, leave static */
     private final static int[]
             enderblocks = new int[]{ 2, 3, 12, 13, 37, 38, 39, 40, 46, 81, 82, 86, 103, 110 },
@@ -72,6 +73,8 @@ public class WorldConfiguration implements ConfigurationContainer {
         cfg.getBoolean("pvp", true);
         cfg.getInt("difficulty", 1);
         cfg.getInt("gamemode", 0);
+        cfg.getBoolean("forceDefaultGameMode", true);
+        cfg.getBoolean("forceDefaultGameModeDimensional", false);
         cfg.getString("auto-heal", "default");
         cfg.getBoolean("enable-experience", true);
         cfg.getBoolean("enable-health", true);
@@ -386,5 +389,23 @@ public class WorldConfiguration implements ConfigurationContainer {
      */
     public String getGeneratorSettings() {
         return cfg.getString("generator-settings", "");
+    }
+
+    /**
+     * Gets whether to force the default GameMode on a Player when changing Worlds
+     *
+     * @return {@code true} if force
+     */
+    public boolean forceDefaultGamemode() {
+        return cfg.getBoolean("forceDefaultGameMode", true);
+    }
+
+    /**
+     * Gets whether to force the default GameMode on a Player when changing Dimensions
+     *
+     * @return {@code true} if force
+     */
+    public boolean forceDefaultGamemodeDimensional() {
+        return cfg.getBoolean("forceDefaultGameModeDimensional", false);
     }
 }
