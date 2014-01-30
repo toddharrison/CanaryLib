@@ -1,6 +1,8 @@
 package net.canarymod.api.inventory;
 
+import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 /**
  * Item Types
@@ -471,7 +473,7 @@ public final class ItemType {
     private final int data;
     private final boolean blockCreating;
     private final String machineName;
-    private static HashMap<String, ItemType> itemTypes;
+    private static HashMap<Entry<String, Integer>, ItemType> itemTypes;
 
     public ItemType(int id) {
         this(id, 0, false, "unnamed_item_" + id + "_0");
@@ -499,13 +501,15 @@ public final class ItemType {
 
     public ItemType(int id, int data, boolean isBlockCreating, String machineName) {
         if (itemTypes == null) {
-            itemTypes = new HashMap<String, ItemType>();
+            itemTypes = new HashMap<Entry<String, Integer>, ItemType>();
         }
         if (machineName == null) {
             throw new ItemTypeException("ItemType name cannot be null");
         }
-        if (itemTypes.containsKey(machineName)) {
-            throw new ItemTypeException("ItemType '" + machineName + "' is already is registered!");
+
+        Entry<String, Integer> uniqueType = new SimpleImmutableEntry<String, Integer>(machineName, data);
+        if (itemTypes.containsKey(uniqueType)) {
+            throw new ItemTypeException("ItemType '" + machineName + ":" + data + "' is already is registered!");
         }
         this.id = id;
         this.data = data;
@@ -513,7 +517,7 @@ public final class ItemType {
         this.machineName = machineName;
 
         @SuppressWarnings("LeakingThisInConstructor")
-        ItemType ignored = itemTypes.put(machineName, this);
+        ItemType ignored = itemTypes.put(uniqueType, this);
     }
 
     /**
@@ -543,21 +547,35 @@ public final class ItemType {
      * @return the ItemType if found; {@code null} if the requested ItemType does not exist.
      */
     public static ItemType getCustomItemType(String name) {
-        if (!itemTypes.containsKey(name)) {
-            for (String key : itemTypes.keySet()) {
-                ItemType t = itemTypes.get(key);
-
-                if (t.machineName.equalsIgnoreCase(name)) {
-                    return t;
-                }
-            }
-            return null;
-        }
-        return itemTypes.get(name);
+        return ItemType.getCustomItemType(name, 0);
     }
 
     /**
-     * Returns an ItemType according to its name as defined in ItemType
+     * Get a custom ItemType.
+     *
+     * @param name
+     *         the machine name of the block type in question
+     * @param data
+     *         the data of the block type in question
+     *
+     * @return the ItemType if found; {@code null} if the requested ItemType does not exist.
+     */
+    public static ItemType getCustomItemType(String name, int data) {
+        Entry<String, Integer> custom = new SimpleImmutableEntry<String, Integer>(name, data);
+        if (itemTypes.containsKey(custom)) {
+            return itemTypes.get(custom);
+        }
+
+        for (ItemType t : itemTypes.values()) {
+            if (t.data == data && t.machineName.equalsIgnoreCase(name)) {
+                return t;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns an ItemType according to its name.
      * This returns null if there is no ItemType with this name.
      *
      * @param name
@@ -566,17 +584,12 @@ public final class ItemType {
      * @return the ItemType if found; {@code null} if not
      */
     public static ItemType fromString(String name) {
-        if (!itemTypes.containsKey(name)) {
-            for (String key : itemTypes.keySet()) {
-                ItemType t = itemTypes.get(key);
-
-                if (t.machineName.equalsIgnoreCase(name)) {
-                    return t;
-                }
+        for (ItemType t : itemTypes.values()) {
+            if (t.machineName.equalsIgnoreCase(name)) {
+                return t;
             }
-            return null;
         }
-        return itemTypes.get(name);
+        return null;
     }
 
     /**
@@ -615,6 +628,31 @@ public final class ItemType {
             }
         }
         return fromId(id);
+    }
+
+    /**
+     * Gets an ItemType according to the given machine name and data value.
+     * This will return null if there is no ItemType with this id.
+     *
+     * @param machineName
+     *         the machine name to get type from
+     * @param data
+     *         the data (damage) to get type from
+     *
+     * @return the ItemType if found; {@code null} if not
+     */
+    public static ItemType fromStringAndData(String machineName, int data) {
+        Entry<String, Integer> needle = new SimpleImmutableEntry<String, Integer>(machineName, data);
+        if (itemTypes.containsKey(needle)) {
+            return itemTypes.get(needle);
+        }
+
+        for (ItemType type : itemTypes.values()) {
+            if (type.data == data && type.machineName.equalsIgnoreCase(machineName)) {
+                return type;
+            }
+        }
+        return fromString(machineName);
     }
 
     /**

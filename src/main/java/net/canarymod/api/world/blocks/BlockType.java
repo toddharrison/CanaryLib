@@ -1,6 +1,8 @@
 package net.canarymod.api.world.blocks;
 
+import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 /**
  * Static class of BlockTypes
@@ -341,7 +343,7 @@ public final class BlockType {
     private final short data;
     private final String machineName;
 
-    private static HashMap<String, BlockType> blockTypes;
+    private static HashMap<Entry<String, Integer>, BlockType> blockTypes;
 
     public BlockType(int id, String machineName) {
         this(id, 0, "canarymod:"+machineName);
@@ -366,7 +368,7 @@ public final class BlockType {
      */
     public BlockType(int id, int data, String machineName) {
         if (blockTypes == null) {
-            blockTypes = new HashMap<String, BlockType>();
+            blockTypes = new HashMap<Entry<String, Integer>, BlockType>();
         }
         if (machineName == null) {
             throw new CustomBlockTypeException("BlockType name cannot be null!");
@@ -374,12 +376,13 @@ public final class BlockType {
         this.id = (short) id;
         this.data = (short) data;
         this.machineName = machineName;
-        if (!blockTypes.containsKey(machineName)) {
+        Entry<String, Integer> uniqueType = new SimpleImmutableEntry<String, Integer>(machineName, data);
+        if (!blockTypes.containsKey(uniqueType)) {
             @SuppressWarnings("LeakingThisInConstructor")
-            BlockType ignored = blockTypes.put(machineName, this);
+            BlockType ignored = blockTypes.put(uniqueType, this);
         }
         else {
-            throw new CustomBlockTypeException("BlockType '" + machineName + "' already exists!");
+            throw new CustomBlockTypeException("BlockType '" + machineName + ":" + data + "' already exists!");
         }
     }
 
@@ -417,27 +420,41 @@ public final class BlockType {
      * Returns null if the requested BlockType does not exist.
      *
      * @param name
-     *         the machine name or the display name of the block type in question
+     *         the machine name of the block type in question
      *
      * @return the custom {@link BlockType}
      */
     public static BlockType getCustomBlockType(String name) {
-        if (!blockTypes.containsKey(name)) {
-            for (String key : blockTypes.keySet()) {
-                BlockType t = blockTypes.get(key);
+        return BlockType.getCustomBlockType(name, 0);
+    }
 
-                if (t.machineName.equalsIgnoreCase(name)) {
+    /**
+     * Get a custom block type.
+     * Returns null if the requested BlockType does not exist.
+     *
+     * @param name
+     *         the machine name of the block type in question
+     * @param data
+     *         the data of the block type in question
+     *
+     * @return the custom {@link BlockType}
+     */
+    public static BlockType getCustomBlockType(String name, int data) {
+        Entry<String, Integer> custom = new SimpleImmutableEntry<String, Integer>(name, data);
+        if (!blockTypes.containsKey(custom)) {
+            for (BlockType t : blockTypes.values()) {
+                if (t.data == data && t.machineName.equalsIgnoreCase(name)) {
                     return t;
                 }
             }
             return null;
         }
-        return blockTypes.get(name);
+        return blockTypes.get(custom);
     }
 
     /**
      * Get the BlockType according to the given ID.
-     * This will return null if there is no ItemType with this id.
+     * This will return null if there is no BlockType with this id.
      *
      * @param id
      *         the id
@@ -445,9 +462,7 @@ public final class BlockType {
      * @return the associated {@link BlockType} or {@code null}
      */
     public static BlockType fromId(int id) {
-        for (String name : blockTypes.keySet()) {
-            BlockType t = blockTypes.get(name);
-
+        for (BlockType t : blockTypes.values()) {
             if (t.id == id) {
                 return t;
             }
@@ -467,9 +482,7 @@ public final class BlockType {
      * @return the associated {@link BlockType} or {@code null}
      */
     public static BlockType fromIdAndData(int id, int data) {
-        for (String name : blockTypes.keySet()) {
-            BlockType t = blockTypes.get(name);
-
+        for (BlockType t : blockTypes.values()) {
             if (t.id == id && t.data == data) {
                 return t;
             }
@@ -478,32 +491,51 @@ public final class BlockType {
     }
 
     /**
-     * Returns an BlockType according to its name as defined in ItemType
+     * Returns a BlockType according to its name.
      * This returns null if there is no BlockType with this name.
      *
      * @param name
-     *         The machine name or the display name
+     *         The machine name
      *
      * @return the associated {@link BlockType} or {@code null}
      */
     public static BlockType fromString(String name) {
-        if (!blockTypes.containsKey(name)) {
-            for (String key : blockTypes.keySet()) {
-                BlockType t = blockTypes.get(key);
+        for (BlockType t : blockTypes.values()) {
+            if (t.machineName.equalsIgnoreCase(name)) {
+                return t;
+            }
+        }
+        return null;
+    }
 
-                if (t.machineName.equalsIgnoreCase(name)) {
+    /**
+     * Returns a BlockType according to its name and data.
+     * This returns null if there is no BlockType with this name and data.
+     *
+     * @param machineName
+     *         The machine name
+     * @param data
+     *         The metadata
+     *
+     * @return the associated {@link BlockType} or {@code null}
+     */
+    public static BlockType fromStringAndData(String machineName, int data) {
+        Entry<String, Integer> needle = new SimpleImmutableEntry<String, Integer>(machineName, data);
+        if (!blockTypes.containsKey(needle)) {
+            for (BlockType t : blockTypes.values()) {
+                if (t.data == data && t.machineName.equalsIgnoreCase(machineName)) {
                     return t;
                 }
             }
             return null;
         }
-        return blockTypes.get(name);
+        return blockTypes.get(needle);
     }
 
     /**
-     * Gets an array of all ItemTypes
+     * Gets an array of all BlockTypes.
      *
-     * @return all ItemTypes
+     * @return all BlockTypes
      */
     public static BlockType[] values() {
         return blockTypes.values().toArray(new BlockType[blockTypes.size()]);
