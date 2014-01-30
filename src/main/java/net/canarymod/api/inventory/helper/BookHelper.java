@@ -23,9 +23,9 @@ public class BookHelper extends ItemHelper {
     private final static short MAX_PAGE_LENGTH = 255; // Roughly the most characters visible on the page
     private final static byte MAX_AUTHOR_LENGTH = 16; // The max length of a player's name
     private final static byte MAX_TITLE_LENGTH = 40; // The max length of an anvil input
-    private final static ListTag<StringTag> PAGES_TAG = NBT_FACTO.newListTag("pages");
-    private final static StringTag PAGE_TITLE_AUTHOR = NBT_FACTO.newStringTag("page%d", "");
-    private final static ListTag<CompoundTag> STORED_ENCH_TAG = NBT_FACTO.newListTag("StoredEnchantments");
+    private final static ListTag<StringTag> PAGES_TAG = NBT_FACTO.newListTag();
+    private final static ListTag<CompoundTag> STORED_ENCH_TAG = NBT_FACTO.newListTag();
+    private final static StringTag PAGE_TITLE_AUTHOR = NBT_FACTO.newStringTag("null");
     private final static CompoundTag ENCH_TAG = NBT_FACTO.newCompoundTag("ench");
 
     private BookHelper() {
@@ -142,17 +142,18 @@ public class BookHelper extends ItemHelper {
      */
     public static String[] getPages(Item book) {
         if (book == null || (book.getType() != ItemType.BookAndQuill && book.getType() != ItemType.WrittenBook)) {
-            return null;
+            return new String[0];
         }
         if (!verifyTags(book, "pages", LIST, false)) {
-            return null;
+            return new String[0];
         }
         if (book.getDataTag().getListTag("pages").isEmpty()) {
-            return null;
+            return new String[0];
         }
         ListTag<StringTag> pages_tags = book.getDataTag().getListTag("pages");
-        String[] pages = new String[pages_tags.size()];
-        for (int index = 0; index < getPageCount(book); index++) {
+        int size = pages_tags.size();
+        String[] pages = new String[size];
+        for (int index = 0; index < size; index++) {
             pages[index] = pages_tags.get(index).getValue();
         }
         return pages;
@@ -209,7 +210,9 @@ public class BookHelper extends ItemHelper {
         if (!isValidPage(page_index, getPageCount(book))) {
             return false;
         }
-        ((StringTag) book.getDataTag().getListTag("pages").get(page_index)).setValue(correctPage(page));
+        StringTag toSet = PAGE_TITLE_AUTHOR.copy();
+        toSet.setValue(correctPage(page));
+        book.getDataTag().getListTag("pages").set(page_index, toSet);
         return true;
     }
 
@@ -382,13 +385,12 @@ public class BookHelper extends ItemHelper {
      * @param book
      *         the book to close
      *
-     * @return the new book
+     * @return the new book or original item if it wasn't a book
      */
     public static Item lockBook(Item book) {
-        if (book == null || book.getType() != ItemType.BookAndQuill) {
-            return null;
+        if (book != null && book.getType() == ItemType.BookAndQuill) {
+            book.setId(ItemType.WrittenBook.getId());
         }
-        book.setId(ItemType.WrittenBook.getId());
         return book;
     }
 
@@ -398,13 +400,12 @@ public class BookHelper extends ItemHelper {
      * @param book
      *         the book to convert
      *
-     * @return the new Book
+     * @return the new Book or original item if it wasn't a book
      */
     public static Item unlockBook(Item book) {
-        if (book == null || book.getType() != ItemType.WrittenBook) {
-            return null;
+        if (book != null && book.getType() == ItemType.WrittenBook) {
+            book.setId(ItemType.BookAndQuill.getId());
         }
-        book.setId(ItemType.BookAndQuill.getId());
         return book;
     }
 

@@ -1,10 +1,5 @@
 package net.canarymod.api.inventory.helper;
 
-import static net.canarymod.api.nbt.NBTTagType.COMPOUND;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import net.canarymod.Canary;
 import net.canarymod.MathHelp;
 import net.canarymod.ToolBox;
@@ -15,9 +10,14 @@ import net.canarymod.api.nbt.BaseTag;
 import net.canarymod.api.nbt.CompoundTag;
 import net.canarymod.api.nbt.ListTag;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import static net.canarymod.api.nbt.NBTTagType.COMPOUND;
+
 public final class FireworkHelper extends ItemHelper {
     private static final Item fireworkStarBase = Canary.factory().getItemFactory().newItem(ItemType.FireworkStar, 0, 1);
-    private static final ListTag<CompoundTag> explosTag = NBT_FACTO.newListTag("Explosions");
+    private static final ListTag<CompoundTag> explosTag = NBT_FACTO.newListTag();
 
     /**
      * The FireworkStar Explosion Types
@@ -232,19 +232,19 @@ public final class FireworkHelper extends ItemHelper {
      * @param fireworkStar
      *         the FireworkStar {@link Item}
      *
-     * @return a {@code int[]} if there are colors; {@code null} if no colors
+     * @return a {@code int[]} of colors or empty
      */
     public static int[] getStarColorsRaw(Item fireworkStar) {
         if (fireworkStar == null || fireworkStar.getType() != ItemType.FireworkStar) {
-            return null;
+            return new int[0];
         }
         if (!verifyTags(fireworkStar, "Explosion", COMPOUND, false)) {
-            return null;
+            return new int[0];
         }
         if (getExplosionTag(fireworkStar).containsKey("Colors")) {
             return getExplosionTag(fireworkStar).getIntArray("Colors");
         }
-        return null;
+        return new int[0];
     }
 
     /**

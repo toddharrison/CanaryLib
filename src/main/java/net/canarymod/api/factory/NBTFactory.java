@@ -22,134 +22,111 @@ public interface NBTFactory {
     /**
      * Creates a new {@link ByteTag}
      *
-     * @param name
-     *         the name of the tag
      * @param value
      *         the {@code byte} value
      *
      * @return a new {@link ByteTag}
      */
-    ByteTag newByteTag(String name, byte value);
+    ByteTag newByteTag(byte value);
 
     /**
      * Creates a new {@link ByteArrayTag}
      *
-     * @param name
-     *         the name of the tag
      * @param value
      *         the {@code byte[]} value
      *
      * @return a new {@link ByteArrayTag}
      */
-    ByteArrayTag newByteArrayTag(String name, byte[] value);
+    ByteArrayTag newByteArrayTag(byte[] value);
 
     /**
      * Creates a new {@link DoubleTag}
      *
-     * @param name
-     *         the name of the tag
      * @param value
      *         the {@code double} value
      *
      * @return a new {@link DoubleTag}
      */
-    DoubleTag newDoubleTag(String name, double value);
+    DoubleTag newDoubleTag(double value);
 
     /**
      * Creates a new {@link FloatTag}
      *
-     * @param name
-     *         the name of the tag
      * @param value
      *         the {@code float} value
      *
      * @return a new {@link FloatTag}
      */
-    FloatTag newFloatTag(String name, float value);
+    FloatTag newFloatTag(float value);
 
     /**
      * Creates a new {@link IntTag}
      *
-     * @param name
-     *         the name of the tag
      * @param value
      *         the {@code int} value
      *
      * @return a new {@link IntTag}
      */
-    IntTag newIntTag(String name, int value);
+    IntTag newIntTag(int value);
 
     /**
      * Creates a new {@link IntArrayTag}
      *
-     * @param name
-     *         the name of the tag
      * @param value
      *         the {@code int[]} value
      *
      * @return a new {@link IntArrayTag}
      */
-    IntArrayTag newIntArrayTag(String name, int[] value);
+    IntArrayTag newIntArrayTag(int[] value);
 
     /**
      * Creates a new {@link ListTag}
      *
-     * @param name
-     *         the name of the tag
-     *
      * @return a new {@link ListTag}
      */
-    <E extends BaseTag> ListTag<E> newListTag(String name);
+    <E extends BaseTag> ListTag<E> newListTag();
 
     /**
      * Creates a new {@link LongTag}
      *
-     * @param name
-     *         the name of the tag
      * @param value
      *         the {@code long} value
      *
      * @return a new {@link LongTag}
      */
-    LongTag newLongTag(String name, long value);
+    LongTag newLongTag(long value);
 
     /**
      * Creates a new {@link ShortTag}
      *
-     * @param name
-     *         the name of the tag
      * @param value
      *         the {@code short} value
      *
      * @return a new {@link ShortTag}
      */
-    ShortTag newShortTag(String name, short value);
+    ShortTag newShortTag(short value);
 
     /**
-     * Creates a new {@link DoubleTag}
+     * Creates a new {@link StringTag}
      *
-     * @param name
-     *         the name of the tag
      * @param value
      *         the {@code String} value
      *
      * @return a new {@link StringTag}
      */
-    StringTag newStringTag(String name, String value);
+    StringTag newStringTag(String value);
 
     /**
      * Creates a new {@link BaseTag} from the specifed type (unless type is UNKNOWN)
      *
      * @param type
      *         the {@link NBTTagType} to create
-     * @param name
-     *         the name of the tag
      * @param value
      *         the value of the tag if needed
      *
      * @return new {@link BaseTag} or null if invalid
      */
-    BaseTag newTagFromType(NBTTagType type, String name, Object value);
+    BaseTag newTagFromType(NBTTagType type, Object value);
 
     /**
      * Creates a new {@link BaseTag} from the specifed JSON string

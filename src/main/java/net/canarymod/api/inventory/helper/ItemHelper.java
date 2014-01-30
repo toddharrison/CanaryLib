@@ -33,7 +33,7 @@ abstract class ItemHelper {
      *
      * @return {@code true} if good; {@code false} if not
      */
-    protected final static boolean verifyTags(Item item, String tag, NBTTagType nbt_type, boolean setTags) {
+    protected static boolean verifyTags(Item item, String tag, NBTTagType nbt_type, boolean setTags) {
         if (item == null) {
             return false;
         }
@@ -47,7 +47,7 @@ abstract class ItemHelper {
             if (!setTags) {
                 return false;
             }
-            item.getDataTag().put(tag, NBT_FACTO.newTagFromType(nbt_type, tag, null));
+            item.getDataTag().put(tag, NBT_FACTO.newTagFromType(nbt_type, null));
         }
         return nbt_type == NBTTagType.getTypeFromId(item.getDataTag().get(tag).getTypeId());
     }
