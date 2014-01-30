@@ -388,4 +388,28 @@ public interface PlayerReference {
      */
     public String getLastJoined();
 
+    /**
+     * Get this player's health.
+     *
+     * @return health
+     */
+    public float getHealth();
+
+    /**
+     * Set this player's health.
+     *
+     * @param health
+     *         the health to be set
+     */
+    public void setHealth(float health);
+
+    /**
+     * Increase this player's health. This does not set but add the amount of
+     * health
+     *
+     * @param health
+     *         to increase the health with (negative values decrease)
+     */
+    public void increaseHealth(float health);
+
 }

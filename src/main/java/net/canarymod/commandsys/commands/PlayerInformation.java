@@ -34,15 +34,14 @@ public class PlayerInformation implements NativeCommand {
         if (subject != null) {
             caller.message(TextFormat.GREEN + subject.getName() + "'s info:");
             sendData(caller, "First Joined: ", subject.getFirstJoined());
+            sendData(caller, "Last Joined: ", subject.getLastJoined());
             sendData(caller, "Time Played: ", ToolBox.getTimeUntil(subject.getTimePlayed()));
             sendData(caller, "Muted: ", subject.isMuted());
             sendData(caller, "Prefix: ", subject.getPrefix());
             sendData(caller, "IP: ", subject.getIP());
             sendData(caller, "Primary Group: ", subject.getGroup().getName());
             sendData(caller, "Other Groups: ", subject.getPlayerGroups());
-            if (subject instanceof Player) {
-                sendData(caller, "Health: ", ((Player) subject).getHealth());
-            }
+            sendData(caller, "Health: ", String.format("%.1f", subject.getHealth()));
             sendData(caller, "Mode: ", subject.getMode());
             sendData(caller, "Food Level: ", subject.getHunger());
             sendData(caller, "Food Exhaustion: ", String.format("%.2f", subject.getExhaustionLevel()));
