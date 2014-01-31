@@ -9,6 +9,7 @@ import net.canarymod.commandsys.commands.warp.WarpList;
 import net.canarymod.commandsys.commands.warp.WarpRemove;
 import net.canarymod.commandsys.commands.warp.WarpSet;
 import net.canarymod.commandsys.commands.warp.WarpUse;
+import net.canarymod.commandsys.commands.world.CreateWorldCommand;
 import net.canarymod.commandsys.commands.world.LoadWorldCommand;
 
 import java.util.Collections;
@@ -97,6 +98,7 @@ public class CommandList implements CommandListener {
         temp.put("sysinfo", new SystemInformation());
         temp.put("uptime", new Uptime());
         temp.put("loadworld", new LoadWorldCommand());
+        temp.put("createworld", new CreateWorldCommand());
         natives = Collections.unmodifiableMap(temp);
     }
 
