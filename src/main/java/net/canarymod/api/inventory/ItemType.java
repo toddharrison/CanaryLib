@@ -12,7 +12,7 @@ import java.util.Map.Entry;
  */
 public final class ItemType {
     /* Blocks */
-    public static final ItemType Air = new ItemType(0, "minecraft:air");
+    // Air not present, because Mojang
     public static final ItemType Stone = new ItemType(1, true, "minecraft:stone");
     public static final ItemType Grass = new ItemType(2, true, "minecraft:grass");
     public static final ItemType Dirt = new ItemType(3, true, "minecraft:dirt");
@@ -56,7 +56,7 @@ public final class ItemType {
     public static final ItemType SandstoneOrnate = new ItemType(24, 1, true, "minecraft:sandstone");
     public static final ItemType SandstoneBlank = new ItemType(24, 2, true, "minecraft:sandstone");
     public static final ItemType NoteBlock = new ItemType(25, true, "minecraft:noteblock");
-    public static final ItemType BedBlock = new ItemType(26, true, "minecraft:bed_block");  // TODO: Temp Fix for bad Unique typing...
+    // Bed not present, because Mojang
     public static final ItemType PoweredRail = new ItemType(27, true, "minecraft:golden_rail");
     public static final ItemType DetectorRail = new ItemType(28, true, "minecraft:detector_rail");
     public static final ItemType StickyPiston = new ItemType(29, true, "minecraft:sticky_piston");
@@ -66,7 +66,7 @@ public final class ItemType {
     public static final ItemType TallFern = new ItemType(31, 2, true, "minecraft:tallgrass");
     // 32 MIA
     public static final ItemType Piston = new ItemType(33, true, "minecraft:piston");
-    public static final ItemType PistonExtended = new ItemType(34, true, "minecraft:piston_head");
+    // Piston head not present, because Mojang
     public static final ItemType WoolWhite = new ItemType(35, 0, true, "minecraft:wool");
     public static final ItemType WoolOrange = new ItemType(35, 1, true, "minecraft:wool");
     public static final ItemType WoolMagenta = new ItemType(35, 2, true, "minecraft:wool");
@@ -83,7 +83,7 @@ public final class ItemType {
     public static final ItemType WoolDarkGreen = new ItemType(35, 13, true, "minecraft:wool");
     public static final ItemType WoolRed = new ItemType(35, 14, true, "minecraft:wool");
     public static final ItemType WoolBlack = new ItemType(35, 15, true, "minecraft:wool");
-    public static final ItemType PistonBlockFiller = new ItemType(36, true, "minecraft:piston_extension");
+    // Piston extension not present, because Mojang
     public static final ItemType YellowFlower = new ItemType(37, true, "minecraft:yellow_flower");
     public static final ItemType RedFlower = new ItemType(38, true, "minecraft:red_flower");
     public static final ItemType BrownMushroom = new ItemType(39, true, "minecraft:brown_mushroom");
@@ -120,27 +120,27 @@ public final class ItemType {
     public static final ItemType MobSpawner = new ItemType(52, true, "minecraft:mob_spawner");
     public static final ItemType WoodenStair = new ItemType(53, true, "minecraft:oak_stairs");
     public static final ItemType Chest = new ItemType(54, true, "minecraft:chest");
-    public static final ItemType RedstoneWire = new ItemType(55, true, "minecraft:redstone_wire");
+    // Redstone wire not present, because Mojang
     public static final ItemType DiamondOre = new ItemType(56, true, "minecraft:diamond_ore");
     public static final ItemType DiamondBlock = new ItemType(57, true, "minecraft:diamond_block");
     public static final ItemType Workbench = new ItemType(58, true, "minecraft:crafting_table");
-    public static final ItemType Crops = new ItemType(59, true, "minecraft:wheat_block"); // TODO: Temp Fix for bad Unique typing...
+    // Wheat not present, because Mojang
     public static final ItemType Soil = new ItemType(60, true, "minecraft:farmland");
     public static final ItemType Furnace = new ItemType(61, true, "minecraft:furnace");
     public static final ItemType BurningFurnace = new ItemType(62, true, "minecraft:lit_furnace");
-    public static final ItemType SignPost = new ItemType(63, true, "minecraft:standing_sign");
-    public static final ItemType WoodenDoor = new ItemType(64, true, "minecraft:wooden_door_block"); // TODO: Temp Fix for bad Unique typing...
+    // Standing sign not present, because Mojang
+    // Wooden door not present, because Mojang
     public static final ItemType Ladder = new ItemType(65, true, "minecraft:ladder");
     public static final ItemType Rail = new ItemType(66, true, "minecraft:rail");
     public static final ItemType CobbleStair = new ItemType(67, true, "minecraft:stone_stairs");
-    public static final ItemType WallSign = new ItemType(68, true, "minecraft:wall_sign");
+    // Wall sign not present, because Mojang
     public static final ItemType Lever = new ItemType(69, true, "minecraft:lever");
     public static final ItemType StonePlate = new ItemType(70, true, "minecraft:stone_pressure_plate");
-    public static final ItemType IronDoorBlock = new ItemType(71, true, "minecraft:iron_door_block"); // TODO: Temp Fix for bad Unique typing...
+    // Iron door not present, because Mojang
     public static final ItemType WoodPlate = new ItemType(72, true, "minecraft:wooden_pressure_plate");
     public static final ItemType RedstoneOre = new ItemType(73, true, "minecraft:redstone_ore");
-    public static final ItemType GlowingRedstoneOre = new ItemType(74, true, "minecraft:lit_redstone_ore");
-    public static final ItemType RedstoneTorchOff = new ItemType(75, true, "minecraft:unlit_redstone_torch");
+    // Lit redstone ore not present, because Mojang
+    // Unlit redstone torch not present, because Mojang
     public static final ItemType RedstoneTorchOn = new ItemType(76, true, "minecraft:redstone_torch");
     public static final ItemType StoneButton = new ItemType(77, true, "minecraft:stone_button");
     public static final ItemType Snow = new ItemType(78, true, "minecraft:snow_layer");
@@ -148,7 +148,7 @@ public final class ItemType {
     public static final ItemType SnowBlock = new ItemType(80, true, "minecraft:snow");
     public static final ItemType Cactus = new ItemType(81, true, "minecraft:cactus");
     public static final ItemType Clay = new ItemType(82, true, "minecraft:clay");
-    public static final ItemType ReedBlock = new ItemType(83, true, "minecraft:reeds_block"); // TODO: Temp Fix for bad Unique typing...
+    // Reeds not present, because Mojang
     public static final ItemType Jokebox = new ItemType(84, true, "minecraft:jukebox");
     public static final ItemType Fence = new ItemType(85, true, "minecraft:fence");
     public static final ItemType Pumpkin = new ItemType(86, true, "minecraft:pumpkin");
@@ -157,9 +157,8 @@ public final class ItemType {
     public static final ItemType GlowStone = new ItemType(89, true, "minecraft:glowstone");
     public static final ItemType Portal = new ItemType(90, true, "minecraft:portal");
     public static final ItemType JackOLantern = new ItemType(91, true, "minecraft:lit_pumpkin");
-    public static final ItemType CakeBlock = new ItemType(92, true, "minecraft:cake_block"); // TODO: Temp Fix for bad Unique typing...
-    public static final ItemType RedstoneRepeaterOff = new ItemType(93, true, "minecraft:unpowered_repeater");
-    public static final ItemType RedstoneRepeaterOn = new ItemType(94, true, "minecraft:powered_repeater");
+    // The cake is a lie, because Mojang
+    // Redstone repeater (both states) not present, because Mojang
     public static final ItemType LockedChest = new ItemType(95, true, "minecraft:stained_glass");
     public static final ItemType Trapdoor = new ItemType(96, true, "minecraft:trapdoor");
     public static final ItemType CleanSilverFishBlock = new ItemType(97, 0, true, "minecraft:monster_egg");
@@ -175,8 +174,7 @@ public final class ItemType {
     public static final ItemType IronBars = new ItemType(101, true, "minecraft:iron_bars");
     public static final ItemType GlassPane = new ItemType(102, true, "minecraft:glass_pane");
     public static final ItemType Melon = new ItemType(103, true, "minecraft:melon_block");
-    public static final ItemType PumpkinStem = new ItemType(104, true, "minecraft:pumpkin_stem");
-    public static final ItemType MelonStem = new ItemType(105, true, "minecraft:melon_stem");
+    // Melon and pumpkin stem not present, because Mojang
     public static final ItemType Vines = new ItemType(106, true, "minecraft:vine");
     public static final ItemType FenceGate = new ItemType(107, true, "minecraft:fence_gate");
     public static final ItemType BrickStair = new ItemType(108, true, "minecraft:brick_stairs");
@@ -186,16 +184,15 @@ public final class ItemType {
     public static final ItemType NetherBrick = new ItemType(112, true, "minecraft:nether_brick");
     public static final ItemType NetherBrickFence = new ItemType(113, true, "minecraft:nether_brick_fence");
     public static final ItemType NetherBrickStair = new ItemType(114, true, "minecraft:nether_brick_stairs");
-    public static final ItemType NetherWartBlock = new ItemType(115, true, "minecraft:nether_wart_block"); // TODO: Temp Fix for bad Unique typing...
+    // Nether wart not present, because Mojang
     public static final ItemType EnchantmentTable = new ItemType(116, true, "minecraft:enchanting_table");
-    public static final ItemType BrewingStandBlock = new ItemType(117, true, "minecraft:brewing_stand_block"); // TODO: Temp Fix for bad Unique typing...
-    public static final ItemType CauldronBlock = new ItemType(118, true, "minecraft:cauldron_block"); // TODO: Temp Fix for bad Unique typing...
+    // Brewing stand and cauldron not present, because Mojang
     public static final ItemType EndPortal = new ItemType(119, true, "minecraft:end_portal");
     public static final ItemType EndPortalFrame = new ItemType(120, true, "minecraft:end_portal_frame");
     public static final ItemType EndStone = new ItemType(121, true, "minecraft:end_stone");
     public static final ItemType EnderDragonEgg = new ItemType(122, true, "minecraft:dragon_egg");
     public static final ItemType RedstoneLampOff = new ItemType(123, true, "minecraft:redstone_lamp");
-    public static final ItemType RedstoneLampOn = new ItemType(124, true, "minecraft:lit_redstone_lamp");
+    // Lit redstone lamp not present, because Mojang
     public static final ItemType OakWoodDoubleStep = new ItemType(125, 0, true, "minecraft:double_wooden_slab");
     public static final ItemType SpruceWoodDoubleStep = new ItemType(125, 1, true, "minecraft:double_wooden_slab");
     public static final ItemType BirchWoodDoubleStep = new ItemType(125, 2, true, "minecraft:double_wooden_slab");
@@ -209,7 +206,7 @@ public final class ItemType {
     public static final ItemType EmeraldOre = new ItemType(129, true, "minecraft:emerald_ore");
     public static final ItemType EnderChest = new ItemType(130, true, "minecraft:ender_chest");
     public static final ItemType TripwireHook = new ItemType(131, true, "minecraft:tripwire_hook");
-    public static final ItemType Tripwire = new ItemType(132, true, "minecraft:tripwire");
+    // Tripwire not present, because Mojang
     public static final ItemType EmeraldBlock = new ItemType(133, true, "minecraft:emerald_block");
     public static final ItemType PineWoodStair = new ItemType(134, true, "minecraft:spruce_stairs");
     public static final ItemType BirchWoodStair = new ItemType(135, true, "minecraft:birch_stairs");
@@ -217,21 +214,16 @@ public final class ItemType {
     public static final ItemType CommandBlock = new ItemType(137, true, "minecraft:command_block");
     public static final ItemType Beacon = new ItemType(138, true, "minecraft:beacon");
     public static final ItemType CobblestoneWall = new ItemType(139, true, "minecraft:cobblestone_wall");
-    public static final ItemType FlowerpotBlock = new ItemType(140, true, "minecraft:flower_pot_block"); // TODO: Temp Fix for bad Unique typing...
-    public static final ItemType Carrots = new ItemType(141, true, "minecraft:carrots_block"); // TODO: Temp Fix for bad Unique typing...
-    public static final ItemType Potatoes = new ItemType(142, true, "minecraft:potatoes_block"); // TODO: Temp Fix for bad Unique typing...
+    // Flower pot not present, because Mojang
+    public static final ItemType Carrots = new ItemType(141, true, "minecraft:carrots");
+    public static final ItemType Potatoes = new ItemType(142, true, "minecraft:potatoes");
     public static final ItemType WoodenButton = new ItemType(143, true, "minecraft:wooden_button");
-    public static final ItemType SkeletonHeadBlock = new ItemType(144, 0, true, "minecraft:skull_block"); // TODO: Temp Fix for bad Unique typing...
-    public static final ItemType WitherSkeletonHeadBlock = new ItemType(144, 1, true, "minecraft:skull_block"); // TODO: Temp Fix for bad Unique typing...
-    public static final ItemType ZombieHeadBlock = new ItemType(144, 2, true, "minecraft:skull_block"); // TODO: Temp Fix for bad Unique typing...
-    public static final ItemType HumanHeadBlock = new ItemType(144, 3, true, "minecraft:skull_block"); // TODO: Temp Fix for bad Unique typing...
-    public static final ItemType CreeperHeadBlock = new ItemType(144, 4, true, "minecraft:skull_block"); // TODO: Temp Fix for bad Unique typing...
+    // Skull (any type) not present, because Mojang
     public static final ItemType Anvil = new ItemType(145, true, "minecraft:anvil");
     public static final ItemType TrappedChest = new ItemType(146, true, "minecraft:trapped_chest");
     public static final ItemType LightWeightedPressurePlate = new ItemType(147, true, "minecraft:light_weighted_pressure_plate");
     public static final ItemType HeavyWeightedPressurePlate = new ItemType(148, true, "minecraft:heavy_weighted_pressure_plate");
-    public static final ItemType RedstoneComparatorOn = new ItemType(149, true, "minecraft:unpowered_comparator");
-    public static final ItemType RedstoneComparatorOff = new ItemType(150, true, "minecraft:powered_comparator");
+    // Powered and unpowered comparator not present, because Mojang
     public static final ItemType DaylightSensor = new ItemType(151, true, "minecraft:daylight_detector");
     public static final ItemType RedstoneBlock = new ItemType(152, true, "minecraft:redstone_block");
     public static final ItemType NetherQuartzOre = new ItemType(153, true, "minecraft:quartz_ore");
