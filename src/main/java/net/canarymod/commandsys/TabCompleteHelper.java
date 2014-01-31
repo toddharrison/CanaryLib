@@ -3,6 +3,7 @@ package net.canarymod.commandsys;
 import net.canarymod.Canary;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.DimensionType;
+import net.canarymod.api.world.WorldType;
 import net.canarymod.bansystem.Ban;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.kit.Kit;
@@ -215,6 +216,54 @@ public final class TabCompleteHelper {
      */
     public static List<String> matchToDimension(String[] args) {
         return matchTo(args, DimensionType.knownDimensionNames());
+    }
+
+    /**
+     * Matches the last argument of specified arguments to possible existing {@link net.canarymod.api.world.World} names
+     *
+     * @param args
+     *         the arguments to grab the last argument of
+     *
+     * @return a list of matching existing {@link World} names
+     */
+    public static List<String> matchToKnownWorld(String[] args) {
+        return matchTo(args, Canary.getServer().getWorldManager().getExistingWorldsArray());
+    }
+
+    /**
+     * Matches the argument to possible existing {@link net.canarymod.api.world.World} names
+     *
+     * @param arg
+     *         the argument to get matches for
+     *
+     * @return list of matching existing {@link net.canarymod.api.world.World} names found
+     */
+    public static List<String> matchToKnownWorld(String arg) {
+        return matchTo(arg, Canary.getServer().getWorldManager().getExistingWorldsArray());
+    }
+
+    /**
+     * Matches the last argument of specified arguments to possible existing {@link net.canarymod.api.world.WorldType} names
+     *
+     * @param args
+     *         the arguments to grab the last argument of
+     *
+     * @return a list of matching existing {@link net.canarymod.api.world.WorldType} names
+     */
+    public static List<String> matchToWorldType(String[] args) {
+        return matchTo(args, WorldType.getTypeNames());
+    }
+
+    /**
+     * Matches the argument to possible existing {@link net.canarymod.api.world.WorldType} names
+     *
+     * @param arg
+     *         the argument to get matches for
+     *
+     * @return list of matching existing {@link net.canarymod.api.world.WorldType} names found
+     */
+    public static List<String> matchToWorldType(String arg) {
+        return matchTo(arg, WorldType.getTypeNames());
     }
 
     /**

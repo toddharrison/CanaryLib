@@ -61,4 +61,13 @@ public class WorldType {
         }
         return null;
     }
+
+    /**
+     * Gets an array of WorldType names
+     *
+     * @return WorldType names
+     */
+    public static String[] getTypeNames() {
+        return types.keySet().toArray(new String[types.size()]);
+    }
 }

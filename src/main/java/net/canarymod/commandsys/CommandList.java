@@ -9,19 +9,14 @@ import net.canarymod.commandsys.commands.warp.WarpList;
 import net.canarymod.commandsys.commands.warp.WarpRemove;
 import net.canarymod.commandsys.commands.warp.WarpSet;
 import net.canarymod.commandsys.commands.warp.WarpUse;
+import net.canarymod.commandsys.commands.world.LoadWorldCommand;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static net.canarymod.commandsys.TabCompleteHelper.matchTo;
-import static net.canarymod.commandsys.TabCompleteHelper.matchToBannedSubject;
-import static net.canarymod.commandsys.TabCompleteHelper.matchToGroup;
-import static net.canarymod.commandsys.TabCompleteHelper.matchToKitNames;
-import static net.canarymod.commandsys.TabCompleteHelper.matchToKnownPlayer;
-import static net.canarymod.commandsys.TabCompleteHelper.matchToOnlinePlayer;
-import static net.canarymod.commandsys.TabCompleteHelper.matchToWarpNames;
+import static net.canarymod.commandsys.TabCompleteHelper.*;
 
 /**
  * Canary "native" commands
@@ -101,6 +96,7 @@ public class CommandList implements CommandListener {
         temp.put("playerinfo", new PlayerInformation());
         temp.put("sysinfo", new SystemInformation());
         temp.put("uptime", new Uptime());
+        temp.put("loadworld", new LoadWorldCommand());
         natives = Collections.unmodifiableMap(temp);
     }
 
@@ -756,7 +752,8 @@ public class CommandList implements CommandListener {
             permissions = { "canary.command.teleport.spawn" },
             toolTip = "/spawn [worldname] [player]",
             min = 1,
-            max = 3
+            max = 3,
+            tabCompleteMethod = "matchWorldNamePlayerName"
     )
     public void spawnCommand(MessageReceiver caller, String[] parameters) {
         natives.get("spawn").execute(caller, parameters);
@@ -887,6 +884,31 @@ public class CommandList implements CommandListener {
         natives.get("uptime").execute(caller, parameters);
     }
 
+    @Command(
+            aliases = { "loadworld" },
+            description = "loads a world",
+            permissions = { "canary.commmand.world.load" },
+            toolTip = "/loadworld <worldName> [dimensionType]",
+            min = 2,
+            tabCompleteMethod = "matchWorldNameDimension"
+    )
+    public void loadWorld(MessageReceiver caller, String[] args) {
+        natives.get("loadworld").execute(caller, args);
+    }
+
+    @Command(
+            aliases = { "createworld" },
+            description = "creates a world",
+            permissions = { "canary.command.world.create" },
+            toolTip = "/createworld <name> [seed] [dimensionType] [worldType]",
+            min = 2,
+            max = 5,
+            tabCompleteMethod = "matchPast2DimensionTypeWorldType"
+    )
+    public void createWorld(MessageReceiver caller, String[] args) {
+        natives.get("createworld").execute(caller, args);
+    }
+
     /* All the reused tab complete stuff */
     @TabComplete
     public List<String> matchKnownPlayer(MessageReceiver caller, String[] args) {
@@ -906,6 +928,27 @@ public class CommandList implements CommandListener {
     @TabComplete
     public List<String> matchPluginName(MessageReceiver caller, String[] args) {
         return args.length == 1 ? matchTo(args, Canary.loader().getPluginList()) : null;
+    }
+
+    @TabComplete
+    public List<String> matchWorldNamePlayerName(MessageReceiver caller, String[] args) {
+        return args.length == 1 ? matchToKnownWorld(args)
+                : args.length == 2 ? matchToOnlinePlayer(args)
+                : null;
+    }
+
+    @TabComplete
+    public List<String> matchWorldNameDimension(MessageReceiver caller, String[] args) {
+        return args.length == 1 ? matchToKnownWorld(args)
+                : args.length == 2 ? matchToDimension(args)
+                : null;
+    }
+
+    @TabComplete
+    public List<String> matchPast2DimensionTypeWorldType(MessageReceiver caller, String[] args) {
+        return args.length == 3 ? matchToDimension(args)
+                : args.length == 4 ? matchToWorldType(args)
+                : null;
     }
 
 }
