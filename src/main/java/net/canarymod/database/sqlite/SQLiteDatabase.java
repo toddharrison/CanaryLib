@@ -24,8 +24,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.logging.log4j.LogManager;
 
 import static net.canarymod.Canary.log;
 
@@ -488,7 +488,7 @@ public class SQLiteDatabase extends Database {
                     + data.toString());
         }
         catch (DatabaseTableInconsistencyException ex) {
-            Logger.getLogger(SQLiteDatabase.class.getName()).log(Level.SEVERE, null, ex);
+            LogManager.getLogger().error( ex);
         }
         finally {
             close(null, ps, rs);
@@ -694,7 +694,7 @@ public class SQLiteDatabase extends Database {
                     ps.close();
                 }
                 catch (SQLException ex) {
-                    Logger.getLogger(SQLiteDatabase.class.getName()).log(Level.SEVERE, null, ex);
+                    LogManager.getLogger().error(ex);
                 }
             }
         }

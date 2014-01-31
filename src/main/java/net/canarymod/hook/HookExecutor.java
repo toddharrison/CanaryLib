@@ -56,7 +56,7 @@ public class HookExecutor implements HookExecutorInterface {
                         method.invoke(listener, hook);
                     }
                     catch (Exception ex) {
-                        throw new HookExecutionException(ex.getCause().getMessage(), ex.getCause());
+                        throw new HookExecutionException(ex.getMessage(), ex);
                     }
                 }
             };
