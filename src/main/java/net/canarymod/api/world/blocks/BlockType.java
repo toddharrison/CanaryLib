@@ -20,7 +20,7 @@ public final class BlockType {
     public static final BlockType BirchWood = new BlockType(5, 2, "minecraft:planks");
     public static final BlockType JungleWood = new BlockType(5, 3, "minecraft:planks");
     public static final BlockType AcaciaWood = new BlockType(5, 4, "minecraft:planks");
-    public static final BlockType DarkOakWood = new BlockType(5, 4, "minecraft:planks");
+    public static final BlockType DarkOakWood = new BlockType(5, 5, "minecraft:planks");
     public static final BlockType OakSapling = new BlockType(6, 0, "minecraft:sapling");
     public static final BlockType SpruceSapling = new BlockType(6, 1, "minecraft:sapling");
     public static final BlockType BirchSapling = new BlockType(6, 2, "minecraft:sapling");
@@ -41,6 +41,7 @@ public final class BlockType {
     public static final BlockType PineLog = new BlockType(17, 1, "minecraft:log");
     public static final BlockType BirchLog = new BlockType(17, 2, "minecraft:log");
     public static final BlockType JungleLog = new BlockType(17, 3, "minecraft:log");
+
     public static final BlockType OakLeaves = new BlockType(18, 0, "minecraft:leaves");
     public static final BlockType PineLeaves = new BlockType(18, 1, "minecraft:leaves");
     public static final BlockType BirchLeaves = new BlockType(18, 2, "minecraft:leaves");
