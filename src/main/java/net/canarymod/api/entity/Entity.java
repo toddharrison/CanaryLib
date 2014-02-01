@@ -507,6 +507,19 @@ public interface Entity {
      */
     public void setRider(Entity rider);
 
+    /**
+     * Mounts a specified {@code Entity}
+     *
+     * @param entity
+     *         the {@code Entity} to mount
+     */
+    public void mount(Entity entity);
+
+    /**
+     * Dismount ridden {@code Entity}
+     */
+    public void dismount();
+
     /** Destroys this entity */
     public void destroy();
 
