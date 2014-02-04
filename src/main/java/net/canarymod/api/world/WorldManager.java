@@ -18,6 +18,9 @@ public interface WorldManager {
      * @param autoload
      *
      * @return World dimension object
+     * @throws UnknownWorldException Thrown if the world with {@code name}
+     * doesn't exist, or when the world is not loaded and {@code autoload} is
+     * {@code false}.
      */
     public World getWorld(String name, boolean autoload);
 
@@ -32,6 +35,9 @@ public interface WorldManager {
      *         true if worlds should be loaded if they are not
      *
      * @return
+     * @throws UnknownWorldException Thrown if the world with {@code name}
+     * doesn't exist, or when the world is not loaded and {@code autoload} is
+     * {@code false}.
      */
     public World getWorld(String name, DimensionType type, boolean autoload);
 

@@ -488,7 +488,7 @@ public class SQLiteDatabase extends Database {
                     + data.toString());
         }
         catch (DatabaseTableInconsistencyException ex) {
-            LogManager.getLogger().error( ex);
+            LogManager.getLogger().error("", ex);
         }
         finally {
             close(null, ps, rs);
@@ -694,7 +694,7 @@ public class SQLiteDatabase extends Database {
                     ps.close();
                 }
                 catch (SQLException ex) {
-                    LogManager.getLogger().error(ex);
+                    LogManager.getLogger().error("", ex);
                 }
             }
         }

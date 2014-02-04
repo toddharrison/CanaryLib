@@ -5,7 +5,7 @@ package net.canarymod.api.world;
  *
  * @author Chris (damagefilter)
  */
-public class UnknownWorldException extends RuntimeException {
+public class UnknownWorldException extends IllegalArgumentException {
     private static final long serialVersionUID = -6910387258523508711L;
 
     public UnknownWorldException(String str) {
