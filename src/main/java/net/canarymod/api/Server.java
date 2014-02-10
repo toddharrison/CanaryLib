@@ -243,8 +243,11 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      */
     public ConfigurationManager getConfigurationManager();
 
-    /** Signal the server to shut down and exit */
-    public void initiateShutdown();
+    /** Signal the server to shut down and exit.
+     * @param message The shutdown message, or {@code null} for the default
+     * message.
+     */
+    public void initiateShutdown(String message);
 
     /**
      * Restart the server by shutting it down and
