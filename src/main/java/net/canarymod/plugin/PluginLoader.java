@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import static net.canarymod.Canary.log;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Plugin Loading and Management Class
@@ -509,8 +510,12 @@ public final class PluginLoader {
         return disablePlugin(plugins.get(name));
     }
 
+    private boolean disablePlugin(Plugin plugin) {
+        return disablePlugin(plugin, log);
+    }
+
     /* Same as public boolean disablePlugin(String name) */
-    private final boolean disablePlugin(Plugin plugin) {
+    private final boolean disablePlugin(Plugin plugin, Logger log) {
         /* Plugin must exist before disabling*/
         if (plugin == null) {
             return false;
@@ -553,8 +558,19 @@ public final class PluginLoader {
 
     /** Disables all plugins, used when shutting down the server. */
     public final void disableAllPlugins() {
+        disableAllPlugins(log);
+    }
+
+    /** Disables all plugins, used when shutting down the server.
+     *
+     * @param log The {@link Logger} to use when shutting down. This is
+     * necessary when in the shutdown hook, since we can't rely on external
+     * libraries there (see the javadoc at
+     * {@link Runtime#addShutdownHook(java.lang.Thread)})
+     */
+    public void disableAllPlugins(Logger log) {
         for (Plugin plugin : this.getPlugins()) {
-            disablePlugin(plugin);
+            disablePlugin(plugin, log);
         }
     }
 

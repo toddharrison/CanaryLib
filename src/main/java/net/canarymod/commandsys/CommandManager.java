@@ -20,7 +20,7 @@ import static net.canarymod.Canary.log;
  * Manages all commands.
  * Add commands using one of the methods below.
  *
- * @author Willem (l4mRh4X0r)
+ * @author Willem (14mRh4X0r)
  * @author Chris (damagefilter)
  * @author Jason (darkdiplomat)
  */
