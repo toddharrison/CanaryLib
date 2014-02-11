@@ -15,6 +15,6 @@ public class StopServer implements NativeCommand {
 
     public void execute(MessageReceiver caller, String[] parameters) {
         Canary.getServer().notice(Translator.translateAndFormat("stop console", caller.getName()));
-        Canary.getServer().initiateShutdown(StringUtils.joinString(parameters, " ", 1));
+        Canary.getServer().initiateShutdown(parameters.length > 1 ? StringUtils.joinString(parameters, " ", 1) : null);
     }
 }
