@@ -7,7 +7,10 @@ import net.canarymod.api.world.WorldType;
 import net.visualillusionsent.utils.PropertiesFile;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import static net.canarymod.Canary.log;
 
@@ -31,6 +34,9 @@ public class WorldConfiguration implements ConfigurationContainer {
     private final static int[]
             enderblocks = new int[]{ 2, 3, 12, 13, 37, 38, 39, 40, 46, 81, 82, 86, 103, 110 },
             disallowedblocks = new int[]{ 7, 8, 9, 10, 11, 46, 51, 52 };
+
+    /* Only read this once. Major performance improvement here. */
+    private HashSet<String> spawnableAnimals, spawnableGolems, spawnableMobs, spawnableWaterAnimals;
 
     public WorldConfiguration(String path, String worldname) {
         this.worldname = worldname;
@@ -83,10 +89,10 @@ public class WorldConfiguration implements ConfigurationContainer {
         cfg.getBoolean("spawn-golems", true);
         cfg.getBoolean("spawn-animals", true);
         cfg.getBoolean("spawn-monsters", true);
-        cfg.getStringArray("natural-animals", animals);
-        cfg.getStringArray("natural-monsters", monsters);
-        cfg.getStringArray("natural-golems", golems);
-        cfg.getStringArray("natural-wateranimals", wateranimals);
+        spawnableAnimals = new HashSet<String>(Arrays.asList(cfg.getStringArray("natural-animals", animals)));
+        spawnableMobs = new HashSet<String>(Arrays.asList(cfg.getStringArray("natural-monsters", monsters)));
+        spawnableGolems = new HashSet<String>(Arrays.asList(cfg.getStringArray("natural-golems", golems)));
+        spawnableWaterAnimals = new HashSet<String>(Arrays.asList(cfg.getStringArray("natural-wateranimals", wateranimals)));
         cfg.getInt("natural-spawn-rate", 100);
 
         cfg.getIntArray("ender-blocks", enderblocks);
@@ -149,8 +155,8 @@ public class WorldConfiguration implements ConfigurationContainer {
      *
      * @return animals array
      */
-    public String[] getSpawnableAnimals() {
-        return cfg.getStringArray("natural-animals", animals);
+    public Set<String> getSpawnableAnimals() {
+        return spawnableAnimals;
     }
 
     /**
@@ -158,8 +164,8 @@ public class WorldConfiguration implements ConfigurationContainer {
      *
      * @return water animals array
      */
-    public String[] getSpawnableWaterAnimals() {
-        return cfg.getStringArray("natural-wateranimals", wateranimals);
+    public Set<String> getSpawnableWaterAnimals() {
+        return spawnableWaterAnimals;
     }
 
     /**
@@ -167,8 +173,8 @@ public class WorldConfiguration implements ConfigurationContainer {
      *
      * @return monster array
      */
-    public String[] getSpawnableMobs() {
-        return cfg.getStringArray("natural-monsters", monsters);
+    public Set<String> getSpawnableMobs() {
+        return spawnableMobs;
     }
 
     /**
@@ -176,8 +182,8 @@ public class WorldConfiguration implements ConfigurationContainer {
      *
      * @return golem array
      */
-    public String[] getSpawnableGolems() {
-        return cfg.getStringArray("natural-golems", golems);
+    public Set<String> getSpawnableGolems() {
+        return spawnableGolems;
     }
 
     /**

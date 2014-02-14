@@ -62,8 +62,9 @@ public class HookExecutor implements HookExecutorInterface {
             };
             dispatcher.ignoreCanceled = handler.ignoreCanceled();
 
-            listeners.put(hookCls.asSubclass(Hook.class), new RegisteredPluginListener(listener, plugin, dispatcher, handler.priority()));
-            Collections.sort(listeners.get(hookCls.asSubclass(Hook.class)), listener_comp);
+            // We checked the class above, ignore unchecked warnings.
+            listeners.put((Class<? extends Hook>) hookCls, new RegisteredPluginListener(listener, plugin, dispatcher, handler.priority()));
+            Collections.sort(listeners.get((Class<? extends Hook>) hookCls), listener_comp);
         }
     }
 
@@ -91,7 +92,10 @@ public class HookExecutor implements HookExecutorInterface {
             return;
         }
         hook.hasExecuted();
-        Iterator<RegisteredPluginListener> iter = this.listeners.get(hook.getClass().asSubclass(Hook.class)).iterator();
+        if (!this.listeners.containsKey(hook.getClass())) {
+            return;
+        }
+        Iterator<RegisteredPluginListener> iter = this.listeners.get(hook.getClass()).iterator();
         while (iter.hasNext()) {
             RegisteredPluginListener listener = iter.next();
             try {
