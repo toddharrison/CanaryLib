@@ -87,6 +87,7 @@ public class CommandList implements CommandListener {
         temp.put("delwarp", new WarpRemove());
         temp.put("spawn", new SpawnCommand());
         temp.put("stop", new StopServer());
+        temp.put("restart", new RestartServer());
         temp.put("teleport", new TeleportCommand());
         temp.put("teleporthere", new TeleportHereCommand());
         temp.put("whitelist", new WhitelistCommand());
@@ -767,6 +768,14 @@ public class CommandList implements CommandListener {
             toolTip = "/stop")
     public void stopCommand(MessageReceiver caller, String[] parameters) {
         natives.get("stop").execute(caller, parameters);
+    }
+
+    @Command(aliases = {"restart", "reboot"},
+            description = "restart info",
+            permissions = { "canary.super.command.restart"},
+            toolTip = "/restart [-all]")
+    public void restartCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("restart").execute(caller, parameters);
     }
 
     @Command(aliases = { "tp", "teleport" },
