@@ -7,7 +7,7 @@ import net.canarymod.ToolBox;
  *
  * @author Chris (damagefilter)
  */
-public class Position {
+public class Position implements Cloneable {
     protected double x, y, z;
 
     public Position(double x, double y, double z) {
@@ -187,5 +187,10 @@ public class Position {
 
         format.append(this.x).append(":").append(this.y).append(":").append(this.z);
         return format.toString();
+    }
+
+    @Override
+    public Position clone() {
+        return new Position(this);
     }
 }

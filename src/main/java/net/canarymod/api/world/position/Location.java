@@ -59,6 +59,19 @@ public class Location extends Vector3D {
     }
 
     /**
+     * Copy constructor copies the primitives
+     *
+     * @param templ
+     */
+    public Location(Location templ) {
+        super(templ);
+        this.dimension = templ.getType();
+        this.world = templ.getWorldName();
+        this.pitch = templ.getPitch();
+        this.rotation = templ.getRotation();
+    }
+
+    /**
      * Get the rotation around the Y axis
      *
      * @return the rotation
@@ -203,6 +216,11 @@ public class Location extends Vector3D {
         catch (NumberFormatException e) {
             throw new CanaryDeserializeException("Failed to deserialize Location: " + e.getMessage(), "CanaryMod");
         }
+    }
+
+    @Override
+    public Location clone() {
+        return new Location(this);
     }
 
 }

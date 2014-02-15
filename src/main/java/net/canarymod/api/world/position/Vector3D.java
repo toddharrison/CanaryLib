@@ -43,9 +43,7 @@ public class Vector3D extends Position {
      * @param key
      */
     public Vector3D(Vector3D templ) {
-        this.x = templ.x;
-        this.y = templ.y;
-        this.z = templ.z;
+        super(templ);
     }
 
     /**
@@ -151,5 +149,10 @@ public class Vector3D extends Position {
      */
     public double getMagnitude() {
         return Math.sqrt(x + y + z);
+    }
+
+    @Override
+    public Vector3D clone() {
+        return new Vector3D(this);
     }
 }
