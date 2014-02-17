@@ -30,10 +30,10 @@ public final class ItemType {
     public static final ItemType AcaciaSapling = new ItemType(6, 4, true, "minecraft:sapling");
     public static final ItemType DarkOakSapling = new ItemType(6, 5, true, "minecraft:sapling");
     public static final ItemType Bedrock = new ItemType(7, true, "minecraft:bedrock");
-    public static final ItemType Water = new ItemType(8, true, "minecraft:flowing_water");
-    public static final ItemType WaterFlowing = new ItemType(9, true, "minecraft:water");
-    public static final ItemType Lava = new ItemType(10, true, "minecraft:flowing_lava");
-    public static final ItemType LavaFlowing = new ItemType(11, true, "minecraft:lava");
+    public static final ItemType WaterFlowing = new ItemType(8, true, "minecraft:flowing_water");
+    public static final ItemType Water = new ItemType(9, true, "minecraft:water");
+    public static final ItemType LavaFlowing = new ItemType(10, true, "minecraft:flowing_lava");
+    public static final ItemType Lava = new ItemType(11, true, "minecraft:lava");
     public static final ItemType Sand = new ItemType(12, true, "minecraft:sand");
     public static final ItemType Gravel = new ItemType(13, true, "minecraft:gravel");
     public static final ItemType GoldOre = new ItemType(14, true, "minecraft:gold_ore");
@@ -47,7 +47,7 @@ public final class ItemType {
     public static final ItemType PineLeaves = new ItemType(18, 1, true, "minecraft:leaves");
     public static final ItemType BirchLeaves = new ItemType(18, 2, true, "minecraft:leaves");
     public static final ItemType JungleLeaves = new ItemType(18, 3, true, "minecraft:leaves");
-    public static final ItemType Sponge = new ItemType(19, true, "Sponge"); // THE SPONGE IS A LIE!
+    public static final ItemType Sponge = new ItemType(19, true, "minecraft:sponge"); // THE SPONGE IS A LIE!
     public static final ItemType Glass = new ItemType(20, true, "minecraft:glass");
     public static final ItemType LapislazuliOre = new ItemType(21, true, "minecraft:lapis_ore");
     public static final ItemType LapisBlock = new ItemType(22, true, "minecraft:lapis_block");
