@@ -47,7 +47,9 @@ public abstract class ChannelManager implements ChannelManagerInterface {
                 throw new CustomPayloadChannelException("Invalid Registered Listener: Channel Listener is null.");
             }
 
-            listeners.put(channel, new RegisteredChannelListener(plugin, listener));
+            synchronized (listener) {
+                listeners.put(channel, new RegisteredChannelListener(plugin, listener));
+            }
         }
         catch (CustomPayloadChannelException ex) {
             log.error(ex.getMessage(), ex);
@@ -95,7 +97,9 @@ public abstract class ChannelManager implements ChannelManagerInterface {
             if (handler == null) {
                 throw new CustomPayloadChannelException("Invalid Registered Client: NetServerHandler is null.");
             }
-            clients.put(channel, handler);
+            synchronized (clients) {
+                clients.put(channel, handler);
+            }
         }
         catch (CustomPayloadChannelException ex) {
             log.error(ex.getMessage(), ex);
@@ -105,12 +109,10 @@ public abstract class ChannelManager implements ChannelManagerInterface {
     /** {@inheritDoc} */
     @Override
     public boolean unregisterClient(String channel, NetServerHandler handler) {
-        if (clients.containsKey(channel)) {
-            synchronized (clients.get(channel)) {
-                if (clients.get(channel).remove(handler)) {
-                    log.info(String.format("Client Custom Payload channel '%s' has been unregistered for client '%s'", channel, handler.getUser().getName()));
-                    return true;
-                }
+        synchronized (clients) {
+            if (clients.containsKey(channel) && clients.get(channel).remove(handler)) {
+                log.info(String.format("Client Custom Payload channel '%s' has been unregistered for client '%s'", channel, handler.getUser().getName()));
+                return true;
             }
         }
         return false;
@@ -120,7 +122,8 @@ public abstract class ChannelManager implements ChannelManagerInterface {
     @Override
     public boolean unregisterClientAll(NetServerHandler handler) {
         boolean toRet = true;
-        for (String channel : clients.keySet()) {
+        String[] channels = clients.keySet().toArray(new String[clients.keySet().size()]);
+        for (String channel : channels) {
             toRet &= unregisterClient(channel, handler);
         }
         return toRet;
