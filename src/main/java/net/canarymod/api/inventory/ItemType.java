@@ -158,7 +158,7 @@ public final class ItemType {
     public static final ItemType Cactus = new ItemType(81, true, "minecraft:cactus");
     public static final ItemType Clay = new ItemType(82, true, "minecraft:clay");
     // Reeds not present, because Mojang
-    public static final ItemType Jokebox = new ItemType(84, true, "minecraft:jukebox");
+    public static final ItemType Jukebox = new ItemType(84, true, "minecraft:jukebox");
     public static final ItemType Fence = new ItemType(85, true, "minecraft:fence");
     public static final ItemType Pumpkin = new ItemType(86, true, "minecraft:pumpkin");
     public static final ItemType Netherrack = new ItemType(87, true, "minecraft:netherrack");
@@ -223,10 +223,14 @@ public final class ItemType {
     public static final ItemType SpruceWoodDoubleStep = new ItemType(125, 1, true, "minecraft:double_wooden_slab");
     public static final ItemType BirchWoodDoubleStep = new ItemType(125, 2, true, "minecraft:double_wooden_slab");
     public static final ItemType JungleWoodDoubleStep = new ItemType(125, 3, true, "minecraft:double_wooden_slab");
+    public static final ItemType AcaciaWoodDoubleStep = new ItemType(125, 4, true, "minecraft:double_wooden_slab");
+    public static final ItemType DarkOakWoodDoubleStep = new ItemType(125, 5, true, "minecraft:double_wooden_slab");
     public static final ItemType OakWoodStep = new ItemType(126, 0, true, "minecraft:wooden_slab");
     public static final ItemType SpruceWoodStep = new ItemType(126, 1, true, "minecraft:wooden_slab");
     public static final ItemType BirchWoodStep = new ItemType(126, 2, true, "minecraft:wooden_slab");
     public static final ItemType JungleWoodStep = new ItemType(126, 3, true, "minecraft:wooden_slab");
+    public static final ItemType AcaciaWoodStep = new ItemType(126, 4, true, "minecraft:wooden_slab");
+    public static final ItemType DarkOakWoodStep = new ItemType(126, 5, true, "minecraft:wooden_slab");
     public static final ItemType CocoaPlant = new ItemType(127, true, "minecraft:cocoa");
     public static final ItemType SandstoneStair = new ItemType(128, true, "minecraft:sandstone_stairs");
     public static final ItemType EmeraldOre = new ItemType(129, true, "minecraft:emerald_ore");
@@ -239,7 +243,8 @@ public final class ItemType {
     public static final ItemType JungleWoodStair = new ItemType(136, true, "minecraft:jungle_stairs");
     public static final ItemType CommandBlock = new ItemType(137, true, "minecraft:command_block");
     public static final ItemType Beacon = new ItemType(138, true, "minecraft:beacon");
-    public static final ItemType CobblestoneWall = new ItemType(139, true, "minecraft:cobblestone_wall");
+    public static final ItemType CobblestoneWall = new ItemType(139, 0, true, "minecraft:cobblestone_wall");
+    public static final ItemType MossyCobbleWall = new ItemType(139, 1, true, "minecraft:cobblestone_wall");
     // Flower pot not present, because Mojang
     public static final ItemType Carrots = new ItemType(141, true, "minecraft:carrots");
     public static final ItemType Potatoes = new ItemType(142, true, "minecraft:potatoes");

@@ -157,7 +157,7 @@ public final class BlockType {
     public static final BlockType Cactus = new BlockType(81, 0, "minecraft:cactus");
     public static final BlockType Clay = new BlockType(82, 0, "minecraft:clay");
     public static final BlockType Reed = new BlockType(83, 0, "minecraft:reeds");
-    public static final BlockType Jokebox = new BlockType(84, 0, "minecraft:jukebox");
+    public static final BlockType Jukebox = new BlockType(84, 0, "minecraft:jukebox");
     public static final BlockType Fence = new BlockType(85, 0, "minecraft:fence");
     public static final BlockType Pumpkin = new BlockType(86, 0, "minecraft:pumpkin");
     public static final BlockType Netherrack = new BlockType(87, 0, "minecraft:netherrack");
@@ -246,6 +246,7 @@ public final class BlockType {
     public static final BlockType CommandBlock = new BlockType(137, 0, "minecraft:command_block");
     public static final BlockType Beacon = new BlockType(138, 0, "minecraft:beacon");
     public static final BlockType CobblestoneWall = new BlockType(139, 0, "minecraft:cobblestone_wall");
+    public static final BlockType MossyCobbleWall = new BlockType(139, 1, "minecraft:cobblestone_wall");
     public static final BlockType Flowerpot = new BlockType(140, 0, "minecraft:flower_pot");
     public static final BlockType Carrots = new BlockType(141, 0, "minecraft:carrots");
     public static final BlockType Potatoes = new BlockType(142, 0, "minecraft:potatoes");
@@ -346,11 +347,11 @@ public final class BlockType {
     private static HashMap<Entry<String, Integer>, BlockType> blockTypes;
 
     public BlockType(int id, String machineName) {
-        this(id, 0, "canarymod:"+machineName);
+        this(id, 0, "canarymod:" + machineName);
     }
 
     public BlockType(int id, String machineName, String mod) {
-        this(id, 0, mod+":"+machineName);
+        this(id, 0, mod + ":" + machineName);
     }
 
     /**

@@ -1,10 +1,10 @@
 package net.canarymod.api.inventory;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import net.canarymod.api.DamageSource;
 import net.canarymod.api.entity.living.EntityLiving;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Enchantment interface
@@ -39,10 +39,13 @@ public interface Enchantment {
         SilkTouch(33), //
         Unbreaking(34), //
         Fortune(35), //
-        ArrowDamage(48), //
-        ArrowKnockback(49), //
-        ArrowFire(50), //
-        ArrowInfinite(51);
+        Power(48), //
+        Punch(49), //
+        Flame(50), //
+        Infinity(51), //
+        LuckOfTheSea(61), //
+        Lure(62), //
+        ;
 
         private int id;
         private static Map<Integer, Type> map;
