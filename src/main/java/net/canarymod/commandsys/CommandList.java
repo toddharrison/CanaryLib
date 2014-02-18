@@ -12,6 +12,7 @@ import net.canarymod.commandsys.commands.warp.WarpUse;
 import net.canarymod.commandsys.commands.world.CreateWorldCommand;
 import net.canarymod.commandsys.commands.world.LoadWorldCommand;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -162,12 +163,15 @@ public class CommandList implements CommandListener {
         natives.get("pos").execute(caller, parameters);
     }
 
-    @Command(aliases = { "give", "i" },
+    @Command(
+            aliases = { "give", "i" },
             description = "give info",
             permissions = { "canary.command.player.give" },
             toolTip = "/give <item>:[data] [amount] [player]",
             min = 2,
-            max = 4)
+            max = 4,
+            tabCompleteMethod = "matchItemTypeDataAmountPlayerNames"
+    )
     public void giveCommand(MessageReceiver caller, String[] parameters) {
         natives.get("give").execute(caller, parameters);
     }
@@ -953,4 +957,11 @@ public class CommandList implements CommandListener {
                 : null;
     }
 
+    @TabComplete
+    public List<String> matchItemTypeDataAmountPlayerNames(MessageReceiver caller, String[] args) {
+        return args.length == 1 ? matchToItemTypeAndData(args)
+                : args.length == 2 ? new ArrayList<String>(0)
+                : args.length == 3 ? matchToOnlinePlayer(args)
+                : null;
+    }
 }

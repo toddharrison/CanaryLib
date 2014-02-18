@@ -2,6 +2,7 @@ package net.canarymod.commandsys;
 
 import net.canarymod.Canary;
 import net.canarymod.api.entity.living.humanoid.Player;
+import net.canarymod.api.inventory.ItemType;
 import net.canarymod.api.world.DimensionType;
 import net.canarymod.api.world.WorldType;
 import net.canarymod.bansystem.Ban;
@@ -390,5 +391,68 @@ public final class TabCompleteHelper {
             warpNames.add(warp.getName());
         }
         return matchTo(args, warpNames.toArray(new String[warpNames.size()]));
+    }
+
+    /**
+     * Matches the argument to possible existing {@link net.canarymod.api.inventory.ItemType} machine names
+     *
+     * @param arg
+     *         the argument to get matches for
+     *
+     * @return list of matching existing {@link net.canarymod.api.inventory.ItemType} machine names
+     */
+    public static List<String> matchToItemType(String arg) {
+        return matchTo(arg, itemTypeNames(false));
+    }
+
+    /**
+     * Matches the last argument of specified arguments to possible existing {@link net.canarymod.api.inventory.ItemType} machine names
+     *
+     * @param args
+     *         the arguments to grab the last argument of
+     *
+     * @return a list of matching existing {@link net.canarymod.api.inventory.ItemType} machine names
+     */
+    public static List<String> matchToItemType(String[] args) {
+        return matchTo(args, itemTypeNames(false));
+    }
+
+    /**
+     * Matches the argument to possible existing {@link net.canarymod.api.inventory.ItemType} machine names with data value
+     *
+     * @param arg
+     *         the argument to get matches for
+     *
+     * @return list of matching existing {@link net.canarymod.api.inventory.ItemType} machine names with data value
+     */
+    public static List<String> matchToItemTypeAndData(String arg) {
+        return matchTo(arg, itemTypeNames(true));
+    }
+
+    /**
+     * Matches the last argument of specified arguments to possible existing {@link net.canarymod.api.inventory.ItemType} machine names with data value
+     *
+     * @param args
+     *         the arguments to grab the last argument of
+     *
+     * @return a list of matching existing {@link net.canarymod.api.inventory.ItemType} machine names with data value
+     */
+    public static List<String> matchToItemTypeAndData(String[] args) {
+        return matchTo(args, itemTypeNames(true));
+    }
+
+    private static String[] itemTypeNames(boolean appendData) {
+        ItemType[] types = ItemType.values();
+        ArrayList<String> names = new ArrayList<String>();
+        for (ItemType type : types) {
+            String name = type.getMachineName();
+            if (!appendData) {
+                names.add(name);
+            }
+            else if (!names.contains(name + ":" + type.getData())) {
+                names.add(name + ":" + type.getData());
+            }
+        }
+        return names.toArray(new String[names.size()]);
     }
 }
