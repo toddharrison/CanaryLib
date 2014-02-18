@@ -16,6 +16,7 @@ public final class ItemType {
     public static final ItemType Stone = new ItemType(1, true, "minecraft:stone");
     public static final ItemType Grass = new ItemType(2, true, "minecraft:grass");
     public static final ItemType Dirt = new ItemType(3, true, "minecraft:dirt");
+    public static final ItemType Podzol = new ItemType(3, 2, true, "minecraft:dirt");
     public static final ItemType Cobble = new ItemType(4, true, "minecraft:cobblestone");
     public static final ItemType OakWood = new ItemType(5, 0, true, "minecraft:planks");
     public static final ItemType SpruceWood = new ItemType(5, 1, true, "minecraft:planks");
@@ -64,7 +65,7 @@ public final class ItemType {
     public static final ItemType Shrub = new ItemType(31, 0, true, "minecraft:tallgrass");
     public static final ItemType TallGrass = new ItemType(31, 1, true, "minecraft:tallgrass");
     public static final ItemType TallFern = new ItemType(31, 2, true, "minecraft:tallgrass");
-    // 32 MIA
+    public static final ItemType DeadBush = new ItemType(32, 0, "minecraft:deadbush");
     public static final ItemType Piston = new ItemType(33, true, "minecraft:piston");
     // Piston head not present, because Mojang
     public static final ItemType WoolWhite = new ItemType(35, 0, true, "minecraft:wool");
@@ -85,7 +86,15 @@ public final class ItemType {
     public static final ItemType WoolBlack = new ItemType(35, 15, true, "minecraft:wool");
     // Piston extension not present, because Mojang
     public static final ItemType YellowFlower = new ItemType(37, true, "minecraft:yellow_flower");
-    public static final ItemType RedFlower = new ItemType(38, true, "minecraft:red_flower");
+    public static final ItemType Poppy = new ItemType(38, 0, true, "minecraft:red_flower");
+    public static final ItemType BlueOrchid = new ItemType(38, 1, true, "minecraft:red_flower");
+    public static final ItemType Allium = new ItemType(38, 2, true, "minecraft:red_flower");
+    public static final ItemType AzureBluet = new ItemType(38, 3, true, "minecraft:red_flower");
+    public static final ItemType RedTulip = new ItemType(38, 4, true, "minecraft:red_flower");
+    public static final ItemType OrangeTulip = new ItemType(38, 5, true, "minecraft:red_flower");
+    public static final ItemType WhiteTulip = new ItemType(38, 6, true, "minecraft:red_flower");
+    public static final ItemType PinkTulip = new ItemType(38, 7, true, "minecraft:red_flower");
+    public static final ItemType OxeyeDaisy = new ItemType(38, 8, true, "minecraft:red_flower");
     public static final ItemType BrownMushroom = new ItemType(39, true, "minecraft:brown_mushroom");
     public static final ItemType RedMushroom = new ItemType(40, true, "minecraft:red_mushroom");
     public static final ItemType GoldBlock = new ItemType(41, true, "minecraft:gold_block");
@@ -159,12 +168,29 @@ public final class ItemType {
     public static final ItemType JackOLantern = new ItemType(91, true, "minecraft:lit_pumpkin");
     // The cake is a lie, because Mojang
     // Redstone repeater (both states) not present, because Mojang
-    public static final ItemType LockedChest = new ItemType(95, true, "minecraft:stained_glass");
+    public static final ItemType WhiteGlass = new ItemType(95, 0, true, "minecraft:stained_glass");
+    public static final ItemType OrangeGlass = new ItemType(95, 1, true, "minecraft:stained_glass");
+    public static final ItemType MagentaGlass = new ItemType(95, 2, true, "minecraft:stained_glass");
+    public static final ItemType LightBlueGlass = new ItemType(95, 3, true, "minecraft:stained_glass");
+    public static final ItemType YellowGlass = new ItemType(95, 4, true, "minecraft:stained_glass");
+    public static final ItemType LimeGlass = new ItemType(95, 5, true, "minecraft:stained_glass");
+    public static final ItemType PinkGlass = new ItemType(95, 6, true, "minecraft:stained_glass");
+    public static final ItemType GrayGlass = new ItemType(95, 7, true, "minecraft:stained_glass");
+    public static final ItemType LightGrayGlass = new ItemType(95, 8, true, "minecraft:stained_glass");
+    public static final ItemType CyanGlass = new ItemType(95, 9, true, "minecraft:stained_glass");
+    public static final ItemType PurpleGlass = new ItemType(95, 10, true, "minecraft:stained_glass");
+    public static final ItemType BlueGlass = new ItemType(95, 11, true, "minecraft:stained_glass");
+    public static final ItemType BrownGlass = new ItemType(95, 12, true, "minecraft:stained_glass");
+    public static final ItemType GreenGlass = new ItemType(95, 13, true, "minecraft:stained_glass");
+    public static final ItemType RedGlass = new ItemType(95, 14, true, "minecraft:stained_glass");
+    public static final ItemType BlackGlass = new ItemType(95, 15, true, "minecraft:stained_glass");
     public static final ItemType Trapdoor = new ItemType(96, true, "minecraft:trapdoor");
-    public static final ItemType CleanSilverFishBlock = new ItemType(97, 0, true, "minecraft:monster_egg");
-    public static final ItemType MossySilverFishBlock = new ItemType(97, 1, true, "minecraft:monster_egg");
-    public static final ItemType CrackdSilverFishBlock = new ItemType(97, 2, true, "minecraft:monster_egg");
-    public static final ItemType OrnateSilverFishBlock = new ItemType(97, 3, true, "minecraft:monster_egg");
+    public static final ItemType StoneSilverFishBlock = new ItemType(97, 0, true, "minecraft:monster_egg");
+    public static final ItemType CobbleSilverFishBlock = new ItemType(97, 1, true, "minecraft:monster_egg");
+    public static final ItemType StoneBrickSilverFishBlock = new ItemType(97, 2, true, "minecraft:monster_egg");
+    public static final ItemType MossyBrickSilverFishBlock = new ItemType(97, 3, true, "minecraft:monster_egg");
+    public static final ItemType CrackedSilverFishBlock = new ItemType(97, 4, true, "minecraft:monster_egg");
+    public static final ItemType OrnateSilverFishBlock = new ItemType(97, 5, true, "minecraft:monster_egg");
     public static final ItemType StoneBrick = new ItemType(98, 0, true, "minecraft:stonebrick");
     public static final ItemType MossyStoneBrick = new ItemType(98, 1, true, "minecraft:stonebrick");
     public static final ItemType CrackedStoneBrick = new ItemType(98, 2, true, "minecraft:stonebrick");
@@ -252,7 +278,28 @@ public final class ItemType {
     public static final ItemType GreenStainedClay = new ItemType(159, 13, true, "minecraft:stained_hardened_clay");
     public static final ItemType RedStainedClay = new ItemType(159, 14, true, "minecraft:stained_hardened_clay");
     public static final ItemType BlackStainedClay = new ItemType(159, 15, true, "minecraft:stained_hardened_clay");
-    // 160 - 169 MIA
+    public static final ItemType WhiteGlassPane = new ItemType(160, 0, true, "minecraft:stained_glass_pane");
+    public static final ItemType OrangeGlassPane = new ItemType(160, 1, true, "minecraft:stained_glass_pane");
+    public static final ItemType MagentaGlassPane = new ItemType(160, 2, true, "minecraft:stained_glass_pane");
+    public static final ItemType LightBlueGlassPane = new ItemType(160, 3, true, "minecraft:stained_glass_pane");
+    public static final ItemType YellowGlassPane = new ItemType(160, 4, true, "minecraft:stained_glass_pane");
+    public static final ItemType LimeGlassPane = new ItemType(160, 5, true, "minecraft:stained_glass_pane");
+    public static final ItemType PinkGlassPane = new ItemType(160, 6, true, "minecraft:stained_glass_pane");
+    public static final ItemType GrayGlassPane = new ItemType(160, 7, true, "minecraft:stained_glass_pane");
+    public static final ItemType LightGrayGlassPane = new ItemType(160, 8, true, "minecraft:stained_glass_pane");
+    public static final ItemType CyanGlassPane = new ItemType(160, 9, true, "minecraft:stained_glass_pane");
+    public static final ItemType PurpleGlassPane = new ItemType(160, 10, true, "minecraft:stained_glass_pane");
+    public static final ItemType BlueGlassPane = new ItemType(160, 11, true, "minecraft:stained_glass_pane");
+    public static final ItemType BrownGlassPane = new ItemType(160, 12, true, "minecraft:stained_glass_pane");
+    public static final ItemType GreenGlassPane = new ItemType(160, 13, true, "minecraft:stained_glass_pane");
+    public static final ItemType RedGlassPane = new ItemType(160, 14, true, "minecraft:stained_glass_pane");
+    public static final ItemType BlackGlassPane = new ItemType(160, 15, true, "minecraft:stained_glass_pane");
+    public static final ItemType AcaciaLeaves = new ItemType(161, 0, true, "minecraft:leaves2");
+    public static final ItemType DarkOakLeaves = new ItemType(161, 1, true, "minecraft:leaves2");
+    public static final ItemType AcaciaLog = new ItemType(162, 0, true, "minecraft:log2");
+    public static final ItemType DarkOakLog = new ItemType(162, 1, true, "minecraft:log2");
+    public static final ItemType AcaciaStairs = new ItemType(163, 0, true, "minecraft:acacia_stairs");
+    public static final ItemType DarkOakStairs = new ItemType(164, 0, true, "minecraft:dark_oak_stairs");
     public static final ItemType HayBale = new ItemType(170, 0, true, "minecraft:hay_block");
     public static final ItemType WhiteCarpet = new ItemType(171, 0, true, "minecraft:carpet");
     public static final ItemType OrangeCarpet = new ItemType(171, 1, true, "minecraft:carpet");
@@ -272,6 +319,14 @@ public final class ItemType {
     public static final ItemType BlackCarpet = new ItemType(171, 15, true, "minecraft:carpet");
     public static final ItemType HardenedClay = new ItemType(172, 0, true, "minecraft:hardened_clay");
     public static final ItemType CoalBlock = new ItemType(173, 0, true, "minecraft:coal_block");
+    public static final ItemType PackedIce = new ItemType(174, 0, true, "minecraft:packed_ice");
+    public static final ItemType Sunflower = new ItemType(175, 0, true, "minecraft:double_plant");
+    public static final ItemType Lilac = new ItemType(175, 1, true, "minecraft:double_plant");
+    public static final ItemType DoubleGrass = new ItemType(175, 2, true, "minecraft:double_plant");
+    public static final ItemType LargeFern = new ItemType(175, 3, true, "minecraft:double_plant");
+    public static final ItemType RoseBush = new ItemType(175, 4, true, "minecraft:double_plant");
+    public static final ItemType Peony = new ItemType(175, 5, true, "minecraft:double_plant");
+
     /* Items */
     public static final ItemType IronSpade = new ItemType(256, "minecraft:iron_shovel");
     public static final ItemType IronPickaxe = new ItemType(257, "minecraft:iron_pickaxe");
@@ -367,8 +422,14 @@ public final class ItemType {
     public static final ItemType FishingRod = new ItemType(346, "minecraft:fishing_rod");
     public static final ItemType Watch = new ItemType(347, "minecraft:clock");
     public static final ItemType GlowstoneDust = new ItemType(348, "minecraft:glowstone_dust");
-    public static final ItemType RawFish = new ItemType(349, "minecraft:fish");
-    public static final ItemType CookedFish = new ItemType(350, "minecraft:cooked_fished");
+    public static final ItemType RawFish = new ItemType(349, 0, "minecraft:fish");
+    public static final ItemType RawSalmon = new ItemType(349, 1, "minecraft:fish");
+    public static final ItemType ClownFish = new ItemType(349, 2, "minecraft:fish");
+    public static final ItemType PufferFish = new ItemType(349, 3, "minecraft:fish");
+    public static final ItemType CookedFish = new ItemType(350, 0, "minecraft:cooked_fished");
+    public static final ItemType CookedSalmon = new ItemType(350, 1, "minecraft:cooked_fished");
+    public static final ItemType CookedClownFish = new ItemType(350, 2, "minecraft:cooked_fished");
+    public static final ItemType CookedPufferFish = new ItemType(350, 3, "minecraft:cooked_fished");
     public static final ItemType InkSack = new ItemType(351, 0, "minecraft:dye");
     public static final ItemType RoseRed = new ItemType(351, 1, "minecraft:dye");
     public static final ItemType CactusGreen = new ItemType(351, 2, "minecraft:dye");
@@ -451,6 +512,7 @@ public final class ItemType {
     public static final ItemType DiamondHorseArmor = new ItemType(419, "minecraft:diamond_horse_armor");
     public static final ItemType Lead = new ItemType(420, "minecraft:lead");
     public static final ItemType NameTag = new ItemType(421, "minecraft:name_tag");
+    public static final ItemType MinecartCommandBlock = new ItemType(422, "minecrarft:command_block_minecart");
     /* Records */
     public static final ItemType GoldRecord = new ItemType(2256, "minecraft:record_13");
     public static final ItemType GreenRecord = new ItemType(2257, "minecraft:record_cat");

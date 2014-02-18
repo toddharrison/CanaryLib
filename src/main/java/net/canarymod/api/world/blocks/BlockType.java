@@ -14,6 +14,7 @@ public final class BlockType {
     public static final BlockType Stone = new BlockType(1, 0, "minecraft:stone");
     public static final BlockType Grass = new BlockType(2, 0, "minecraft:grass");
     public static final BlockType Dirt = new BlockType(3, 0, "minecraft:dirt");
+    public static final BlockType Podzol = new BlockType(3, 2, "minecraft:dirt");
     public static final BlockType Cobble = new BlockType(4, 0, "minecraft:cobblestone");
     public static final BlockType OakWood = new BlockType(5, 0, "minecraft:planks");
     public static final BlockType SpruceWood = new BlockType(5, 1, "minecraft:planks");
@@ -84,7 +85,6 @@ public final class BlockType {
     public static final BlockType WoolBlack = new BlockType(35, 15, "minecraft:wool");
     public static final BlockType PistonExtended = new BlockType(36, 0, "minecraft:piston_extension");
     public static final BlockType Dandelion = new BlockType(37, 0, "minecraft:yellow_flower");
-
     public static final BlockType Poppy = new BlockType(38, 0, "minecraft:red_flower");
     public static final BlockType BlueOrchid = new BlockType(38, 1, "minecraft:red_flower");
     public static final BlockType Allium = new BlockType(38, 2, "minecraft:red_flower");
@@ -94,7 +94,6 @@ public final class BlockType {
     public static final BlockType WhiteTulip = new BlockType(38, 6, "minecraft:red_flower");
     public static final BlockType PinkTulip = new BlockType(38, 7, "minecraft:red_flower");
     public static final BlockType OxeyeDaisy = new BlockType(38, 8, "minecraft:red_flower");
-
     public static final BlockType BrownMushroom = new BlockType(39, 0, "minecraft:brown_mushroom");
     public static final BlockType RedMushroom = new BlockType(40, 0, "minecraft:red_mushroom");
     public static final BlockType GoldBlock = new BlockType(41, 0, "minecraft:gold_block");
@@ -186,10 +185,12 @@ public final class BlockType {
     public static final BlockType RedGlass = new BlockType(95, 14, "minecraft:stained_glass");
     public static final BlockType BlackGlass = new BlockType(95, 15, "minecraft:stained_glass");
     public static final BlockType Trapdoor = new BlockType(96, 0, "minecraft:trapdoor");
-    public static final BlockType CleanSilverFishBlock = new BlockType(97, 0, "minecraft:monster_egg");
-    public static final BlockType MossySilverFishBlock = new BlockType(97, 1, "minecraft:monster_egg");
-    public static final BlockType CrackdSilverFishBlock = new BlockType(97, 2, "minecraft:monster_egg");
-    public static final BlockType OrnateSilverFishBlock = new BlockType(97, 3, "minecraft:monster_egg");
+    public static final BlockType StoneSilverFishBlock = new BlockType(97, 0, "minecraft:monster_egg");
+    public static final BlockType CobbleSilverFishBlock = new BlockType(97, 1, "minecraft:monster_egg");
+    public static final BlockType StoneBrickSilverFishBlock = new BlockType(97, 2, "minecraft:monster_egg");
+    public static final BlockType MossyBrickSilverFishBlock = new BlockType(97, 3, "minecraft:monster_egg");
+    public static final BlockType CrackedSilverFishBlock = new BlockType(97, 4, "minecraft:monster_egg");
+    public static final BlockType OrnateSilverFishBlock = new BlockType(97, 5, "minecraft:monster_egg");
     public static final BlockType StoneBrick = new BlockType(98, 0, "minecraft:stonebrick");
     public static final BlockType MossyStoneBrick = new BlockType(98, 1, "minecraft:stonebrick");
     public static final BlockType CrackedStoneBrick = new BlockType(98, 2, "minecraft:stonebrick");
@@ -337,8 +338,6 @@ public final class BlockType {
     public static final BlockType LargeFern = new BlockType(175, 3, "minecraft:double_plant");
     public static final BlockType RoseBush = new BlockType(175, 4, "minecraft:double_plant");
     public static final BlockType Peony = new BlockType(175, 5, "minecraft:double_plant");
-
-
 
     private final short id;
     private final short data;
