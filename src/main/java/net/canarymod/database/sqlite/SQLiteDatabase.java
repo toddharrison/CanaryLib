@@ -177,24 +177,14 @@ public class SQLiteDatabase extends Database {
     public void remove(DataAccess dataAccess, Map<String, Object> filters) throws DatabaseWriteException {
         Connection conn = JdbcConnectionManager.getConnection();
 
-        try {
-            this.deleteRows(conn, dataAccess, filters, false);
-        }
-        catch (DatabaseReadException dre) {
-            log.error(dre.getMessage(), dre);
-        }
+        this.deleteRows(conn, dataAccess, filters, false);
     }
 
     @Override
     public void removeAll(DataAccess dataAccess, Map<String, Object> filters) throws DatabaseWriteException {
         Connection conn = JdbcConnectionManager.getConnection();
 
-        try {
-            this.deleteRows(conn, dataAccess, filters, true);
-        }
-        catch (DatabaseReadException dre) {
-            log.error(dre.getMessage(), dre);
-        }
+        this.deleteRows(conn, dataAccess, filters, true);
     }
 
     @Override
@@ -316,7 +306,11 @@ public class SQLiteDatabase extends Database {
             // of this method since we're creating it fresh.
             DatabaseMetaData metadata = JdbcConnectionManager.getConnection().getMetaData();
             rs = metadata.getTables(null, null, schemaTemplate.getName(), null);
-            if (!rs.next()) {
+
+            boolean hasNext = rs.next();
+            rs.close(); // Close here; otherwise we can't drop stuff.
+
+            if (!hasNext) {
                 createTable(schemaTemplate);
             }
             else {
@@ -340,8 +334,10 @@ public class SQLiteDatabase extends Database {
                     }
                 }
 
-                for (String name : toRemove) {
-                    deleteColumn(schemaTemplate.getName(), name);
+                if (!toRemove.isEmpty()) {
+                    List<String> columnNames = getColumnNames(schemaTemplate);
+                    columnNames.removeAll(toRemove);
+                    retainColumns(schemaTemplate, columnNames);
                 }
                 for (Map.Entry<String, Column> entry : toAdd.entrySet()) {
                     insertColumn(schemaTemplate.getName(), entry.getValue());
@@ -349,7 +345,7 @@ public class SQLiteDatabase extends Database {
             }
         }
         catch (SQLException sqle) {
-            throw new DatabaseWriteException("Error updating SQLite schema: " + sqle.getMessage());
+            throw new DatabaseWriteException("Error updating SQLite schema: " + sqle.getMessage(), sqle);
         }
         catch (DatabaseTableInconsistencyException dtie) {
             log.error("Error updating SQLite schema." + dtie.getMessage(), dtie);
@@ -381,11 +377,14 @@ public class SQLiteDatabase extends Database {
                     fields.append(getDataTypeSyntax(column.dataType()));
                 }
 
+
                 if (column.columnType() == Column.ColumnType.PRIMARY) {
                     fields.append(" PRIMARY KEY");
-                }
-                if (column.autoIncrement()) {
-                    fields.append(" AUTOINCREMENT");
+                    if (column.autoIncrement()) {
+                        fields.append(" AUTOINCREMENT");
+                    }
+                } else if (column.columnType() == Column.ColumnType.UNIQUE) {
+                    fields.append(" UNIQUE");
                 }
                 if (it.hasNext()) {
                     fields.append(", ");
@@ -398,10 +397,10 @@ public class SQLiteDatabase extends Database {
             }
         }
         catch (SQLException ex) {
-            throw new DatabaseWriteException("Error creating SQLite table '" + data.getName() + "'. " + ex.getMessage());
+            throw new DatabaseWriteException("Error creating SQLite table '" + data.getName() + "'", ex);
         }
         catch (DatabaseTableInconsistencyException ex) {
-            log.error(ex.getMessage() + " Error creating SQLite table '" + data.getName() + "'. ", ex);
+            throw new DatabaseWriteException("Error creating SQLite table '" + data.getName() + "'", ex);
         }
         finally {
             close(null, ps, null);
@@ -426,20 +425,42 @@ public class SQLiteDatabase extends Database {
 
     }
 
-    public void deleteColumn(String tableName, String columnName) throws DatabaseWriteException {
-        PreparedStatement ps = null;
+    // SQLite sucks.
+    // precondition: toRetain is not null and not empty.
+    public void retainColumns(DataAccess table, List<String> toRetain) throws DatabaseWriteException {
+        Statement stmt = null;
 
         try {
-            if (columnName != null && !columnName.trim().equals("")) {
-                ps = JdbcConnectionManager.getConnection().prepareStatement("ALTER TABLE `" + tableName + "` DROP `" + columnName + "`");
-                ps.execute();
+            StringBuilder concatColumns = new StringBuilder();
+            for (String column : toRetain) {
+                if (concatColumns.length() > 0) {
+                    concatColumns.append(", ");
+                }
+
+                concatColumns.append(column);
             }
-        }
-        catch (SQLException ex) {
-            throw new DatabaseWriteException("Error deleting SQLite collumn: " + columnName);
-        }
-        finally {
-            close(null, ps, null);
+
+            log.debug(concatColumns);
+
+            String tableName = table.getName();
+            String tempTable = "" + tableName + "_temp";
+
+            stmt = JdbcConnectionManager.getConnection().createStatement();
+            stmt.addBatch("CREATE TEMPORARY TABLE " + tempTable + " (" + concatColumns + ")");
+            stmt.addBatch("INSERT INTO " + tempTable + " SELECT " + concatColumns + " FROM " + tableName + ";");
+            stmt.addBatch("DROP TABLE " + tableName + ";");
+            stmt.executeBatch();
+
+            createTable(table);
+
+            stmt.clearBatch();
+            stmt.addBatch("INSERT INTO " + tableName + " SELECT " + concatColumns + " FROM " + tempTable + ";");
+            stmt.addBatch("DROP TABLE " + tempTable + ";");
+            stmt.executeBatch();
+        } catch (SQLException ex) {
+            throw new DatabaseWriteException("Error retaining SQLite columns (something went horribly wrong)", ex);
+        } finally {
+            close(null, stmt, null);
         }
     }
 
@@ -509,7 +530,7 @@ public class SQLiteDatabase extends Database {
      * @param rs
      *         the result set
      */
-    private void close(Connection c, PreparedStatement ps, ResultSet rs) {
+    private void close(Connection c, Statement ps, ResultSet rs) {
         try {
             if (ps != null) {
                 ps.close();
@@ -553,7 +574,7 @@ public class SQLiteDatabase extends Database {
                     String fieldName = String.valueOf(fieldNames[i]);
                     Column col = data.getColumnForName(fieldName);
                     if (col == null) {
-                        throw new DatabaseReadException("Error fetching MySQL ResultSet in " + data.getName() + ". Column " + fieldNames[i] + " does not exist!");
+                        throw new DatabaseReadException("Error fetching SQLite ResultSet in " + data.getName() + ". Column " + fieldNames[i] + " does not exist!");
                     }
                     setToStatement(i + 1, filters.get(fieldName), ps, col.dataType());
                 }
@@ -570,16 +591,16 @@ public class SQLiteDatabase extends Database {
             toRet = ps.executeQuery();
         }
         catch (SQLException ex) {
-            throw new DatabaseReadException("Error fetching MySQL ResultSet in " + data.getName(), ex);
+            throw new DatabaseReadException("Error fetching SQLite ResultSet in " + data.getName(), ex);
         }
         catch (Exception ex) {
-            throw new DatabaseReadException("Error fetching MySQL ResultSet in " + data.getName(), ex);
+            throw new DatabaseReadException("Error fetching SQLite ResultSet in " + data.getName(), ex);
         }
 
         return toRet;
     }
 
-    public void deleteRows(Connection conn, DataAccess data, Map<String, Object> filters, boolean limitOne) throws DatabaseReadException {
+    public void deleteRows(Connection conn, DataAccess data, Map<String, Object> filters, boolean limitOne) throws DatabaseWriteException {
         PreparedStatement ps;
         try {
             if (filters.size() > 0) {
@@ -621,10 +642,10 @@ public class SQLiteDatabase extends Database {
             ps.execute();
         }
         catch (SQLException ex) {
-            throw new DatabaseReadException("Error deleting from SQLite table " + data.getName(), ex);
+            throw new DatabaseWriteException("Error deleting from SQLite table " + data.getName(), ex);
         }
         catch (Exception ex) {
-            throw new DatabaseReadException("Error deleting from SQLite table " + data.getName(), ex);
+            throw new DatabaseWriteException("Error deleting from SQLite table " + data.getName(), ex);
         }
     }
 
@@ -649,12 +670,15 @@ public class SQLiteDatabase extends Database {
             switch (t) {
                 case BYTE:
                 case INTEGER:
-                case FLOAT:
-                case DOUBLE:
                 case LONG:
                 case SHORT:
                 case BOOLEAN: //SQlite doesn't know boolean values, it converts it to tinyint
                     ps.setInt(index, (Integer) o);
+                    break;
+                case FLOAT:
+                case DOUBLE:
+                    ps.setDouble(index, (Double) o);
+                    break;
                 case STRING:
                     ps.setString(index, (String) o);
             }
@@ -669,15 +693,15 @@ public class SQLiteDatabase extends Database {
     }
 
     public List<String> getColumnNames(DataAccess data) {
-        Statement ps = null;
+        Statement s = null;
         ResultSet rs = null;
 
         ArrayList<String> columns = new ArrayList<String>();
         String columnName;
 
         try {
-            ps = JdbcConnectionManager.getConnection().createStatement();
-            rs = ps.executeQuery("SELECT * FROM '" + data.getName() + "'");
+            s = JdbcConnectionManager.getConnection().createStatement();
+            rs = s.executeQuery("SELECT * FROM '" + data.getName() + "'");
             ResultSetMetaData rsMeta = rs.getMetaData();
             for (int index = 1; index <= rsMeta.getColumnCount(); index++) {
                 columnName = rsMeta.getColumnLabel(index);
@@ -688,15 +712,7 @@ public class SQLiteDatabase extends Database {
             log.error(ex.getMessage(), ex);
         }
         finally {
-            close(null, null, rs);
-            if (ps != null) {
-                try {
-                    ps.close();
-                }
-                catch (SQLException ex) {
-                    LogManager.getLogger().error("", ex);
-                }
-            }
+            close(null, s, rs);
         }
         return columns;
     }
@@ -704,21 +720,16 @@ public class SQLiteDatabase extends Database {
     public String getDataTypeSyntax(Column.DataType type) {
         switch (type) {
             case BYTE:
-                return "INTEGER";
             case INTEGER:
-                return "INTEGER";
-            case FLOAT:
-                return "INTEGER";
-            case DOUBLE:
-                return "INTEGER";
             case LONG:
-                return "INTEGER";
             case SHORT:
-                return "INTEGER";
-            case STRING:
-                return "TEXT";
             case BOOLEAN:
                 return "INTEGER";
+            case FLOAT:
+            case DOUBLE:
+                return "REAL";
+            case STRING:
+                return "TEXT";
         }
         return "";
     }
@@ -732,7 +743,7 @@ public class SQLiteDatabase extends Database {
      */
     private Object convert(Object o) {
         if (o instanceof String && ((String) o).contains("*")) {
-            ((String) o).replace("*", "\\*");
+            o = ((String) o).replace("*", "\\*");
         }
         return o;
     }

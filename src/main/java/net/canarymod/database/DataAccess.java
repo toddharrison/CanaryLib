@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static net.canarymod.Canary.log;
 
@@ -25,6 +26,7 @@ public abstract class DataAccess {
     private boolean isInconsistent = false;
     private boolean isLoaded = false;
     private boolean hasData = false;
+    private static final Set<Class<? extends DataAccess>> schemaUpdated = new HashSet<Class<? extends DataAccess>>();
 
     @Column(columnName = "id", dataType = Column.DataType.INTEGER, autoIncrement = true, columnType = Column.ColumnType.PRIMARY)
     public Integer id;
@@ -261,11 +263,14 @@ public abstract class DataAccess {
 
     /** Makes sure the database file for this DataAccess exists before anything starts to use it */
     private void createTable() {
-        try {
-            Database.get().updateSchema(this);
-        }
-        catch (DatabaseWriteException e) {
-            log.error(e.getMessage(), e);
+        if (!schemaUpdated.contains(getClass())) {
+            try {
+                Database.get().updateSchema(this);
+            }
+            catch (DatabaseWriteException e) {
+                log.error(e.getMessage(), e);
+            }
+            schemaUpdated.add(getClass());
         }
     }
 
