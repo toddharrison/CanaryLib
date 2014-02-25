@@ -54,9 +54,11 @@ public class Vector3D extends Position {
      * @return
      */
     public double getDistance(Position v) {
-        double distPower = (Math.pow(v.getX() - this.getX(), 2) + Math.pow(v.getY() - this.getY(), 2) + Math.pow(v.getZ() - this.getZ(), 2));
+        double diffX = v.getX() - this.getX();
+        double diffY = v.getY() - this.getY();
+        double diffZ = v.getZ() - this.getZ();
 
-        return Math.sqrt(distPower);
+        return Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ);
     }
 
     /**
@@ -67,9 +69,7 @@ public class Vector3D extends Position {
      * @return double The Distance
      */
     public static double getDistance(Vector3D v1, Vector3D v2) {
-        double distPower = (Math.pow(v1.getX() - v2.getX(), 2) + Math.pow(v1.getY() - v2.getY(), 2) + Math.pow(v1.getZ() - v2.getZ(), 2));
-
-        return Math.sqrt(distPower);
+        return v2.getDistance(v1);
     }
 
     /**
@@ -148,7 +148,7 @@ public class Vector3D extends Position {
      * @return
      */
     public double getMagnitude() {
-        return Math.sqrt(x + y + z);
+        return Math.sqrt(x*x + y*y + z*z);
     }
 
     @Override
