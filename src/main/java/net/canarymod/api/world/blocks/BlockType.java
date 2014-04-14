@@ -528,7 +528,7 @@ public final class BlockType {
                     return t;
                 }
             }
-            return null;
+            return fromString(machineName); // Some blocks have data values that aren't reflected in the typing (like positioning meta)
         }
         return blockTypes.get(needle);
     }

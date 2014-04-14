@@ -194,7 +194,7 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      * Creates a fake EnchantmentTable and then sends the WindowOpenPacket to the Player
      *
      * @param bookshelves
-     *         **Currently not implemented** Sets the number of bookshelves to fake around the enchantment table
+     *         Sets the number of bookshelves to fake around the enchantment table
      */
     public void createAndOpenEnchantmentTable(int bookshelves);
 
