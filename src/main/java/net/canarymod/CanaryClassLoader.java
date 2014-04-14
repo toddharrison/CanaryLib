@@ -60,18 +60,8 @@ public final class CanaryClassLoader extends URLClassLoader {
 
     /** Closes the loader and jar file */
     public synchronized final void close() {
-        if (System.getProperty("java.version").startsWith("1.7")) {
-            // If running on Java 7, call URLClassLoader.close()
-            try {
-                // We have to invoke the method since we compile with Java 6 (or should be)
-                URLClassLoader.class.getDeclaredMethod("close").invoke(this);
-            }
-            catch (Exception ex) {
-                // Probably IOException, ignore it.
-            }
-        }
-        else {
-            try {
+        if (System.getProperty("java.version").startsWith("1.6")) { // Java 6 doesn't have the URLClassLoader.close() method
+            try { // Insert Reflection Magic
                 Class<?> clazz = URLClassLoader.class;
                 Field ucpField = clazz.getDeclaredField("ucp"); // get field for sun.misc.URLClassPath
                 ucpField.setAccessible(true); // Allow access
@@ -94,6 +84,15 @@ public final class CanaryClassLoader extends URLClassLoader {
             }
             catch (Throwable t) {
                 // probably not a SUN/Oracle VM
+            }
+        }
+        else { // If running on Java 7 or above, call URLClassLoader.close(). Since we should be compiling with Java 6, lower versions shouldn't be a worry
+            try {
+                // We have to invoke the method since we compile with Java 6 (or should be)
+                URLClassLoader.class.getDeclaredMethod("close").invoke(this);
+            }
+            catch (Exception ex) {
+                // Probably IOException, ignore it.
             }
         }
         ccw.removeLoader(this); // And finally remove url and classes from the jar
