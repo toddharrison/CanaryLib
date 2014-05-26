@@ -163,7 +163,7 @@ public class MultiworldPermissionProvider implements PermissionProvider {
      */
     private boolean resolvePath(String[] path) {
         PermissionNode node = getRootNode(path[0]);
-        boolean hasAsterisk = false, asteriskValue = false;
+        boolean hasAsterisk = getRootNode("*") != null, asteriskValue = hasAsterisk ? getRootNode("*").getValue() : false;
 
         for (int current = 0; current < path.length; current++) {
             if (node == null) {
