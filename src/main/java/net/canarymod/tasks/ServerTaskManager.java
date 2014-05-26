@@ -59,16 +59,16 @@ public final class ServerTaskManager {
     }
 
     /**
-     * Removes all the tasks for a specified {@link Plugin}
+     * Removes all the tasks for a specified {@link TaskOwner}
      *
-     * @param plugin
-     *         the {@link Plugin} to remove tasks for
+     * @param owner
+     *         the {@link TaskOwner} to remove tasks for
      */
-    public static void removeTasksForPlugin(Plugin plugin) {
+    public static void removeTasks(TaskOwner owner) {
         synchronized ($.tasks) {
             Iterator<Entry<ServerTask, TaskOwner>> taskIter = $.tasks.entrySet().iterator();
             while (taskIter.hasNext()) {
-                if (taskIter.next().getValue().equals(plugin)) {
+                if (taskIter.next().getValue().equals(owner)) {
                     taskIter.remove();
                 }
             }
@@ -91,7 +91,7 @@ public final class ServerTaskManager {
                         task.run();
                     }
                     catch (Throwable thrown) {
-                        log.error("An Exception occured while executing ServerTask: " + task.getClass().getSimpleName(), thrown);
+                        log.error("An Exception occurred while executing ServerTask: " + task.getClass().getSimpleName(), thrown);
                         taskIter.remove();
                         continue;
                     }

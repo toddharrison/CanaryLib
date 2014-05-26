@@ -444,7 +444,7 @@ public final class PluginLoader {
             /* Remove Commands */
             Canary.commands().unregisterCommands(plugin);
             /* Remove Tasks */
-            ServerTaskManager.removeTasksForPlugin(plugin);
+            ServerTaskManager.removeTasks(plugin);
             /* Remove MOTD Variables */
             Canary.motd().unregisterMOTDListener(plugin);
         }
@@ -533,7 +533,7 @@ public final class PluginLoader {
         /* Remove Commands */
         Canary.commands().unregisterCommands(plugin);
         /* Remove Tasks */
-        ServerTaskManager.removeTasksForPlugin(plugin);
+        ServerTaskManager.removeTasks(plugin);
         /* Remove MOTD Variables */
         Canary.motd().unregisterMOTDListener(plugin);
         try {
