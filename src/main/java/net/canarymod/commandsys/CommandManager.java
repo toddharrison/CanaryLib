@@ -434,7 +434,7 @@ public class CommandManager {
                     currentIsDupe = true;
                     dupes.append(alias).append(" ");
                 }
-                if (!currentIsDupe || (currentIsDupe && force)) {
+                if (!currentIsDupe || force) {
                     if (cmd.meta.parent().isEmpty()) { // Only add root commands
                         commands.put(alias.toLowerCase(), cmd);
                     }

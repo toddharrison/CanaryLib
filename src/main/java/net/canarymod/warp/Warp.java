@@ -3,6 +3,7 @@ package net.canarymod.warp;
 import net.canarymod.Canary;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.position.Location;
+import net.canarymod.hook.player.TeleportHook;
 import net.canarymod.user.Group;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
  * Contains information regarding warp points
  *
  * @author Chris (damagefilter)
+ * @author Jason (darkdiplomat)
  */
 public class Warp {
 
@@ -129,7 +131,7 @@ public class Warp {
         if (!canWarp(player)) {
             return false;
         }
-        player.teleportTo(location);
+        player.teleportTo(location, TeleportHook.TeleportCause.WARP);
         return true;
     }
 

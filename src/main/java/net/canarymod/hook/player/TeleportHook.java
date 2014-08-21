@@ -75,6 +75,10 @@ public final class TeleportHook extends CancelableHook {
         RESPAWN, //
         /** Generic Reasoning */
         UNDEFINED, //
+        /**
+         * WARP SYSTEM
+         */
+        WARP, //
         ;
     }
 }
