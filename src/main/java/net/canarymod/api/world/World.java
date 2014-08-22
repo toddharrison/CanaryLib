@@ -14,6 +14,7 @@ import net.canarymod.api.entity.vehicle.Minecart;
 import net.canarymod.api.entity.vehicle.Vehicle;
 import net.canarymod.api.inventory.Item;
 import net.canarymod.api.world.blocks.Block;
+import net.canarymod.api.world.blocks.BlockType;
 import net.canarymod.api.world.blocks.TileEntity;
 import net.canarymod.api.world.effects.AuxiliarySoundEffect;
 import net.canarymod.api.world.effects.Particle;
@@ -315,6 +316,14 @@ public interface World {
     public void setBlockAt(Position position, short type, short data);
 
     /**
+     * Set the block type/data given at the position specified
+     *
+     * @param position
+     * @param type
+     */
+    public void setBlockAt(Position position, BlockType type);
+
+    /**
      * Set raw block with data at the position specified.
      *
      * @param x
@@ -324,6 +333,16 @@ public interface World {
      * @param data
      */
     public void setBlockAt(int x, int y, int z, short type, short data);
+
+    /**
+     * Set raw block with data at the position specified.
+     *
+     * @param x
+     * @param y
+     * @param z
+     * @param type
+     */
+    public void setBlockAt(int x, int y, int z, BlockType type);
 
     /**
      * Set block data at this position
