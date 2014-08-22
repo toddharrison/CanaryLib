@@ -4,17 +4,18 @@ CanaryLib
 [Latest Build](http://ci.visualillusionsent.net/job/CanaryLib/lastBuild/net.canarymod$CanaryLib/)  
 [Latest Successful Build](http://ci.visualillusionsent.net/job/CanaryLib/lastSuccessfulBuild/net.canarymod$CanaryLib/)  
 
-CanaryMod is a Minecraft Server wrapper and library with built-in data management features as well as player permissions and groups management.  
-CanaryMod provides a stable and feature-rich framework that makes sure that Plugins written today,  
-will still work in months without the need of updating on each Minecraft update.  
+Canary is a Minecraft Server modification and library with built-in data management features as well as player permissions and groups management.
+Canary provides a stable and feature-rich framework that makes sure that plugins written today,
+will still work in months without the need of updating on each Minecraft update (Unless major changes are required to update to
+the new Minecraft Server version).
 As server owner, this allows you to spend more time on managing your server, making it awesome,  
 instead of waiting for all your plugins to update each time.  
 
-As a Plugin Developer, our Mod allows you to concentrate on the things that make your Plugin great and unique -  
+As a Plugin Developer, our mod allows you to concentrate on the things that make your plugins great and unique -
 you won’t ever need to bother about implementing data storage or resolving dependencies with other plugins.  
 We do the dirty work for you, you go and make amazing plugins. It’s as easy as that!  
 
-This repository contains the library.  
+This repository contains the library/specifications.
 
 Plugin Development
 =============
@@ -25,7 +26,7 @@ Maven
         <dependency>
             <groupId>net.canarymod</groupId>
             <artifactId>CanaryLib</artifactId>
-            <version>[0.9,)</version> <!-- Will always use the latest version found (including snapshots)-->
+            <version>[1.0-RC-4-SNAPSHOT,)</version> <!-- Will always use the latest version found (including snapshots)-->
         </dependency>
 
 
@@ -34,7 +35,7 @@ Maven
         <repository>
             <id>vi-repo</id>
             <name>Visual Illusions Repository</name>
-            <url>http://repo2.visualillusionsent.net</url>
+            <url>http://repo.visualillusionsent.net/repository/public/</url>
         </repository>
 
 
