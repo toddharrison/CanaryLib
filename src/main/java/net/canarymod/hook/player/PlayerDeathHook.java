@@ -1,6 +1,8 @@
 package net.canarymod.hook.player;
 
+import net.canarymod.Canary;
 import net.canarymod.api.DamageSource;
+import net.canarymod.api.chat.ChatComponent;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.hook.Hook;
 
@@ -12,7 +14,7 @@ import net.canarymod.hook.Hook;
 public final class PlayerDeathHook extends Hook {
     private Player player;
     private DamageSource source;
-    private String msg;
+    private ChatComponent msg;
 
     /**
      * Constructs a new PlayerDeathHook
@@ -24,7 +26,7 @@ public final class PlayerDeathHook extends Hook {
      * @param msg
      *         the Death message to send all if DeathMessages aren't disabled
      */
-    public PlayerDeathHook(Player player, DamageSource source, String msg) {
+    public PlayerDeathHook(Player player, DamageSource source, ChatComponent msg) {
         this.player = player;
         this.msg = msg;
         this.source = source;
@@ -43,8 +45,19 @@ public final class PlayerDeathHook extends Hook {
      * Gets the message to send on Death
      *
      * @return the death message
+     * @deprecated Replaced by #getDeathMessage1
      */
+    @Deprecated
     public String getDeathMessage() {
+        return msg.getFullText();
+    }
+
+    /**
+     * Gets the {@link net.canarymod.api.chat.ChatComponent} containing the death message
+     *
+     * @return the ChatComponent containing the death message
+     */
+    public ChatComponent getDeathMessage1() {
         return msg;
     }
 
@@ -53,9 +66,21 @@ public final class PlayerDeathHook extends Hook {
      *
      * @param msg
      *         the death message
+     * @deprecated Replaced by #setDeathMessage1
      */
+    @Deprecated
     public void setDeathMessage(String msg) {
-        this.msg = msg;
+        this.msg = Canary.factory().getChatComponentFactory().newChatComponent(msg);
+    }
+
+    /**
+     * Gets the {@link net.canarymod.api.chat.ChatComponent} containing the death message
+     *
+     * @param chatComponent
+     *          the {@link net.canarymod.api.chat.ChatComponent} containing the death message
+     */
+    public void setDeathMessage1(ChatComponent chatComponent) {
+        this.msg = chatComponent;
     }
 
     /**
@@ -69,6 +94,6 @@ public final class PlayerDeathHook extends Hook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, Message=%s]", getName(), player, msg);
+        return String.format("%s[Player=%s, DamageSource=%s, Message=%s]", getName(), player, source, msg);
     }
 }

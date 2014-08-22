@@ -1,8 +1,9 @@
 CanaryLib
 =========
 
-[Latest Build](http://ci.visualillusionsent.net/job/CanaryLib/lastBuild/net.canarymod$CanaryLib/)  
-[Latest Successful Build](http://ci.visualillusionsent.net/job/CanaryLib/lastSuccessfulBuild/net.canarymod$CanaryLib/)  
+[![Build Status](https://ci.visualillusionsent.net/buildStatus/icon?job=CanaryLib)](https://ci.visualillusionsent.net/job/CanaryLib/)  
+[Latest Build](https://ci.visualillusionsent.net/job/CanaryLib/lastBuild/)  
+[Latest Successful Build](https://ci.visualillusionsent.net/job/CanaryLib/lastSuccessfulBuild/)  
 
 Canary is a Minecraft Server modification and library with built-in data management features as well as player permissions and groups management.
 Canary provides a stable and feature-rich framework that makes sure that plugins written today,
@@ -86,6 +87,16 @@ Source Formatting and requirements
                 }
             }
         }
+
+Issues
+-------
+
+When reporting issues, be sure to include details on how to reproduce the issue and details on what the issue involves.  
+Please do not report issues related to things that are part of the implementation of this library.  
+(Those issues belong in CanaryModTeam/CanaryMod)  
+If you are unsure if it belongs here or in the implementation, its probably an implementation issue and not a library issue  
+(Most bugs are results of poor implementation or incorrect implementation)  
+If you would like a feature added, feel free to open an issue describing the feature you would like added and how it could be useful.  
 
 License
 -------

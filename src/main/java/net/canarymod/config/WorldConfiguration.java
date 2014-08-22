@@ -72,6 +72,9 @@ public class WorldConfiguration implements ConfigurationContainer {
         cfg.getString("generator-settings", "");
         cfg.getString("world-seed", "");
 
+        cfg.getBoolean("startup-autoload", false);
+        cfg.getBoolean("warp-autoload", false);
+
         cfg.getBoolean("allow-nether", true);
         cfg.getBoolean("allow-end", true);
         cfg.getBoolean("allow-flight", true);
@@ -413,5 +416,18 @@ public class WorldConfiguration implements ConfigurationContainer {
      */
     public boolean forceDefaultGamemodeDimensional() {
         return cfg.getBoolean("forceDefaultGameModeDimensional", false);
+    }
+
+    public boolean startupAutoLoadEnabled() {
+        return cfg.getBoolean("startup-autoload", false);
+    }
+
+    /**
+     * Gets whether to load a world when a warp is used
+     *
+     * @return {@code true} if loading allowed
+     */
+    public boolean allowWarpAutoLoad() {
+        return cfg.getBoolean("warp-autoload", false);
     }
 }
