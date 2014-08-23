@@ -21,11 +21,6 @@ public class Configuration {
     private static DatabaseConfiguration dbConfig = new DatabaseConfiguration("config" + File.separatorChar + "db.cfg");
     private static HashMap<String, WorldConfiguration> worldConfigs = new HashMap<String, WorldConfiguration>();
 
-//    public Configuration() {
-//        serverConfig = new ServerConfiguration("config" + File.separatorChar + "server.cfg");
-//        dbConfig = new DatabaseConfiguration("config" + File.separatorChar + "db.cfg");
-//    }
-
     /** Reload all configuration from disk */
     public static void reload() {
         serverConfig.reload();

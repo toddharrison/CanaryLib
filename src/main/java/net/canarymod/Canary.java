@@ -52,7 +52,6 @@ public abstract class Canary implements TaskOwner {
     protected HookExecutor hookExecutor;
     protected Database database;
     protected PluginLoader loader;
-    protected Configuration config;
     protected HelpManager helpManager;
     protected CommandManager commandManager;
     protected Factory factory;

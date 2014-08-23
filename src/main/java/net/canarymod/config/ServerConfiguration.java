@@ -1,6 +1,7 @@
 package net.canarymod.config;
 
 import net.visualillusionsent.utils.PropertiesFile;
+import org.apache.logging.log4j.Level;
 
 import java.io.File;
 
@@ -63,11 +64,20 @@ public class ServerConfiguration implements ConfigurationContainer {
         cfg.setComments("date-format", "A formatting to display timestamps");
         cfg.getBoolean("death-messages", true);
         cfg.setComments("death-messages", "Sets whether to send player death message or not");
-        cfg.getBoolean("debug-enabled", false);
-        cfg.setComments("debug-enabled", "Sets whether to enable debug logging or not");
+        //cfg.getBoolean("debug-enabled", false); //REMOVED
+        //cfg.setComments("debug-enabled", "Sets whether to enable debug logging or not"); // REMOVED
+        if (cfg.containsKey("debug-enabled")) { // Remove old key
+            cfg.removeKey("debug-enabled");
+        }
         cfg.getString("default-world-name", "default");
         cfg.setComments("default-world-name", "Name of the default loaded world");
-        cfg.getBoolean("logging", false); //TODO: ?
+        //cfg.getBoolean("logging", false); //REMOVED
+        if (cfg.containsKey("logging")) { // Remove old key
+            cfg.removeKey("logging");
+        }
+        cfg.getString("logger-level", "INFO");
+        cfg.setComments("logger-level", "Sets the level of logging.", "Acceptable Values: OFF FATAL ERROR WARN INFO DEBUG TRACE ALL");
+
         // RESERVED SPACE
         cfg.getInt("max-players", 20);
         cfg.setComments("max-players", "The maximum allowed players online (Does not count ReserveList users connecting after server is full)");
@@ -235,17 +245,16 @@ public class ServerConfiguration implements ConfigurationContainer {
      *
      * @return {@code true} if debug mode enabled; {@code false} if not
      */
-    public boolean isDebugMode() {
-        return cfg.getBoolean("debug-enabled", false);
+    public boolean isDebugMode() { // Retaining this for quicker DebugMode checking access
+        return getLoggerLevel().intLevel() >= 5;
     }
 
     /**
-     * Get whether the server must log
-     *
-     * @return true when enabled, false otherwise
+     * Gets the Level of message to log
+     * @return logger level
      */
-    public boolean isLogging() {
-        return cfg.getBoolean("logging", true);
+    public Level getLoggerLevel() {
+        return Level.toLevel(cfg.getString("logger-level", "INFO"), Level.INFO);
     }
 
     /**
