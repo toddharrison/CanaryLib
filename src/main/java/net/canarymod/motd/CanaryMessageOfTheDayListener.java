@@ -3,7 +3,6 @@ package net.canarymod.motd;
 import net.canarymod.Canary;
 import net.canarymod.ToolBox;
 import net.canarymod.api.CommandBlockLogic;
-import net.canarymod.api.Server;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.World;
 import net.canarymod.api.world.blocks.CommandBlock;
@@ -18,10 +17,6 @@ import java.lang.management.ManagementFactory;
  * @author Jason (darkdiplomat)
  */
 public final class CanaryMessageOfTheDayListener implements MessageOfTheDayListener {
-
-    public CanaryMessageOfTheDayListener(Server server) {
-        Canary.motd().registerMOTDListener(this, server, false);
-    }
 
     @MOTDKey(key = "{name}")
     public final String receiverName(MessageReceiver msgrec) {
