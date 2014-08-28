@@ -1,5 +1,7 @@
 package net.canarymod.user;
 
+import net.canarymod.Canary;
+import net.canarymod.api.PlayerReference;
 import net.canarymod.backbone.BackboneReservelist;
 
 import java.util.List;
@@ -32,7 +34,28 @@ public class ReservelistProvider {
      * @return {@code true}
      */
     public boolean isSlotReserved(String player) {
-        return reservelist.contains(player);
+        // Did UUID get passed?
+        if (player.matches("[0-9a-f]{8}\\-([0-9a-f]{4}\\-){3}[0-9a-f]{12}")) {
+            return reservelist.contains(player);
+        }
+        // Try to get a UUID reference from a known player
+        return isSlotReserved(Canary.getServer().matchKnownPlayer(player));
+    }
+
+    public boolean isSlotReserved(PlayerReference playerReference) {
+        if (playerReference != null) {
+            // Lets update to UUID if we can get a UUID
+            if (reservelist.contains(playerReference.getName())) {
+                if (playerReference.getUUIDString() != null) {
+                    removePlayer(playerReference.getName());
+                    addPlayer(playerReference.getUUIDString());
+                }
+                return true;
+            }
+            // UUID test it is
+            return reservelist.contains(playerReference.getUUIDString());
+        }
+        return false;
     }
 
     /**

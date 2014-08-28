@@ -88,7 +88,7 @@ public class OperatorsProvider {
     public boolean isOpped(String player) {
         // Did UUID get passed?
         if (player.matches("[0-9a-f]{8}\\-([0-9a-f]{4}\\-){3}[0-9a-f]{12}")) {
-            return isOpped(player);
+            return ops.contains(player);
         }
         // Try to get a UUID reference from a known player
         return isOpped(Canary.getServer().matchKnownPlayer(player));
