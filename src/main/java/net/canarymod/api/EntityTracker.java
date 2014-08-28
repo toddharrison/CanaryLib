@@ -31,6 +31,36 @@ public interface EntityTracker {
     public void untrackEntity(Entity entity);
 
     /**
+     * Make a {@link Player} hidden to another {@link Player}.
+     * 
+     * @param player the target {@link Player}.
+     * @param toHide The {@link Player} to make hidden for the target {@link Player}.
+     */
+    public void hidePlayer(Player player, Player toHide);
+
+    /**
+     * Make a {@link Player} hidden to all {@link Player}s.
+     * 
+     * @param toHide The Player to make hidden to all other 
+     */
+    public void hidePlayerGlobal(Player toHide);
+
+    /**
+     * Make a {@link Player} shown to another {@link Player}.
+     * 
+     * @param player the target {@link Player}.
+     * @param toHide The {@link Player} to make shown for the target {@link Player}.
+     */
+    public void showPlayer(Player player, Player toShow);
+
+    /**
+     * Make a {@link Player} shown to all {@link Player}s.
+     * 
+     * @param toHide The Player to make shown to all other 
+     */
+    public void showPlayerGlobal(Player toShow);
+
+    /**
      * Untrack the player symmetrics for the given player.<br>
      * Call this after {@link EntityTracker#untrackEntity(Entity)} when you stop tracking a player!
      *
@@ -65,4 +95,13 @@ public interface EntityTracker {
      * @return the {@link List} of tracked entities
      */
     public List<Entity> getTrackedEntities();
+    
+    /**
+     * Checks if a {@link Player} is hidden to another {@link Player}.
+     * 
+     * @param player Target Player
+     * @param isHidden Player to check if is hidden to Target Player.
+     * @return true if isHidden is hidden to player; false otherwise.
+     */
+    public boolean isPlayerHidden(Player player, Player isHidden);
 }
