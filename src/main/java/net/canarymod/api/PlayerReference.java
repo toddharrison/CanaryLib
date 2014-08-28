@@ -6,6 +6,8 @@ import net.canarymod.api.world.position.Position;
 import net.canarymod.permissionsystem.PermissionProvider;
 import net.canarymod.user.Group;
 
+import java.util.UUID;
+
 /**
  * The reference that brings {@link net.canarymod.api.OfflinePlayer} and {@link Player} together
  *
@@ -141,6 +143,20 @@ public interface PlayerReference {
      * @return name
      */
     public String getName();
+
+    /**
+     * Get the UUID of this Player
+     *
+     * @return UUID
+     */
+    public UUID getUUID();
+
+    /**
+     * Gets the UUID of this Player as a string
+     *
+     * @return UUID as string
+     */
+    public String getUUIDString();
 
     /**
      * Check if this player is muted

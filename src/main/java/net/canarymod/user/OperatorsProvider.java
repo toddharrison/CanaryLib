@@ -1,5 +1,7 @@
 package net.canarymod.user;
 
+import net.canarymod.Canary;
+import net.canarymod.api.PlayerReference;
 import net.canarymod.backbone.BackboneOperators;
 
 import java.io.BufferedReader;
@@ -79,37 +81,58 @@ public class OperatorsProvider {
      * Check if a given player is opped.
      *
      * @param player
-     *         the name of a player
+     *         the uuid/name of a player
      *
      * @return true if player is opped, false otherwise
      */
     public boolean isOpped(String player) {
-        return ops.contains(player);
+        // Did UUID get passed?
+        if (player.matches("[0-9a-f]{8}\\-([0-9a-f]{4}\\-){3}[0-9a-f]{12}")) {
+            return isOpped(player);
+        }
+        // Try to get a UUID reference from a known player
+        return isOpped(Canary.getServer().matchKnownPlayer(player));
+    }
+
+    public boolean isOpped(PlayerReference playerReference) {
+        if (playerReference != null) {
+            // Lets update to UUID if we can get a UUID
+            if (ops.contains(playerReference.getName())) {
+                if (playerReference.getUUIDString() != null) {
+                    removePlayer(playerReference.getName());
+                    addPlayer(playerReference.getUUIDString());
+                }
+                return true;
+            }
+            // UUID test it is
+            return ops.contains(playerReference.getUUIDString());
+        }
+        return false;
     }
 
     /**
      * Adds a new operators entry
      *
-     * @param name
-     *         the player name you want to add
+     * @param entry
+     *         the player uuid/name you want to add
      */
-    public void addPlayer(String name) {
-        if (!ops.contains(name)) {
-            ops.add(name);
-            backboneOps.addOpEntry(name);
+    public void addPlayer(String entry) {
+        if (!ops.contains(entry)) {
+            ops.add(entry);
+            backboneOps.addOpEntry(entry);
         }
     }
 
     /**
      * Removes the given player from the ops list
      *
-     * @param name
-     *         the player name you want to remove
+     * @param entry
+     *         the player uuid/name you want to remove
      */
-    public void removePlayer(String name) {
-        if (ops.contains(name)) {
-            ops.remove(name);
-            backboneOps.removeOpEntry(name);
+    public void removePlayer(String entry) {
+        if (ops.contains(entry)) {
+            ops.remove(entry);
+            backboneOps.removeOpEntry(entry);
         }
     }
 
