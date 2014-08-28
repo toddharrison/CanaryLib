@@ -235,4 +235,37 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      * @return previous IP if found
      */
     public String getPreviousIP();
+
+    /**
+     * Make this {@link Player} hidden to the given {@link Player}.
+     * 
+     * @param player the {@link Player} to hide this {@link Player} from.
+     */
+    public void hidePlayer(Player player);
+
+    /**
+     * Make this {@link Player} hidden to all {@link Player}s.
+     */
+    public void hidePlayerGlobal();
+
+    /**
+     * Make this {@link Player} shown to the given {@link Player}.
+     * 
+     * @param player The {@link Player} to show this {@link Player} to.
+     */
+    public void showPlayer(Player player);
+
+    /**
+     * Make this {@link Player} shown to all {@link Player}s.
+     */
+    public void showPlayerGlobal();
+    
+    /**
+     * Checks if a {@link Player} is hidden to another {@link Player}.
+     * 
+     * @param player Target Player
+     * @param isHidden Player to check if is hidden to Target Player.
+     * @return true if isHidden is hidden to player; false otherwise.
+     */
+    public boolean isPlayerHidden(Player player, Player isHidden);
 }

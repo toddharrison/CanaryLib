@@ -49,14 +49,14 @@ public interface EntityTracker {
      * Make a {@link Player} shown to another {@link Player}.
      * 
      * @param player the target {@link Player}.
-     * @param toHide The {@link Player} to make shown for the target {@link Player}.
+     * @param toShow The {@link Player} to make shown for the target {@link Player}.
      */
     public void showPlayer(Player player, Player toShow);
 
     /**
      * Make a {@link Player} shown to all {@link Player}s.
      * 
-     * @param toHide The Player to make shown to all other 
+     * @param toShow The Player to make shown to all other 
      */
     public void showPlayerGlobal(Player toShow);
 
