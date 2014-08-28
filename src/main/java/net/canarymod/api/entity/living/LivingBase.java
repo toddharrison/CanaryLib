@@ -302,5 +302,23 @@ public interface LivingBase extends Entity {
     public void setHeadRotation(float rot);
 
     public AttributeMap getAttributeMap();
+    
+    /**
+     * Gets the entity in this entity is looking at. with a default search radius
+     * of 64 blocks.
+     * 
+     * @return The Entity in this entity is looking at or null if none in range.
+     */
+    public Entity getTargetLookingAt();
+    
+    /**
+     * Gets the entity in this entity is looking at. with the given search 
+     * radius from this entity.
+     * 
+     * @param searchRadius search radius from this entity to search within
+     * 
+     * @return The Entity in this entity is looking at or null if none in range.
+     */
+    public Entity getTargetLookingAt(int searchRadius);
 
 }
