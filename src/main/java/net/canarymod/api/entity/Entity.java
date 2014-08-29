@@ -91,6 +91,13 @@ public interface Entity {
     public Location getLocation();
 
     /**
+     * Gets the height from the feet at which the eyes are
+     *
+     * @return eye height
+     */
+    public float getEyeHeight();
+
+    /**
      * Get the assigned unique ID for this entity
      *
      * @return id
