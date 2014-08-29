@@ -38,8 +38,13 @@ public class ReservelistProvider {
         if (player.matches("[0-9a-f]{8}\\-([0-9a-f]{4}\\-){3}[0-9a-f]{12}")) {
             return reservelist.contains(player);
         }
-        // Try to get a UUID reference from a known player
-        return isSlotReserved(Canary.getServer().matchKnownPlayer(player));
+        else if (Canary.getServer() != null) { // Like at start up...
+            // Try to get a UUID reference from a known player
+            return isSlotReserved(Canary.getServer().matchKnownPlayer(player));
+        }
+        else {
+            return false;
+        }
     }
 
     public boolean isSlotReserved(PlayerReference playerReference) {

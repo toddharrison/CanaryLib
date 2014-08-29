@@ -4,13 +4,7 @@ import net.canarymod.Canary;
 import net.canarymod.api.PlayerReference;
 import net.canarymod.backbone.BackboneOperators;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.List;
 
 import static net.canarymod.Canary.log;
@@ -90,8 +84,13 @@ public class OperatorsProvider {
         if (player.matches("[0-9a-f]{8}\\-([0-9a-f]{4}\\-){3}[0-9a-f]{12}")) {
             return ops.contains(player);
         }
-        // Try to get a UUID reference from a known player
-        return isOpped(Canary.getServer().matchKnownPlayer(player));
+        else if (Canary.getServer() != null) { // Like at start up...
+            // Try to get a UUID reference from a known player
+            return isOpped(Canary.getServer().matchKnownPlayer(player));
+        }
+        else {
+            return false;
+        }
     }
 
     public boolean isOpped(PlayerReference playerReference) {
