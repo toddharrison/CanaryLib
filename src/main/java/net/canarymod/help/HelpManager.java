@@ -3,6 +3,7 @@ package net.canarymod.help;
 import java.util.*;
 
 import net.canarymod.Translator;
+import net.canarymod.api.Server;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.Colors;
 import net.canarymod.chat.MessageReceiver;
@@ -273,6 +274,50 @@ public class HelpManager {
      * @param ignoreSubCommands
      */
     private void addHelpContext(MessageReceiver caller, HelpNode node, List<String> list, boolean printToolTip, boolean ignoreSubCommands) {
+        if (caller instanceof Server) {
+            this.addHelpContextUncolored(caller, node, list, printToolTip, ignoreSubCommands);
+        }
+        else {
+            this.addHelpContextColored(caller, node, list, printToolTip, ignoreSubCommands);
+        }
+    }
+
+    /**
+     * Creates the help context including sub commands from the given node.
+     *
+     * @param node
+     * @param list
+     * @param ignoreSubCommands
+     */
+    private void addHelpContextUncolored(MessageReceiver caller, HelpNode node, List<String> list, boolean printToolTip, boolean ignoreSubCommands) {
+        if (node.isSubCommand() && ignoreSubCommands) {
+            return;
+        }
+        list.add(node.getPrintableAliases() + " - " + node.getDescription());
+        if (printToolTip) {
+            list.add(node.getTooltip());
+        }
+        for (String sub : node.subCommands) {
+            HelpNode subNode = nodes.get(sub);
+            if (subNode != null && subNode.canUse(caller)) {
+                if (subNode.isSubCommand() && subNode.getParent().equals(node.getCommand())) {
+                    list.add("    " + subNode.getPrintableAliases() + " - " + subNode.getDescription());
+                    if (printToolTip) {
+                        list.add("    " + subNode.getTooltip());
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Creates the help context including sub commands from the given node.
+     *
+     * @param node
+     * @param list
+     * @param ignoreSubCommands
+     */
+    private void addHelpContextColored(MessageReceiver caller, HelpNode node, List<String> list, boolean printToolTip, boolean ignoreSubCommands) {
         if (node.isSubCommand() && ignoreSubCommands) {
             return;
         }

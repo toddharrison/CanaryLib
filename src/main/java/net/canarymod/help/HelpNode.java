@@ -63,6 +63,23 @@ public class HelpNode {
     }
 
     /**
+     * Returns an uncoloured string that displays all command aliases in the specified color
+     *
+     * @return
+     */
+    public String getPrintableAliases() {
+        StringBuilder str = new StringBuilder().append("[");
+        for (String alias : command.meta.aliases()) {
+            str.append(alias).append(", ");
+        }
+        // Removes the last space and comma
+        str.deleteCharAt(str.length() - 1);
+        str.deleteCharAt(str.length() - 1);
+        str.append("]");
+        return str.toString();
+    }
+
+    /**
      * Gets the description for this command
      *
      * @return
