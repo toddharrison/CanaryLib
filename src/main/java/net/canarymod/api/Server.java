@@ -1,5 +1,7 @@
 package net.canarymod.api;
 
+import java.util.List;
+import java.util.UUID;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.gui.GUIControl;
 import net.canarymod.api.inventory.recipes.CraftingRecipe;
@@ -14,8 +16,6 @@ import net.canarymod.commandsys.CommandOwner;
 import net.canarymod.motd.MOTDOwner;
 import net.canarymod.tasks.ServerTask;
 import net.canarymod.tasks.TaskOwner;
-
-import java.util.List;
 
 /**
  * CanaryMod Server.<br />
@@ -183,6 +183,26 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      * @return a reference to an online {@link Player}; {@code null} if there is no {@link Player} with the given name
      */
     public Player getPlayer(String player);
+
+    /**
+     * This returns a player with the given uuid.
+     *
+     * @param uuid
+     *         the uuid of {@link Player} to get
+     *
+     * @return a reference to an online {@link Player}; {@code null} if there is no {@link Player} with the given uuid
+     */
+    public Player getPlayerFromUUID(String uuid);
+
+    /**
+     * This returns a player with the given uuid.
+     *
+     * @param uuid
+     *         the uuid of {@link Player} to get
+     *
+     * @return a reference to an online {@link Player}; {@code null} if there is no {@link Player} with the given uuid
+     */
+    public Player getPlayerFromUUID(UUID uuid);
 
     /**
      * Send (broadcast) the given messsage to ALL players on the server,
