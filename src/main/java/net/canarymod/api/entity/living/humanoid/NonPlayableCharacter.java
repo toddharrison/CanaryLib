@@ -1,7 +1,7 @@
 package net.canarymod.api.entity.living.humanoid;
 
 import java.util.List;
-
+import net.canarymod.api.PathFinder;
 import net.canarymod.api.entity.Entity;
 
 /**
@@ -91,5 +91,13 @@ public interface NonPlayableCharacter extends Human {
      *         Entity to attack.
      */
     public void attackEntity(Entity entity);
+
+   
+    /**
+     * Get the {@link PathFinder} class for this Entity.
+     *
+     * @return the pathfinder
+     */
+    public PathFinder getPathFinder();
 
 }
