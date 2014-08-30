@@ -1,14 +1,16 @@
 package net.canarymod.api.entity.living.humanoid.npc;
 
 import com.google.common.collect.ArrayListMultimap;
+import net.canarymod.ToolBox;
+import net.canarymod.api.entity.living.humanoid.NonPlayableCharacter;
+import net.canarymod.api.entity.living.humanoid.npc.ai.NPCAI;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import static net.canarymod.Canary.log;
-import net.canarymod.ToolBox;
-import net.canarymod.api.entity.living.humanoid.NonPlayableCharacter;
-import net.canarymod.api.entity.living.humanoid.npc.ai.NPCAI;
 
 /**
  * @author Jason (darkdiplomat)
@@ -17,12 +19,12 @@ public final class NPCBehaviorRegistry {
     private final static ArrayListMultimap<Class<? extends NPCAI>, NPCBehaviorRegisteredListener> registered = ArrayListMultimap.create();
 
     /**
-     * Registers a new {@link net.canarymod.motd.MessageOfTheDayListener} to be used with the MessageOfTheDay
+     * Registers a new {@link net.canarymod.api.entity.living.humanoid.npc.NPCBehaviorListener}
      *
      * @param listner
-     *         the {@link net.canarymod.motd.MessageOfTheDayListener} to be added
-     * @param owner
-     *         the {@link net.canarymod.motd.MOTDOwner} (either the server or a plugin)
+     *         the {@link net.canarymod.api.entity.living.humanoid.npc.NPCBehaviorListener} to be added
+     * @param npc
+     *         the {@link net.canarymod.api.entity.living.humanoid.NonPlayableCharacter} associated with the listener
      * @param force
      *         {@code true} to override existing keys if existant; {@code false} to error out on duplicate keys (recommended)
      */
@@ -55,6 +57,12 @@ public final class NPCBehaviorRegistry {
         }
     }
 
+    /**
+     * Unregisters a {@link net.canarymod.api.entity.living.humanoid.npc.NPCBehaviorListener}
+     *
+     * @param listener
+     *         the listener to unregister
+     */
     public static void unregister(NPCBehaviorListener listener) {
         synchronized (registered) {
             Iterator<NPCBehaviorRegisteredListener> itr = registered.values().iterator();
@@ -68,6 +76,11 @@ public final class NPCBehaviorRegistry {
         }
     }
 
+    /**
+     * Unregisters a {@link net.canarymod.api.entity.living.humanoid.npc.NPCBehaviorListener} using the associated {@link net.canarymod.api.entity.living.humanoid.NonPlayableCharacter}
+     * @param npc
+     * the npc associated with the listener to be unregistered
+     */
     public static void unregister(NonPlayableCharacter npc) {
         synchronized (registered) {
             Iterator<NPCBehaviorRegisteredListener> itr = registered.values().iterator();
@@ -126,6 +139,13 @@ public final class NPCBehaviorRegistry {
         return listeners;
     }
 
+    /**
+     * Parses a NPC AI Event to the {@link net.canarymod.api.entity.living.humanoid.npc.NPCBehaviorListener}s
+     * @param npc
+     * the {@link net.canarymod.api.entity.living.humanoid.NonPlayableCharacter} the event is called for
+     * @param npcai
+     * the AI event called
+     */
     public static void execute(NonPlayableCharacter npc, NPCAI npcai) {
         synchronized (registered) {
             if (!registered.containsKey(npcai.getClass())) {

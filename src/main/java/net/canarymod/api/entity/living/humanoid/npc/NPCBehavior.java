@@ -7,6 +7,8 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
+ * NPC Behavior method annotation for the NPCBehavior Listener
+ *
  * @author Jason (darkdiplomat)
  */
 @Retention(RUNTIME)

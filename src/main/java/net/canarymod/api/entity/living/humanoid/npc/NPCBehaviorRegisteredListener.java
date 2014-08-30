@@ -7,6 +7,9 @@ import net.canarymod.hook.HookExecutionException;
 import java.lang.reflect.Method;
 
 /**
+ * Internal use class for registering a {@link net.canarymod.api.entity.living.humanoid.NonPlayableCharacter} to
+ * a {@link net.canarymod.api.entity.living.humanoid.npc.NPCBehaviorListener} and used to call the apporate AI event methods
+ *
  * @author Jason (darkdiplomat)
  */
 final class NPCBehaviorRegisteredListener {

@@ -7,10 +7,16 @@ public final class NpcAiListenerMethodConsistancyException extends RuntimeExcept
 
     private static final long serialVersionUID = 201408281759L;
 
+    /**
+     * {@inheritDoc}
+     */
     public NpcAiListenerMethodConsistancyException(String message) {
         super(message);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public NpcAiListenerMethodConsistancyException(String msg, Throwable t) {
         super(msg, t);
     }
