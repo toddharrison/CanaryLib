@@ -32,4 +32,13 @@ final class NPCBehaviorRegisteredListener {
             throw new HookExecutionException(String.format("Failed to execute NPCAI (NPC:'%s' Listener:'%s')", npc, listener.getClass().getName()), thrown);
         }
     }
+    
+    /**
+     * Gets the Listener associated with this registered listener entry.
+     * 
+     * @return The {@link NPCBehaviorListener} 
+     */
+    public NPCBehaviorListener getListener() {
+        return this.listener;
+    }
 }

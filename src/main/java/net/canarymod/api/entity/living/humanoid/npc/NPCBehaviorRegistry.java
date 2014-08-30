@@ -1,14 +1,14 @@
 package net.canarymod.api.entity.living.humanoid.npc;
 
 import com.google.common.collect.ArrayListMultimap;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import static net.canarymod.Canary.log;
 import net.canarymod.ToolBox;
 import net.canarymod.api.entity.living.humanoid.NonPlayableCharacter;
 import net.canarymod.api.entity.living.humanoid.npc.ai.NPCAI;
-
-import java.lang.reflect.Method;
-import java.util.Iterator;
-
-import static net.canarymod.Canary.log;
 
 /**
  * @author Jason (darkdiplomat)
@@ -78,6 +78,52 @@ public final class NPCBehaviorRegistry {
                 }
             }
         }
+    }
+    
+    /**
+     * Gets the Registered {@link NPCBehaviorListener} for manipulation.
+     * 
+     * @param clazz The class type of the {@link NPCBehaviorListener} you wish
+     *              to get.
+     * @param npc The {@link NonPlayableCharacter} for which the {@link NPCBehaviorListener} 
+     *              should be registered to.
+     * @return The {@link NPCBehaviorListener}  or null if one of that type is 
+     *          not registered to the given {@link NonPlayableCharacter} 
+     */
+    public static NPCBehaviorListener getRegisteredListener(Class<? extends NPCBehaviorListener> clazz, NonPlayableCharacter npc) {
+        NPCBehaviorListener listener = null;
+        synchronized (registered) {
+            Iterator<NPCBehaviorRegisteredListener> itr = registered.values().iterator();
+            while (itr.hasNext()) {
+                NPCBehaviorRegisteredListener nbrl = itr.next();
+                if (nbrl.isFor(npc)) {
+                    listener = nbrl.getListener();
+                    break;
+                }
+            }
+        }
+        return listener;
+    }
+    
+    /**
+     * Gets a list of all the Registered {@link NPCBehaviorListener} for manipulation.
+     * 
+     * @param npc The {@link NonPlayableCharacter} for which the {@link NPCBehaviorListener} 
+     *              should be registered to.
+     * @return The list of {@link NPCBehaviorListener} registered to the given {@link NonPlayableCharacter} 
+     */
+    public static List<NPCBehaviorListener> getRegisteredListeners(NonPlayableCharacter npc) {
+        List<NPCBehaviorListener> listeners = new ArrayList<NPCBehaviorListener>();
+        synchronized (registered) {
+            Iterator<NPCBehaviorRegisteredListener> itr = registered.values().iterator();
+            while (itr.hasNext()) {
+                NPCBehaviorRegisteredListener nbrl = itr.next();
+                if (nbrl.isFor(npc)) {
+                    listeners.add(nbrl.getListener());
+                }
+            }
+        }
+        return listeners;
     }
 
     public static void execute(NonPlayableCharacter npc, NPCAI npcai) {

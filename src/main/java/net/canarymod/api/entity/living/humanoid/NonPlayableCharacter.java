@@ -3,6 +3,7 @@ package net.canarymod.api.entity.living.humanoid;
 import java.util.List;
 import net.canarymod.api.PathFinder;
 import net.canarymod.api.entity.Entity;
+import net.canarymod.api.entity.living.humanoid.npc.NPCBehaviorListener;
 
 /**
  * Non-Playable Character interface
@@ -39,33 +40,6 @@ public interface NonPlayableCharacter extends Human {
     public NonPlayableCharacter despawn();
 
     /**
-     * Gets the list of NPCBehaviors for this NonPlayableCharacter
-     *
-     * @return the list of NPCBehaviors
-     */
-    public List<NPCBehavior> getBehaviors();
-
-    /**
-     * Removes a behavior from the NonPlayableCharacter
-     *
-     * @param behavior
-     *         the NPCBehavior to be removed
-     *
-     * @return the removed NPCBehavior or {@code null} if the NPCBehavior wasn't in the list
-     */
-    public NPCBehavior removeBehavior(NPCBehavior behavior);
-
-    /**
-     * Adds a NPCBehavior to the NonPlayableCharacter
-     *
-     * @param behavior
-     *         the NPCBehavior to be added
-     *
-     * @return {@code true} of successfully added, {@code false} if not
-     */
-    public boolean addBehavior(NPCBehavior behavior);
-
-    /**
      * Sends a message as the NonPlayableCharacter
      *
      * @param msg
@@ -99,5 +73,21 @@ public interface NonPlayableCharacter extends Human {
      * @return the pathfinder
      */
     public PathFinder getPathFinder();
+
+    /**
+     * Gets the {@link NPCBehaviorListener} for this NonPlayableCharacter of the
+     * given class type.
+     *
+     * @return the {@link NPCBehaviorListener} or null if one of this type is not
+     *          Registered to this NPC.
+     */
+    public NPCBehaviorListener getRegisteredListener(Class<? extends NPCBehaviorListener> clazz);
+
+    /**
+     * Gets the list of {@link NPCBehaviorListener} for this NonPlayableCharacter
+     *
+     * @return the list of {@link NPCBehaviorListener}s
+     */
+    public List<NPCBehaviorListener> geRegisteredListeners();
 
 }
