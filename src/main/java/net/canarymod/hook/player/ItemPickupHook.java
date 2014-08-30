@@ -39,6 +39,6 @@ public final class ItemPickupHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, Item=%s]", getName(), player, item);
+        return String.format("%s[Player=%s, Item=%s]", getHookName(), player, item);
     }
 }

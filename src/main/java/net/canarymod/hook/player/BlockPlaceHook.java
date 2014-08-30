@@ -18,12 +18,9 @@ public final class BlockPlaceHook extends CancelableHook {
     /**
      * Constructs a new BlockPlaceHook
      *
-     * @param player
-     *         the {@link Player} placing a {@link Block}
-     * @param clicked
-     *         the {@link Block} being clicked
-     * @param placed
-     *         the {@link Block} to be placed
+     * @param player  the {@link Player} placing a {@link Block}
+     * @param clicked the {@link Block} being clicked
+     * @param placed  the {@link Block} to be placed
      */
     public BlockPlaceHook(Player player, Block clicked, Block placed) {
         this.player = player;
@@ -60,6 +57,6 @@ public final class BlockPlaceHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, Clicked=%s, Placed=%s]", getName(), player, clicked, placed);
+        return String.format("%s[Player=%s, Clicked=%s, Placed=%s]", getHookName(), player, clicked, placed);
     }
 }

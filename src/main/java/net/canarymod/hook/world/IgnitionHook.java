@@ -38,7 +38,6 @@ public final class IgnitionHook extends CancelableHook {
      * </ul>
      *
      * @return the {@link Block} catching fire
-     *
      * @see Block#getStatus()
      * @see IgnitionCause
      */
@@ -75,7 +74,7 @@ public final class IgnitionHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, Ignited=%s, Clicked=%s, IgnitionCause=%s]", getName(), player, ignited, clicked, cause);
+        return String.format("%s[Player=%s, Ignited=%s, Clicked=%s, IgnitionCause=%s]", getHookName(), player, ignited, clicked, cause);
     }
 
     /**
@@ -87,21 +86,37 @@ public final class IgnitionHook extends CancelableHook {
      * @author Jason (darkdiplomat)
      */
     public enum IgnitionCause {
-        /** Unknown/Undefined reason */
+        /**
+         * Unknown/Undefined reason
+         */
         UNDEFINED, //
-        /** Lava causing ignition */
+        /**
+         * Lava causing ignition
+         */
         LAVA, //
-        /** Flint & Steel clicking */
+        /**
+         * Flint & Steel clicking
+         */
         FLINT_AND_STEEL, //
-        /** Natural Fire Spread */
+        /**
+         * Natural Fire Spread
+         */
         FIRE_SPREAD, //
-        /** Block burning up from fire nearby */
+        /**
+         * Block burning up from fire nearby
+         */
         BURNT, //
-        /** Lightning strikes */
+        /**
+         * Lightning strikes
+         */
         LIGHTNING_STRIKE, //
-        /** Small Fireball clicking */
+        /**
+         * Small Fireball clicking
+         */
         FIREBALL_CLICK, //
-        /** Small or Large Fireball hitting a block */
+        /**
+         * Small or Large Fireball hitting a block
+         */
         FIREBALL_HIT, //
         ;
     }

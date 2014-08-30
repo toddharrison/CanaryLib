@@ -62,6 +62,6 @@ public final class VehicleDamageHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Vehicle=%s, Attacker=%s, DamageSource=%s, Dealt=%.4f]", getName(), vehicle, attacker, source, dealt);
+        return String.format("%s[Vehicle=%s, Attacker=%s, DamageSource=%s, Dealt=%.4f]", getHookName(), vehicle, attacker, source, dealt);
     }
 }

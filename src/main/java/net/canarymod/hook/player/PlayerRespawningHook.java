@@ -45,8 +45,7 @@ public final class PlayerRespawningHook extends Hook {
     /**
      * Sets the respawn {@link Location}
      *
-     * @param respawn
-     *         the respawn location
+     * @param respawn the respawn location
      */
     public void setRespawnLocation(Location respawn) {
         this.respawn = respawn;
@@ -63,6 +62,6 @@ public final class PlayerRespawningHook extends Hook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, Location=%s]", getName(), player, respawn);
+        return String.format("%s[Player=%s, Location=%s]", getHookName(), player, respawn);
     }
 }

@@ -16,10 +16,8 @@ public final class ConsoleCommandHook extends CancelableHook {
     /**
      * Constructs a new ConsoleCommandHook
      *
-     * @param receiver
-     *         the {@link MessageReceiver} executing the command
-     * @param textInput
-     *         the text input
+     * @param receiver  the {@link MessageReceiver} executing the command
+     * @param textInput the text input
      */
     public ConsoleCommandHook(MessageReceiver receiver, String textInput) {
         command = textInput.split(" ");
@@ -48,7 +46,7 @@ public final class ConsoleCommandHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[MessageReceiver=%s, Command=%s]", getName(), receiver, StringUtils.joinString(command, " ", 0));
+        return String.format("%s[MessageReceiver=%s, Command=%s]", getHookName(), receiver, StringUtils.joinString(command, " ", 0));
 
     }
 }

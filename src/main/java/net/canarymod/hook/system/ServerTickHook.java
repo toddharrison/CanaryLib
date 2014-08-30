@@ -15,14 +15,15 @@ public final class ServerTickHook extends Hook {
         this.deltaTime = deltaTime;
     }
 
-    /** @return the deltaTime */
+    /**
+     * @return the deltaTime
+     */
     public long getDeltaTime() {
         return deltaTime;
     }
 
     /**
-     * @param deltaTime
-     *         the deltaTime to set
+     * @param deltaTime the deltaTime to set
      */
     public void setDeltaTime(long deltaTime) {
         this.deltaTime = deltaTime;
@@ -30,6 +31,6 @@ public final class ServerTickHook extends Hook {
 
     @Override
     public final String toString() {
-        return getName();
+        return String.format("%s[DeltaTime=%d]", getHookName(), deltaTime);
     }
 }

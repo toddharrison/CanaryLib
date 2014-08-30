@@ -16,8 +16,7 @@ public final class PortalDestroyHook extends CancelableHook {
     /**
      * Constructs a new PortalDestroyHook
      *
-     * @param blocks
-     *         the {@link Block} set the make up the portal
+     * @param blocks the {@link Block} set the make up the portal
      */
     public PortalDestroyHook(Block[][] blocks) {
         this.blocks = blocks;
@@ -34,6 +33,6 @@ public final class PortalDestroyHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Blocks=%s]", getName(), blocks);
+        return String.format("%s[Blocks=%s]", getHookName(), blocks);
     }
 }

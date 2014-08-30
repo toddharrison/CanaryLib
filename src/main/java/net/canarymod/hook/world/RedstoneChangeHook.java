@@ -48,6 +48,6 @@ public final class RedstoneChangeHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Block=%s, New Level=%s, Old Level=%s]", getName(), sourceBlock, newLevel, oldLevel);
+        return String.format("%s[Block=%s, New Level=%s, Old Level=%s]", getHookName(), sourceBlock, newLevel, oldLevel);
     }
 }

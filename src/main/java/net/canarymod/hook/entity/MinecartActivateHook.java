@@ -16,10 +16,8 @@ public final class MinecartActivateHook extends CancelableHook {
     /**
      * Constructs a new MinecartActivateHook
      *
-     * @param minecart
-     *         the {@link Minecart} being activated
-     * @param power
-     *         whether the {@link Minecart} is receiving power or not
+     * @param minecart the {@link Minecart} being activated
+     * @param power    whether the {@link Minecart} is receiving power or not
      */
     public MinecartActivateHook(Minecart minecart, boolean power) {
         this.minecart = minecart;
@@ -46,7 +44,7 @@ public final class MinecartActivateHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Minecart=%s, Power=%b", getName(), minecart, power);
+        return String.format("%s[Minecart=%s, Power=%b]", getHookName(), minecart, power);
     }
 
 }

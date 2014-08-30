@@ -26,7 +26,6 @@ public final class HopperTransferHook extends CancelableHook {
      * Use instanceof to Check if it is a HopperBlock or HopperMincart.
      *
      * @return The Hopper.
-     *
      * @see net.canarymod.api.entity.vehicle.HopperMinecart
      * @see net.canarymod.api.world.blocks.HopperBlock
      */
@@ -63,6 +62,6 @@ public final class HopperTransferHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Hopper=%s, Item=%s, Is Transferred In=%s]", getName(), hopper, itemTransfered, inputting);
+        return String.format("%s[Hopper=%s, Item=%s, Is Transferred In=%s]", getHookName(), hopper, itemTransfered, inputting);
     }
 }

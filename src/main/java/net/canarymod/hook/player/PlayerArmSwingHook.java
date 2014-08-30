@@ -27,6 +27,6 @@ public class PlayerArmSwingHook extends Hook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s]", getName(), player);
+        return String.format("%s[Player=%s]", getHookName(), player);
     }
 }

@@ -27,6 +27,6 @@ public final class LeafDecayHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Block=%s]", getName(), block);
+        return String.format("%s[Block=%s]", getHookName(), block);
     }
 }

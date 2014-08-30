@@ -17,10 +17,8 @@ public final class VillagerTradeUnlockHook extends CancelableHook {
     /**
      * Constructs a new VillagerTradeUnlockHook
      *
-     * @param villager
-     *         the {@link Villager} merchant
-     * @param trade
-     *         the {@link VillagerTrade} unlocked
+     * @param villager the {@link Villager} merchant
+     * @param trade    the {@link VillagerTrade} unlocked
      */
     public VillagerTradeUnlockHook(Villager villager, VillagerTrade trade) {
         this.villager = villager;
@@ -47,7 +45,7 @@ public final class VillagerTradeUnlockHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Villager=%s, VillagerTrade=%s]", getName(), villager, trade);
+        return String.format("%s[Villager=%s, VillagerTrade=%s]", getHookName(), villager, trade);
     }
 
 }

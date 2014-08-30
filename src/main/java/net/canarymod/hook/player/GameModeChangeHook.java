@@ -46,6 +46,6 @@ public class GameModeChangeHook extends CancelableHook {
     }
 
     public final String toString() {
-        return String.format("GameModeChangeHook[Player: %s, OldMode: %s, NewMode: %s]", player.getName(), getOldMode(), getNewMode());
+        return String.format("%s[Player: %s, OldMode: %s, NewMode: %s]", getHookName(), player.getName(), getOldMode(), getNewMode());
     }
 }

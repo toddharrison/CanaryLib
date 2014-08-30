@@ -18,8 +18,7 @@ public final class VehicleCollisionHook extends CancelableHook {
      * Constructs a Collision hook.
      *
      * @param vehicle
-     * @param entity
-     *         entity that got hit by a vehicle
+     * @param entity  entity that got hit by a vehicle
      */
     public VehicleCollisionHook(Vehicle vehicle, Entity entity) {
         this.vehicle = vehicle;
@@ -46,6 +45,6 @@ public final class VehicleCollisionHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Vehicle=%s, Entity=%s]", getName(), vehicle, collisioner);
+        return String.format("%s[Vehicle=%s, Entity=%s]", getHookName(), vehicle, collisioner);
     }
 }

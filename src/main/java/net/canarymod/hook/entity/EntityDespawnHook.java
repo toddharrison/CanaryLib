@@ -28,6 +28,6 @@ public final class EntityDespawnHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Entity=%s]", getName(), entity);
+        return String.format("%s[Entity=%s]", getHookName(), entity);
     }
 }

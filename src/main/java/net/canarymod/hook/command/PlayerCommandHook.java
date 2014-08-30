@@ -16,10 +16,8 @@ public final class PlayerCommandHook extends CancelableHook {
     /**
      * Constructs a new PlayerCommandHook
      *
-     * @param player
-     *         the {@link Player} executing the commmand
-     * @param textInput
-     *         the text input from the {@link Player}
+     * @param player    the {@link Player} executing the commmand
+     * @param textInput the text input from the {@link Player}
      */
     public PlayerCommandHook(Player player, String[] textInput) {
         this.player = player;
@@ -46,7 +44,7 @@ public final class PlayerCommandHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, Command=%s]", getName(), player, StringUtils.joinString(command, " ", 0));
+        return String.format("%s[Player=%s, Command=%s]", getHookName(), player, StringUtils.joinString(command, " ", 0));
 
     }
 }

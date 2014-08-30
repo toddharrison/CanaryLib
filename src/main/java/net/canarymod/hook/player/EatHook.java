@@ -23,14 +23,10 @@ public final class EatHook extends CancelableHook {
     /**
      * Constructs a new EatHook
      *
-     * @param player
-     *         the {@link Player} eating
-     * @param item
-     *         the {@link Item} being eaten
-     * @param levelGain
-     *         the amount of food level the {@link Player} will gain
-     * @param saturationGain
-     *         the amount of food saturation the {@link Player} will gain
+     * @param player         the {@link Player} eating
+     * @param item           the {@link Item} being eaten
+     * @param levelGain      the amount of food level the {@link Player} will gain
+     * @param saturationGain the amount of food saturation the {@link Player} will gain
      */
     public EatHook(Player player, Item item, int levelGain, float saturationGain, PotionEffect[] effects) {
         this.player = player;
@@ -70,8 +66,7 @@ public final class EatHook extends CancelableHook {
     /**
      * Sets the Food Level the {@link Player} will gain from consuming
      *
-     * @param levelGain
-     *         level gain
+     * @param levelGain level gain
      */
     public void setLevelGain(int levelGain) {
         this.levelGain = levelGain;
@@ -89,8 +84,7 @@ public final class EatHook extends CancelableHook {
     /**
      * Sets the Food Saturation the {@link Player} will gain from consuming
      *
-     * @param saturationGain
-     *         the food saturation to gain
+     * @param saturationGain the food saturation to gain
      */
     public void setSaturationGain(float saturationGain) {
         this.saturationGain = saturationGain;
@@ -109,8 +103,7 @@ public final class EatHook extends CancelableHook {
     /**
      * Sets the {@link PotionEffect}s to applied on consumption.
      *
-     * @param effects
-     *         the {@link PotionEffect}s to apply
+     * @param effects the {@link PotionEffect}s to apply
      */
     public void setPotionEffects(PotionEffect[] effects) {
         this.effects = effects;
@@ -118,6 +111,6 @@ public final class EatHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, Item=%s, LevelGain=%d, SaturationGain=%.2f, PotionEffects=%s]", getName(), player, item, levelGain, saturationGain, effects);
+        return String.format("%s[Player=%s, Item=%s, LevelGain=%d, SaturationGain=%.2f, PotionEffects=%s]", getHookName(), player, item, levelGain, saturationGain, effects);
     }
 }

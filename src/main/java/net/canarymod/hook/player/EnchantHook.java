@@ -1,12 +1,12 @@
 package net.canarymod.hook.player;
 
-import java.util.List;
-
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.inventory.Enchantment;
 import net.canarymod.api.inventory.Item;
 import net.canarymod.api.world.blocks.EnchantmentTable;
 import net.canarymod.hook.CancelableHook;
+
+import java.util.List;
 
 /**
  * Enchant hook. Contains information about a player enchanting an item.
@@ -67,8 +67,7 @@ public final class EnchantHook extends CancelableHook {
     /**
      * Override the whole list of enchantments
      *
-     * @param newList
-     *         the list of enchantments to set
+     * @param newList the list of enchantments to set
      */
     public void setEnchantmentList(List<Enchantment> newList) {
         this.enchantments = newList;
@@ -77,8 +76,7 @@ public final class EnchantHook extends CancelableHook {
     /**
      * Add a new enchantment to the list of existing enchantments
      *
-     * @param enchantment
-     *         the {@link Enchantment} to add
+     * @param enchantment the {@link Enchantment} to add
      */
     public void addEnchantment(Enchantment enchantment) {
         enchantments.add(enchantment);
@@ -87,8 +85,7 @@ public final class EnchantHook extends CancelableHook {
     /**
      * Remove an enchantment from the list
      *
-     * @param enchantment
-     *         the {@link Enchantment} to remove
+     * @param enchantment the {@link Enchantment} to remove
      */
     public void removeEnchantment(Enchantment enchantment) {
         enchantments.remove(enchantment);
@@ -97,9 +94,7 @@ public final class EnchantHook extends CancelableHook {
     /**
      * Validate the enchantments
      *
-     * @param checkStackable
-     *         {@code true} to check if can stack; {@code false} for not
-     *
+     * @param checkStackable {@code true} to check if can stack; {@code false} for not
      * @return {@code true} if valid; {@code false} if not
      */
     public boolean isValid(boolean checkStackable) {
@@ -112,13 +107,11 @@ public final class EnchantHook extends CancelableHook {
                         if (checkStackable && !enchantmentsArray[i].canStack(enchantmentsArray[j])) {
                             return false;
                         }
-                    }
-                    else {
+                    } else {
                         return false;
                     }
                 }
-            }
-            else {
+            } else {
                 return false;
             }
         }
@@ -127,6 +120,6 @@ public final class EnchantHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, Item=%s, EnchantmentTable=%s, Enchantments=%s]", getName(), player, item, enchtab, enchantments);
+        return String.format("%s[Player=%s, Item=%s, EnchantmentTable=%s, Enchantments=%s]", getHookName(), player, item, enchtab, enchantments);
     }
 }

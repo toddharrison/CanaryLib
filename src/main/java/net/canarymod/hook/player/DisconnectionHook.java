@@ -41,8 +41,7 @@ public final class DisconnectionHook extends Hook {
     /**
      * Set the reason for disconnection that will be displayed
      *
-     * @param reason
-     *         the reason for disconnection
+     * @param reason the reason for disconnection
      */
     public void setReason(String reason) {
         this.reason = reason;
@@ -60,8 +59,7 @@ public final class DisconnectionHook extends Hook {
     /**
      * Sets the LeaveMessage
      *
-     * @param leave
-     *         the leave message to set
+     * @param leave the leave message to set
      */
     public void setLeaveMessage(String leave) {
         this.leave = leave;
@@ -79,8 +77,7 @@ public final class DisconnectionHook extends Hook {
     /**
      * Sets whether this should be a hidden connect/disconnect
      *
-     * @param hidden
-     *         {@code true} for hiding message; {@code false} for not
+     * @param hidden {@code true} for hiding message; {@code false} for not
      */
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
@@ -88,6 +85,6 @@ public final class DisconnectionHook extends Hook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, Reason=%s, Leave=%s, Hidden=%s]", getName(), player, reason, leave, hidden);
+        return String.format("%s[Player=%s, Reason=%s, Leave=%s, Hidden=%s]", getHookName(), player, reason, leave, hidden);
     }
 }

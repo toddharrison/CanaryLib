@@ -17,10 +17,8 @@ public final class CommandBlockCommandHook extends CancelableHook {
     /**
      * Constructs a new CommandBlockCommandHook
      *
-     * @param block
-     *         the {@link CommandBlock} used
-     * @param args
-     *         the command and arguments
+     * @param block the {@link CommandBlock} used
+     * @param args  the command and arguments
      */
     public CommandBlockCommandHook(CommandBlock block, String[] args) {
         this.block = block;
@@ -47,7 +45,7 @@ public final class CommandBlockCommandHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[CommandBlock=%s, Arguments=%s]", getName(), block, StringUtils.joinString(args, " ", 0));
+        return String.format("%s[CommandBlock=%s, Arguments=%s]", getHookName(), block, StringUtils.joinString(args, " ", 0));
     }
 
 }

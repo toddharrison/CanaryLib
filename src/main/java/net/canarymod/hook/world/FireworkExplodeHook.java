@@ -16,8 +16,7 @@ public final class FireworkExplodeHook extends CancelableHook {
     /**
      * Constructs a new FireworkExplodeHook
      *
-     * @param rocket
-     *         the {@link FireworkRocket} to explode
+     * @param rocket the {@link FireworkRocket} to explode
      */
     public FireworkExplodeHook(FireworkRocket rocket) {
         this.rocket = rocket;
@@ -34,7 +33,7 @@ public final class FireworkExplodeHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[FireworkRocket=%s]", getName(), rocket);
+        return String.format("%s[FireworkRocket=%s]", getHookName(), rocket);
     }
 
 }

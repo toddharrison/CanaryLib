@@ -42,8 +42,7 @@ public final class ConnectionHook extends Hook {
     /**
      * Sets the message set to all
      *
-     * @param message
-     *         the message to be sent
+     * @param message the message to be sent
      */
     public void setMessage(String message) {
         this.message = message;
@@ -70,8 +69,7 @@ public final class ConnectionHook extends Hook {
     /**
      * Sets whether this should be a hidden connect/disconnect
      *
-     * @param hidden
-     *         {@code true} to hide message; {@code false} for not
+     * @param hidden {@code true} to hide message; {@code false} for not
      */
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
@@ -79,6 +77,6 @@ public final class ConnectionHook extends Hook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, Message=%s, Hidden=%s]", getName(), player, message, hidden);
+        return String.format("%s[Player=%s, Message=%s, Hidden=%s]", getHookName(), player, message, hidden);
     }
 }

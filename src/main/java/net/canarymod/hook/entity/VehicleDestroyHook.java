@@ -27,6 +27,6 @@ public class VehicleDestroyHook extends Hook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Vehicle=%s]", getName(), vehicle);
+        return String.format("%s[Vehicle=%s]", getHookName(), vehicle);
     }
 }

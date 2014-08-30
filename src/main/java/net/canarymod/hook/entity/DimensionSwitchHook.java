@@ -8,7 +8,7 @@ import net.canarymod.hook.CancelableHook;
  * Dimension switch hook. Contains information about an entity changeing
  * dimentions
  *
- * @author Somners 
+ * @author Somners
  */
 public class DimensionSwitchHook extends CancelableHook {
 
@@ -50,6 +50,6 @@ public class DimensionSwitchHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Entity=%s, Location To=%s, Location From=%s]", getName(), entity, to, from);
+        return String.format("%s[Entity=%s, Location To=%s, Location From=%s]", getHookName(), entity, to, from);
     }
 }

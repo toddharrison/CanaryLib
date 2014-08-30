@@ -50,6 +50,6 @@ public final class PlayerMoveHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, From=%s, To=%s]", getName(), player, from, to);
+        return String.format("%s[Player=%s, From=%s, To=%s]", getHookName(), player, from, to);
     }
 }

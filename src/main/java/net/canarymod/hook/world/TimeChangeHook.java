@@ -15,10 +15,8 @@ public final class TimeChangeHook extends CancelableHook {
     /**
      * Constructs a new TimeChangeHook
      *
-     * @param world
-     *         the {@link World} the time is changing in
-     * @param time
-     *         the time being set to
+     * @param world the {@link World} the time is changing in
+     * @param time  the time being set to
      */
     public TimeChangeHook(World world, long time) {
         this.world = world;
@@ -45,6 +43,6 @@ public final class TimeChangeHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[World=%s, Time=%s]", getName(), world, time);
+        return String.format("%s[World=%s, Time=%s]", getHookName(), world, time);
     }
 }

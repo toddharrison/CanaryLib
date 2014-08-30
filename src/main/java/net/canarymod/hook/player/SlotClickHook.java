@@ -31,24 +31,15 @@ public final class SlotClickHook extends CancelableHook {
     /**
      * Constructs a new SlotClickHook
      *
-     * @param player
-     *         the {@link Player} clicking
-     * @param inventory
-     *         the {@link Inventory} thats open
-     * @param item
-     *         the {@link Item} in the slot clicked
-     * @param slot_type
-     *         the {@link SlotType} being clicked
-     * @param secondary_slot_type
-     *         the {@link SecondarySlotType} being clicked
-     * @param grab_mode
-     *         the {@link GrabMode} of the link
-     * @param button
-     *         the {@link ButtonPress}
-     * @param slot_id
-     *         the slot id
-     * @param trans_num
-     *         the transaction number
+     * @param player              the {@link Player} clicking
+     * @param inventory           the {@link Inventory} thats open
+     * @param item                the {@link Item} in the slot clicked
+     * @param slot_type           the {@link SlotType} being clicked
+     * @param secondary_slot_type the {@link SecondarySlotType} being clicked
+     * @param grab_mode           the {@link GrabMode} of the link
+     * @param button              the {@link ButtonPress}
+     * @param slot_id             the slot id
+     * @param trans_num           the transaction number
      */
     public SlotClickHook(Player player, Inventory inventory, Item item, SlotType slot_type, SecondarySlotType secondary_slot_type, GrabMode grab_mode, ButtonPress button, short slot_id, short trans_num) {
         this.player = player;
@@ -155,16 +146,17 @@ public final class SlotClickHook extends CancelableHook {
     /**
      * Sets whether to notify the client of an update
      *
-     * @param update
-     *         {@code true} to notify; {@code false} otherwise
+     * @param update {@code true} to notify; {@code false} otherwise
      */
     public void setDoUpdate(boolean update) {
         this.update = update;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s Inventory=%s Item=%s SlotType=%s SecondarySlotType=%s GrabMode=%s Button=%s SlotId=%d Update=%b]", this.getName(), player, inventory, item, slot_type, secondary_slot_type, grab_mode, button, slot_id, update);
+        return String.format("%s[Player=%s Inventory=%s Item=%s SlotType=%s SecondarySlotType=%s GrabMode=%s Button=%s SlotId=%d Update=%b]", getHookName(), player, inventory, item, slot_type, secondary_slot_type, grab_mode, button, slot_id, update);
     }
 }

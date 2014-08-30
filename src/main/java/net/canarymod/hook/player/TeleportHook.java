@@ -50,7 +50,7 @@ public final class TeleportHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, Destination=%s, TeleportCause=%s]", getName(), player, destination, cause);
+        return String.format("%s[Player=%s, Destination=%s, TeleportCause=%s]", getHookName(), player, destination, cause);
     }
 
     /**
@@ -59,21 +59,37 @@ public final class TeleportHook extends CancelableHook {
      * @author Jason (darkdiplomat)
      */
     public enum TeleportCause {
-        /** Teleported by sleeping in/waking up from a bed */
+        /**
+         * Teleported by sleeping in/waking up from a bed
+         */
         BED, //
-        /** Teleported by use of a command */
+        /**
+         * Teleported by use of a command
+         */
         COMMAND, //
-        /** Teleported by mounting/unmounting an {@link net.canarymod.api.entity.Entity} */
+        /**
+         * Teleported by mounting/unmounting an {@link net.canarymod.api.entity.Entity}
+         */
         MOUNT_CHANGE, //
-        /** Teleported by normal moving */
+        /**
+         * Teleported by normal moving
+         */
         MOVEMENT, //
-        /** Teleported by a plugin */
+        /**
+         * Teleported by a plugin
+         */
         PLUGIN, //
-        /** Teleported by a Portal */
+        /**
+         * Teleported by a Portal
+         */
         PORTAL, //
-        /** Teleported by respawn */
+        /**
+         * Teleported by respawn
+         */
         RESPAWN, //
-        /** Generic Reasoning */
+        /**
+         * Generic Reasoning
+         */
         UNDEFINED, //
         /**
          * WARP SYSTEM

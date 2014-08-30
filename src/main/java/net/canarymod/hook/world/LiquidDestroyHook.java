@@ -38,6 +38,7 @@ public final class LiquidDestroyHook extends CancelableHook {
     /**
      * Returns the {@link BlockType} of the liquid.
      * Always returns the Flowing variant.
+     *
      * @return The liquid's {@link BlockType}
      */
     public BlockType getLiquidType() {
@@ -57,8 +58,7 @@ public final class LiquidDestroyHook extends CancelableHook {
      * Set this to true to force the block to be destroyed.
      * This will not work if the hook is canceled already!
      *
-     * @param forceDestroy
-     *         {@code true} for force destroy
+     * @param forceDestroy {@code true} for force destroy
      */
     public void setForceDestroy(boolean forceDestroy) {
         this.forceDestroy = forceDestroy;
@@ -66,6 +66,6 @@ public final class LiquidDestroyHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Block=%s, Force Destroy=%s]", getName(), block, forceDestroy);
+        return String.format("%s[Block=%s, Force Destroy=%s]", getHookName(), block, forceDestroy);
     }
 }

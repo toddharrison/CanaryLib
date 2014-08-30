@@ -33,8 +33,7 @@ public final class EntityTameHook extends CancelableHook {
     /**
      * Override the tame result.
      *
-     * @param isTamed
-     *         True to force the animal being tamed, false to force the taming to fail
+     * @param isTamed True to force the animal being tamed, false to force the taming to fail
      */
     public void setTamed(boolean isTamed) {
         this.isTamed = isTamed;
@@ -60,6 +59,6 @@ public final class EntityTameHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, Animal=%s, isTamed=%b]", getName(), player, animal, isTamed);
+        return String.format("%s[Player=%s, Animal=%s, isTamed=%b]", getHookName(), player, animal, isTamed);
     }
 }

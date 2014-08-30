@@ -38,6 +38,6 @@ public final class PistonExtendHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Piston=%s, Block=%s]", getName(), piston, moving);
+        return String.format("%s[Piston=%s, Block=%s]", getHookName(), piston, moving);
     }
 }

@@ -18,10 +18,8 @@ public final class MobTargetHook extends CancelableHook {
     /**
      * Constructs a new MobTargetHook
      *
-     * @param entity
-     *         the {@link LivingBase} doing the targeting
-     * @param target
-     *         the {@link LivingBase} target
+     * @param entity the {@link LivingBase} doing the targeting
+     * @param target the {@link LivingBase} target
      */
     public MobTargetHook(LivingBase entity, LivingBase target) {
         this.entity = entity;
@@ -48,6 +46,6 @@ public final class MobTargetHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Entity=%s, Target=%s]", getName(), entity, target);
+        return String.format("%s[Entity=%s, Target=%s]", getHookName(), entity, target);
     }
 }

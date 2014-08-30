@@ -39,6 +39,6 @@ public final class SignChangeHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, Sign=%s]", getName(), player, sign);
+        return String.format("%s[Player=%s, Sign=%s]", getHookName(), player, sign);
     }
 }

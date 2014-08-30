@@ -39,6 +39,6 @@ public final class DispenseHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Dispensor=%s, Entity=%s]", getName(), dispenser, entity);
+        return String.format("%s[Dispensor=%s, Entity=%s]", getHookName(), dispenser, entity);
     }
 }

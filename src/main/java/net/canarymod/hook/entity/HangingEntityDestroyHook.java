@@ -42,12 +42,11 @@ public final class HangingEntityDestroyHook extends CancelableHook {
     public Player getPlayer() {
         return player;
     }
-    
+
     /**
      * Check if this hook was called because a player destroyed an item frame or painting.
-     * 
-     * @return
-     *      boolean true if player destroyed the hanging entity, false otherwise
+     *
+     * @return boolean true if player destroyed the hanging entity, false otherwise
      */
     public boolean isCausedByPlayer() {
         return player != null;
@@ -64,6 +63,6 @@ public final class HangingEntityDestroyHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, HangingEntity=%s]", getName(), player, hanging);
+        return String.format("%s[Player=%s, HangingEntity=%s]", getHookName(), player, hanging);
     }
 }

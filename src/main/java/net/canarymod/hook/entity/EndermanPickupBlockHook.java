@@ -17,10 +17,8 @@ public final class EndermanPickupBlockHook extends CancelableHook {
     /**
      * Constructs a new EndermanPickUpBlockHook
      *
-     * @param enderman
-     *         the {@link Enderman} picking up a block
-     * @param block
-     *         the {@link Block} being picked up
+     * @param enderman the {@link Enderman} picking up a block
+     * @param block    the {@link Block} being picked up
      */
     public EndermanPickupBlockHook(Enderman enderman, Block block) {
         this.enderman = enderman;
@@ -47,6 +45,6 @@ public final class EndermanPickupBlockHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Enderman=%s, Block=%s]", getName(), enderman, block);
+        return String.format("%s[Enderman=%s, Block=%s]", getHookName(), enderman, block);
     }
 }

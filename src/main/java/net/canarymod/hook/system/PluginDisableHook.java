@@ -3,12 +3,12 @@ package net.canarymod.hook.system;
 import net.canarymod.hook.Hook;
 import net.canarymod.plugin.Plugin;
 
-/** 
+/**
  * Called when a plugin is disabled
  *
  * @author greatman
  */
-public class PluginDisableHook extends Hook {
+public final class PluginDisableHook extends Hook {
 
     private Plugin plugin;
 
@@ -25,4 +25,7 @@ public class PluginDisableHook extends Hook {
         return plugin;
     }
 
+    public final String toString() {
+        return String.format("%s[Plugin=%s]", getHookName(), plugin);
+    }
 }

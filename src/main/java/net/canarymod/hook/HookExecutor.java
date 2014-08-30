@@ -102,7 +102,7 @@ public class HookExecutor implements HookExecutorInterface {
                 listener.execute(hook);
             }
             catch (HookExecutionException hexex) {
-                log.error("Exception while executing Hook: " + hook.getName() + " in PluginListener: " +
+                log.error("Exception while executing Hook: " + hook.getHookName() + " in PluginListener: " +
                         listener.getListener().getClass().getSimpleName() + " (Plugin: " + listener.getPlugin().getName() + ")", hexex.getCause());
             }
         }

@@ -51,6 +51,6 @@ public final class ItemUseHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, Item=%s, Block=%s]", getName(), player, item, clicked);
+        return String.format("%s[Player=%s, Item=%s, Block=%s]", getHookName(), player, item, clicked);
     }
 }

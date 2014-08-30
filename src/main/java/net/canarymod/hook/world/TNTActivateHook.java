@@ -55,7 +55,7 @@ public final class TNTActivateHook extends CancelableHook {
      */
     @Override
     public String toString() {
-        return String.format("%s[TNT=%s, Activator=%s, Cause=%s]", getName(), tnt, activator, cause);
+        return String.format("%s[TNT=%s, Activator=%s, Cause=%s]", getHookName(), tnt, activator, cause);
     }
 
     /**

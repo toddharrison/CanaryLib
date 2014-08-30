@@ -17,10 +17,8 @@ public final class StatGainedHook extends CancelableHook {
     /**
      * Constructs a new StatGainedHook
      *
-     * @param player
-     *         the {@link Player} gaining a stat
-     * @param stat
-     *         the {@link Stat} being gained
+     * @param player the {@link Player} gaining a stat
+     * @param stat   the {@link Stat} being gained
      */
     public StatGainedHook(Player player, Stat stat) {
         this.player = player;
@@ -47,6 +45,6 @@ public final class StatGainedHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, Stat=%s]", getName(), player, stat);
+        return String.format("%s[Player=%s, Stat=%s]", getHookName(), player, stat);
     }
 }

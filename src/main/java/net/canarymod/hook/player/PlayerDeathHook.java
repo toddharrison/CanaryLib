@@ -19,12 +19,9 @@ public final class PlayerDeathHook extends Hook {
     /**
      * Constructs a new PlayerDeathHook
      *
-     * @param player
-     *         the {@link Player} that died
-     * @param source
-     *         the {@link DamageSource} that killed the {@link Player}
-     * @param msg
-     *         the Death message to send all if DeathMessages aren't disabled
+     * @param player the {@link Player} that died
+     * @param source the {@link DamageSource} that killed the {@link Player}
+     * @param msg    the Death message to send all if DeathMessages aren't disabled
      */
     public PlayerDeathHook(Player player, DamageSource source, ChatComponent msg) {
         this.player = player;
@@ -64,8 +61,7 @@ public final class PlayerDeathHook extends Hook {
     /**
      * Sets the message to send, if death message are enabled
      *
-     * @param msg
-     *         the death message
+     * @param msg the death message
      * @deprecated Replaced by #setDeathMessage1
      */
     @Deprecated
@@ -76,8 +72,7 @@ public final class PlayerDeathHook extends Hook {
     /**
      * Gets the {@link net.canarymod.api.chat.ChatComponent} containing the death message
      *
-     * @param chatComponent
-     *          the {@link net.canarymod.api.chat.ChatComponent} containing the death message
+     * @param chatComponent the {@link net.canarymod.api.chat.ChatComponent} containing the death message
      */
     public void setDeathMessage1(ChatComponent chatComponent) {
         this.msg = chatComponent;
@@ -94,6 +89,6 @@ public final class PlayerDeathHook extends Hook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, DamageSource=%s, Message=%s]", getName(), player, source, msg);
+        return String.format("%s[Player=%s, DamageSource=%s, Message=%s]", getHookName(), player, source, msg);
     }
 }

@@ -45,6 +45,6 @@ public final class InventoryHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, Inventory=%s, Is Closing=%s]", getName(), player, inventory, closing);
+        return String.format("%s[Player=%s, Inventory=%s, Is Closing=%s]", getHookName(), player, inventory, closing);
     }
 }

@@ -39,6 +39,6 @@ public final class ChunkCreatedHook extends Hook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Chunk=%s, World=%s]", getName(), chunk, world);
+        return String.format("%s[Chunk=%s, World=%s]", getHookName(), chunk, world);
     }
 }

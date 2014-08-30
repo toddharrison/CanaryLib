@@ -18,10 +18,8 @@ public final class PlayerListEntryHook extends Hook {
     /**
      * Constructs a new PlayerListEntryHook
      *
-     * @param entry
-     *         the {@link PlayerListEntry} being sent
-     * @param receiver
-     *         the {@link Player} to receiver the {@link PlayerListEntry}
+     * @param entry    the {@link PlayerListEntry} being sent
+     * @param receiver the {@link Player} to receiver the {@link PlayerListEntry}
      */
     public PlayerListEntryHook(PlayerListEntry entry, Player receiver) {
         this.entry = entry;
@@ -48,10 +46,12 @@ public final class PlayerListEntryHook extends Hook {
         return receiver;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final String toString() {
-        return String.format("PlayerListEntryHook[Entry=%s Receiver=%s]", entry, receiver);
+        return String.format("%s[Entry=%s Receiver=%s]", getHookName(), entry, receiver);
     }
 
 }

@@ -69,8 +69,7 @@ public final class ChunkCreationHook extends Hook {
     /**
      * Sets the biome data of each y column in the chunk
      *
-     * @param biomedata
-     *         An array of {@link BiomeType} for setting biome data in a chunk.
+     * @param biomedata An array of {@link BiomeType} for setting biome data in a chunk.
      */
     public void setBiomeData(BiomeType[] biomedata) {
         this.biomedata = biomedata;
@@ -87,6 +86,6 @@ public final class ChunkCreationHook extends Hook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Chunk X=%s, Chunk Z=%s, Biome Type=%s, Block Data=%s, World=%s]", getName(), x, z, biomedata, blockdata, dimension);
+        return String.format("%s[Chunk X=%s, Chunk Z=%s, Biome Type=%s, Block Data=%s, World=%s]", getHookName(), x, z, biomedata, blockdata, dimension);
     }
 }

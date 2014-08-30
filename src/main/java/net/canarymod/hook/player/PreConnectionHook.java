@@ -4,22 +4,27 @@ import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.DimensionType;
 import net.canarymod.hook.Hook;
 
+import java.util.UUID;
+
 /**
  * Login checks hook. Comes with ip, name and a kickReason that is to be returned,
  * and should be null if a player should not be kicked.
  *
  * @author Chris (damagefilter)
+ * @author Jason (darkdiplomat)
  */
 public final class PreConnectionHook extends Hook {
     private String ip, name, world;
     private String kickReason = null;
     private DimensionType dimensionType;
+    private UUID id;
 
-    public PreConnectionHook(String ip, String name, DimensionType dimType, String world) {
+    public PreConnectionHook(String ip, String name, UUID id, DimensionType dimType, String world) {
         this.ip = ip;
         this.name = name;
         this.setWorld(world);
         this.setWorldType(dimType);
+        this.id = id;
     }
 
     /**
@@ -31,10 +36,15 @@ public final class PreConnectionHook extends Hook {
         return ip;
     }
 
-    /** Get the name of the joining {@link Player} */
-    @Override
+    /**
+     * Get the name of the joining {@link Player}
+     */
     public String getName() {
         return name;
+    }
+
+    public UUID getUUID() {
+        return this.id;
     }
 
     /**
@@ -73,6 +83,6 @@ public final class PreConnectionHook extends Hook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player Name=%s, IP=%s, World=%s, Kicked Reason=%s, World Type=%s]", getName(), name, ip, world, kickReason, dimensionType);
+        return String.format("%s[Player Name=%s, IP=%s, World=%s, Kicked Reason=%s, World Type=%s]", getHookName(), name, ip, world, kickReason, dimensionType);
     }
 }

@@ -18,8 +18,7 @@ public final class LightningStrikeHook extends Hook {
     /**
      * Creates a new LightningStrikeHook
      *
-     * @param lightbolt
-     *         the {@link LightningBolt} striking
+     * @param lightbolt the {@link LightningBolt} striking
      */
     public LightningStrikeHook(LightningBolt lightbolt) {
         this.lightbolt = lightbolt;
@@ -34,9 +33,11 @@ public final class LightningStrikeHook extends Hook {
         return lightbolt;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public final String toString() {
-        return String.format("%s[LightningBolt=%s]", getName(), lightbolt);
+        return String.format("%s[LightningBolt=%s]", getHookName(), lightbolt);
     }
 }

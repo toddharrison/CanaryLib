@@ -20,14 +20,10 @@ public final class DamageHook extends CancelableHook {
     /**
      * Constructs a new DamageHook
      *
-     * @param attacker
-     *         the Entity attacking if present
-     * @param defender
-     *         the Entity being hurt
-     * @param source
-     *         the DamageSource of the cause
-     * @param dealt
-     *         the amount of damage to be dealt
+     * @param attacker the Entity attacking if present
+     * @param defender the Entity being hurt
+     * @param source   the DamageSource of the cause
+     * @param dealt    the amount of damage to be dealt
      */
     public DamageHook(Entity attacker, Entity defender, DamageSource source, float dealt) {
         this.attacker = attacker;
@@ -66,8 +62,7 @@ public final class DamageHook extends CancelableHook {
     /**
      * Sets the {@link DamageSource}
      *
-     * @param source
-     *         the DamageSource cause
+     * @param source the DamageSource cause
      */
     public void setDamageSource(DamageSource source) {
         this.source = source;
@@ -85,8 +80,7 @@ public final class DamageHook extends CancelableHook {
     /**
      * Sets the amount of damage dealt
      *
-     * @param dealt
-     *         the amount of damage to deal
+     * @param dealt the amount of damage to deal
      */
     public void setDamageDealt(float dealt) {
         this.dealt = dealt;
@@ -94,6 +88,6 @@ public final class DamageHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Attacker=%s, Defender=%s, DamageSource=%s, Dealt=%.4f]", getName(), attacker != null ? attacker : "null", defender, source, dealt);
+        return String.format("%s[Attacker=%s, Defender=%s, DamageSource=%s, Dealt=%.4f]", getHookName(), attacker != null ? attacker : "null", defender, source, dealt);
     }
 }

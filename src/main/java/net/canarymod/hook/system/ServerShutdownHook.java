@@ -36,6 +36,6 @@ public final class ServerShutdownHook extends Hook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Reason=%s]", getName(), reason);
+        return String.format("%s[Reason=%s]", getHookName(), reason);
     }
 }

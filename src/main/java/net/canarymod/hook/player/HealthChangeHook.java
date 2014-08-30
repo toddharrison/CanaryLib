@@ -15,12 +15,9 @@ public final class HealthChangeHook extends CancelableHook {
     /**
      * Constructs a new HealthChange hook
      *
-     * @param player
-     *         the {@link Player} who's health is changing
-     * @param oldVal
-     *         the old health value
-     * @param newVal
-     *         the new health value
+     * @param player the {@link Player} who's health is changing
+     * @param oldVal the old health value
+     * @param newVal the new health value
      */
     public HealthChangeHook(Player player, float oldVal, float newVal) {
         this.player = player;
@@ -57,6 +54,6 @@ public final class HealthChangeHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, Old Health=%s, New Health=%s]", getName(), player, oldVal, newVal);
+        return String.format("%s[Player=%s, Old Health=%s, New Health=%s]", getHookName(), player, oldVal, newVal);
     }
 }

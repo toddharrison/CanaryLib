@@ -59,6 +59,6 @@ public final class PermissionCheckHook extends Hook {
 
     @Override
     public final String toString() {
-        return String.format("%s[subject=%s, permission=%s, result=%s]", getName(), subject.getName(), permission, result);
+        return String.format("%s[subject=%s, permission=%s, result=%s]", getHookName(), subject.getName(), permission, result);
     }
 }

@@ -16,12 +16,9 @@ public final class FoodExhaustionHook extends Hook {
     /**
      * Constructs a new FoodExhaustionHook
      *
-     * @param player
-     *         the {@link Player} who's Food Exhaustion is changing
-     * @param oldval
-     *         the old (current) value
-     * @param newval
-     *         the new value
+     * @param player the {@link Player} who's Food Exhaustion is changing
+     * @param oldval the old (current) value
+     * @param newval the new value
      */
     public FoodExhaustionHook(Player player, float oldval, float newval) {
         this.player = player;
@@ -59,8 +56,7 @@ public final class FoodExhaustionHook extends Hook {
     /**
      * Sets the new value to actually be set
      *
-     * @param value
-     *         the Exhaustion level to set
+     * @param value the Exhaustion level to set
      */
     public void setNewValue(float value) {
         this.newval = value;
@@ -68,6 +64,6 @@ public final class FoodExhaustionHook extends Hook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, Old Exhaustoin=%s, New Exhaustion=%s]", getName(), player, oldval, newval);
+        return String.format("%s[Player=%s, Old Exhaustoin=%s, New Exhaustion=%s]", getHookName(), player, oldval, newval);
     }
 }

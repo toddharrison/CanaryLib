@@ -15,8 +15,7 @@ public class ItemTouchGroundHook extends CancelableHook {
     /**
      * Constructs a new ItemTouchGroundHook
      *
-     * @param item
-     *         the {@link EntityItem} hitting the ground
+     * @param item the {@link EntityItem} hitting the ground
      */
     public ItemTouchGroundHook(EntityItem item) {
         this.item = item;
@@ -33,6 +32,6 @@ public class ItemTouchGroundHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[EntityItem=%s]", getName(), item);
+        return String.format("%s[EntityItem=%s]", getHookName(), item);
     }
 }

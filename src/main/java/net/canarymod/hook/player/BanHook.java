@@ -85,6 +85,6 @@ public final class BanHook extends Hook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Banned=%s, Moderator=%s, isIPBan=%b, Reason=%s, BanTime=%s]", getName(), banned, moderator, ipban, reason, bantime);
+        return String.format("%s[Banned=%s, Moderator=%s, isIPBan=%b, Reason=%s, BanTime=%s]", getHookName(), banned, moderator, ipban, reason, bantime);
     }
 }

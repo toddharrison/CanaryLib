@@ -26,10 +26,12 @@ public final class LoadWorldHook extends Hook {
         return world;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
-        return "LoadWorldHook[World=" + world.getFqName() + "]";
+        return String.format("%s[World=%s]", getHookName(), world);
     }
 
 }

@@ -18,18 +18,22 @@ public final class VehicleExitHook extends CancelableHook {
         this.enteringEntity = entity;
     }
 
-    /** @return the vehicle */
+    /**
+     * @return the vehicle
+     */
     public Vehicle getVehicle() {
         return vehicle;
     }
 
-    /** @return the enteringEntity */
+    /**
+     * @return the enteringEntity
+     */
     public LivingBase getEntity() {
         return enteringEntity;
     }
 
     @Override
     public final String toString() {
-        return String.format("%s[Vehicle=%s, Entity=%s]", getName(), vehicle, enteringEntity);
+        return String.format("%s[Vehicle=%s, Entity=%s]", getHookName(), vehicle, enteringEntity);
     }
 }

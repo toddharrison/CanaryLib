@@ -23,12 +23,9 @@ public final class CraftHook extends CancelableHook {
     /**
      * Creates a new CraftHook.
      *
-     * @param player
-     *         The crafting player.
-     * @param craftingMatrix
-     *         The crafting inventory used.
-     * @param recipeResult
-     *         The recipe's result.
+     * @param player         The crafting player.
+     * @param craftingMatrix The crafting inventory used.
+     * @param recipeResult   The recipe's result.
      */
     public CraftHook(Player player, CraftingMatrix craftingMatrix, Item recipeResult) {
         this.player = player;
@@ -72,8 +69,7 @@ public final class CraftHook extends CancelableHook {
     /**
      * Sets the recipe's result.
      *
-     * @param recipeResult
-     *         The recipe's result.
+     * @param recipeResult The recipe's result.
      */
     public void setRecipeResult(Item recipeResult) {
         this.recipeResult = recipeResult;
@@ -90,6 +86,6 @@ public final class CraftHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, Matrix=%s, Recipe=%s, Result=%s]", getName(), player, craftingMatrix, match, recipeResult);
+        return String.format("%s[Player=%s, Matrix=%s, Recipe=%s, Result=%s]", getHookName(), player, craftingMatrix, match, recipeResult);
     }
 }

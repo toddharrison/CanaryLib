@@ -17,10 +17,8 @@ public final class PotionEffectFinishHook extends Hook {
     /**
      * Constructs a new PotionEffectFinshHook
      *
-     * @param entity
-     *         the {@link LivingBase} having the {@link PotionEffect} finishing it's effect
-     * @param effect
-     *         the {@link PotionEffect} being finished
+     * @param entity the {@link LivingBase} having the {@link PotionEffect} finishing it's effect
+     * @param effect the {@link PotionEffect} being finished
      */
     public PotionEffectFinishHook(LivingBase entity, PotionEffect effect) {
         this.entity = entity;
@@ -47,6 +45,6 @@ public final class PotionEffectFinishHook extends Hook {
 
     @Override
     public final String toString() {
-        return String.format("%s[EntityLiving=%s, PotionEffect=%s]", getName(), entity, effect);
+        return String.format("%s[EntityLiving=%s, PotionEffect=%s]", getHookName(), entity, effect);
     }
 }

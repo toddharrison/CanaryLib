@@ -39,6 +39,6 @@ public final class BlockDestroyHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, Block=%s]", getName(), player, block);
+        return String.format("%s[Player=%s, Block=%s]", getHookName(), player, block);
     }
 }

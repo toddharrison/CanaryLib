@@ -38,7 +38,7 @@ public final class EntityMoveHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Entity=%s, From=%s, To=%s]", getName(), getEntity(), getFrom(), getTo());
+        return String.format("%s[Entity=%s, From=%s, To=%s]", getHookName(), getEntity(), getFrom(), getTo());
     }
 
 }
