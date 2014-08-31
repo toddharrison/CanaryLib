@@ -37,7 +37,7 @@ public class BackboneBans extends Backbone {
 
         try {
             HashMap<String, Object> filter = new HashMap<String, Object>();
-            filter.put("player", ban.getSubject());
+            filter.put("uuid", ban.getUUID());
             Database.get().load(data, filter);
         }
         catch (DatabaseReadException e) {
@@ -59,6 +59,7 @@ public class BackboneBans extends Backbone {
         }
         BanDataAccess data = new BanDataAccess();
 
+        data.uuid = ban.getUUID();
         data.player = ban.getSubject();
         data.banningPlayer = ban.getBanningPlayer();
         data.unbanDate = ban.getTimestamp();
@@ -73,15 +74,15 @@ public class BackboneBans extends Backbone {
     }
 
     /**
-     * Lift a ban that was issued for the player with the given name
+     * Lift a ban that was issued for the player with the given uuid
      *
-     * @param subject
-     *         Player name to unban.
+     * @param uuid
+     *         Player uuid to unban.
      */
-    public void liftBan(String subject) {
+    public void liftBan(String uuid) {
         try {
             HashMap<String, Object> filter = new HashMap<String, Object>();
-            filter.put("player", subject);
+            filter.put("uuid", uuid);
             Database.get().remove(schema, filter);
         }
         catch (DatabaseWriteException e) {
@@ -107,20 +108,20 @@ public class BackboneBans extends Backbone {
     }
 
     /**
-     * Get a ban for this player name.
+     * Get a ban for this player uuid.
      * This may return null if the ban does not exist
      *
-     * @param name
-     *         Ban for the player with the given name or null if none.
+     * @param uuid
+     *         Ban for the player with the given uuid or null if none.
      *
      * @return Returns a ban object if that ban was found, null otherwise
      */
-    public Ban getBan(String name) {
+    public Ban getBan(String uuid) {
         BanDataAccess data = new BanDataAccess();
 
         try {
             HashMap<String, Object> filter = new HashMap<String, Object>();
-            filter.put("player", name);
+            filter.put("uuid", uuid);
             Database.get().load(data, filter);
         }
         catch (DatabaseReadException e) {
@@ -130,6 +131,7 @@ public class BackboneBans extends Backbone {
             return null;
         }
         Ban newBan = new Ban();
+        newBan.setUUID(data.uuid);
         newBan.setIp(data.ip);
         newBan.setIsIpBan(!data.ip.contains("xxx"));
         newBan.setReason(data.reason);
@@ -150,9 +152,10 @@ public class BackboneBans extends Backbone {
 
         try {
             HashMap<String, Object> filter = new HashMap<String, Object>();
-            filter.put("player", ban.getSubject());
+            filter.put("uuid", ban.getUUID());
             Database.get().load(data, filter);
             if (data.hasData()) {
+                data.uuid = ban.getUUID();
                 data.banningPlayer = ban.getBanningPlayer();
                 data.ip = ban.getIp();
                 data.player = ban.getSubject();
@@ -185,7 +188,8 @@ public class BackboneBans extends Backbone {
             for (DataAccess da : dataList) {
                 BanDataAccess data = (BanDataAccess) da;
                 Ban ban = new Ban();
-
+                
+                ban.setUUID(data.uuid);
                 ban.setBanningPlayer(data.banningPlayer);
                 ban.setIp(data.ip);
                 ban.setIsIpBan(!data.ip.contains("xxx"));

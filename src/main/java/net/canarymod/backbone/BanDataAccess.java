@@ -15,6 +15,10 @@ public class BanDataAccess extends DataAccess {
         super("ban");
     }
 
+    /** Player uuid for this ban. */
+    @Column(columnName = "uuid", dataType = DataType.STRING)
+    public String uuid;
+
     /** Player name for this ban. */
     @Column(columnName = "player", dataType = DataType.STRING)
     public String player;

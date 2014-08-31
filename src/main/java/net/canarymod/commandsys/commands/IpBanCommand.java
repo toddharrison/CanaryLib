@@ -50,6 +50,7 @@ public class IpBanCommand implements NativeCommand {
         ban.setBanningPlayer(caller.getName());
         ban.setIsIpBan(true);
         if (ref != null) {
+            ban.setUUID(ref.getUUIDString());
             ban.setSubject(ref.getName());
             ban.setIp(ref.getIP());
         }

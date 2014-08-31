@@ -132,7 +132,7 @@ public class BanManager {
      * banned, false otherwise. THIS WILL ALSO WORK FOR IP!
      *
      * @param subject
-     *         the name/ip of the subject who was banned
+     *         the uuid/ip of the subject who was banned
      *
      * @return {@code true} if banned; {@code false} if not
      */
@@ -140,7 +140,7 @@ public class BanManager {
         Ban test = null;
 
         for (Ban b : bans) {
-            if (b.getSubject().equals(subject)) {
+            if (b.getUUID().equals(subject)) {
                 test = b;
                 break;
             }
@@ -157,7 +157,7 @@ public class BanManager {
                 backbone.liftIpBan(test.getIp());
             }
             else {
-                backbone.liftBan(test.getSubject());
+                backbone.liftBan(test.getUUID());
             }
             bans.remove(test);
             return false;
@@ -192,9 +192,26 @@ public class BanManager {
      *
      * @return the Ban if exists; {@code null} otherwise
      */
-    public Ban getBan(String player) {
+    public Ban getBanFromName(String player) {
         for (Ban b : bans) {
             if (b.getSubject().equalsIgnoreCase(player)) {
+                return b;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Gets a {@link Ban} for a given player's uuid
+     *
+     * @param player
+     *         the uuid of the player
+     *
+     * @return the Ban if exists; {@code null} otherwise
+     */
+    public Ban getBan(String uuid) {
+        for (Ban b : bans) {
+            if (b.getUUID().equalsIgnoreCase(uuid)) {
                 return b;
             }
         }
@@ -205,13 +222,13 @@ public class BanManager {
      * Unban a subject, player or ip
      *
      * @param subject
-     *         the name/ip of the subject
+     *         the uuid/ip of the subject
      */
     public void unban(String subject) {
         Ban test = null;
 
         for (Ban b : bans) {
-            if (b.getSubject().equals(subject)) {
+            if (b.getUUID().equals(subject)) {
                 test = b;
                 break;
             }
@@ -227,7 +244,7 @@ public class BanManager {
             backbone.liftIpBan(test.getIp());
         }
         else {
-            backbone.liftBan(test.getSubject());
+            backbone.liftBan(test.getUUID());
         }
         bans.remove(test);
     }
@@ -243,7 +260,7 @@ public class BanManager {
 
         for (Ban b : bans) {
             if (!b.isIpBan()) {
-                if (b.getSubject().equals(player.getName())) {
+                if (b.getUUID().equals(player.getUUID())) {
                     test = b;
                     break;
                 }
@@ -252,7 +269,7 @@ public class BanManager {
         if (test == null) {
             return;
         }
-        backbone.liftBan(test.getSubject());
+        backbone.liftBan(test.getUUID());
         bans.remove(test);
     }
 
