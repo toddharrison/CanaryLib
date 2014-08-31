@@ -6,13 +6,9 @@ import net.canarymod.api.world.World;
 import net.canarymod.config.Configuration;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 /**
  * Set of miscellaneous tools
@@ -23,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class ToolBox {
 
     private static TimeZone tz_GMT = TimeZone.getTimeZone("GMT");
+    private static Pattern uuid = Pattern.compile("[0-9a-f]{8}\\-([0-9a-f]{4}\\-){3}[0-9a-f]{12}");
 
     /**
      * Merge 2 arrays. This will just merge two arrays.
@@ -405,5 +402,9 @@ public class ToolBox {
         int mid = Math.max(0, level - 15);
         int high = Math.max(0, level - 30);
         return level * 17 + (mid * (mid - 1) / 2) * 3 + (high * (high - 1) / 2) * 7;
+    }
+
+    public static boolean isUUID(String uuid) {
+        return ToolBox.uuid.matcher(uuid).matches();
     }
 }

@@ -1,6 +1,7 @@
 package net.canarymod.user;
 
 import net.canarymod.Canary;
+import net.canarymod.ToolBox;
 import net.canarymod.api.PlayerReference;
 import net.canarymod.backbone.BackboneOperators;
 
@@ -72,21 +73,21 @@ public class OperatorsProvider {
     }
 
     /**
-     * Check if a given player is opped.
+     * Check if a given Player name or UUID is opped.
      *
-     * @param player
+     * @param nameOrUUID
      *         the uuid/name of a player
      *
      * @return true if player is opped, false otherwise
      */
-    public boolean isOpped(String player) {
+    public boolean isOpped(String nameOrUUID) {
         // Did UUID get passed?
-        if (player.matches("[0-9a-f]{8}\\-([0-9a-f]{4}\\-){3}[0-9a-f]{12}")) {
-            return ops.contains(player);
+        if (ToolBox.isUUID(nameOrUUID)) {
+            return ops.contains(nameOrUUID);
         }
         else if (Canary.getServer() != null) { // Like at start up...
             // Try to get a UUID reference from a known player
-            return isOpped(Canary.getServer().matchKnownPlayer(player));
+            return isOpped(Canary.getServer().matchKnownPlayer(nameOrUUID));
         }
         else {
             return false;
