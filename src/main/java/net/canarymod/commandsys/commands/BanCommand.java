@@ -43,6 +43,7 @@ public class BanCommand implements NativeCommand {
         ban.setTimestamp(timestamp);
         ban.setBanningPlayer(caller.getName());
         if (ref != null) {
+            ban.setUUID(ref.getUUIDString());
             ban.setSubject(ref.getName());
             Canary.bans().issueBan(ban);
             Canary.hooks().callHook(new BanHook(ref, ref.getIP(), caller, reason, timestamp));

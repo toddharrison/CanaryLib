@@ -8,7 +8,7 @@ import net.canarymod.api.PlayerReference;
  * @author Chris Ksoll
  */
 public class Ban {
-    private String subject, ip, reason, banningPlayer;
+    private String uuid, subject, ip, reason, banningPlayer;
     private boolean isIpBan = false;
 
     /**
@@ -23,6 +23,7 @@ public class Ban {
      * It's highly recommended to override the values before saving to db
      */
     public Ban() {
+        setUUID("f84c6a790a4e45e0879bcd49ebd4c4e2");
         setSubject("John Doe");
         setIp("xxx.xxx.xxx");
         setReason("Impersonating fictive characters");
@@ -31,6 +32,7 @@ public class Ban {
     }
 
     public Ban(PlayerReference player, String reason, boolean ipBan) {
+        setUUID(player.getUUIDString());
         setSubject(player.getName());
         if (ipBan) {
             setIp(player.getIP());
@@ -45,6 +47,7 @@ public class Ban {
     }
 
     public Ban(PlayerReference player, String reason, long timestamp, boolean ipBan) {
+        setUUID(player.getUUIDString());
         setSubject(player.getName());
         if (ipBan) {
             setIp(player.getIP());
@@ -187,5 +190,23 @@ public class Ban {
      */
     public void setBanningPlayer(String banningPlayer) {
         this.banningPlayer = banningPlayer;
+    }
+    
+    /**
+     * Gets the UUID of the user for this ban.
+     * 
+     * @return UUID of user
+     */
+    public String getUUID() {
+        return this.uuid;
+    }
+    
+    /**
+     * Sets the UUID for the ban on this user
+     * 
+     * @param uuid 
+     */
+    public void setUUID(String uuid) {
+        this.uuid = uuid;
     }
 }
