@@ -109,7 +109,7 @@ public final class NPCBehaviorRegistry {
             Iterator<NPCBehaviorRegisteredListener> itr = registered.values().iterator();
             while (itr.hasNext()) {
                 NPCBehaviorRegisteredListener nbrl = itr.next();
-                if (nbrl.isFor(npc)) {
+                if (nbrl.isFor(npc) && clazz.equals(nbrl.getListener().getClass())) {
                     listener = nbrl.getListener();
                     break;
                 }
