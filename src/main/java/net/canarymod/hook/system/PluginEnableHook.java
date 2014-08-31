@@ -25,4 +25,7 @@ public class PluginEnableHook extends Hook {
         return plugin;
     }
 
+    public final String toString() {
+        return String.format("%s[Plugin=%s]", getHookName(), plugin);
+    }
 }

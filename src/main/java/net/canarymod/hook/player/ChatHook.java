@@ -56,7 +56,8 @@ public final class ChatHook extends CancelableHook {
     /**
      * Change the message completely
      *
-     * @param message the message to set
+     * @param message
+     *         the message to set
      */
     public void setMessage(String message) {
         placeholders.put("%message", message);
@@ -65,7 +66,8 @@ public final class ChatHook extends CancelableHook {
     /**
      * Set the name that is used for this player
      *
-     * @param name the display name to set
+     * @param name
+     *         the display name to set
      */
     public void setPlayerDisplayName(String name) {
         placeholders.put("%name", name);
@@ -83,7 +85,8 @@ public final class ChatHook extends CancelableHook {
     /**
      * Append the given String to the existing message
      *
-     * @param toAppend the message string to append
+     * @param toAppend
+     *         the message string to append
      */
     public void appendToMessage(String toAppend) {
         placeholders.put("%message", getMessage().concat(toAppend));
@@ -92,7 +95,8 @@ public final class ChatHook extends CancelableHook {
     /**
      * Override the players chat prefix
      *
-     * @param newPrefix the prefix to be set
+     * @param newPrefix
+     *         the prefix to be set
      */
     public void setPrefix(String newPrefix) {
         placeholders.put("%prefix", newPrefix);
@@ -110,7 +114,8 @@ public final class ChatHook extends CancelableHook {
     /**
      * Override the list of receivers
      *
-     * @param receiverList the list of {@link Player} receivers
+     * @param receiverList
+     *         the list of {@link Player} receivers
      */
     public void setReceiverList(ArrayList<Player> receiverList) {
         receivers = receiverList;
@@ -119,7 +124,8 @@ public final class ChatHook extends CancelableHook {
     /**
      * Remove a {@link Player} from the receiver list
      *
-     * @param player the {@link Player} to remove
+     * @param player
+     *         the {@link Player} to remove
      */
     public void removeFromReceiverList(Player player) {
         receivers.remove(player);
@@ -128,7 +134,8 @@ public final class ChatHook extends CancelableHook {
     /**
      * Add a {@link Player} to the receiver list. This better not be null!
      *
-     * @param player the {@link Player} to add
+     * @param player
+     *         the {@link Player} to add
      */
     public void addToReceiverList(Player player) {
         receivers.add(player);
@@ -151,7 +158,9 @@ public final class ChatHook extends CancelableHook {
     /**
      * Override the default chatting format.
      *
-     * @param format the format to set
+     * @param format
+     *         the format to set
+     *
      * @see ChatHook#getFormat()
      */
     public void setFormat(String format) {
@@ -161,8 +170,10 @@ public final class ChatHook extends CancelableHook {
     /**
      * Set or override a placeholder and a value
      *
-     * @param placeholder the palceholder, such as %name or %extraData - something to your liking
-     * @param value       The value to substitute the placeholder with when the chat message is dispatched
+     * @param placeholder
+     *         the palceholder, such as %name or %extraData - something to your liking
+     * @param value
+     *         The value to substitute the placeholder with when the chat message is dispatched
      */
     public void setPlaceholder(String placeholder, String value) {
         placeholders.put(placeholder, value);
@@ -171,7 +182,8 @@ public final class ChatHook extends CancelableHook {
     /**
      * Remove a specified placeholder value.
      *
-     * @param placeholder the placeholder to remove
+     * @param placeholder
+     *         the placeholder to remove
      */
     public void removePlaceholder(String placeholder) {
         placeholders.remove(placeholder);
@@ -201,6 +213,6 @@ public final class ChatHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, Receivers=%s, Message=%s]", getHookName(), player, receivers, placeholders.get("%message"));
+        return String.format("%s[Player=%s, Receivers=%s, Message=%s, Format=%s, Placeholders=%s]", getHookName(), player, receivers, placeholders.get("%message"), format, placeholders);
     }
 }
