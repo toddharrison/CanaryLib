@@ -1,6 +1,9 @@
 package net.canarymod.bansystem;
 
+import net.canarymod.Canary;
+import net.canarymod.ToolBox;
 import net.canarymod.api.PlayerReference;
+import net.canarymod.backbone.BackboneBans;
 
 /**
  * Contains information regarding a ban
@@ -198,7 +201,11 @@ public class Ban {
      * @return UUID of user
      */
     public String getUUID() {
-        return this.uuid == null ? "" : this.uuid;
+        if (this.uuid == null) {
+            this.uuid = ToolBox.usernameToUUID(this.subject);
+            new BackboneBans().updateBan(this);
+        }
+        return this.uuid;
     }
     
     /**
