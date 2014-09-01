@@ -449,6 +449,10 @@ public class ToolBox {
         catch (Exception ex) {
             Canary.log.warn("Failed to translate Username into a UUID");
         }
+        if (uuid != null) {
+            // Add the hyphens back in
+            uuid = uuid.substring(0, 8) + "-" + uuid.substring(8, 12) + "-" + uuid.substring(12, 16) + "-" + uuid.substring(16, 20) + "-" + uuid.substring(20, 32);
+        }
         return uuid;
     }
 }
