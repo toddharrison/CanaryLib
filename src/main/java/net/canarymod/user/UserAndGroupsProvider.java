@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import static net.canarymod.Canary.log;
+import net.canarymod.ToolBox;
 
 /**
  * Access to the backbone for users and groups
@@ -214,12 +215,12 @@ public class UserAndGroupsProvider {
      * Returns a String array containing data in this order:
      * Prefix, Group, isMuted
      *
-     * @param name
+     * @param uuid
      *
      * @return
      */
-    public String[] getPlayerData(String name) {
-        String[] data = playerData.get(name);
+    public String[] getPlayerData(String uuid) {
+        String[] data = playerData.get(uuid);
 
         if (data == null) {
             data = new String[3];
@@ -258,7 +259,7 @@ public class UserAndGroupsProvider {
         }
         content[1] = player.getGroup().getName();
         content[2] = Boolean.toString(player.isMuted());
-        playerData.put(player.getName(), content);
+        playerData.put(player.getUUIDString(), content);
     }
 
     /**
@@ -269,21 +270,22 @@ public class UserAndGroupsProvider {
      * @param group
      */
     public void addOfflinePlayer(String name, String group) {
-        backboneUsers.addUser(name, group);
+        String uuid = ToolBox.usernameToUUID(name);
+        backboneUsers.addUser(uuid, group);
         String[] content = new String[3];
         content[0] = null;
         content[1] = group;
         content[2] = Boolean.toString(false);
-        playerData.put(name, content);
+        playerData.put(uuid, content);
     }
 
     public void addOrUpdateOfflinePlayer(OfflinePlayer player) {
-        if (!playerData.containsKey(player.getName())) {
-            addOfflinePlayer(player.getName(), player.getGroup().getName());
+        if (!playerData.containsKey(player.getUUIDString())) {
+            addOfflinePlayer(player.getUUIDString(), player.getGroup().getName());
         }
         else {
             backboneUsers.updatePlayer(player);
-            playerData.remove(player.getName());
+            playerData.remove(player.getUUIDString());
             String[] data = new String[3];
             String prefix = player.getPrefix();
             if (player.getGroup().getPrefix().equals(prefix)) {
@@ -294,7 +296,7 @@ public class UserAndGroupsProvider {
             }
             data[1] = player.getGroup().getName();
             data[2] = Boolean.toString(player.isMuted());
-            playerData.put(player.getName(), data);
+            playerData.put(player.getUUIDString(), data);
         }
     }
 
@@ -306,12 +308,12 @@ public class UserAndGroupsProvider {
     }
 
     /**
-     * Remove permissions and other data for this player from database
+     * Remove permissions and other data for this player from uuid
      *
-     * @param player
+     * @param uuid UUID for the player
      */
-    public void removeUserData(String player) {
-        backboneUsers.removeUser(player);
+    public void removeUserData(String uuid) {
+        backboneUsers.removeUser(uuid);
     }
 
     public void reloadUsers() {
@@ -336,11 +338,11 @@ public class UserAndGroupsProvider {
     /**
      * Returns all additional groups for a player
      *
-     * @param player
+     * @param uuid
      *
      * @return
      */
-    public Group[] getModuleGroupsForPlayer(String player) {
-        return backboneUsers.getModularGroups(player);
+    public Group[] getModuleGroupsForPlayer(String uuid) {
+        return backboneUsers.getModularGroups(uuid);
     }
 }

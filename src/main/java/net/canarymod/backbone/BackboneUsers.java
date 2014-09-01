@@ -13,8 +13,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static net.canarymod.Canary.log;
+import net.canarymod.ToolBox;
 
 /**
  * Backbone to the Player System. This contains NO logic, it is only the data
@@ -34,6 +37,7 @@ public class BackboneUsers extends Backbone {
         catch (DatabaseWriteException e) {
             log.error("Failed to update database schema", e);
         }
+        this.validateUsers();
     }
 
     /**
@@ -43,7 +47,7 @@ public class BackboneUsers extends Backbone {
      *         Player to add to the data source.
      */
     public void addUser(Player player) {
-        if (userExists(player.getName())) {
+        if (userExists(player.getUUIDString())) {
             log.warn("Player " + player.getName() + " already exists. Updating it instead!");
             updatePlayer(player);
             return;
@@ -53,6 +57,7 @@ public class BackboneUsers extends Backbone {
         for (Group g : player.getPlayerGroups()) {
             groupNames.add(g.getName());
         }
+        data.uuid = player.getUUIDString();
         data.name = player.getName();
         data.group = groupNames.get(0);
         groupNames.remove(0);
@@ -76,21 +81,21 @@ public class BackboneUsers extends Backbone {
 
     /**
      * Used to update a player. This can not override existing player entries.
-     * If there is a player with the same name, nothing will happen
+     * If there is a player with the uuid name, nothing will happen
      *
-     * @param name
-     *         the player's name
+     * @param uuid
+     *         the player's uuid
      * @param group
      *         the group's name
      */
-    public void addUser(String name, String group) {
-        if (userExists(name)) {
-            log.warn("Player " + name + " already exists. Skipping!");
+    public void addUser(String uuid, String group) {
+        if (userExists(uuid)) {
+            log.warn("Player " + uuid + " already exists. Skipping!");
             return;
         }
         PlayerDataAccess data = new PlayerDataAccess();
 
-        data.name = name;
+        data.uuid = uuid;
         data.group = group;
         data.prefix = null;
         data.isMuted = false;
@@ -106,17 +111,17 @@ public class BackboneUsers extends Backbone {
     /**
      * Get whether a user exists
      *
-     * @param player
+     * @param uuid
      *         Player to check if they exist.
      *
      * @return true if user exists, false otherwise
      */
-    private boolean userExists(String player) {
+    private boolean userExists(String uuid) {
         PlayerDataAccess data = new PlayerDataAccess();
 
         try {
             HashMap<String, Object> filter = new HashMap<String, Object>();
-            filter.put("name", player);
+            filter.put("uuid", uuid);
             Database.get().load(data, filter);
         }
         catch (DatabaseReadException e) {
@@ -129,13 +134,13 @@ public class BackboneUsers extends Backbone {
     /**
      * Remove a player from the data source
      *
-     * @param player
+     * @param uuid
      *         Player to remove from the data source.
      */
-    public void removeUser(String player) {
+    public void removeUser(String uuid) {
         try {
             HashMap<String, Object> filter = new HashMap<String, Object>();
-            filter.put("name", player);
+            filter.put("uuid", uuid);
             Database.get().remove(schema, filter);
         }
         catch (DatabaseWriteException e) {
@@ -155,6 +160,7 @@ public class BackboneUsers extends Backbone {
         for (Group g : player.getPlayerGroups()) {
             groupNames.add(g.getName());
         }
+        data.uuid = player.getUUIDString();
         data.name = player.getName();
         data.group = groupNames.get(0);
         groupNames.remove(0);
@@ -189,7 +195,7 @@ public class BackboneUsers extends Backbone {
 
         try {
             HashMap<String, Object> filter = new HashMap<String, Object>();
-            filter.put("name", player.getName());
+            filter.put("uuid", player.getUUID());
             Database.get().load(data, filter);
         }
         catch (DatabaseReadException e) {
@@ -202,6 +208,7 @@ public class BackboneUsers extends Backbone {
         for (Group g : player.getPlayerGroups()) {
             groupNames.add(g.getName());
         }
+        data.uuid = player.getUUIDString();
         data.name = player.getName();
         data.group = groupNames.get(0);
         groupNames.remove(0);
@@ -216,7 +223,7 @@ public class BackboneUsers extends Backbone {
         }
         try {
             HashMap<String, Object> filter = new HashMap<String, Object>();
-            filter.put("name", player.getName());
+            filter.put("uuid", player.getUUID());
             Database.get().update(data, filter);
         }
         catch (DatabaseWriteException e) {
@@ -244,7 +251,7 @@ public class BackboneUsers extends Backbone {
                 row[0] = data.prefix;
                 row[1] = data.group;
                 row[2] = Boolean.toString(data.isMuted);
-                players.put(data.name, row);
+                players.put(data.uuid == null ? "" : data.uuid, row);
             }
             return players;
         }
@@ -258,17 +265,17 @@ public class BackboneUsers extends Backbone {
     /**
      * Returns the additional groups for the given player
      *
-     * @param player
+     * @param uuid
      *         the player's name
      *
      * @return Group array
      */
-    public Group[] getModularGroups(String player) {
+    public Group[] getModularGroups(String uuid) {
         PlayerDataAccess data = new PlayerDataAccess();
 
         try {
             HashMap<String, Object> filter = new HashMap<String, Object>();
-            filter.put("name", player);
+            filter.put("uuid", uuid);
             Database.get().load(data, filter);
         }
         catch (DatabaseReadException e) {
@@ -288,16 +295,19 @@ public class BackboneUsers extends Backbone {
         PlayerDataAccess player = new PlayerDataAccess();
 
         player.group = "players";
+        player.uuid = "";
         player.name = "Bob the Builder";
 
         PlayerDataAccess mod = new PlayerDataAccess();
 
         mod.group = "mods";
+        mod.uuid = "";
         mod.name = "Moderator Person";
 
         PlayerDataAccess admin = new PlayerDataAccess();
 
         admin.group = "admins";
+        admin.uuid = "";
         admin.name = "Evil Uber Administrator";
 
         try {
@@ -306,6 +316,35 @@ public class BackboneUsers extends Backbone {
             Database.get().insert(admin);
         }
         catch (DatabaseWriteException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Validate all user entries in the database.
+     * At this time it merely checks that all entries have a valid UUID.  If an
+     * entry does not, it attempts to retrieve it from Mojang's web service and
+     */
+    public void validateUsers() {
+        List<DataAccess> daos = new ArrayList<DataAccess>();
+
+        try {
+            Database.get().loadAll(schema, daos, new HashMap<String, Object>());
+            for (DataAccess dao : daos) {
+                PlayerDataAccess data = (PlayerDataAccess) dao;
+                if (data.uuid != null && !data.uuid.trim().equals("")) continue;
+                    String uuid = ToolBox.usernameToUUID(data.name);
+                    data.uuid = uuid == null ? "" : uuid;
+                    HashMap<String, Object> filter = new HashMap<String, Object>();
+                    filter.put("name", data.name);
+                    try {
+                        Database.get().update(data, filter);
+                    } catch (DatabaseWriteException e) {
+                        log.error(e.getMessage(), e);
+                    }
+            }
+        }
+        catch (DatabaseReadException e) {
             log.error(e.getMessage(), e);
         }
     }
