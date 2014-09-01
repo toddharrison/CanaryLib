@@ -198,7 +198,7 @@ public class Ban {
      * @return UUID of user
      */
     public String getUUID() {
-        return this.uuid;
+        return this.uuid == null ? "" : this.uuid;
     }
     
     /**
