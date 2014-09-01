@@ -131,6 +131,11 @@
             <groupId>com.mojang</groupId>
             <artifactId>authlib</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1.1</version>
+        </dependency>
     </dependencies>
     <build>
         <defaultGoal>clean install</defaultGoal>

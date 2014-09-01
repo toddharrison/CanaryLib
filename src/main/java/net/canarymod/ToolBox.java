@@ -4,7 +4,13 @@ import net.canarymod.api.world.DimensionType;
 import net.canarymod.api.world.UnknownWorldException;
 import net.canarymod.api.world.World;
 import net.canarymod.config.Configuration;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
+import java.io.DataOutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -406,5 +412,43 @@ public class ToolBox {
 
     public static boolean isUUID(String uuid) {
         return ToolBox.uuid.matcher(uuid).matches();
+    }
+
+    /**
+     * Ask's Mojang's API for a UUID for a give UserName
+     *
+     * @param username
+     *         the user name to get a UUID for
+     *
+     * @return user's uuid or null if not found/on error
+     */
+    public static String usernameToUUID(String username) {
+        String uuid = null;
+        try {
+            URL url = new URL("https://api.mojang.com/profiles/page/1");
+            HttpURLConnection uc = (HttpURLConnection) url.openConnection();
+            uc.setRequestMethod("POST");
+            uc.setUseCaches(false);
+            uc.setDefaultUseCaches(false);
+            uc.addRequestProperty("User-Agent", "Minecraft");
+            uc.addRequestProperty("Cache-Control", "no-cache, no-store, must-revalidate");
+            uc.addRequestProperty("Pragma", "no-cache");
+            uc.setRequestProperty("Content-Type", "application/json");
+            uc.setDoOutput(true);
+            DataOutputStream wr = new DataOutputStream(uc.getOutputStream());
+            wr.writeBytes("[{\"name\":\"" + username + "\", \"agent\":\"Minecraft\"}]");
+            wr.flush();
+            wr.close();
+
+            // Parse it
+            String json = new Scanner(uc.getInputStream(), "UTF-8").useDelimiter("\\A").next();
+            JSONParser parser = new JSONParser();
+            Object obj = parser.parse(json);
+            uuid = (String) ((JSONObject) ((JSONArray) ((JSONObject) obj).get("profiles")).get(0)).get("id");
+        }
+        catch (Exception ex) {
+            Canary.log.warn("Failed to translate Username into a UUID");
+        }
+        return uuid;
     }
 }
