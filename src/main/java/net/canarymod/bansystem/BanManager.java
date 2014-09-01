@@ -1,13 +1,13 @@
 package net.canarymod.bansystem;
 
-import java.util.ArrayList;
-import java.util.List;
-import net.canarymod.Canary;
-import static net.canarymod.Canary.log;
 import net.canarymod.ToolBox;
-import net.canarymod.api.PlayerReference;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.backbone.BackboneBans;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static net.canarymod.Canary.log;
 
 /**
  * Used to issue bans
@@ -144,10 +144,6 @@ public class BanManager {
                 test = b;
                 break;
             }
-            else if (b.getSubject().equals(subject)) {
-                test = b;
-                break;
-            }
             else if (b.getIp().equals(subject)) {
                 test = b;
                 break;
@@ -189,23 +185,6 @@ public class BanManager {
     }
 
     /**
-     * Check if the given UUID is banned
-     *
-     * @param uuid
-     *         the UUID of the plyer
-     *
-     * @return {@code true} if banned; {@code false} if not
-     */
-    public boolean isUUIDBanned(String uuid) {
-        for (Ban b : bans) {
-            if (b.getUUID().equals(uuid)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Gets a {@link Ban} for a given player's name
      *
      * @param player
@@ -230,20 +209,10 @@ public class BanManager {
      *
      * @return the Ban if exists; {@code null} otherwise
      */
-    public Ban getBan(String nameOrUUID) {
+    public Ban getBan(String uuid) {
         for (Ban b : bans) {
-            if (ToolBox.isUUID(nameOrUUID)) {
-                if (b.getUUID().equalsIgnoreCase(nameOrUUID)) {
-                    return b;
-                }
-            }
-            else if (Canary.getServer() != null) {             
-                PlayerReference p = Canary.getServer().matchKnownPlayer(nameOrUUID);
-                if (p != null) {
-                    if (b.getSubject().equalsIgnoreCase(nameOrUUID)) {
-                        return b;
-                    }
-                }
+            if (b.getUUID().equalsIgnoreCase(uuid)) {
+                return b;
             }
         }
         return null;
@@ -253,17 +222,13 @@ public class BanManager {
      * Unban a subject, player or ip
      *
      * @param subject
-     *         the uuid/playername/ip of the subject
+     *         the uuid/ip of the subject
      */
     public void unban(String subject) {
         Ban test = null;
 
         for (Ban b : bans) {
             if (b.getUUID().equals(subject)) {
-                test = b;
-                break;
-            }
-            else if (b.getSubject().equals(subject)) {
                 test = b;
                 break;
             }

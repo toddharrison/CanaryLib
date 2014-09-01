@@ -21,24 +21,22 @@ public class UnbanCommand implements NativeCommand {
             return;
         }
         Player p = Canary.getServer().getPlayer(cmd[1]);
-        String subject = null;
-        /* Check for UUID ban */
+        String uuid = null;
         if (p != null) {
-            subject = p.getUUIDString();
-            if (Canary.bans().isBanned(subject)) {
-                Canary.bans().unban(subject);
-                caller.message(Colors.YELLOW + Translator.translateAndFormat("unban success", cmd[1]));
-                return;
+            uuid = p.getUUIDString();
+        }
+        else {
+            OfflinePlayer op = Canary.getServer().getOfflinePlayer(cmd[1]);
+            if (op != null) {
+                uuid = op.getUUIDString();
             }
         }
-        
-        /* check for ip/playername ban */
-        if (Canary.bans().isBanned(cmd[1])) {
-            Canary.bans().unban(subject);
+        if (uuid != null) {
+            Canary.bans().unban(cmd[1]);
             caller.message(Colors.YELLOW + Translator.translateAndFormat("unban success", cmd[1]));
-            return;
         }
-        // TODO tell them something wasn't valid
-        
+        else {
+            // TODO tell them something wasn't valid
+        }
     }
 }
