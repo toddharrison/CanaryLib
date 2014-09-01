@@ -9,8 +9,10 @@ import net.canarymod.database.exceptions.DatabaseWriteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import net.canarymod.Canary;
 
 import static net.canarymod.Canary.log;
+import net.canarymod.ToolBox;
 
 /**
  * Backbone to the ban System. This contains NO logic, it is only the data
@@ -79,10 +81,15 @@ public class BackboneBans extends Backbone {
      * @param uuid
      *         Player uuid to unban.
      */
-    public void liftBan(String uuid) {
+    public void liftBan(String nameOrUUID) {
         try {
             HashMap<String, Object> filter = new HashMap<String, Object>();
-            filter.put("uuid", uuid);
+            if (ToolBox.isUUID(nameOrUUID)) {
+                filter.put("uuid", nameOrUUID);
+            }
+            else if (Canary.getServer() != null) {             
+                filter.put("player", Canary.getServer().matchKnownPlayer(nameOrUUID));
+            }
             Database.get().remove(schema, filter);
         }
         catch (DatabaseWriteException e) {
@@ -116,12 +123,17 @@ public class BackboneBans extends Backbone {
      *
      * @return Returns a ban object if that ban was found, null otherwise
      */
-    public Ban getBan(String uuid) {
+    public Ban getBan(String nameOrUUID) {
         BanDataAccess data = new BanDataAccess();
 
         try {
             HashMap<String, Object> filter = new HashMap<String, Object>();
-            filter.put("uuid", uuid);
+            if (ToolBox.isUUID(nameOrUUID)) {
+                filter.put("uuid", nameOrUUID);
+            }
+            else if (Canary.getServer() != null) {             
+                filter.put("player", Canary.getServer().matchKnownPlayer(nameOrUUID));
+            }
             Database.get().load(data, filter);
         }
         catch (DatabaseReadException e) {
