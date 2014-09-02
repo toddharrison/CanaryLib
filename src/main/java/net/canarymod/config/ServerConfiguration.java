@@ -26,20 +26,26 @@ public class ServerConfiguration implements ConfigurationContainer {
         verifyConfig();
     }
 
-    /** Reloads the configuration file */
+    /**
+     * Reloads the configuration file
+     */
     @Override
     public void reload() {
         cfg.reload();
         verifyConfig();
     }
 
-    /** Get the configuration file */
+    /**
+     * Get the configuration file
+     */
     @Override
     public PropertiesFile getFile() {
         return cfg;
     }
 
-    /** Creates the default configuration */
+    /**
+     * Creates the default configuration
+     */
     private void verifyConfig() {
         cfg.getBoolean("announce-player-achievements", true);
         cfg.setComments("announce-player-achievements", "Sets whether to inform all of a Player's Achievement");
@@ -56,8 +62,10 @@ public class ServerConfiguration implements ConfigurationContainer {
                 "Plugins may extend the list of available placeholders");
         cfg.getBoolean("command-block-enabled", false);
         cfg.setComments("command-block-enabled", "Sets whether the Command Block is allowed or not");
-        cfg.getString("commandblock-group", "default");
-        cfg.setComments("command-block-group", "This groups permissions will determine what commandblock can and can not do!");
+        cfg.getString("command-block-group", "default");
+        cfg.setComments("command-block-group", "This groups permissions will determine what Command Block can and can not do!");
+        cfg.getBoolean("command-block-op", false);
+        cfg.setComments("command-block-op", "Sets whether the Command Block is considered Operator or not (Vanilla command use)");
         cfg.getString("data-source", "xml");
         cfg.setComments("data-source", "The Datasource type to use (Default available: xml, mysql, sqlite");
         cfg.getString("date-format", "yyyy.MM.dd, hh:mm:ss");
@@ -204,6 +212,15 @@ public class ServerConfiguration implements ConfigurationContainer {
     }
 
     /**
+     * Gets whether the Command Block is considered Operator
+     *
+     * @return {@code true} if opped; {@code false} otherwise
+     */
+    public boolean isCommandBlockOpped() {
+        return cfg.getBoolean("command-block-op", false);
+    }
+
+    /**
      * Get datasource type
      *
      * @return datasource type
@@ -251,6 +268,7 @@ public class ServerConfiguration implements ConfigurationContainer {
 
     /**
      * Gets the Level of message to log
+     *
      * @return logger level
      */
     public Level getLoggerLevel() {
@@ -299,8 +317,7 @@ public class ServerConfiguration implements ConfigurationContainer {
     /**
      * Sets the time in minutes before a player is kicked for idling
      *
-     * @param timeout
-     *         the idle timeout
+     * @param timeout the idle timeout
      */
     public void setPlayerIdleTimeout(int timeout) {
         cfg.setInt("player-idle-timeout", timeout);
