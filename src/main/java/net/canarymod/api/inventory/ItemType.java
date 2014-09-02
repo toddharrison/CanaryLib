@@ -517,7 +517,7 @@ public final class ItemType {
     public static final ItemType DiamondHorseArmor = new ItemType(419, "minecraft:diamond_horse_armor");
     public static final ItemType Lead = new ItemType(420, "minecraft:lead");
     public static final ItemType NameTag = new ItemType(421, "minecraft:name_tag");
-    public static final ItemType MinecartCommandBlock = new ItemType(422, "minecrarft:command_block_minecart");
+    public static final ItemType MinecartCommandBlock = new ItemType(422, "minecraft:command_block_minecart");
     /* Records */
     public static final ItemType GoldRecord = new ItemType(2256, "minecraft:record_13");
     public static final ItemType GreenRecord = new ItemType(2257, "minecraft:record_cat");
