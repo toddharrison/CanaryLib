@@ -15,8 +15,8 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
-
 import net.canarymod.Canary;
+import net.canarymod.api.PlayerReference;
 import net.canarymod.bansystem.Ban;
 import net.canarymod.config.Configuration;
 import net.canarymod.config.ServerConfiguration;
@@ -189,7 +189,8 @@ public class CanaryToVanilla {
         String[] ret = { };
         ArrayList<String> val = new ArrayList<String>();
         for (String user : Canary.usersAndGroups().getPlayers()) {
-            if (Canary.permissionManager().getPlayerProvider(user, world).queryPermission(permission)) {
+            PlayerReference pr = Canary.getServer().matchKnownPlayer(user);
+            if (Canary.permissionManager().getPlayerProvider(pr.getUUIDString(), world).queryPermission(permission)) {
                 val.add(user);
             }
         }

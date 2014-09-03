@@ -32,14 +32,14 @@ public class PermissionManager {
     /**
      * Load the permission set for the group with the given name.
      *
-     * @param name
+     * @param uuid
      * @param worldname
      *         The Fully qualified name of the world to load permissions for
      *
      * @return {@link PermissionProvider}
      */
-    public PermissionProvider getPlayerProvider(String name, String worldname) {
-        return backbone.loadPlayerPermissions(name, worldname);
+    public PermissionProvider getPlayerProvider(String uuid, String worldname) {
+        return backbone.loadPlayerPermissions(uuid, worldname);
     }
 
     public void savePermissionsFromGroup(Group g) {

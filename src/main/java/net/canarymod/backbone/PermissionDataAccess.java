@@ -32,7 +32,7 @@ public class PermissionDataAccess extends DataAccess {
     @Column(columnName = "value", dataType = DataType.BOOLEAN)
     public boolean value;
 
-    /** The name of the owner of this node (group or player name ) */
+    /** The name of the owner of this node (group or player uuid ) */
     @Column(columnName = "owner", dataType = DataType.STRING)
     public String owner;
 

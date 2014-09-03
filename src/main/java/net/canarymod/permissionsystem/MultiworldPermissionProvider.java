@@ -1,20 +1,21 @@
 package net.canarymod.permissionsystem;
 
-import net.canarymod.Canary;
-import net.canarymod.Translator;
-import net.canarymod.backbone.PermissionDataAccess;
-import net.canarymod.chat.Colors;
-import net.canarymod.chat.MessageReceiver;
-import net.canarymod.database.DataAccess;
-import net.canarymod.database.Database;
-import net.canarymod.database.exceptions.DatabaseReadException;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import net.canarymod.Canary;
+import net.canarymod.ToolBox;
+import net.canarymod.Translator;
+import net.canarymod.api.PlayerReference;
+import net.canarymod.backbone.PermissionDataAccess;
+import net.canarymod.chat.Colors;
+import net.canarymod.chat.MessageReceiver;
+import net.canarymod.database.DataAccess;
+import net.canarymod.database.Database;
+import net.canarymod.database.exceptions.DatabaseReadException;
 
 /**
  * A PermissionProvider implementation based on PermissionNode objects,
@@ -26,7 +27,7 @@ public class MultiworldPermissionProvider implements PermissionProvider {
     private List<PermissionNode> permissions;
     private Map<String, Boolean> permissionCache = new HashMap<String, Boolean>(35);
     private boolean isPlayerProvider;
-    private String owner; // This can either be a player or group name
+    private String owner; // This can either be a player uuid or group name
     private String world;
     private PermissionProvider parent = null;
 
@@ -39,13 +40,18 @@ public class MultiworldPermissionProvider implements PermissionProvider {
         this.world = world;
         permissions = new ArrayList<PermissionNode>();
         this.isPlayerProvider = isPlayer;
-        this.owner = owner;
         if (world != null) {
             // We need a parent then
             if (isPlayer) {
-                this.parent = Canary.permissionManager().getPlayerProvider(owner, null);
+                String uuid = owner;
+                if (!ToolBox.isUUID(owner)) {
+                    uuid = ToolBox.usernameToUUID(owner);
+                }
+                this.owner = uuid;
+                this.parent = Canary.permissionManager().getPlayerProvider(uuid, null);
             }
             else {
+                this.owner = owner;
                 this.parent = Canary.permissionManager().getGroupsProvider(owner, null);
             }
         }
