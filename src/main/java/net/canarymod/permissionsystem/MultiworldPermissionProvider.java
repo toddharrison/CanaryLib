@@ -1,21 +1,17 @@
 package net.canarymod.permissionsystem;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import net.canarymod.Canary;
 import net.canarymod.ToolBox;
 import net.canarymod.Translator;
-import net.canarymod.api.PlayerReference;
 import net.canarymod.backbone.PermissionDataAccess;
 import net.canarymod.chat.Colors;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.database.DataAccess;
 import net.canarymod.database.Database;
 import net.canarymod.database.exceptions.DatabaseReadException;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 /**
  * A PermissionProvider implementation based on PermissionNode objects,
@@ -284,7 +280,7 @@ public class MultiworldPermissionProvider implements PermissionProvider {
 
     @Override
     public boolean pathExists(String permission) {
-        return permission.trim().isEmpty() || hasPath(permission.split("\\."));
+        return permission.trim().isEmpty() || hasPath(permission.split("\\.")) || (parent != null && parent.pathExists(permission));
     }
 
     @Override
