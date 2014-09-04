@@ -1,6 +1,7 @@
 package net.canarymod.hook.player;
 
 import net.canarymod.api.entity.living.humanoid.Player;
+import net.canarymod.chat.TextFormat;
 import net.canarymod.hook.CancelableHook;
 
 import java.util.ArrayList;
@@ -213,6 +214,19 @@ public final class ChatHook extends CancelableHook {
 
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s, Receivers=%s, Message=%s, Format=%s, Placeholders=%s]", getHookName(), player, receivers, placeholders.get("%message"), format, placeholders);
+        return String.format("%s[Player=%s, Receivers=%s, Message=%s, Format=%s, Placeholders=%s]", getHookName(), player, receivers, placeholders.get("%message"), format, placeholders());
+    }
+
+    private String placeholders() {
+        StringBuilder builder = new StringBuilder();
+        for (Map.Entry<String, String> entry : placeholders.entrySet()) {
+            if (entry.getKey().equals("%prefix")) {
+                builder.append(entry.getKey()).append("=").append(entry.getValue()).append(entry.getValue().replace("\u00A7", ""));
+                builder.append(TextFormat.RESET);
+            } else {
+                builder.append(entry);
+            }
+        }
+        return builder.toString();
     }
 }
