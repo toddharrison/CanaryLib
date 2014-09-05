@@ -4,11 +4,17 @@ import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.blocks.Block;
 import net.canarymod.hook.CancelableHook;
 
-public class BedEnterHook extends CancelableHook{
+public class BedEnterHook extends CancelableHook {
     private Player player;
     private Block bed;
-    
-    public BedEnterHook(Player player, Block bed){
+
+    /**
+     * Create a new BedEnterHook
+     * 
+     * @param player the player that entered the bed
+     * @param bed    the bed that the player entered
+     */
+    public BedEnterHook(Player player, Block bed) {
 	this.player = player;
 	this.bed = bed;
     }
@@ -32,7 +38,7 @@ public class BedEnterHook extends CancelableHook{
     }
     
     @Override
-    public String toString(){
+    public String toString() {
 	return String.format("%s[Player=%s, Block=%s]", getHookName(), player, bed);
     }
 }
