@@ -4,11 +4,11 @@ import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.blocks.Block;
 import net.canarymod.hook.Hook;
 
-public class BedLeaveHook extends Hook{
+public class BedExitHook extends Hook{
     private Player player;
     private Block bed;
 
-    public BedLeaveHook(Player player, Block bed){
+    public BedExitHook(Player player, Block bed){
 	this.player = player;
 	this.bed = bed;
     }
