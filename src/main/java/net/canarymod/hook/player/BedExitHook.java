@@ -4,6 +4,11 @@ import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.blocks.Block;
 import net.canarymod.hook.Hook;
 
+/**
+ * Bed exit hook, called when a player leaves a bed
+ *
+ * @author Ehud (EhudB)
+ */
 public class BedExitHook extends Hook {
     private Player player;
     private Block bed;
@@ -11,12 +16,14 @@ public class BedExitHook extends Hook {
     /**
      * Create a new BedExitHook
      * 
-     * @param player the player that left the bed
-     * @param bed    the bed the player left
+     * @param player
+     *            the player that left the bed
+     * @param bed
+     *            the bed the player left
      */
     public BedExitHook(Player player, Block bed) {
-	this.player = player;
-	this.bed = bed;
+        this.player = player;
+        this.bed = bed;
     }
 
     /**
@@ -27,7 +34,7 @@ public class BedExitHook extends Hook {
     public Player getPlayer() {
         return player;
     }
-    
+
     /**
      * Get the bed {@link Block} the {@link Player} is leaving
      *
@@ -36,9 +43,9 @@ public class BedExitHook extends Hook {
     public Block getBed() {
         return bed;
     }
-    
+
     @Override
     public String toString() {
-	return String.format("%s[Player=%s, Block=%s]", getHookName(), player, bed);
+        return String.format("%s[Player=%s, Block=%s]", getHookName(), player, bed);
     }
 }
