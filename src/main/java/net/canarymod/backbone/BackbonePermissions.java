@@ -1,6 +1,13 @@
 package net.canarymod.backbone;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.canarymod.Canary;
+import static net.canarymod.Canary.log;
+import net.canarymod.ToolBox;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.World;
 import net.canarymod.database.DataAccess;
@@ -11,12 +18,6 @@ import net.canarymod.permissionsystem.MultiworldPermissionProvider;
 import net.canarymod.permissionsystem.PermissionNode;
 import net.canarymod.permissionsystem.PermissionProvider;
 import net.canarymod.user.Group;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import static net.canarymod.Canary.log;
 
 /**
  * Backbone to the permissions System. This contains NO logic, it is only the
@@ -79,24 +80,26 @@ public class BackbonePermissions extends Backbone {
     /**
      * Load permissions for a player
      *
-     * @param name
-     *         Name of the player.
+     * @param uuid
+     *         uuid of the player.
      * @param world
      *         the world name
      *
      * @return PermissionProvider for this player.
      */
-    public PermissionProvider loadPlayerPermissions(String name, String world) {
+    public PermissionProvider loadPlayerPermissions(String uuid, String world) {
         if (world != null && world.isEmpty()) {
             world = null;
         }
+        // Validate player permissions
+        this.validatePlayerPermissions(world);
         // Database.get().remove("permission", new String[] {"owner", "type"}, new Object[] {group.getName(), "group"});
-        PermissionProvider provider = new MultiworldPermissionProvider(world, true, name);
+        PermissionProvider provider = new MultiworldPermissionProvider(world, true, uuid);
         ArrayList<DataAccess> dataList = new ArrayList<DataAccess>();
 
         try {
             HashMap<String, Object> filter = new HashMap<String, Object>();
-            filter.put("owner", name);
+            filter.put("owner", uuid);
             filter.put("type", "player");
             Database.get().loadAll(new PermissionDataAccess(world), dataList, filter);
             for (DataAccess da : dataList) {
@@ -183,7 +186,7 @@ public class BackbonePermissions extends Backbone {
                         Database.get().update(data, filter);
                     }
                     else {
-                        data.owner = p.getName();
+                        data.owner = p.getUUIDString();
                         data.path = child.getFullPath();
                         data.type = "player";
                         data.value = child.getValue();
@@ -232,7 +235,7 @@ public class BackbonePermissions extends Backbone {
      * @param path
      *         the permission node
      * @param subject
-     *         the name of the subject (either group or player name)
+     *         the name of the subject (either group or player uuid)
      * @param world
      *         The fully qualified world name as given by {@link World#getFqName()}<br>
      *         Can be null to access the global permissions table.
@@ -295,7 +298,7 @@ public class BackbonePermissions extends Backbone {
      * @param value
      *         Whether permission is true or false.
      * @param owner
-     *         Name of the owner. Can be a player or a group name.
+     *         Name of the owner. Can be a player UUID or a group name.
      * @param type
      *         "player" or "group".
      * @param world
@@ -341,7 +344,7 @@ public class BackbonePermissions extends Backbone {
      *         String representation of the permission to add.<br>
      *         EXAMPLE: "canary.command.player.compass"
      * @param owner
-     *         Name of the owner. Can be a player or a group name.
+     *         Name of the owner. Can be a player UUID or a group name.
      * @param type
      *         "player" or "group".
      * @param world
@@ -418,6 +421,43 @@ public class BackbonePermissions extends Backbone {
             Database.get().insert(players);
         }
         catch (DatabaseWriteException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+    
+    /**
+     * Validate that player permissions have a UUID and not a playername.
+     */
+    public void validatePlayerPermissions(String world) {
+        if (world != null && world.isEmpty()) {
+            world = null;
+        }
+        // Database.get().remove("permission", new String[] {"owner", "type"}, new Object[] {group.getName(), "group"});
+        ArrayList<DataAccess> dataList = new ArrayList<DataAccess>();
+
+        try {
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("type", "player");
+            Database.get().loadAll(new PermissionDataAccess(world), dataList, filter);
+            for (DataAccess da : dataList) {
+                PermissionDataAccess data = (PermissionDataAccess) da;
+
+                if (!ToolBox.isUUID(data.owner)) {
+                    HashMap<String, Object> updateFilter = new HashMap<String, Object>();
+                    updateFilter.put("owner", data.owner);
+                    
+                    String uuid = ToolBox.usernameToUUID(data.owner);
+                    data.owner = uuid;
+                    try {
+                        Database.get().update(data, updateFilter);
+                    } catch (DatabaseWriteException ex) {
+                        Canary.log.error("Error Validating Player Permissions: ", ex);
+                    }
+                    
+                }
+            }
+        }
+        catch (DatabaseReadException e) {
             log.error(e.getMessage(), e);
         }
     }

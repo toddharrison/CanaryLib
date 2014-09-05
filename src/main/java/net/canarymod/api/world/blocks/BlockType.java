@@ -133,7 +133,7 @@ public final class BlockType {
     public static final BlockType DiamondBlock = new BlockType(57, 0, "minecraft:diamond_block");
     public static final BlockType Workbench = new BlockType(58, 0, "minecraft:crafting_table");
     public static final BlockType Crops = new BlockType(59, 0, "minecraft:wheat");
-    public static final BlockType Soil = new BlockType(60, 0, "minecraft:famland");
+    public static final BlockType Soil = new BlockType(60, 0, "minecraft:farmland");
     public static final BlockType Furnace = new BlockType(61, 0, "minecraft:furnace");
     public static final BlockType BurningFurnace = new BlockType(62, 0, "minecraft:lit_furnace");
     public static final BlockType SignPost = new BlockType(63, 0, "minecraft:standing_sign");
