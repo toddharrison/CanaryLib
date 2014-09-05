@@ -15,6 +15,10 @@ public class ReservelistDataAccess extends DataAccess {
         super("reservelist");
     }
 
+    /** UUID for this reservelist entry */
+    @Column(columnName = "uuid", dataType = DataType.STRING)
+    public String uuid;
+
     /** Playername for this reservelist entry */
     @Column(columnName = "player", dataType = DataType.STRING)
     public String player;

@@ -15,6 +15,12 @@ public class WhitelistDataAccess extends DataAccess {
         super("whitelist");
     }
 
+    /** UUID for this reservelist entry */
+    @Column(columnName = "uuid", dataType = DataType.STRING)
+    public String uuid;
+
+    /** Playername for this
+
     /** Playername for this whitelist entry */
     @Column(columnName = "player", dataType = DataType.STRING)
     public String player;

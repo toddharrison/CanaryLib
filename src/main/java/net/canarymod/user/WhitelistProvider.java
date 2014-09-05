@@ -3,6 +3,7 @@ package net.canarymod.user;
 import net.canarymod.backbone.BackboneWhitelist;
 
 import java.util.List;
+import net.canarymod.ToolBox;
 
 /**
  * Access to the backbone for whitelist
@@ -26,35 +27,47 @@ public class WhitelistProvider {
     /**
      * Check if a given player is whitelisted.
      *
-     * @param player
+     * @param subject player name or uuid
      *
      * @return
      */
-    public boolean isWhitelisted(String player) {
-        return whitelist.contains(player);
+    public boolean isWhitelisted(String subject) {
+        String uuid = subject;
+        if (!ToolBox.isUUID(uuid)) {
+            uuid = ToolBox.usernameToUUID(uuid);
+        }
+        return whitelist.contains(uuid);
     }
 
     /**
      * Adds a new whitelist entry
      *
-     * @param name
+     * @param subject player name or uuid
      */
-    public void addPlayer(String name) {
-        if (!whitelist.contains(name)) {
-            whitelist.add(name);
-            backboneWhitelist.addWhitelistEntry(name);
+    public void addPlayer(String subject) {
+        String uuid = subject;
+        if (!ToolBox.isUUID(uuid)) {
+            uuid = ToolBox.usernameToUUID(uuid);
+        }
+        if (!whitelist.contains(uuid)) {
+            whitelist.add(uuid);
+            backboneWhitelist.addWhitelistEntry(uuid);
         }
     }
 
     /**
      * Removes the given player from the whitelist
      *
-     * @param name
+     * @param subject player name or uuid
      */
-    public void removePlayer(String name) {
-        if (whitelist.contains(name)) {
-            whitelist.remove(name);
-            backboneWhitelist.removeWhitelistEntry(name);
+    public void removePlayer(String subject) {
+        String uuid = subject;
+        if (!ToolBox.isUUID(uuid)) {
+            uuid = ToolBox.usernameToUUID(uuid);
+        }
+        if (whitelist.contains(uuid)) {
+            whitelist.remove(uuid);
+            backboneWhitelist.removeWhitelistEntry(uuid);
         }
     }
 
