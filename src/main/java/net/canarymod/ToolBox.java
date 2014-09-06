@@ -1,13 +1,5 @@
 package net.canarymod;
 
-import net.canarymod.api.world.DimensionType;
-import net.canarymod.api.world.UnknownWorldException;
-import net.canarymod.api.world.World;
-import net.canarymod.config.Configuration;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -15,6 +7,14 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
+import net.canarymod.api.entity.living.humanoid.Player;
+import net.canarymod.api.world.DimensionType;
+import net.canarymod.api.world.UnknownWorldException;
+import net.canarymod.api.world.World;
+import net.canarymod.config.Configuration;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 /**
  * Set of miscellaneous tools
@@ -26,6 +26,7 @@ public class ToolBox {
 
     private static TimeZone tz_GMT = TimeZone.getTimeZone("GMT");
     private static Pattern uuid = Pattern.compile("[0-9a-f]{8}\\-([0-9a-f]{4}\\-){3}[0-9a-f]{12}");
+    private static Pattern uName = Pattern.compile("[A-Za-z0-9_]{3,16}");
 
     /**
      * Merge 2 arrays. This will just merge two arrays.
@@ -423,6 +424,11 @@ public class ToolBox {
      * @return user's uuid or null if not found/on error
      */
     public static String usernameToUUID(String username) {
+        if(!uName.matcher(username).matches()) return null; // username isn't valid, so don't bother checking against the mojang API
+        
+        Player p = Canary.getServer().getPlayer(username);
+        if (p != null) return p.getUUIDString(); // player is online, so don't query the mojang API
+        
         String uuid = null;
         try {
             URL url = new URL("https://api.mojang.com/profiles/page/1");
