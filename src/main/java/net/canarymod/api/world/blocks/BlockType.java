@@ -29,9 +29,9 @@ public final class BlockType {
     public static final BlockType AcaciaSapling = new BlockType(6, 4, "minecraft:sapling");
     public static final BlockType DarkOakSapling = new BlockType(6, 5, "minecraft:sapling");
     public static final BlockType Bedrock = new BlockType(7, 0, "minecraft:bedrock");
-    public static final BlockType WaterFlowing = new BlockType(8, 0, "minecraft:water_flowing");
+    public static final BlockType WaterFlowing = new BlockType(8, 0, "minecraft:flowing_water");
     public static final BlockType Water = new BlockType(9, 0, "minecraft:water");
-    public static final BlockType LavaFlowing = new BlockType(10, 0, "minecraft:lava_flowing");
+    public static final BlockType LavaFlowing = new BlockType(10, 0, "minecraft:flowing_lava");
     public static final BlockType Lava = new BlockType(11, 0, "minecraft:lava");
     public static final BlockType Sand = new BlockType(12, 0, "minecraft:sand");
     public static final BlockType Gravel = new BlockType(13, 0, "minecraft:gravel");
@@ -339,7 +339,6 @@ public final class BlockType {
     public static final BlockType LargeFern = new BlockType(175, 3, "minecraft:double_plant");
     public static final BlockType RoseBush = new BlockType(175, 4, "minecraft:double_plant");
     public static final BlockType Peony = new BlockType(175, 5, "minecraft:double_plant");
-
     private final short id;
     private final short data;
     private final String machineName;
