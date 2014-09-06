@@ -425,9 +425,11 @@ public class ToolBox {
      */
     public static String usernameToUUID(String username) {
         if(!uName.matcher(username).matches()) return null; // username isn't valid, so don't bother checking against the mojang API
-        
-        Player p = Canary.getServer().getPlayer(username);
-        if (p != null) return p.getUUIDString(); // player is online, so don't query the mojang API
+        // Make sure the server isn't null, this can happen when called early in server init
+        if (Canary.getServer() != null) {
+            Player p = Canary.getServer().getPlayer(username);
+            if (p != null) return p.getUUIDString(); // player is online, so don't query the mojang API
+        }
         
         String uuid = null;
         try {
