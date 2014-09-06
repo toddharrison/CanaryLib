@@ -4,6 +4,7 @@ import com.google.common.collect.ArrayListMultimap;
 import net.canarymod.ToolBox;
 import net.canarymod.plugin.Plugin;
 import net.canarymod.plugin.PluginListener;
+import net.canarymod.plugin.Priority;
 import net.canarymod.plugin.RegisteredPluginListener;
 
 import java.lang.reflect.Method;
@@ -24,7 +25,9 @@ public class HookExecutor implements HookExecutorInterface {
     private final PluginComparator listener_comp = new PluginComparator();
     final ArrayListMultimap<Class<? extends Hook>, RegisteredPluginListener> listeners = ArrayListMultimap.create();
 
-    /** Register a {@link PluginListener} for a system hook */
+    /**
+     * Register a {@link PluginListener} for a system hook
+     */
     @Override
     public void registerListener(PluginListener listener, Plugin plugin) {
         Method[] methods = ToolBox.safeArrayMerge(listener.getClass().getMethods(), listener.getClass().getDeclaredMethods(), new Method[1]);
@@ -54,25 +57,30 @@ public class HookExecutor implements HookExecutorInterface {
                 public void execute(PluginListener listener, Hook hook) {
                     try {
                         method.invoke(listener, hook);
-                    }
-                    catch (Exception ex) {
+                    } catch (Exception ex) {
                         throw new HookExecutionException(ex.getMessage(), ex);
                     }
                 }
             };
             dispatcher.ignoreCanceled = handler.ignoreCanceled();
 
-            // We checked the class above, ignore unchecked warnings.
-            listeners.put((Class<? extends Hook>) hookCls, new RegisteredPluginListener(listener, plugin, dispatcher, handler.priority()));
-            Collections.sort(listeners.get((Class<? extends Hook>) hookCls), listener_comp);
+            registerHook(listener, plugin, hookCls, dispatcher, handler.priority());
         }
+    }
+
+    /**
+     * A more flexible hook interface used internally. Adds flexibility required for Scala hook registration.
+     */
+    public void registerHook(PluginListener listener, Plugin plugin, Class<?> hookCls, Dispatcher dispatcher, Priority priority) {
+        // Caller is assumed to check class (this is an internal API)
+        listeners.put((Class<? extends Hook>) hookCls, new RegisteredPluginListener(listener, plugin, dispatcher, priority));
+        Collections.sort(listeners.get((Class<? extends Hook>) hookCls), listener_comp);
     }
 
     /**
      * Unregisters all listeners for specified plugin
      *
-     * @param plugin
-     *         the {@link Plugin} instance
+     * @param plugin the {@link Plugin} instance
      */
     @Override
     public void unregisterPluginListeners(Plugin plugin) {
@@ -85,7 +93,9 @@ public class HookExecutor implements HookExecutorInterface {
         }
     }
 
-    /** Call a system hook */
+    /**
+     * Call a system hook
+     */
     @Override
     public void callHook(Hook hook) {
         if (hook.executed()) {
@@ -100,8 +110,7 @@ public class HookExecutor implements HookExecutorInterface {
             RegisteredPluginListener listener = iter.next();
             try {
                 listener.execute(hook);
-            }
-            catch (HookExecutionException hexex) {
+            } catch (HookExecutionException hexex) {
                 log.error("Exception while executing Hook: " + hook.getHookName() + " in PluginListener: " +
                         listener.getListener().getClass().getSimpleName() + " (Plugin: " + listener.getPlugin().getName() + ")", hexex.getCause());
             }
