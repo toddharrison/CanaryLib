@@ -324,7 +324,7 @@ public class CommandManager {
 
                 tabComplete = new TabCompleteDispatch() {
                     @Override
-                    List<String> complete(MessageReceiver msgrec, String[] args) throws TabCompleteException {
+                    public List<String> complete(MessageReceiver msgrec, String[] args) throws TabCompleteException {
                         try {
                             return (List<String>) tabCompMeth.invoke(listener, msgrec, args);
                         }
