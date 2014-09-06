@@ -7,7 +7,6 @@ import net.canarymod.plugin.PluginListener
  * Defines implicit conversions and similar utilities that work well for registering hooks
  * in a more scala/functional way. Used mostly internally by [[ScalaPlugin]]
  *
- * Created by pwootage on 9/6/14.
  * @author Pwootage
  */
 object ScalaHooks {

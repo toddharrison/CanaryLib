@@ -31,7 +31,6 @@ class TestPlugin extends ScalaPlugin {
 }
 }}}
  *
- * Created by pwootage on 9/6/14.
  * @author pwootage
  */
 abstract class ScalaPlugin extends Plugin {
