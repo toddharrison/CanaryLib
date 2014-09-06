@@ -17,6 +17,7 @@ import java.util.UUID;
  *
  * @author Chris (damagefilter)
  * @author Jason (darkdiplomat)
+ * @author Larry1123
  */
 public interface Entity {
 
@@ -583,5 +584,12 @@ public interface Entity {
      * @return the {@link EntityType}
      */
     public EntityType getEntityType();
+
+    /**
+     * Returns whether this entity is ambient (ie. a bat)
+     *
+     * @return {@code true} if ambient; {@code false} if not ambient
+     */
+    public boolean isAmbient();
 
 }
