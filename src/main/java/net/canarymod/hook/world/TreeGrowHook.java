@@ -32,4 +32,11 @@ public final class TreeGrowHook extends CancelableHook {
     public Block getSapling() {
         return sapling;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public final String toString() {
+        return String.format("%s[Sapling=%s]", getHookName(), sapling);
+    }
 }
