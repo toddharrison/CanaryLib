@@ -7,6 +7,29 @@ import net.canarymod.scala.ScalaHooks._
 
 /**
  * Main class for scala-based plugins.
+ * <br/><br/>
+ * A standard Scala-based plugin will use the hook method to add hooks in the enable block.
+ * @example {{{
+import net.canarymod.hook.player.{ChatHook, ConnectionHook}
+import net.canarymod.scala.ScalaPlugin
+
+class TestPlugin extends ScalaPlugin {
+  override def enable(): Boolean = {
+    hook { h: ConnectionHook =>
+      h.getPlayer.message("Welcome from scala!")
+    }
+
+    hook { h: ChatHook =>
+      h.getPlayer.message("You said: " + h.getMessage)
+    }
+    true
+  }
+
+  override def disable(): Unit = {
+    println("Scala is dying D:")
+  }
+}
+}}}
  *
  * Created by pwootage on 9/6/14.
  * @author pwootage
