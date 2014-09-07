@@ -270,8 +270,15 @@ public class UserAndGroupsProvider {
      * @param group
      */
     public void addOfflinePlayer(String name, String group) {
-        String uuid = ToolBox.usernameToUUID(name);
+        String uuid = ToolBox.isUUID(name) ? name : ToolBox.usernameToUUID(name);
         backboneUsers.addUser(uuid, group);
+        if (uuid == null) {
+            log.warn("Player " + name + " already exists. Skipping!");
+            return;
+        }
+        if (playerData.containsKey(uuid)) {
+            
+        }
         String[] content = new String[3];
         content[0] = null;
         content[1] = group;

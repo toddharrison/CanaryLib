@@ -151,14 +151,15 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
     public Player matchPlayer(String player);
 
     /**
-     * Get an {@link OfflinePlayer}. This will always return an {@link OfflinePlayer} instance.
+     * Get an {@link OfflinePlayer}. This will only return an {@link OfflinePlayer} instance
+     * if the playername resolves into a valid UUID via the Mojang API.
      * if you try to get a player that never joined it will return an OfflinePlayer
      * with the given name and default values
      *
      * @param player
      *         the name of the player
      *
-     * @return the {@link OfflinePlayer} instance
+     * @return the {@link OfflinePlayer} instance or null if the playername/uuid doesn't exist.
      */
     public OfflinePlayer getOfflinePlayer(String player);
 

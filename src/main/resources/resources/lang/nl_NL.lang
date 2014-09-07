@@ -76,6 +76,7 @@ mode console=De console heeft geen spelmodus ...
 mode info=Verander je eigen of andermans spelmodus
 mode set other={0} zijn spelmodus is ingesteld op {1}
 modify group removed=Groep verwijderd
+modify group set (failed)=Group has failed to set: {0}
 modify group set=Groep ingesteld
 modify info=Wijzig een groep of speler
 modify permission added=Permissie toegevoegd

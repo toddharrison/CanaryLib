@@ -29,6 +29,10 @@ public class PlayerGroupSet implements NativeCommand {
         }
         if (target == null) {
             OfflinePlayer oplayer = Canary.getServer().getOfflinePlayer(args[1]);
+            if (oplayer == null) {
+                Canary.log.warn(Translator.translateAndFormat("modify group set (failed)", "Player doesn't exist."));
+                return;
+            }
             oplayer.setGroup(group);
             caller.message(Colors.YELLOW + Translator.translate("modify group set"));
             return;

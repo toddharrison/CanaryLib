@@ -83,18 +83,23 @@ public class BackboneUsers extends Backbone {
      * Used to update a player. This can not override existing player entries.
      * If there is a player with the uuid name, nothing will happen
      *
-     * @param uuid
-     *         the player's uuid
+     * @param nameOrUUID
+     *         the player's name or uuid
      * @param group
      *         the group's name
      */
-    public void addUser(String uuid, String group) {
+    public void addUser(String nameOrUUID, String group) {
+        String uuid = ToolBox.isUUID(nameOrUUID) ? nameOrUUID : ToolBox.usernameToUUID(nameOrUUID);
+        if (uuid == null) {
+            log.warn("Player name or uuid is 'null'. Skipping!");
+            return;
+        }
         if (userExists(uuid)) {
             log.warn("Player " + uuid + " already exists. Skipping!");
             return;
         }
         PlayerDataAccess data = new PlayerDataAccess();
-
+        if (!ToolBox.isUUID(nameOrUUID)) data.name = nameOrUUID;
         data.uuid = uuid;
         data.group = group;
         data.prefix = null;
@@ -176,7 +181,7 @@ public class BackboneUsers extends Backbone {
         data.isMuted = player.isMuted();
         try {
             HashMap<String, Object> filter = new HashMap<String, Object>();
-            filter.put("name", player.getName());
+            filter.put("uuid", player.getUUIDString());
             Database.get().update(data, filter);
         }
         catch (DatabaseWriteException e) {

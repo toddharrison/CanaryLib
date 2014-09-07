@@ -82,6 +82,7 @@ mode info=Change yer owns or others game mode
 mode set other={0}''s mode has been set t' {1}
 modify group add=Crew has been added
 modify group removed=Crew has been scuttled
+modify group set (failed)=Group has failed to set: {0}
 modify group set=Crew has been set
 modify info=Modify a Crew or Sailor
 modify permission added=Permission added

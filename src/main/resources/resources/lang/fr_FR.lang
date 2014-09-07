@@ -76,6 +76,7 @@ mode console=The console has no game mode ...
 mode info=Change your own or others game mode
 mode set other={0}''s mode has been set to {1}
 modify group removed=Group removed
+modify group set (failed)=Group has failed to set: {0}
 modify group set=Group has been set
 modify info=Modify a group or player
 modify permission added=Permission added
