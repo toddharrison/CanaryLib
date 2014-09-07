@@ -31,7 +31,8 @@ public interface IPluginLifecycle {
     /**
      * Loads the plugin.
      *
-     * @return Newly loaded plugin, or null if loading failed.
+     * @return Newly loaded plugin.
+     * @throws net.canarymod.exceptions.PluginLoadFailedException If an error occurred loading the plugin.
      */
     public Plugin load() throws PluginLoadFailedException;
 }

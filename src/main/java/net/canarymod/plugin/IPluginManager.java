@@ -1,5 +1,7 @@
 package net.canarymod.plugin;
 
+import net.canarymod.exceptions.InvalidPluginException;
+import net.canarymod.exceptions.PluginLoadFailedException;
 import net.visualillusionsent.utils.PropertiesFile;
 import org.apache.logging.log4j.Logger;
 
@@ -16,8 +18,9 @@ public interface IPluginManager {
      *
      * @param name the name of the {@link net.canarymod.plugin.Plugin}
      * @return {@code true} on success, {@code false} on failure
+     * @throws net.canarymod.exceptions.PluginLoadFailedException If an error occurred when attempting to load the plugin.
      */
-    boolean enablePlugin(String name);
+    boolean enablePlugin(String name) throws PluginLoadFailedException;
 
     /**
      * Enables all plugins, used when starting up the server.
@@ -53,7 +56,7 @@ public interface IPluginManager {
      * @param name
      * @return true on success, false on failure which probably means the plugin is now not enabled nor loaded
      */
-    boolean reloadPlugin(String name);
+    boolean reloadPlugin(String name) throws PluginLoadFailedException, InvalidPluginException;
 
     /**
      * Get the Plugin with specified name.

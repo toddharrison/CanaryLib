@@ -3,6 +3,8 @@ package net.canarymod.plugin;
 import net.canarymod.Canary;
 import net.canarymod.CanaryClassLoader;
 import net.canarymod.chat.Colors;
+import net.canarymod.exceptions.InvalidPluginException;
+import net.canarymod.exceptions.PluginLoadFailedException;
 import net.canarymod.hook.system.PluginDisableHook;
 import net.canarymod.hook.system.PluginEnableHook;
 import net.canarymod.tasks.ServerTaskManager;
@@ -45,7 +47,7 @@ public final class PluginManager implements IPluginManager {
     }
 
     @Override
-    public boolean enablePlugin(String name) {
+    public boolean enablePlugin(String name) throws PluginLoadFailedException {
         PluginDescriptor descriptor = getPluginDescriptor(name);
         if (descriptor != null) {
             Plugin plugin = descriptor.getOrLoadPlugin();
@@ -103,8 +105,14 @@ public final class PluginManager implements IPluginManager {
     }
 
     @Override
-    public boolean reloadPlugin(String name) {
-        //TODO
+    public boolean reloadPlugin(String name) throws PluginLoadFailedException, InvalidPluginException {
+        PluginDescriptor descriptor = getPluginDescriptor(name);
+        if (descriptor != null) {
+            disablePlugin(name);
+            descriptor.unloadPlugin();
+            descriptor.reloadInf();
+            return enablePlugin(name);
+        }
         return false;
     }
 
@@ -146,6 +154,27 @@ public final class PluginManager implements IPluginManager {
 
     @Override
     public void scanForPlugins() {
-       //TODO
+        File pluginDir = new File("plugins/");
+        if (!pluginDir.exists()) {
+            log.warn("Failed to scan for plugins. 'plugins/' is not a directory. Creating...");
+            pluginDir.mkdir();
+            return;
+        }
+        if (!pluginDir.isDirectory()) {
+            log.error("Failed to scan for plugins. 'plugins/' is not a directory but a file...");
+            return;
+        }
+        File[] pluginFiles = pluginDir.listFiles();
+        List<PluginDescriptor> loadedDescriptors = new ArrayList<PluginDescriptor>();
+        for (File pluginFile : pluginFiles) {
+            try {
+                PluginDescriptor desc = new PluginDescriptor(pluginFile.getAbsolutePath());
+                plugins.put(desc.getName(), desc);
+                loadedDescriptors.add(desc);
+            } catch (InvalidPluginException e) {
+                log.warn("Found invalid plugin at " + pluginFile.getName() + ", moving on.", e);
+            }
+        }
+        log.info("Found " + loadedDescriptors.size() + " plugins; total: " + plugins.size());
     }
 }
