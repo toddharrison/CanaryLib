@@ -60,9 +60,7 @@ public final class PluginLoader {
         }
         ArrayList<String> jars = new ArrayList<String>();
         for (String jarfile : dir.list()) {
-            if (jarfile.endsWith(".jar")) {
-                jars.add(jarfile);
-            } else if (jarfile.endsWith(".zip")) {
+            if (jarfile.matches(".+\\.(jar|zip)$")) {
                 jars.add(jarfile);
             }
         }
