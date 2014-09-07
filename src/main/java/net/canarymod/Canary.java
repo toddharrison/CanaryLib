@@ -16,7 +16,6 @@ import net.canarymod.logger.Logman;
 import net.canarymod.motd.MessageOfTheDay;
 import net.canarymod.permissionsystem.PermissionManager;
 import net.canarymod.plugin.IPluginManager;
-import net.canarymod.plugin.PluginLoader;
 import net.canarymod.serialize.Serializer;
 import net.canarymod.tasks.TaskOwner;
 import net.canarymod.user.OperatorsProvider;
@@ -152,12 +151,21 @@ public abstract class Canary implements TaskOwner {
     }
 
     /**
-     * Get the Plugin Loader to load, enable or disable plugins and manage
-     * plugin dependencies
+     * @deprecated Use {@link Canary#manager()}
      *
-     * @return {@link PluginLoader}
+     * @return {@link net.canarymod.plugin.PluginManager}
      */
     public static IPluginManager loader() {
+        return instance.loader;
+    }
+
+    /**
+     * Get the Plugin Manager to load, enable or disable plugins and manage
+     * plugin dependencies
+     *
+     * @return {@link net.canarymod.plugin.PluginManager}
+     */
+    public static IPluginManager manager() {
         return instance.loader;
     }
 
