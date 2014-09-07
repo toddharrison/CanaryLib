@@ -11,22 +11,20 @@ public interface IPluginLifecycle {
     /**
      * Enables the plugin.
      *
-     * @param plugin Plugin to enable
-     * @param  manager Plugin manager to use (e.g. for dependency checking)
+     * @param  manager Plugin manager to use (e.g. for dependencies)
      *
      * @return True if sucessfully enabled, false otherwise.
      */
-    public boolean enable(Plugin plugin, IPluginManager manager);
+    public boolean enable(IPluginManager manager);
 
     /**
      * Disables the plugin.
      *
-     * @param plugin Plugin to disable
-     * @param  manager Plugin manager to use (e.g. for dependency checking)
+     * @param  manager Plugin manager to use (e.g. for dependencies)
      *
      * @return True if successfully disabled, false otherwise.
      */
-    public boolean disable(Plugin plugin, IPluginManager manager);
+    public boolean disable(IPluginManager manager);
 
     /**
      * Loads the plugin.
@@ -34,5 +32,10 @@ public interface IPluginLifecycle {
      * @return Newly loaded plugin.
      * @throws net.canarymod.exceptions.PluginLoadFailedException If an error occurred loading the plugin.
      */
-    public Plugin load() throws PluginLoadFailedException;
+    public Plugin load(IPluginManager manager) throws PluginLoadFailedException;
+
+    /**
+     * Unloads the plugin.
+     */
+    void unload(IPluginManager manager);
 }

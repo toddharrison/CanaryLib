@@ -26,10 +26,12 @@ public class PluginDescriptor {
     private Plugin plugin;
     private IPluginLifecycle pluginLifecycle;
     private String[] dependencies;
+    private PluginState currentState;
 
     public PluginDescriptor(String path) throws InvalidPluginException {
         this.path = path;
         reloadInf();
+        currentState = PluginState.KNOWN;
     }
 
     protected void reloadInf() throws InvalidPluginException {
@@ -38,7 +40,11 @@ public class PluginDescriptor {
         version = canaryInf.getString("version", "UNKNOWN");
         author = canaryInf.getString("author", "UNKNOWN");
         language = canaryInf.getString("language", "java");
-        dependencies = canaryInf.getStringArray("dependencies");
+        if (canaryInf.containsKey("dependencies")) {
+            dependencies = canaryInf.getStringArray("dependencies", ",");
+        } else {
+            dependencies = new String[0];
+        }
         pluginLifecycle = PluginLifecycleFactory.createLifecycle(this);
     }
 
@@ -88,15 +94,26 @@ public class PluginDescriptor {
         return plugin;
     }
 
-    public Plugin getOrLoadPlugin() throws PluginLoadFailedException {
-        if (plugin == null) {
-            plugin = getPluginLifecycle().load();
-        }
-        return plugin;
+    /**
+     * DO NOT CALL THIS METHOD. It is for internal use only.
+     *
+     * @param plugin Current plugin object
+     */
+    public void setPlugin(Plugin plugin) {
+        this.plugin = plugin;
     }
 
-    protected void unloadPlugin() {
-        plugin = null;
+    public PluginState getCurrentState() {
+        return currentState;
+    }
+
+    /**
+     * DO NOT CALL THIS METHOD. It is for internal use only.
+     *
+     * @param state New plugin state
+     */
+    public void setCurrentState(PluginState state) {
+        this.currentState = state;
     }
 
     public String[] getDependencies() {

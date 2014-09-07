@@ -6,6 +6,7 @@ import net.visualillusionsent.utils.PropertiesFile;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Main interface for the Canary Plugin Manager
@@ -100,4 +101,11 @@ public interface IPluginManager {
      * Scans the plugin folder for any new plugins. Will ignore any already-known plugins.
      */
     void scanForPlugins();
+
+    /**
+     * Gets a list of all currently known plugin names
+     *
+     * @return List of known plugin names
+     */
+    Collection<String> getPluginNames();
 }

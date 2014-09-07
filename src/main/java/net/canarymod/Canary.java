@@ -264,7 +264,7 @@ public abstract class Canary implements TaskOwner {
     public static void enablePlugins() {
         if (!pluginsUp && instance.server != null) {
             log.info("Enabling Plugins...");
-            loader().enableAllPlugins();
+            manager().enableAllPlugins();
             pluginsUp = true;
         }
     }
