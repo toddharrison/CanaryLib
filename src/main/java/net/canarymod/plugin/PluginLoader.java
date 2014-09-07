@@ -31,15 +31,13 @@ import org.apache.logging.log4j.Logger;
  * @author Chris (damagefilter)
  * @author Jos
  */
-public final class PluginLoader {
+public final class PluginLoader implements IPluginManager {
     private final Map<String, Plugin> plugins; // This is keyed to set Plugin name
-    private final Map<String, PropertiesFile> pluginInf; // This is keyed to main class name
     private final PropertiesFile pluginPriorities;
     private static final Object lock = new Object();
 
     public PluginLoader() {
         plugins = new LinkedHashMap<String, Plugin>();
-        pluginInf = new HashMap<String, PropertiesFile>();
         this.pluginPriorities = new PropertiesFile("config" + File.separator + "plugin_priorities.cfg");
     }
 
@@ -300,7 +298,6 @@ public final class PluginLoader {
                     return false;
                 }
             }
-            pluginInf.put(simpleMain(mainClass), inf);
             CanaryClassLoader ploader = new CanaryClassLoader(new File(inf.getString("jarPath")).toURI().toURL(), getClass().getClassLoader());
             Class<?> c = ploader.loadClass(mainClass);
             Plugin plugin = (Plugin) c.newInstance();
@@ -349,14 +346,7 @@ public final class PluginLoader {
         return main.substring(last != -1 ? last + 1 : 0, main.length());
     }
 
-    /**
-     * Enables the given plugin. Loads the plugin if not loaded (and available)
-     *
-     * @param name
-     *         the name of the {@link Plugin}
-     *
-     * @return {@code true} on success, {@code false} on failure
-     */
+    @Override
     public final boolean enablePlugin(String name) {
         Plugin plugin = this.getPlugin(name);
         if (plugin == null) {
@@ -399,7 +389,6 @@ public final class PluginLoader {
             try {
                 File file = new File(plugin.getJarPath());
                 PropertiesFile inf = new PropertiesFile(file.getAbsolutePath(), "Canary.inf");
-                pluginInf.put(plugin.getClass().getSimpleName(), inf);
                 if (testDependencies(plugin)) { // Test for changes
                     CanaryClassLoader ploader = new CanaryClassLoader(new File(inf.getString("jarPath")).toURI().toURL(), getClass().getClassLoader());
                     Class<?> cls = ploader.loadClass(inf.getString("main-class"));
@@ -486,7 +475,7 @@ public final class PluginLoader {
         return true;
     }
 
-    /** Enables all plugins, used when starting up the server. */
+    @Override
     public final void enableAllPlugins() {
         int enabled = 0;
         for (Plugin plugin : plugins.values()) {
@@ -497,14 +486,7 @@ public final class PluginLoader {
         log.info("Enabled " + enabled + " plugins.");
     }
 
-    /**
-     * Disables the given plugin
-     *
-     * @param name
-     *         the name of the {@link Plugin}
-     *
-     * @return {@code true} on success, {@code false} on failure
-     */
+    @Override
     public final boolean disablePlugin(String name) {
         return disablePlugin(plugins.get(name));
     }
@@ -555,18 +537,12 @@ public final class PluginLoader {
         return true;
     }
 
-    /** Disables all plugins, used when shutting down the server. */
+    @Override
     public final void disableAllPlugins() {
         disableAllPlugins(log);
     }
 
-    /** Disables all plugins, used when shutting down the server.
-     *
-     * @param log The {@link Logger} to use when shutting down. This is
-     * necessary when in the shutdown hook, since we can't rely on external
-     * libraries there (see the javadoc at
-     * {@link Runtime#addShutdownHook(java.lang.Thread)})
-     */
+    @Override
     public void disableAllPlugins(Logger log) {
         for (Plugin plugin : this.getPlugins()) {
             disablePlugin(plugin, log);
@@ -593,13 +569,7 @@ public final class PluginLoader {
         return true;
     }
 
-    /**
-     * Reload the specified plugin
-     *
-     * @param name
-     *
-     * @return true on success, false on failure which probably means the plugin is now not enabled nor loaded
-     */
+    @Override
     public boolean reloadPlugin(String name) {
         Plugin plugin = this.getPlugin(name);
 
@@ -611,12 +581,9 @@ public final class PluginLoader {
 
         // Disable the plugin
         disablePlugin(plugin);
-        PropertiesFile orgInf;
         synchronized (lock) {
             plugins.remove(plugin.getName());
             ((CanaryClassLoader) plugin.getClass().getClassLoader()).close(); // close loader
-            /* Remove INF reference */
-            orgInf = pluginInf.remove(plugin.getClass().getSimpleName());
         }
         plugin.markClosed();
         // Reload the plugin by loading its package again
@@ -635,24 +602,14 @@ public final class PluginLoader {
         return test;
     }
 
-    /**
-     * Get the Plugin with specified name.
-     *
-     * @param name
-     *
-     * @return The plugin for the given name, or null on failure.
-     */
+    @Override
     public final Plugin getPlugin(String name) {
         synchronized (lock) {
             return plugins.get(name);
         }
     }
 
-    /**
-     * Gets an unmodifiable collection of currently loaded Plugins
-     *
-     * @return unmodifiable collection of Plugins
-     */
+    @Override
     public final Collection<Plugin> getPlugins() {
         synchronized (lock) {
             return Collections.unmodifiableCollection(plugins.values());
@@ -731,10 +688,6 @@ public final class PluginLoader {
         else {
             return null;
         }
-    }
-
-    final PropertiesFile getPluginInf(String main_class_name) {
-        return pluginInf.get(main_class_name);
     }
 
     /**
