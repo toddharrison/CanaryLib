@@ -60,10 +60,11 @@ public final class PluginLoader {
         }
         ArrayList<String> jars = new ArrayList<String>();
         for (String jarfile : dir.list()) {
-            if (!jarfile.endsWith(".jar")) {
-                continue;
+            if (jarfile.endsWith(".jar")) {
+                jars.add(jarfile);
+            } else if (jarfile.endsWith(".zip")) {
+                jars.add(jarfile);
             }
-            jars.add(jarfile);
         }
         HashMap<String, PropertiesFile> canLoad = new HashMap<String, PropertiesFile>();
         int numLoaded = 1;
