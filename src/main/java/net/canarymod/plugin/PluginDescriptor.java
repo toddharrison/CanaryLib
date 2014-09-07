@@ -7,6 +7,8 @@ import net.canarymod.plugin.lifecycle.PluginLifecycleFactory;
 import net.visualillusionsent.utils.PropertiesFile;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Describes information about a plugin, including meta information and start/stop/load information.
@@ -23,6 +25,7 @@ public class PluginDescriptor {
     private String language;
     private Plugin plugin;
     private IPluginLifecycle pluginLifecycle;
+    private String[] dependencies;
 
     public PluginDescriptor(String path) throws InvalidPluginException {
         this.path = path;
@@ -35,6 +38,7 @@ public class PluginDescriptor {
         version = canaryInf.getString("version", "UNKNOWN");
         author = canaryInf.getString("author", "UNKNOWN");
         language = canaryInf.getString("language", "java");
+        dependencies = canaryInf.getStringArray("dependencies");
         pluginLifecycle = PluginLifecycleFactory.createLifecycle(this);
     }
 
@@ -93,5 +97,9 @@ public class PluginDescriptor {
 
     protected void unloadPlugin() {
         plugin = null;
+    }
+
+    public String[] getDependencies() {
+        return dependencies;
     }
 }

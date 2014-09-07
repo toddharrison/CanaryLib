@@ -1,7 +1,9 @@
 package net.canarymod.exceptions;
 
 /**
- * Created by Christopher on 9/7/2014.
+ * Indicates a plugin is invalid. See message and cause for more information.
+ *
+ * @author Pwoootage
  */
 public class InvalidPluginException extends Throwable {
     public InvalidPluginException() {

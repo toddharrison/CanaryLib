@@ -8,10 +8,12 @@ import net.canarymod.plugin.Plugin;
 /**
  * Created by Christopher on 9/7/2014.
  */
-public class JavaPluginLifecycle implements IPluginLifecycle {
+public class JavaPluginLifecycle extends PluginLifecycleBase {
     @Override
     public boolean enable(Plugin plugin, IPluginManager manager) {
-        return plugin.enable();
+        if (checkDeps(plugin, manager)) {
+            return plugin.enable();
+        }
     }
 
     @Override
