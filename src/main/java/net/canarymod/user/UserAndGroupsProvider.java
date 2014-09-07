@@ -260,6 +260,7 @@ public class UserAndGroupsProvider {
         content[1] = player.getGroup().getName();
         content[2] = Boolean.toString(player.isMuted());
         playerData.put(player.getUUIDString(), content);
+        this.refreshPlayerInstance(player.getUUIDString());
     }
 
     /**
@@ -321,6 +322,8 @@ public class UserAndGroupsProvider {
      */
     public void removeUserData(String uuid) {
         backboneUsers.removeUser(uuid);
+        playerData.remove(uuid);
+        this.refreshPlayerInstance(uuid);
     }
 
     public void reloadUsers() {
@@ -351,5 +354,21 @@ public class UserAndGroupsProvider {
      */
     public Group[] getModuleGroupsForPlayer(String uuid) {
         return backboneUsers.getModularGroups(uuid);
+    }
+    
+    /**
+     * Refreshes a players local instance if they are online with any updates
+     * performed here.
+     * 
+     * @param uuid the players uuid
+     * @return true if the player was online, false otherwise.
+     */
+    private boolean refreshPlayerInstance(String uuid) {
+        Player p = Canary.getServer().getPlayerFromUUID(uuid);
+        if (p != null) {
+            p.initPlayerData();
+            return true;
+        }
+        return false;
     }
 }
