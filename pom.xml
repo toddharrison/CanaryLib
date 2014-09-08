@@ -63,6 +63,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>dd MMMM yyyy HH:mm z</maven.build.timestamp.format>
+        <build.number/>
     </properties>
     <scm>
         <connection>scm:git:git://github.com/CanaryModTeam/CanaryLib.git</connection>
@@ -148,6 +149,8 @@
     </dependencies>
     <build>
         <defaultGoal>clean install</defaultGoal>
+        <!-- Adds the build number if it is set -->
+        <finalName>${project.name}-${project.version}${build.number}</finalName>
         <!-- Plugins -->
         <plugins>
             <!-- Compile plugin -->
@@ -209,7 +212,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <finalName>${project.artifactId}-${project.version}</finalName>
+                    <finalName>${project.artifactId}-${project.version}${build.number}</finalName>
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
@@ -306,6 +309,18 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <!-- Add Build number to a Jenkins build -->
+        <profile>
+            <id>jenkins</id>
+            <activation>
+                <property>
+                    <name>BUILD_NUMBER</name>
+                </property>
+            </activation>
+            <properties>
+                <build.number>-${BUILD_NUMBER}</build.number>
+            </properties>
         </profile>
     </profiles>
 
