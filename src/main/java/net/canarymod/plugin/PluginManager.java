@@ -24,14 +24,12 @@ import org.apache.logging.log4j.Logger;
  */
 public final class PluginManager implements IPluginManager {
     private final Map<String, PluginDescriptor> plugins; // This is keyed to set Plugin name
-    private final Map<String, IPluginLoader> loaders;
     private final DependencyGraph dependencies;
     private final PropertiesFile pluginPriorities;
     private static final Object lock = new Object();
 
     public PluginManager() {
         plugins = new LinkedHashMap<String, PluginDescriptor>();
-        loaders = new LinkedHashMap<String, IPluginLoader>();
         dependencies = new DependencyGraph();
         //TODO: Use this
         this.pluginPriorities = new PropertiesFile("config" + File.separator + "plugin_priorities.cfg");
