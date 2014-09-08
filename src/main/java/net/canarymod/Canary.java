@@ -51,7 +51,7 @@ public abstract class Canary implements TaskOwner {
     protected ReservelistProvider reservelist;
     protected HookExecutor hookExecutor;
     protected Database database;
-    protected IPluginManager loader;
+    protected IPluginManager pluginManager;
     protected HelpManager helpManager;
     protected CommandManager commandManager;
     protected Factory factory;
@@ -156,7 +156,7 @@ public abstract class Canary implements TaskOwner {
      * @return {@link net.canarymod.plugin.PluginManager}
      */
     public static IPluginManager loader() {
-        return instance.loader;
+        return instance.pluginManager;
     }
 
     /**
@@ -166,7 +166,7 @@ public abstract class Canary implements TaskOwner {
      * @return {@link net.canarymod.plugin.PluginManager}
      */
     public static IPluginManager manager() {
-        return instance.loader;
+        return instance.pluginManager;
     }
 
     /**

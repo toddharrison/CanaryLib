@@ -80,7 +80,7 @@ public class PluginCommand implements NativeCommand {
         if (Canary.manager().disablePlugin(plugin)) {
             //TODO: Permanent flag in canary
             if (permanent) {
-//                Canary.loader().moveToDisabled(plugin);
+//                Canary.manager().moveToDisabled(plugin);
             }
             caller.notice(Translator.translateAndFormat("plugin disabled", plugin));
         }
