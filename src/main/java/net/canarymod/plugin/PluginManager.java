@@ -72,14 +72,15 @@ public final class PluginManager implements IPluginManager {
 
     @Override
     public void enableAllPlugins() {
-        for (String plugin : plugins.keySet()) {
-            try {
-                if (!enablePlugin(plugin)) {
-                    log.error("Failed to enable plugin: " + plugin);
+        synchronized (lock) {
+            for (String plugin : plugins.keySet()) {
+                try {
+                    if (!enablePlugin(plugin)) {
+                        log.error("Failed to enable plugin: " + plugin);
+                    }
+                } catch (Exception e) {
+                    log.error("Exception while enabling plugin: " + plugin, e);
                 }
-            }
-            catch (Exception e) {
-                log.error("Exception while enabling plugin: " + plugin, e);
             }
         }
     }
@@ -110,14 +111,15 @@ public final class PluginManager implements IPluginManager {
 
     @Override
     public void disableAllPlugins(Logger log) {
-        for (String plugin : plugins.keySet()) {
-            try {
-                if (!disablePlugin(plugin)) {
-                    log.error("Failed to disable plugin: " + plugin);
+        synchronized (lock) {
+            for (String plugin : plugins.keySet()) {
+                try {
+                    if (!disablePlugin(plugin)) {
+                        log.error("Failed to disable plugin: " + plugin);
+                    }
+                } catch (Exception e) {
+                    log.error("Exception while disabling plugin: " + plugin, e);
                 }
-            }
-            catch (Exception e) {
-                log.error("Exception while disabling plugin: " + plugin, e);
             }
         }
     }
@@ -167,7 +169,10 @@ public final class PluginManager implements IPluginManager {
 
     @Override
     public Collection<PluginDescriptor> getPluginDescriptors() {
-        return Collections.unmodifiableCollection(plugins.values());
+        synchronized (lock) {
+            //Returns a copy of the collection to avoid concurrentModificationExceptions
+            return Collections.unmodifiableCollection(new ArrayList<PluginDescriptor>(plugins.values()));
+        }
     }
 
     @Override
@@ -207,12 +212,13 @@ public final class PluginManager implements IPluginManager {
                     continue;
                 }
                 loadedDescriptors.add(desc);
-            }
-            catch (InvalidPluginException e) {
+            } catch (InvalidPluginException e) {
                 log.warn("Found invalid plugin at " + pluginFile.getName() + ", moving on.", e);
             }
         }
-        log.info("Found " + loadedDescriptors.size() + " plugins; total: " + plugins.size());
+        synchronized (lock) {
+            log.info("Found " + loadedDescriptors.size() + " plugins; total: " + plugins.size());
+        }
     }
 
     private PluginDescriptor loadPluginDescriptorAndInsertInGraph(File pluginFile) throws InvalidPluginException {
@@ -220,7 +226,11 @@ public final class PluginManager implements IPluginManager {
         if (plugins.containsKey(desc.getName())) {
             return null;
         }
-        plugins.put(desc.getName(), desc);
+        int priority = pluginPriorities.getInt(desc.getName(), 10);
+        desc.setPriority(priority);
+        synchronized (lock) {
+            plugins.put(desc.getName(), desc);
+        }
         updateDependencies(desc);
         return desc;
     }

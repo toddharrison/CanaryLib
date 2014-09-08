@@ -55,6 +55,7 @@ public class JavaPluginLifecycle implements IPluginLifecycle {
             ploader = new CanaryClassLoader(new File(desc.getPath()).toURI().toURL(), getClass().getClassLoader());
             Class<?> cls = ploader.loadClass(desc.getCanaryInf().getString("main-class"));
             Plugin p =  (Plugin) cls.newInstance();
+            p.setPriority(desc.getPriority());
             desc.setPlugin(p);
             desc.setCurrentState(PluginState.DISABLED);
             return p;

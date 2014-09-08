@@ -27,6 +27,7 @@ public class PluginDescriptor {
     private IPluginLifecycle pluginLifecycle;
     private String[] dependencies;
     private PluginState currentState;
+    private int priority;
 
     public PluginDescriptor(String path) throws InvalidPluginException {
         this.path = path;
@@ -118,5 +119,13 @@ public class PluginDescriptor {
 
     public String[] getDependencies() {
         return dependencies;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    public int getPriority() {
+        return priority;
     }
 }
