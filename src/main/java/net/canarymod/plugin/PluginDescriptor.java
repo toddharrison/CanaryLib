@@ -5,6 +5,7 @@ import net.canarymod.exceptions.InvalidPluginException;
 import net.canarymod.exceptions.PluginLoadFailedException;
 import net.canarymod.plugin.lifecycle.PluginLifecycleFactory;
 import net.visualillusionsent.utils.PropertiesFile;
+import net.visualillusionsent.utils.UtilityException;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,13 +32,23 @@ public class PluginDescriptor {
 
     public PluginDescriptor(String path) throws InvalidPluginException {
         this.path = path;
-        reloadInf();
+        try {
+            reloadInf();
+        } catch (UtilityException e) {
+            throw new InvalidPluginException("Unable to load INF file", e);
+        }
         currentState = PluginState.KNOWN;
     }
 
     protected void reloadInf() throws InvalidPluginException {
         findAndLoadCanaryInf();
-        name = canaryInf.getString("name");
+        name = canaryInf.getString("name", "");
+        if (name.equals("")) {
+            name = canaryInf.getString("main-class", "");
+        }
+        if (name.equals("")) {
+            name = new File(path).getName();
+        }
         version = canaryInf.getString("version", "UNKNOWN");
         author = canaryInf.getString("author", "UNKNOWN");
         language = canaryInf.getString("language", "java");
