@@ -44,6 +44,10 @@ public class JavaPluginLifecycle implements IPluginLifecycle {
         if (desc.getCurrentState() == PluginState.ENABLED) {
             desc.getPlugin().disable();
             desc.setCurrentState(PluginState.DISABLED);
+            Plugin p = desc.getPlugin();
+            Canary.hooks().unregisterPluginListeners(p);
+            Canary.commands().unregisterCommands(p);
+            Canary.motd().unregisterMOTDListener(p);
             return true;
         }
         return false;
@@ -74,10 +78,6 @@ public class JavaPluginLifecycle implements IPluginLifecycle {
         if (ploader != null) {
             ploader.close();
         }
-        Plugin p = desc.getPlugin();
-        Canary.hooks().unregisterPluginListeners(p);
-        Canary.commands().unregisterCommands(p);
-        Canary.motd().unregisterMOTDListener(p);
         desc.setPlugin(null);
         desc.setCurrentState(PluginState.KNOWN);
     }
