@@ -62,8 +62,10 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
 
     /**
      * Sets the Plugin's name. Used internally since plugins are stored by name.
+     * Calling this outside of {@link net.canarymod.plugin.IPluginLifecycle#load(IPluginManager)}
+     * may end disastrously
      */
-    final protected void setName(String name) {
+    final public void setName(String name) {
         this.name = name;
     }
 

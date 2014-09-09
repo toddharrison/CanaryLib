@@ -28,6 +28,8 @@ public class JavaPluginLifecycle extends PluginLifecycleBase {
             //A hacky way of getting the name in during the constructor/initializer
             Plugin.threadLocalName.set(desc.getName());
             Plugin p = (Plugin) cls.newInstance();
+            //If it isn't called in initializer, gotta set it here.
+            p.setName(desc.getName());
             p.setPriority(desc.getPriority());
             desc.setPlugin(p);
         } catch (Exception e) {
