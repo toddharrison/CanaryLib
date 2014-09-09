@@ -1,5 +1,6 @@
 package net.canarymod.plugin.lifecycle;
 
+import net.canarymod.Canary;
 import net.canarymod.CanaryClassLoader;
 import net.canarymod.exceptions.PluginLoadFailedException;
 import net.canarymod.plugin.*;
@@ -73,6 +74,10 @@ public class JavaPluginLifecycle implements IPluginLifecycle {
         if (ploader != null) {
             ploader.close();
         }
+        Plugin p = desc.getPlugin();
+        Canary.hooks().unregisterPluginListeners(p);
+        Canary.commands().unregisterCommands(p);
+        Canary.motd().unregisterMOTDListener(p);
         desc.setPlugin(null);
         desc.setCurrentState(PluginState.KNOWN);
     }
