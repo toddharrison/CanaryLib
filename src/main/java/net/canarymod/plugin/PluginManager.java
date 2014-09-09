@@ -13,9 +13,8 @@ import static net.canarymod.Canary.log;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Plugin Loading and Management Class
- * <p/>
- * Handles loading, unloading, enabling, disabling, and dependency resolving
+ *
+ * {@inheritDoc}
  *
  * @author Jason (darkdiplomat)
  * @author Chris (damagefilter)
@@ -35,6 +34,9 @@ public final class PluginManager implements IPluginManager {
         this.pluginPriorities = new PropertiesFile("config" + File.separator + "plugin_priorities.cfg");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean enablePlugin(String name) throws PluginLoadFailedException {
         PluginDescriptor descriptor = getPluginDescriptor(name);
@@ -70,6 +72,9 @@ public final class PluginManager implements IPluginManager {
         return enabled;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void enableAllPlugins() {
         synchronized (lock) {
@@ -85,6 +90,9 @@ public final class PluginManager implements IPluginManager {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean disablePlugin(String name) {
         PluginDescriptor descriptor = getPluginDescriptor(name);
@@ -104,11 +112,17 @@ public final class PluginManager implements IPluginManager {
         return descriptor.getPluginLifecycle().disable(this);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void disableAllPlugins() {
         disableAllPlugins(log);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void disableAllPlugins(Logger log) {
         synchronized (lock) {
@@ -124,6 +138,9 @@ public final class PluginManager implements IPluginManager {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean reloadPlugin(String name) throws PluginLoadFailedException, InvalidPluginException {
         PluginDescriptor descriptor = getPluginDescriptor(name);
@@ -137,6 +154,9 @@ public final class PluginManager implements IPluginManager {
         return false;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Plugin getPlugin(String name) {
         PluginDescriptor desc = getPluginDescriptor(name);
@@ -146,6 +166,9 @@ public final class PluginManager implements IPluginManager {
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<Plugin> getPlugins() {
         List<Plugin> res = new ArrayList<Plugin>();
@@ -158,6 +181,9 @@ public final class PluginManager implements IPluginManager {
         return Collections.unmodifiableCollection(res);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<String> getPluginNames() {
         List<String> res = new ArrayList<String>();
@@ -167,6 +193,9 @@ public final class PluginManager implements IPluginManager {
         return Collections.unmodifiableCollection(res);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Collection<PluginDescriptor> getPluginDescriptors() {
         synchronized (lock) {
@@ -175,11 +204,17 @@ public final class PluginManager implements IPluginManager {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PluginDescriptor getPluginDescriptor(Plugin plugin) {
         return plugins.get(plugin.getName());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PluginDescriptor getPluginDescriptor(String plugin) {
         PluginDescriptor desc = plugins.get(plugin);
@@ -191,6 +226,9 @@ public final class PluginManager implements IPluginManager {
         return desc;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void scanForPlugins() {
         File pluginDir = new File("plugins/");

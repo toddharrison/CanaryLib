@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Main interface for the Canary Plugin Manager
+ * Main interface for the Canary Plugin Manager - responsible for enabling/disabling/loading plugins.
  *
  * @author Pwootage
  */
