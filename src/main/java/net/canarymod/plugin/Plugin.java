@@ -28,6 +28,11 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
     private final ArrayList<String> dependents = new ArrayList<String>();
     private PluginDescriptor descriptor;
     private String name;
+    /**
+     * This is used to get the correct name during load process, before it is set in the field above.
+     */
+    public static ThreadLocal<String> threadLocalName = new ThreadLocal<String>() {
+    };
 
     /**
      * CanaryMod will call this upon enabling this plugin
@@ -48,6 +53,10 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
      */
     @Override
     final public String getName() {
+        if (name == null) {
+            //How to set a value before constructing an object: The hack
+            name = threadLocalName.get();
+        }
         return name;
     }
 
