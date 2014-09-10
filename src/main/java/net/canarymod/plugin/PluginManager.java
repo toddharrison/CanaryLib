@@ -68,8 +68,24 @@ public final class PluginManager implements IPluginManager {
         boolean enabled = descriptor.getPluginLifecycle().enable(this);
         if (!enabled) {
             log.warn("Unable to enable plugin " + descriptor.getName());
+            return false;
         }
-        return enabled;
+        Set<String> rdeps = dependencies.getDependants(descriptor.getName());
+        for (String s : rdeps) {
+            PluginDescriptor dep = getPluginDescriptor(s);
+            if (dep == null) {
+                //Don't really care... although, shouldn't be possible
+                continue;
+            }
+            if (dep.getCurrentState() == PluginState.ENABLED) {
+                continue;
+            }
+            //Only re-enable things that want to be enabled
+            if (!enablePlugin(s)) {
+                log.warn(s + " (dependent on " + descriptor.getName() + ") could not be enabled");
+            }
+        }
+        return true;
     }
 
     /**
