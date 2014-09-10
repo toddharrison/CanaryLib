@@ -22,8 +22,9 @@ public interface Scoreboard {
      *
      * @param name
      *         Name of Objective to add.
+     * @return The new {@link ScoreObjective} is returned for convenience. (or the existing one if it already existed)
      */
-    public void addScoreObjective(String name);
+    public ScoreObjective addScoreObjective(String name);
 
     /**
      * Creates and Adds a scoreboard objective.
@@ -37,8 +38,9 @@ public interface Scoreboard {
      *         score, if this is not the case use {@link #addScoreObjective(String)}
      *
      * @see #addScoreObjective(String)
+     * @return The new {@link ScoreObjective} is returned for convenience. (or the existing one if it already existed)
      */
-    public void addScoreObjective(String name, ScoreObjectiveCriteria criteria);
+    public ScoreObjective addScoreObjective(String name, ScoreObjectiveCriteria criteria);
 
     /**
      * Removes a ScoreObjective from this Scoreboard.
