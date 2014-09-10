@@ -248,6 +248,7 @@ public class UserAndGroupsProvider {
      * @param player
      */
     public void addOrUpdatePlayerData(Player player) {
+        player.initPlayerData();
         backboneUsers.addUser(player);
         String[] content = new String[3];
         String prefix = player.getPrefix();
@@ -260,7 +261,6 @@ public class UserAndGroupsProvider {
         content[1] = player.getGroup().getName();
         content[2] = Boolean.toString(player.isMuted());
         playerData.put(player.getUUIDString(), content);
-        this.refreshPlayerInstance(player.getUUIDString());
     }
 
     /**
@@ -336,7 +336,7 @@ public class UserAndGroupsProvider {
         initGroups();
         // Update players with new group data
         for (Player player : Canary.getServer().getPlayerList()) {
-            player.initPlayerData();
+            addOrUpdatePlayerData(player);
         }
     }
 
@@ -366,7 +366,7 @@ public class UserAndGroupsProvider {
     private boolean refreshPlayerInstance(String uuid) {
         Player p = Canary.getServer().getPlayerFromUUID(uuid);
         if (p != null) {
-            p.initPlayerData();
+            addOrUpdatePlayerData(p);
             return true;
         }
         return false;

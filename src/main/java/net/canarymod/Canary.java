@@ -347,7 +347,7 @@ public abstract class Canary implements TaskOwner {
 
         // Reload Player permissions and groups data
         for (Player p : getServer().getPlayerList()) {
-            p.initPlayerData();
+            userAndGroupsProvider.addOrUpdatePlayerData(p);
         }
     }
 
