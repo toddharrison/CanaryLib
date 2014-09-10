@@ -576,8 +576,8 @@ public class CommandList implements CommandListener {
     @Command(aliases = { "kit" },
             description = "kit info",
             permissions = { "canary.command.player.kit" },
-            toolTip = "/kit <give|create> <name> <use delay> [G|P Groups|Players]",
-            min = 3,
+            toolTip = "/kit <give|create|list> <name> <use delay> [G|P Groups|Players]",
+            min = 2,
             tabCompleteMethod = "kitTabComplete"
     )
     public void kitCommand(MessageReceiver caller, String[] parameters) {
@@ -588,9 +588,9 @@ public class CommandList implements CommandListener {
     public List<String> kitTabComplete(MessageReceiver caller, String[] parameters) {
         switch (parameters.length) {
             case 1:
-                return matchTo(parameters, new String[]{ "give", "create" });
+                return matchTo(parameters, new String[]{ "give", "create", "list" });
             case 2:
-                if (parameters[0].equals("give")) {
+                if (parameters[1].equals("give")) {
                     return matchToKitNames(parameters, caller);
                 }
             default:
