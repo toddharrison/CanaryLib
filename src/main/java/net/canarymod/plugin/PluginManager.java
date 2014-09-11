@@ -1,7 +1,10 @@
 package net.canarymod.plugin;
 
+import net.canarymod.Canary;
 import net.canarymod.exceptions.InvalidPluginException;
 import net.canarymod.exceptions.PluginLoadFailedException;
+import net.canarymod.hook.system.PluginDisableHook;
+import net.canarymod.hook.system.PluginEnableHook;
 import net.canarymod.plugin.dependencies.DependencyGraph;
 import net.visualillusionsent.utils.PropertiesFile;
 
@@ -13,7 +16,6 @@ import static net.canarymod.Canary.log;
 import org.apache.logging.log4j.Logger;
 
 /**
- *
  * {@inheritDoc}
  *
  * @author Jason (darkdiplomat)
@@ -65,12 +67,12 @@ public final class PluginManager implements IPluginManager {
         if (descriptor.getCurrentState() == PluginState.KNOWN) {
             descriptor.getPluginLifecycle().load(this);
         }
-        Plugin plugin = descriptor.getPlugin();
         boolean enabled = descriptor.getPluginLifecycle().enable(this);
         if (!enabled) {
             log.warn("Unable to enable plugin " + descriptor.getName());
             return false;
         }
+        Canary.hooks().callHook(new PluginEnableHook(descriptor.getPlugin()));
         Set<String> rdeps = dependencies.getDependants(descriptor.getName());
         for (String s : rdeps) {
             PluginDescriptor dep = getPluginDescriptor(s);
@@ -126,7 +128,12 @@ public final class PluginManager implements IPluginManager {
             disablePlugin(s);
         }
         log.info("Disabling plugin " + name);
-        return descriptor.getPluginLifecycle().disable(this);
+        boolean disabled = descriptor.getPluginLifecycle().disable(this);
+        if (disabled) {
+            Canary.hooks().callHook(new PluginDisableHook(descriptor.getPlugin()));
+            return true;
+        }
+        return false;
     }
 
     /**
