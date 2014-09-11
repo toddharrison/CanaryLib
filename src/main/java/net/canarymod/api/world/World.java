@@ -616,6 +616,35 @@ public interface World {
     public PlayerManager getPlayerManager();
 
     /**
+     * Returns the redstone power for this block
+     *
+     * @param block
+     *
+     * @return
+     */
+    public int getBlockPower(Block block);
+    
+    /**
+     * Get the restone power for the block at the given vector position
+     *
+     * @param position
+     *
+     * @return
+     */
+    public int getBlockPower(Position position);
+    
+    /**
+     * Get the restone power for the block at the given coordinates
+     *
+     * @param x
+     * @param y
+     * @param z
+     *
+     * @return
+     */
+    public int getBlockPower(int x, int y, int z);
+    
+    /**
      * Check if this block is powered by redstone
      *
      * @param block
