@@ -56,6 +56,7 @@ public final class PluginManager implements IPluginManager {
             if (dep.getCurrentState() == PluginState.ENABLED) {
                 continue;
             }
+            log.info("Enabling plugin " + name);
             if (!enablePlugin(s)) {
                 log.warn("Dependency " + s + " of " + descriptor.getName() + " cannot be enabled; cannot enable.");
                 return false;
@@ -80,7 +81,6 @@ public final class PluginManager implements IPluginManager {
             if (dep.getCurrentState() == PluginState.ENABLED) {
                 continue;
             }
-            //Only re-enable things that want to be enabled
             if (!enablePlugin(s)) {
                 log.warn(s + " (dependent on " + descriptor.getName() + ") could not be enabled");
             }
@@ -125,6 +125,7 @@ public final class PluginManager implements IPluginManager {
         for (String s : dependants) {
             disablePlugin(s);
         }
+        log.info("Disabling plugin " + name);
         return descriptor.getPluginLifecycle().disable(this);
     }
 
@@ -162,10 +163,34 @@ public final class PluginManager implements IPluginManager {
         PluginDescriptor descriptor = getPluginDescriptor(name);
         if (descriptor != null) {
             disablePlugin(name);
+            log.info("Unloading plugin " + name);
             descriptor.getPluginLifecycle().unload(this);
             descriptor.reloadInf();
             updateDependencies(descriptor);
-            return enablePlugin(name);
+            //Call enable directly instead of enable() to avoid recursing
+            log.info("Loading plugin " + name);
+            descriptor.getPluginLifecycle().load(this);
+            log.info("Enabling plugin " + name);
+            boolean enabled = descriptor.getPluginLifecycle().enable(this);
+            if (!enabled) {
+                log.warn("Failed to enable " + name + " after reloading");
+                return false;
+            }
+            Set<String> rdeps = dependencies.getDependants(descriptor.getName());
+            for (String s : rdeps) {
+                PluginDescriptor dep = getPluginDescriptor(s);
+                if (dep == null) {
+                    //Don't really care... although, shouldn't be possible
+                    continue;
+                }
+                if (dep.getCurrentState() == PluginState.KNOWN) {
+                    continue;
+                }
+                if (!reloadPlugin(s)) {
+                    log.warn(s + " (dependent on " + descriptor.getName() + ") could not be reloaded...");
+                }
+            }
+            return true;
         }
         return false;
     }
