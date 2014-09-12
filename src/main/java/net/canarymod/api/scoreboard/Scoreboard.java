@@ -179,5 +179,14 @@ public interface Scoreboard {
      *         the player to set the scoreboard for.
      */
     public void clearScoreboardPosition(ScorePosition type, Player player);
+    
+    /**
+     * Gets the name associated with this scoreboard, used for save file.
+     * For "world" bound scoreboards, it will be "scoreboard" always.  For 
+     * Canary generated instances it will be user-defined.
+     * 
+     * @return the name used for saving.
+     */
+    public String getSaveName();
 
 }

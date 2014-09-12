@@ -8,22 +8,12 @@ public interface ScoreboardManager {
     /**
      * Get the Scoreboard for this world.
      *
-     * @param worldName
-     *         Name of the world to get the scoreboard for.
-     *
-     * @return the Scoreboard.
-     */
-    public Scoreboard getScoreboard(String worldName);
-
-    /**
-     * Get the Scoreboard for this world.
-     *
      * @param world
      *         The world to get the scoreboard for.
      *
      * @return the Scoreboard.
      */
-    public Scoreboard getScoreboard(World world);
+    public Scoreboard getScoreboard();
 
     /**
      * Gets a registered {@link ScoreObjectiveCriteria}
@@ -44,4 +34,19 @@ public interface ScoreboardManager {
      *         the class to register.
      */
     public void registerScoreCriteria(String name, Class<? extends ScoreObjectiveCriteria> criteria);
+    
+    /**
+     * Gets a {@link Scoreboard} instance.
+     * If the scoreboard already exists it will load from cache or file, whichever
+     * is necessary.  If it does not already exist it create a new Scoreboard.
+     * 
+     * @param name The unique name for this scoreboard.
+     * @return {@link Scoreboard} instance
+     */
+    public Scoreboard getScoreboard(String name);
+    
+    /**
+     * Saves all cached {@link Scoreboard} instances.
+     */
+    public void saveAllScoreboards();
 }
