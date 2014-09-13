@@ -5,7 +5,7 @@ package net.canarymod.api.chat;
  *
  * @author Jason (darkdiplomat)
  */
-public interface ChatStyle {
+public interface ChatStyle extends Cloneable {
 
     /**
      * Gets the {@link net.canarymod.api.chat.ChatFormatting} for this {@code ChatStyle}
@@ -166,4 +166,11 @@ public interface ChatStyle {
      * @return the parent {@code ChatStyle}
      */
     public ChatStyle getParentStyle();
+
+    /**
+     * Clones this {@code ChatStyle}
+     *
+     * @return {@code ChatStyle} clone
+     */
+    public ChatStyle clone();
 }
