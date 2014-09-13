@@ -1,14 +1,8 @@
 package net.canarymod.api;
 
-import java.util.List;
-import java.util.UUID;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.gui.GUIControl;
-import net.canarymod.api.inventory.recipes.CraftingRecipe;
-import net.canarymod.api.inventory.recipes.Recipe;
-import net.canarymod.api.inventory.recipes.ShapedRecipe;
-import net.canarymod.api.inventory.recipes.ShapelessRecipe;
-import net.canarymod.api.inventory.recipes.SmeltRecipe;
+import net.canarymod.api.inventory.recipes.*;
 import net.canarymod.api.world.World;
 import net.canarymod.api.world.WorldManager;
 import net.canarymod.chat.MessageReceiver;
@@ -16,6 +10,9 @@ import net.canarymod.commandsys.CommandOwner;
 import net.canarymod.motd.MOTDOwner;
 import net.canarymod.tasks.ServerTask;
 import net.canarymod.tasks.TaskOwner;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * CanaryMod Server.<br />
@@ -164,6 +161,19 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
     public OfflinePlayer getOfflinePlayer(String player);
 
     /**
+     * Get an {@link OfflinePlayer}. This will only return an {@link OfflinePlayer} instance
+     * if the playername resolves into a valid UUID via the Mojang API.
+     * if you try to get a player that never joined it will return an OfflinePlayer
+     * with the given name and default values
+     *
+     * @param uuid
+     *         the UUID of the player
+     *
+     * @return the {@link OfflinePlayer} instance or null if the playername/uuid doesn't exist.
+     */
+    public OfflinePlayer getOfflinePlayer(UUID uuid);
+
+    /**
      * Gets a {@link PlayerReference} of a known player
      *
      * @param player
@@ -172,6 +182,16 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      * @return the {@link PlayerReference} if found; {@code null} if no player found
      */
     public PlayerReference matchKnownPlayer(String player);
+
+    /**
+     * Gets a {@link PlayerReference} of a known player
+     *
+     * @param uuid
+     *         the UUID of the player to get a reference for
+     *
+     * @return the {@link PlayerReference} if found; {@code null} if no player found
+     */
+    public PlayerReference matchKnownPlayer(UUID uuid);
 
     /**
      * Like matchPlayer, this returns a player according to a name String.

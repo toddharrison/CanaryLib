@@ -1,12 +1,5 @@
 package net.canarymod;
 
-import java.io.DataOutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.DimensionType;
 import net.canarymod.api.world.UnknownWorldException;
@@ -15,6 +8,14 @@ import net.canarymod.config.Configuration;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
+import java.io.DataOutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 /**
  * Set of miscellaneous tools
@@ -424,7 +425,12 @@ public class ToolBox {
      * @return user's uuid or null if not found/on error
      */
     public static String usernameToUUID(String username) {
-        if(!uName.matcher(username).matches()) return null; // username isn't valid, so don't bother checking against the mojang API
+        if (!uName.matcher(username).matches()) {
+            if (uuid.matcher(username).matches()) {
+                return username; // smuck passed in a UUID so pass it back
+            }
+            return null; // username isn't valid, so don't bother checking against the mojang API
+        }
         // Make sure the server isn't null, this can happen when called early in server init
         if (Canary.getServer() != null) {
             Player p = Canary.getServer().getPlayer(username);
@@ -457,10 +463,23 @@ public class ToolBox {
         catch (Exception ex) {
             Canary.log.warn("Failed to translate Username into a UUID");
         }
-        if (uuid != null) {
+        if (uuid != null && !uuid.contains("-")) {
             // Add the hyphens back in
             uuid = uuid.substring(0, 8) + "-" + uuid.substring(8, 12) + "-" + uuid.substring(12, 16) + "-" + uuid.substring(16, 20) + "-" + uuid.substring(20, 32);
         }
         return uuid;
+    }
+
+    /**
+     * Ask's Mojang's API for a UUID for a given UserName
+     *
+     * @param username
+     *         the user name to get a UUID for
+     *
+     * @return user's uuid or null if not found/on error
+     */
+    public static UUID uuidFromUsername(String username) {
+        String uuidString = usernameToUUID(username);
+        return uuidString != null ? UUID.fromString(uuidString) : null;
     }
 }
