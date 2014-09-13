@@ -5,9 +5,12 @@ import net.canarymod.Translator;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.CommandException;
 import net.canarymod.commandsys.NativeCommand;
+import net.canarymod.exceptions.InvalidPluginException;
+import net.canarymod.exceptions.PluginLoadFailedException;
+import net.canarymod.logger.Logman;
 
 /**
- * Command to enable, disable or reload plugins  
+ * Command to enable, disable or reload plugins
  *
  * @author Chris (damagefilter)
  */
@@ -39,28 +42,45 @@ public class PluginCommand implements NativeCommand {
     }
 
     private void reload(MessageReceiver caller, String plugin) {
-        if (Canary.loader().reloadPlugin(plugin)) {
-            caller.notice(Translator.translateAndFormat("plugin reloaded", plugin));
+        try {
+            if (Canary.manager().reloadPlugin(plugin)) {
+                caller.notice(Translator.translateAndFormat("plugin reloaded", plugin));
+            }
+            else {
+                caller.notice(Translator.translateAndFormat("plugin reloaded fail", plugin));
+            }
         }
-        else {
-            caller.notice(Translator.translateAndFormat("plugin reloaded fail", plugin));
+        catch (PluginLoadFailedException e) {
+            caller.notice(Translator.translateAndFormat("plugin enabled fail", plugin));
+            Logman.getLogman("pluginCommand").error("Failed to load plugin", e);
+        }
+        catch (InvalidPluginException e) {
+            caller.notice(Translator.translateAndFormat("plugin enabled fail", plugin));
+            Logman.getLogman("pluginCommand").error("Failed to load plugin", e);
         }
     }
 
     private void enable(MessageReceiver caller, String plugin) {
         // TODO: Take into consideration the permanent value!
-        if (Canary.loader().enablePlugin(plugin)) {
-            caller.notice(Translator.translateAndFormat("plugin enabled", plugin));
+        try {
+            if (Canary.manager().enablePlugin(plugin)) {
+                caller.notice(Translator.translateAndFormat("plugin enabled", plugin));
+            }
+            else {
+                caller.notice(Translator.translateAndFormat("plugin enabled fail", plugin));
+            }
         }
-        else {
+        catch (PluginLoadFailedException e) {
             caller.notice(Translator.translateAndFormat("plugin enabled fail", plugin));
+            Logman.getLogman("pluginCommand").error("Failed to load plugin", e);
         }
     }
 
     private void disable(MessageReceiver caller, String plugin, boolean permanent) {
-        if (Canary.loader().disablePlugin(plugin)) {
+        if (Canary.manager().disablePlugin(plugin)) {
+            //TODO: Permanent flag in canary
             if (permanent) {
-                Canary.loader().moveToDisabled(plugin);
+//                Canary.manager().moveToDisabled(plugin);
             }
             caller.notice(Translator.translateAndFormat("plugin disabled", plugin));
         }
@@ -73,7 +93,6 @@ public class PluginCommand implements NativeCommand {
      * Check if we have a permanent disable/enable requests
      *
      * @param params
-     *
      * @return
      */
     private boolean getPermanentParameter(String[] params) {

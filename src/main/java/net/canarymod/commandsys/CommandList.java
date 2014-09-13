@@ -933,7 +933,7 @@ public class CommandList implements CommandListener {
 
     @TabComplete
     public List<String> matchPluginName(MessageReceiver caller, String[] args) {
-        return args.length == 1 ? matchTo(args, Canary.loader().getPluginList()) : null;
+        return args.length == 1 ? matchTo(args, Canary.manager().getPluginNames().toArray(new String[0])) : null;
     }
 
     @TabComplete
