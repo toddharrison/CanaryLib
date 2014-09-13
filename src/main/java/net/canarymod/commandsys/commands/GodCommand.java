@@ -2,6 +2,7 @@ package net.canarymod.commandsys.commands;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
+import net.canarymod.api.GameMode;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
@@ -32,6 +33,10 @@ public class GodCommand implements NativeCommand {
             caller.notice(Translator.translate("god failed") + " " + Translator.translateAndFormat("unknown player", args[1]));
             return;
         }
+        if (other.getMode() == GameMode.CREATIVE) {
+            caller.notice(Translator.translateAndFormat("god creative other", other.getName()));
+            return;
+        }
         if (other.getCapabilities().isInvulnerable()) {
             other.getCapabilities().setInvulnerable(false);
             caller.notice(Translator.translateAndFormat("god disabled other", other.getName()));
@@ -52,6 +57,10 @@ public class GodCommand implements NativeCommand {
                 player.notice(Translator.translate("god failed"));
                 return;
             }
+            if (player.getMode() == GameMode.CREATIVE) {
+                player.notice(Translator.translate("god creative"));
+                return;
+            }
             if (player.getCapabilities().isInvulnerable()) {
                 player.getCapabilities().setInvulnerable(false);
                 player.notice(Translator.translate("god disabled"));
@@ -70,6 +79,10 @@ public class GodCommand implements NativeCommand {
             Player other = Canary.getServer().matchPlayer(args[1]);
             if (other == null) {
                 player.notice(Translator.translate("god failed") + " " + Translator.translateAndFormat("unknown player", args[1]));
+                return;
+            }
+            if (other.getMode() == GameMode.CREATIVE) {
+                player.notice(Translator.translateAndFormat("god creative other", other.getName()));
                 return;
             }
             if (other.getCapabilities().isInvulnerable()) {

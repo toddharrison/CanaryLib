@@ -1,4 +1,5 @@
 mobspawn info=animals or other things"
+modify group set (failed)=Group has failed to set: {0}
 plugin disabled fail=check server log"
 plugin enabled fail=check server log"
 plugin reloaded fail=check server log"

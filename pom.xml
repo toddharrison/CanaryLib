@@ -9,7 +9,7 @@
     <groupId>net.canarymod</groupId>
     <artifactId>CanaryLib</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-RC-4-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
     <name>CanaryLib</name>
     <url>http://www.canarymod.net</url>
     <inceptionYear>2012</inceptionYear>
@@ -63,6 +63,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.build.timestamp.format>dd MMMM yyyy HH:mm z</maven.build.timestamp.format>
+        <build.number/>
     </properties>
     <scm>
         <connection>scm:git:git://github.com/CanaryModTeam/CanaryLib.git</connection>
@@ -94,6 +95,11 @@
             <id>vi-repo</id>
             <name>Visual Illusions Repository</name>
             <url>http://repo.visualillusionsent.net/repository/public/</url>
+        </repository>
+        <repository>
+            <id>mojang</id>
+            <name>Minecraft Libraries</name>
+            <url>https://libraries.minecraft.net</url>
         </repository>
     </repositories>
     <dependencies>
@@ -153,6 +159,8 @@
     </dependencies>
     <build>
         <defaultGoal>clean install</defaultGoal>
+        <!-- Adds the build number if it is set -->
+        <finalName>${project.name}-${project.version}${build.number}</finalName>
         <!-- Plugins -->
         <plugins>
             <!-- Compile plugin -->
@@ -214,7 +222,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <finalName>${project.artifactId}-${project.version}</finalName>
+                    <finalName>${project.artifactId}-${project.version}${build.number}-shaded</finalName>
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
@@ -312,6 +320,18 @@
                 </plugins>
             </build>
         </profile>
+        <!-- Add Build number to a Jenkins build -->
+        <profile>
+            <id>jenkins</id>
+            <activation>
+                <property>
+                    <name>BUILD_NUMBER</name>
+                </property>
+            </activation>
+            <properties>
+                <build.number>-${BUILD_NUMBER}</build.number>
+            </properties>
+        </profile>
     </profiles>
 
     <dependencyManagement>
@@ -349,7 +369,7 @@
             <dependency>
                 <groupId>com.mojang</groupId>
                 <artifactId>authlib</artifactId>
-                <version>1.3</version>
+                <version>1.5.16</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>

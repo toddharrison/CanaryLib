@@ -22,8 +22,9 @@ public interface Scoreboard {
      *
      * @param name
      *         Name of Objective to add.
+     * @return The new {@link ScoreObjective} is returned for convenience. (or the existing one if it already existed)
      */
-    public void addScoreObjective(String name);
+    public ScoreObjective addScoreObjective(String name);
 
     /**
      * Creates and Adds a scoreboard objective.
@@ -37,8 +38,9 @@ public interface Scoreboard {
      *         score, if this is not the case use {@link #addScoreObjective(String)}
      *
      * @see #addScoreObjective(String)
+     * @return The new {@link ScoreObjective} is returned for convenience. (or the existing one if it already existed)
      */
-    public void addScoreObjective(String name, ScoreObjectiveCriteria criteria);
+    public ScoreObjective addScoreObjective(String name, ScoreObjectiveCriteria criteria);
 
     /**
      * Removes a ScoreObjective from this Scoreboard.
@@ -146,7 +148,7 @@ public interface Scoreboard {
      * @param objective
      *         the objective to set.
      */
-    public void setScoreObjectivePostion(ScorePosition type, ScoreObjective objective);
+    public void setScoreboardPosition(ScorePosition type, ScoreObjective objective);
 
     /**
      * Sets the {@link ScoreObjective}'s position for the given player.
@@ -158,6 +160,33 @@ public interface Scoreboard {
      * @param player
      *         the player to set the scoreboard for.
      */
-    public void setScoreObjectivePostion(ScorePosition type, ScoreObjective objective, Player player);
+    public void setScoreboardPosition(ScorePosition type, ScoreObjective objective, Player player);
+
+    /**
+     * Clears the {@link Scoreboard}'s position for all players on the server.
+     *
+     * @param type
+     *         the position type.
+     */
+    public void clearScoreboardPosition(ScorePosition type);
+
+    /**
+     * Clears the {@link Scoreboard}'s position for the given player.
+     *
+     * @param type
+     *         the position type.
+     * @param player
+     *         the player to set the scoreboard for.
+     */
+    public void clearScoreboardPosition(ScorePosition type, Player player);
+    
+    /**
+     * Gets the name associated with this scoreboard, used for save file.
+     * For "world" bound scoreboards, it will be "scoreboard" always.  For 
+     * Canary generated instances it will be user-defined.
+     * 
+     * @return the name used for saving.
+     */
+    public String getSaveName();
 
 }

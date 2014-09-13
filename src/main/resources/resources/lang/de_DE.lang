@@ -76,6 +76,7 @@ mode console=Das Terminal hat keinen Spiel-Modus ...
 mode info=ndere deinen Spiel-Modus oder den eines anderen Spielers
 mode set other={0}''s Spiel-Modus wurde zu {1} geändert
 modify group removed=Gruppe entfernt
+modify group set (failed)=Group has failed to set: {0}
 modify group set=Gruppe wurde gesetzt
 modify info=ndere eine Gruppe oder einen Spieler
 modify permission added=Erlaubnis erteilt

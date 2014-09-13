@@ -76,6 +76,7 @@ mode console=Konsollen har ikke noe spill-modus ...
 mode info=Endre ditt eller noen andre sitt spill-modus
 mode set other={0} sitt spill-modus har blitt satt til {1}
 modify group removed=Gruppen er fjernet
+modify group set (failed)=Group has failed to set: {0}
 modify group set=Gruppen har blitt sat
 modify info=Rediger en gruppe eller en spiller
 modify permission added=Tillatelse laget

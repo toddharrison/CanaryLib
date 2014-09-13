@@ -1,6 +1,7 @@
 package net.canarymod.api.nbt;
 
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * An NBT tag that stores a collection of NBT tags associated with strings.
@@ -15,6 +16,13 @@ public interface CompoundTag extends BaseTag {
      * @return {@link Collection} of values
      */
     public Collection<BaseTag> values();
+
+    /**
+     * Gets the key set of the CompoundTag
+     *
+     * @return {@link Set} of keys
+     */
+    public Set<String> keySet();
 
     /**
      * Puts a new Tag inside the CompoundTag

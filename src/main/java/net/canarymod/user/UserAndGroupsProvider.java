@@ -248,6 +248,7 @@ public class UserAndGroupsProvider {
      * @param player
      */
     public void addOrUpdatePlayerData(Player player) {
+        player.initPlayerData();
         backboneUsers.addUser(player);
         String[] content = new String[3];
         String prefix = player.getPrefix();
@@ -270,8 +271,15 @@ public class UserAndGroupsProvider {
      * @param group
      */
     public void addOfflinePlayer(String name, String group) {
-        String uuid = ToolBox.usernameToUUID(name);
+        String uuid = ToolBox.isUUID(name) ? name : ToolBox.usernameToUUID(name);
         backboneUsers.addUser(uuid, group);
+        if (uuid == null) {
+            log.warn("Player " + name + " already exists. Skipping!");
+            return;
+        }
+        if (playerData.containsKey(uuid)) {
+            
+        }
         String[] content = new String[3];
         content[0] = null;
         content[1] = group;
@@ -314,6 +322,8 @@ public class UserAndGroupsProvider {
      */
     public void removeUserData(String uuid) {
         backboneUsers.removeUser(uuid);
+        playerData.remove(uuid);
+        this.refreshPlayerInstance(uuid);
     }
 
     public void reloadUsers() {
@@ -326,7 +336,7 @@ public class UserAndGroupsProvider {
         initGroups();
         // Update players with new group data
         for (Player player : Canary.getServer().getPlayerList()) {
-            player.initPlayerData();
+            addOrUpdatePlayerData(player);
         }
     }
 
@@ -344,5 +354,21 @@ public class UserAndGroupsProvider {
      */
     public Group[] getModuleGroupsForPlayer(String uuid) {
         return backboneUsers.getModularGroups(uuid);
+    }
+    
+    /**
+     * Refreshes a players local instance if they are online with any updates
+     * performed here.
+     * 
+     * @param uuid the players uuid
+     * @return true if the player was online, false otherwise.
+     */
+    private boolean refreshPlayerInstance(String uuid) {
+        Player p = Canary.getServer().getPlayerFromUUID(uuid);
+        if (p != null) {
+            addOrUpdatePlayerData(p);
+            return true;
+        }
+        return false;
     }
 }
