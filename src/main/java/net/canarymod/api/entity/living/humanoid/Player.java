@@ -268,4 +268,13 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      * @return true if isHidden is hidden to player; false otherwise.
      */
     public boolean isPlayerHidden(Player player, Player isHidden);
+    
+    /**
+     * Set the compass target to a {@link Player}
+     * 
+     * @param x
+     * @param y
+     * @param z
+     */
+    public void setCompassTarget(int x, int y, int z);
 }
