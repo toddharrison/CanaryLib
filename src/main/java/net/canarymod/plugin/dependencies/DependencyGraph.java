@@ -11,12 +11,11 @@ import java.util.concurrent.locks.ReentrantLock;
 public class DependencyGraph {
     private Map<String, Set<String>> forwardDependencies;
     private Map<String, Set<String>> reverseDependencies;
-    private Object lock = new Object();
+    private final Object lock = new Object();
 
     public DependencyGraph() {
         forwardDependencies = new LinkedHashMap<String, Set<String>>();
         reverseDependencies = new LinkedHashMap<String, Set<String>>();
-        lock = new ReentrantLock();
     }
 
     public void addDependencies(String from, String[] to) {
@@ -62,20 +61,24 @@ public class DependencyGraph {
     }
 
     public Set<String> getDependencies(String node) {
-        Set<String> fwd = forwardDependencies.get(node);
-        if (fwd == null) {
-            return Collections.unmodifiableSet(new HashSet<String>());
-        } else {
-            return Collections.unmodifiableSet(fwd);
+        synchronized (lock) {
+            Set<String> fwd = forwardDependencies.get(node);
+            if (fwd == null) {
+                return Collections.unmodifiableSet(new HashSet<String>());
+            } else {
+                return Collections.unmodifiableSet(new HashSet<String>(fwd));
+            }
         }
     }
 
     public Set<String> getDependants(String node) {
-        Set<String> rev = reverseDependencies.get(node);
-        if (rev == null) {
-            return Collections.unmodifiableSet(new HashSet<String>());
-        } else {
-            return Collections.unmodifiableSet(rev);
+        synchronized (lock) {
+            Set<String> rev = reverseDependencies.get(node);
+            if (rev == null) {
+                return Collections.unmodifiableSet(new HashSet<String>());
+            } else {
+                return Collections.unmodifiableSet(new HashSet<String>(rev));
+            }
         }
     }
 
