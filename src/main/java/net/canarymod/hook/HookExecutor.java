@@ -93,6 +93,17 @@ public class HookExecutor implements HookExecutorInterface {
         }
     }
 
+    @Override
+    public void unregisterPluginListener(PluginListener listener) {
+        Iterator<RegisteredPluginListener> iter = listeners.values().iterator();
+        while (iter.hasNext()) {
+            RegisteredPluginListener rListener = iter.next();
+            if (rListener.getListener().equals(listener)) {
+                iter.remove();
+            }
+        }
+    }
+
     /**
      * Call a system hook
      */

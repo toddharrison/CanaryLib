@@ -29,6 +29,14 @@ public interface HookExecutorInterface {
     public void unregisterPluginListeners(Plugin plugin);
 
     /**
+     * Unregisters a listener
+     *
+     * @param listener
+     *         the {@link net.canarymod.plugin.PluginListener} instance
+     */
+    public void unregisterPluginListener(PluginListener listener);
+
+    /**
      * Invokes a hook call to registered plugin listeners
      *
      * @param hook
