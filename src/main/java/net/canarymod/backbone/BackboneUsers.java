@@ -1,7 +1,8 @@
 package net.canarymod.backbone;
 
 import net.canarymod.Canary;
-import net.canarymod.api.OfflinePlayer;
+import net.canarymod.ToolBox;
+import net.canarymod.api.PlayerReference;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.database.DataAccess;
 import net.canarymod.database.Database;
@@ -13,11 +14,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static net.canarymod.Canary.log;
-import net.canarymod.ToolBox;
 
 /**
  * Backbone to the Player System. This contains NO logic, it is only the data
@@ -95,11 +93,14 @@ public class BackboneUsers extends Backbone {
             return;
         }
         if (userExists(uuid)) {
-            log.warn("Player " + uuid + " already exists. Skipping!");
+            log.warn("Player " + uuid + " already exists. Attempting update...");
+            updatePlayer(Canary.getServer().matchKnownPlayer(nameOrUUID));
             return;
         }
         PlayerDataAccess data = new PlayerDataAccess();
-        if (!ToolBox.isUUID(nameOrUUID)) data.name = nameOrUUID;
+        if (!ToolBox.isUUID(nameOrUUID)) {
+            data.name = nameOrUUID;
+        }
         data.uuid = uuid;
         data.group = group;
         data.prefix = null;
@@ -110,7 +111,6 @@ public class BackboneUsers extends Backbone {
         catch (DatabaseWriteException e) {
             log.error(e.getMessage(), e);
         }
-
     }
 
     /**
@@ -159,7 +159,12 @@ public class BackboneUsers extends Backbone {
      * @param player
      *         Player to update to the data source.
      */
-    public void updatePlayer(Player player) {
+    public void updatePlayer(PlayerReference player) {
+        if (player == null) {
+            log.warn("No PlayerReference to update...");
+            return;
+        }
+
         PlayerDataAccess data = new PlayerDataAccess();
         ArrayList<String> groupNames = new ArrayList<String>();
         for (Group g : player.getPlayerGroups()) {
@@ -190,53 +195,6 @@ public class BackboneUsers extends Backbone {
     }
 
     /**
-     * Update an offline player
-     *
-     * @param player
-     *         the {@link OfflinePlayer} instance
-     */
-    public void updatePlayer(OfflinePlayer player) {
-        PlayerDataAccess data = new PlayerDataAccess();
-
-        try {
-            HashMap<String, Object> filter = new HashMap<String, Object>();
-            filter.put("uuid", player.getUUID());
-            Database.get().load(data, filter);
-        }
-        catch (DatabaseReadException e) {
-            log.error(e.getCause().getMessage(), e);
-        }
-        if (!data.hasData()) {
-            return;
-        }
-        ArrayList<String> groupNames = new ArrayList<String>();
-        for (Group g : player.getPlayerGroups()) {
-            groupNames.add(g.getName());
-        }
-        data.uuid = player.getUUIDString();
-        data.name = player.getName();
-        data.group = groupNames.get(0);
-        groupNames.remove(0);
-        data.subgroups = groupNames;
-        data.isMuted = player.isMuted();
-        String prefix = player.getPrefix();
-        if (player.getGroup().getPrefix().equals(prefix)) {
-            data.prefix = null;
-        }
-        else {
-            data.prefix = prefix;
-        }
-        try {
-            HashMap<String, Object> filter = new HashMap<String, Object>();
-            filter.put("uuid", player.getUUID());
-            Database.get().update(data, filter);
-        }
-        catch (DatabaseWriteException e) {
-            log.error(e.getCause().getMessage(), e);
-        }
-    }
-
-    /**
      * Load and return String array sets.
      * Each Array in the hashMap value has prefix, group and isMuted for a player, in that order.
      *
@@ -250,7 +208,7 @@ public class BackboneUsers extends Backbone {
         try {
             Database.get().loadAll(schema, daos, new HashMap<String, Object>());
             for (DataAccess dao : daos) {
-                PlayerDataAccess data = (PlayerDataAccess) dao;
+                PlayerDataAccess data = (PlayerDataAccess)dao;
                 String[] row = new String[3];
 
                 row[0] = data.prefix;
@@ -336,17 +294,20 @@ public class BackboneUsers extends Backbone {
         try {
             Database.get().loadAll(schema, daos, new HashMap<String, Object>());
             for (DataAccess dao : daos) {
-                PlayerDataAccess data = (PlayerDataAccess) dao;
-                if (data.uuid != null && !data.uuid.trim().equals("")) continue;
-                    String uuid = ToolBox.usernameToUUID(data.name);
-                    data.uuid = uuid == null ? "" : uuid;
-                    HashMap<String, Object> filter = new HashMap<String, Object>();
-                    filter.put("name", data.name);
-                    try {
-                        Database.get().update(data, filter);
-                    } catch (DatabaseWriteException e) {
-                        log.error(e.getMessage(), e);
-                    }
+                PlayerDataAccess data = (PlayerDataAccess)dao;
+                if (data.uuid != null && !data.uuid.trim().equals("")) {
+                    continue;
+                }
+                String uuid = ToolBox.usernameToUUID(data.name);
+                data.uuid = uuid == null ? "" : uuid;
+                HashMap<String, Object> filter = new HashMap<String, Object>();
+                filter.put("name", data.name);
+                try {
+                    Database.get().update(data, filter);
+                }
+                catch (DatabaseWriteException e) {
+                    log.error(e.getMessage(), e);
+                }
             }
         }
         catch (DatabaseReadException e) {
