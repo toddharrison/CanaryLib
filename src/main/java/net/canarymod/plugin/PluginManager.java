@@ -292,6 +292,10 @@ public final class PluginManager implements IPluginManager {
         File[] pluginFiles = pluginDir.listFiles();
         List<PluginDescriptor> loadedDescriptors = new ArrayList<PluginDescriptor>();
         for (File pluginFile : pluginFiles) {
+            //OSX *sigh*
+            if (pluginFile.getName().equals(".DS_Store")) {
+                continue;
+            }
             try {
                 PluginDescriptor desc = loadPluginDescriptorAndInsertInGraph(pluginFile);
                 if (desc == null) {
