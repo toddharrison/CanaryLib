@@ -8,21 +8,10 @@ import net.canarymod.database.exceptions.DatabaseAccessException;
 import net.canarymod.database.exceptions.DatabaseReadException;
 import net.canarymod.database.exceptions.DatabaseTableInconsistencyException;
 import net.canarymod.database.exceptions.DatabaseWriteException;
-
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.logging.log4j.LogManager;
+
+import java.sql.*;
+import java.util.*;
 
 import static net.canarymod.Canary.log;
 
@@ -538,7 +527,8 @@ public class MySQLDatabase extends Database {
         }
         catch (SQLException ex) {
             throw new DatabaseWriteException(ex.getMessage() + " Error checking MySQL Entry Key in "
-                    + data.toString());
+                                                     + data.toString()
+            );
         }
         catch (DatabaseTableInconsistencyException ex) {
             LogManager.getLogger().error("", ex);
@@ -570,7 +560,7 @@ public class MySQLDatabase extends Database {
                 if (limitOne) {
                     sb.append(" LIMIT 1");
                 }
-                ps = conn.prepareStatement("SELECT * FROM `" + data.getName() + "` WHERE " + sb.toString());
+                ps = conn.prepareStatement("SELECT * FROM `" + data.getName() + "` WHERE " + sb.toString(), ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                 for (int i = 0; i < fieldNames.length && i < fieldNames.length; i++) {
                     String fieldName = String.valueOf(fieldNames[i]);
                     Column col = data.getColumnForName(fieldName);
@@ -583,10 +573,10 @@ public class MySQLDatabase extends Database {
             }
             else {
                 if (limitOne) {
-                    ps = conn.prepareStatement("SELECT * FROM `" + data.getName() + "` LIMIT 1");
+                    ps = conn.prepareStatement("SELECT * FROM `" + data.getName() + "` LIMIT 1", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                 }
                 else {
-                    ps = conn.prepareStatement("SELECT * FROM `" + data.getName() + "`");
+                    ps = conn.prepareStatement("SELECT * FROM `" + data.getName() + "`", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
                 }
             }
             toRet = ps.executeQuery();
