@@ -7,13 +7,13 @@ import net.canarymod.hook.system.PluginDisableHook;
 import net.canarymod.hook.system.PluginEnableHook;
 import net.canarymod.plugin.dependencies.DependencyGraph;
 import net.visualillusionsent.utils.PropertiesFile;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.*;
 
 import static net.canarymod.Canary.log;
-
-import org.apache.logging.log4j.Logger;
 
 /**
  * {@inheritDoc}
@@ -289,13 +289,9 @@ public final class PluginManager implements IPluginManager {
             log.error("Failed to scan for plugins. 'plugins/' is not a directory but a file...");
             return;
         }
-        File[] pluginFiles = pluginDir.listFiles();
+        File[] pluginFiles = pluginDir.listFiles(new PluginFilter());
         List<PluginDescriptor> loadedDescriptors = new ArrayList<PluginDescriptor>();
         for (File pluginFile : pluginFiles) {
-            //OSX *sigh*
-            if (pluginFile.getName().equals(".DS_Store")) {
-                continue;
-            }
             try {
                 PluginDescriptor desc = loadPluginDescriptorAndInsertInGraph(pluginFile);
                 if (desc == null) {
@@ -328,5 +324,21 @@ public final class PluginManager implements IPluginManager {
     private void updateDependencies(PluginDescriptor desc) {
         dependencies.removeNode(desc.getName());
         dependencies.addDependencies(desc.getName(), desc.getDependencies());
+    }
+
+    /**
+     * Plugin Filtering
+     * So we don't attempt to load garbage
+     *
+     * @author Jason (darkdiplomat)
+     */
+    private final class PluginFilter implements FileFilter {
+
+        @Override
+        public boolean accept(File pathname) {
+            /*     Directory? ACCEPTED                                   Jar/Zip? ACCEPTED */
+            return pathname.isDirectory() || pathname.getName().matches(".+\\.(jar|zip)");
+            // All others REJECTED (It's like getting into haven here)
+        }
     }
 }
