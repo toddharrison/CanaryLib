@@ -12,13 +12,14 @@ import net.canarymod.api.world.position.Location;
  * @author Ho0ber
  */
 public class LineTracer {
-    private Location player_loc;
-    private double rot_x, rot_y, view_height;
-    private double length, h_length, step;
+    private Location playerLoc;
+    private Block currentBlock, lastBlock;
+    private double rotX, rotY, viewHeight;
+    private double length, step;
     private int range;
-    private double x_offset, y_offset, z_offset;
-    private int last_x, last_y, last_z;
-    private int target_x, target_y, target_z;
+    private double xOffset, yOffset, zOffset;
+    private double last_x, last_y, last_z;
+    private double currentX, currentY, currentZ;
 
     /**
      * Constructor requiring player, uses default values
@@ -27,7 +28,9 @@ public class LineTracer {
      *         the {@link Player} to check Line of Sight for
      */
     public LineTracer(Player in_player) {
-        init(in_player.getLocation(), 300, 0.2, 1.65); // Reasonable default values
+        Location loc = in_player.getLocation();
+        loc.setRotation(in_player.getHeadRotation());
+        init(loc, 300, 0.2, in_player.getEyeHeight()); // Reasonable default values
     }
 
     /**
@@ -51,7 +54,9 @@ public class LineTracer {
      *         the stepping value, the amount Y to increase/decrease the further away the checks get
      */
     public LineTracer(Player in_player, int in_range, double in_step) {
-        init(in_player.getLocation(), in_range, in_step, 1.65);
+        Location loc = in_player.getLocation();
+        loc.setRotation(in_player.getHeadRotation());
+        init(loc, in_range, in_step, in_player.getEyeHeight());
     }
 
     /**
@@ -81,20 +86,28 @@ public class LineTracer {
      *         the View Height to use, a {@link Player}'s view height is typically 1.62
      */
     public void init(Location in_location, int in_range, double in_step, double in_view_height) {
-        player_loc = in_location;
-        view_height = in_view_height;
+        playerLoc = in_location;
+        viewHeight = in_view_height;
         range = in_range;
         step = in_step;
         length = 0;
-        rot_x = (player_loc.getRotation() + 90) % 360;
-        rot_y = player_loc.getPitch() * -1;
-
-        target_x = ToolBox.floorToBlock(player_loc.getX());
-        target_y = ToolBox.floorToBlock(player_loc.getY() + view_height);
-        target_z = ToolBox.floorToBlock(player_loc.getZ());
-        last_x = target_x;
-        last_y = target_y;
-        last_z = target_z;
+        /* Convert these to real world math numbers */
+        
+        /* convert negative rotation values to positive */
+        rotX = playerLoc.getRotation();
+        rotX = rotX < 0 ? (360 + rotX) : rotX;
+        /* convert minecraft pitch to degree pitch */
+        rotY = playerLoc.getPitch() * -1;
+        if (rotY < 0) rotY = 270 + (90 + rotY);
+        
+        currentX = playerLoc.getX();
+        /* Add Eye Height to the Y */
+        currentY = playerLoc.getY() + viewHeight;
+        currentZ = playerLoc.getZ();
+        last_x = currentX;
+        last_y = currentY;
+        last_z = currentZ;
+        
     }
 
     /**
@@ -104,29 +117,7 @@ public class LineTracer {
      */
     public Block getTargetBlock() {
         while ((getNextBlock() != null) && (getCurBlock().getTypeId() == 0)) {
-            ;
-        }
-        return getCurBlock();
-    }
-
-    /**
-     * Returns the block in the direction of the cursor, ignoring certain block types.
-     * Null if out of range.
-     *
-     * @param blockIds
-     *         The block id's to ignore.
-     *
-     * @return the Target Block
-     */
-    public Block getTargetBlockIgnoring(int... blockIds) {
-        blockLoop:
-        while (getNextBlock() != null) {
-            for (int i : blockIds) {
-                if (getCurBlock().getTypeId() == i) {
-                    continue blockLoop;
-                }
-            }
-            break;
+            /* do nothing, just skip to next iteration */
         }
         return getCurBlock();
     }
@@ -142,7 +133,7 @@ public class LineTracer {
             ;
         }
         if (getCurBlock() != null) {
-            player_loc.getWorld().setBlockAt(target_x, target_y, target_z, (short) type);
+            playerLoc.getWorld().setBlockAt(currentBlock.getX(), currentBlock.getY(), currentBlock.getZ(), (short) type);
         }
     }
 
@@ -174,7 +165,7 @@ public class LineTracer {
             ;
         }
         if (getCurBlock() != null) {
-            player_loc.getWorld().setBlockAt(last_x, last_y, last_z, (short) type);
+            playerLoc.getWorld().setBlockAt((int)last_x, (int)last_y, (int)last_z, (short) type);
         }
     }
 
@@ -184,29 +175,32 @@ public class LineTracer {
      * @return the next {@link Block}
      */
     public Block getNextBlock() {
-        last_x = target_x;
-        last_y = target_y;
-        last_z = target_z;
-
-        do {
+        Block block = null;
+        /* We already found the target block, return null */
+        if (currentBlock != null && !currentBlock.isAir()) return null;
+        
+        somnersMadness:
+        while ((length <= range) && (currentBlock == null || currentBlock.equals(block))) {
             length += step;
-
-            h_length = (length * Math.cos(Math.toRadians(rot_y)));
-            y_offset = (length * Math.sin(Math.toRadians(rot_y)));
-            x_offset = (h_length * Math.cos(Math.toRadians(rot_x)));
-            z_offset = (h_length * Math.sin(Math.toRadians(rot_x)));
-
-            target_x = ToolBox.floorToBlock(x_offset + player_loc.getX());
-            target_y = ToolBox.floorToBlock(y_offset + player_loc.getY() + view_height);
-            target_z = ToolBox.floorToBlock(z_offset + player_loc.getZ());
-
+            yOffset = (step * Math.sin(Math.toRadians(rotY)));
+            zOffset = (step * Math.cos(Math.toRadians(rotX)));
+            xOffset = (step * Math.sin(Math.toRadians(rotX)));
+            currentX = (-1 * xOffset) + currentX;// stuff is backwards, multiply by -1
+            currentY = yOffset + currentY;
+            currentZ = zOffset + currentZ;
+            
+            block = playerLoc.getWorld().getBlockAt(ToolBox.floorToBlock(currentX),ToolBox.floorToBlock(currentY), ToolBox.floorToBlock(currentZ));
+            if (block != null && !block.equals(currentBlock)) {
+                /* set last values to current values */
+                lastBlock = currentBlock;
+                currentBlock = block;
+                last_x = currentX;
+                last_y = currentY;
+                last_z = currentZ;
+                break somnersMadness;
+            }
         }
-        while ((length <= range) && ((target_x == last_x) && (target_y == last_y) && (target_z == last_z)));
-
-        if (length > range) {
-            return null;
-        }
-        return player_loc.getWorld().getBlockAt(target_x, target_y, target_z);
+        return block;
     }
 
     /**
@@ -215,12 +209,7 @@ public class LineTracer {
      * @return the current {@link Block}
      */
     public Block getCurBlock() {
-        if (length > range) {
-            return null;
-        }
-        else {
-            return player_loc.getWorld().getBlockAt(target_x, target_y, target_z);
-        }
+        return currentBlock;
     }
 
     /**
@@ -231,17 +220,17 @@ public class LineTracer {
      */
     public void setCurBlock(int type) {
         if (getCurBlock() != null) {
-            player_loc.getWorld().setBlockAt(target_x, target_y, target_z, (short) type);
+            playerLoc.getWorld().setBlockAt(ToolBox.floorToBlock(currentX), ToolBox.floorToBlock(currentY), ToolBox.floorToBlock(currentZ), (short) type);
         }
     }
 
     /**
      * Returns the previous block along the line of vision
      *
-     * @return the last {@link Block}
+     * @return the last {@link Block} could be null if this is first iteration
      */
     public Block getLastBlock() {
-        return player_loc.getWorld().getBlockAt(last_x, last_y, last_z);
+        return lastBlock;
     }
 
     /**
@@ -252,7 +241,7 @@ public class LineTracer {
      */
     public void setLastBlock(int type) {
         if (getLastBlock() != null) {
-            player_loc.getWorld().setBlockAt(last_x, last_y, last_z, (short) type);
+            playerLoc.getWorld().setBlockAt(lastBlock.getX(), lastBlock.getY(), lastBlock.getZ(), (short) type);
         }
     }
 }
