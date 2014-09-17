@@ -24,6 +24,9 @@ public class PluginLifecycleFactory {
         if (language.equals("java") || language.equals("scala")) {
             return new JavaPluginLifecycle(pluginDescriptor);
         }
+        else if (language.equals("lua")) {
+            return new LuaPluginLifecycle(pluginDescriptor);
+        }
         throw new InvalidPluginException("Unknown plugin language: " + language);
     }
 }

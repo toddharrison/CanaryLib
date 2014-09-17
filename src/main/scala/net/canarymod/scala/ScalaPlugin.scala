@@ -72,6 +72,24 @@ abstract class ScalaPlugin extends Plugin {
     )
   }
 
+  /**
+   * Regester a hook with Canary
+   * @param h Hook method
+   * @param clazz Class of hook
+   * @tparam T Type of hook
+   */
+  def hook[T <: Hook](clazz: Class[T])(h: T => Unit): Unit = {
+    hookListener.registerHook(
+      new PluginListener {},
+      this,
+      clazz,
+      new Dispatcher {
+        override def execute(listener: PluginListener, hook: Hook): Unit = h(hook.asInstanceOf[T])
+      },
+      priority
+    )
+  }
+
   def command(aliases: Seq[String],
               permissions: Seq[String],
               description: String,

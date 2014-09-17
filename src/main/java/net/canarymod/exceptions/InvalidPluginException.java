@@ -5,7 +5,7 @@ package net.canarymod.exceptions;
  *
  * @author Pwoootage
  */
-public class InvalidPluginException extends Throwable {
+public class InvalidPluginException extends Exception {
     public InvalidPluginException() {
     }
 
