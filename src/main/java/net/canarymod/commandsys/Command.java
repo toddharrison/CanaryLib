@@ -107,4 +107,13 @@ public @interface Command {
      * @return method name
      */
     String tabCompleteMethod() default "";
+    
+    /**
+     * The version of the command system to use,
+     * NOTE: this is only a canarymod thing and it is not getting affected by the plugin
+     * NOTE: the only available parameters are "1.0" and "2.0".
+     * 
+     * @return version of the command system
+     */
+    int version() default 1;
 }

@@ -99,6 +99,7 @@ abstract class ScalaPlugin extends Plugin {
               searchTerms: Seq[String] = Seq(),
               min: Int = 1,
               max: Int = -1,
+              version: Int = 1,
               tabComplete: (MessageReceiver, Seq[String]) => Seq[String] = (_, _) => Seq(),
               translator: Translator = Translator.getInstance()
                )(
@@ -115,7 +116,8 @@ abstract class ScalaPlugin extends Plugin {
       searchTerms.toArray,
       min,
       max,
-      ""
+      "",
+      version
     )
     val tcd = new TabCompleteDispatch() {
 

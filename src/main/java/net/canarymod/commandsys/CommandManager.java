@@ -178,9 +178,23 @@ public class CommandManager {
         }
 
         if (subCommand == null) {
-            return baseCommand.parseCommand(caller, args);
+            if (baseCommand.meta.version() == 1) {
+                return baseCommand.parseCommand(caller, args);
+            }
+            else {
+                return baseCommand.parseCommand(caller, Arrays.copyOfRange(args, 1, args.length));
+            }
         }
-        return subCommand.parseCommand(caller, Arrays.copyOfRange(args, argumentIndex, args.length));
+        else {
+            if (baseCommand.meta.version() == 1) {
+                return subCommand.parseCommand(caller, Arrays.copyOfRange(args, argumentIndex, args.length));
+            }
+            else {
+                return subCommand.parseCommand(caller, Arrays.copyOfRange(args, argumentIndex + 1, args.length));
+            }
+            
+        }
+        
     }
 
     public void registerCommands(final CommandListener listener, CommandOwner owner, boolean force) throws CommandDependencyException {

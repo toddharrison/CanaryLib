@@ -20,8 +20,9 @@ public class FakeCommandAnnotation implements Command {
     private final int min;
     private final int max;
     private final String tabCompleteMethod;
+    private final int version;
 
-    public FakeCommandAnnotation(String[] aliases, String[] permissions, String description, String toolTip, String parent, String helpLookup, String[] searchTerms, int min, int max, String tabCompleteMethod) {
+    public FakeCommandAnnotation(String[] aliases, String[] permissions, String description, String toolTip, String parent, String helpLookup, String[] searchTerms, int min, int max, String tabCompleteMethod, int version) {
         this.aliases = aliases;
         this.permissions = permissions;
         this.description = description;
@@ -32,6 +33,7 @@ public class FakeCommandAnnotation implements Command {
         this.min = min;
         this.max = max;
         this.tabCompleteMethod = tabCompleteMethod;
+        this.version = version;
     }
 
     @Override
@@ -87,5 +89,10 @@ public class FakeCommandAnnotation implements Command {
     @Override
     public Class<? extends Annotation> annotationType() {
         return Command.class;
+    }
+
+    @Override
+    public int version() {
+        return version;
     }
 }
