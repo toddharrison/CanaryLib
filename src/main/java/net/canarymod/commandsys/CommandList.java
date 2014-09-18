@@ -187,19 +187,6 @@ public class CommandList implements CommandListener {
         natives.get("pos").execute(caller, parameters);
     }
 
-    @Command(
-            aliases = { "give", "i" },
-            description = "give info",
-            permissions = { "canary.command.player.give" },
-            toolTip = "/give <item>:[data] [amount] [player]",
-            min = 2,
-            max = 4,
-            tabCompleteMethod = "matchItemTypeDataAmountPlayerNames"
-    )
-    public void giveCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("give").execute(caller, parameters);
-    }
-
     // XXX groupmod start
     @Command(aliases = { "groupmod", "group" },
             description = "groupmod info",
@@ -1013,6 +1000,42 @@ public class CommandList implements CommandListener {
     )
     public void give(MessageReceiver caller, String[] args) {
         natives.get("give").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"message", "msg", "tell"},
+            description = "Sends a private message to a player",
+            permissions = {"canary.command.message"},
+            toolTip = "/tell <player> <private message ...>",
+            min = 2,
+            version = 2
+    )
+    public void message(MessageReceiver caller, String[] args) {
+        natives.get("message").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"messageraw", "msgraw", "tellraw"},
+            description = "Sends a private message to a player",
+            permissions = {"canary.command.message"},
+            toolTip = "/tellraw <player> <raw json message>",
+            min = 2,
+            version = 2
+    )
+    public void messageraw(MessageReceiver caller, String[] args) {
+        natives.get("messageraw").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"playsound"},
+            description = "Plays a sound",
+            permissions = {"canary.command.playsound"},
+            toolTip = "/playsound <sound> <player> [x] [y] [z] [volume] [pitch] [minimumVolume]",
+            min = 2,
+            version = 2
+    )
+    public void playsound(MessageReceiver caller, String[] args) {
+        natives.get("playsound").execute(caller, args);
     }
 
 
