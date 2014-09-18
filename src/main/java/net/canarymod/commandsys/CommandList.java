@@ -81,7 +81,6 @@ public class CommandList implements CommandListener {
         temp.put("delwarp", new WarpRemove());
         temp.put("spawn", new SpawnCommand());
         temp.put("stop", new StopServer());
-        temp.put("teleporthere", new TeleportHereCommand());
         temp.put("whitelist", new WhitelistCommand());
         temp.put("god", new GodCommand());
         temp.put("reservelist", new ReservelistCommand());
@@ -96,6 +95,7 @@ public class CommandList implements CommandListener {
         temp.put("achievement", new Achievement());
         temp.put("broadcast", new Broadcast());
         temp.put("clear", new Clear());
+        temp.put("debug", new Debug());
         temp.put("defaultgamemode", new DefaultGameMode());
         temp.put("defaultspawnpoint", new DefaultSpawnpoint());
         temp.put("difficulty", new Difficulty());
@@ -865,9 +865,9 @@ public class CommandList implements CommandListener {
     /* START: Vanilla command wrappers... */
     @Command(
             aliases = {"achievement"},
-            description = "Gives an Achievement",
+            description = "Gives a player an achievement or increases a statistic.",
             permissions = {"canary.command.achievement"},
-            toolTip = "/achievement give <stat_name> [player]",
+            toolTip = "/achievement <give|take> <stat_name|*> [player]",
             min = 2,
             max = 3,
             version = 2
@@ -890,9 +890,9 @@ public class CommandList implements CommandListener {
 
     @Command(
             aliases = {"clear", "clearinventory", "clearinv"},
-            description = "Clears inventory",
+            description = "Clears items from player inventory.",
             permissions = {"canary.command.clear"},
-            toolTip = "/clear <player> [item] [data]",
+            toolTip = "/clear <player> [item] [data] [maxCount] [dataTag]",
             min = 1,
             version = 2
     )
@@ -901,8 +901,20 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
+            aliases = {"debug"},
+            description = "Starts or stops a debugging session.",
+            permissions = {"canary.command.debug"},
+            toolTip = "/debug <start|stop|chunk> [<x> <y> <z>]",
+            min = 1,
+            version = 2
+    )
+    public void debug(MessageReceiver caller, String[] args) {
+        natives.get("debug").execute(caller, args);
+    }
+
+    @Command(
             aliases = {"defaultgamemode", "defaultmode"},
-            description = "Sets everyones GameMode",
+            description = "Sets the default game mode (creative, survival, etc.) for new players entering a multiplayer server.",
             permissions = {"canary.command.defaultgamemode"},
             toolTip = "/defaultgamemode <gamemode>",
             min = 1,
@@ -926,7 +938,7 @@ public class CommandList implements CommandListener {
 
     @Command(
             aliases = {"difficulty"},
-            description = "Sets world difficulty",
+            description = "Sets the difficulty level (peaceful, easy, etc.).",
             permissions = {"canary.command.difficulty"},
             toolTip = "/difficulty <new difficulty> [world]",
             min = 1,
@@ -934,6 +946,18 @@ public class CommandList implements CommandListener {
     )
     public void difficulty(MessageReceiver caller, String[] args) {
         natives.get("difficulty").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"effect"},
+            description = "The effect command manages status effects on players and other entities.",
+            permissions = {"canary.command.enchant"},
+            toolTip = "/effect <player> <clear|effect> [seconds] [amplifier] [hideParticles]",
+            min = 2,
+            version = 2
+    )
+    public void effect(MessageReceiver caller, String[] args) {
+        natives.get("effect").execute(caller, args);
     }
 
     @Command(
@@ -948,7 +972,7 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"effect"},
+            aliases = {"enchant"},
             description = "Enchants target's held item",
             permissions = {"canary.command.enchant"},
             toolTip = "/enchant <player> <enchantment ID> [level]",
@@ -961,9 +985,9 @@ public class CommandList implements CommandListener {
 
     @Command(
             aliases = {"gamemode", "mode"},
-            description = "Sets a targets GameMode",
+            description = "Sets a player's game mode.",
             permissions = {"canary.command.gamemode"},
-            toolTip = "/gamemode <player> <mode>",
+            toolTip = "/gamemode <mode> [player]",
             min = 2,
             version = 2
     )
@@ -973,7 +997,7 @@ public class CommandList implements CommandListener {
 
     @Command(
             aliases = {"gamerule"},
-            description = "Sets a game rule",
+            description = "Sets or queries a game rule value.",
             permissions = {"canary.command.gamerule"},
             toolTip = "/gamerule <rule name> [value]",
             version = 2
@@ -984,7 +1008,7 @@ public class CommandList implements CommandListener {
 
     @Command(
             aliases = {"give", "item", "i"},
-            description = "Gives an item",
+            description = "Gives an item to a player.",
             permissions = {"canary.command.give"},
             toolTip = "/give <player> <item> [amount] [data] [dataTag]",
             min = 2,
@@ -1030,7 +1054,185 @@ public class CommandList implements CommandListener {
         natives.get("playsound").execute(caller, args);
     }
 
+    @Command(
+            aliases = {"save-all", "saveall"},
+            description = "Saves world data",
+            permissions = {"canary.command.saveall"},
+            toolTip = "/save-all",
+            min = 0,
+            version = 2
+    )
+    public void saveall(MessageReceiver caller, String[] args) {
+        natives.get("save-all").execute(caller, args);
+    }
 
+    @Command(
+            aliases = {"save-off", "saveoff"},
+            description = "Turns off world data saving",
+            permissions = {"canary.command.saveoff"},
+            toolTip = "/save-off",
+            min = 0,
+            version = 2
+    )
+    public void saveoff(MessageReceiver caller, String[] args) {
+        natives.get("save-off").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"save-on", "saveon"},
+            description = "Turns on world data saving",
+            permissions = {"canary.command.saveon"},
+            toolTip = "/save-off",
+            min = 0,
+            version = 2
+    )
+    public void saveon(MessageReceiver caller, String[] args) {
+        natives.get("save-on").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"scoreboard"},
+            description = "SCORE(BOARD)!",
+            permissions = {"canary.command.scoreboard"},
+            toolTip = "/scoreboard <objectives|players|teams>",
+            min = 1,
+            version = 2
+    )
+    public void scoreboard(MessageReceiver caller, String[] args) {
+        natives.get("scoreboard").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"setblock"},
+            description = "Sets a block",
+            permissions = {"canary.command.setblock"},
+            toolTip = "/setblock <x> <y> <z> <TileName> [dataValue] [oldBlockHandling] [dataTag]",
+            min = 4,
+            version = 2
+    )
+    public void setblock(MessageReceiver caller, String[] args) {
+        natives.get("setblock").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"spawnpoint"},
+            description = "Spawnpoint setting (Player based)",
+            permissions = {"canary.command.spawnpoint"},
+            toolTip = "/spawnpoint [player [<x> <y> <z>]]",
+            min = 0,
+            version = 2
+    )
+    public void spawnpoint(MessageReceiver caller, String[] args) {
+        natives.get("spawnpoint").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"spreadplayers"},
+            description = "Spreads out them players",
+            permissions = {"canary.command.spreadplayers"},
+            toolTip = "/spreadplayers <x> <z> <spreadDistance> <maxRange> <respectTeams true|false> <player ...>",
+            min = 4,
+            version = 2
+    )
+    public void spreadplayers(MessageReceiver caller, String[] args) {
+        natives.get("spreadplayers").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"summon", "mspawn", "mobspawn", "spawnmob"},
+            description = "Summons an entity",
+            permissions = {"canary.command.summon"},
+            toolTip = "/summon <EntityName> [x] [y] [z] [dataTag]",
+            min = 1,
+            version = 2
+    )
+    public void summon(MessageReceiver caller, String[] args) {
+        natives.get("summon").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"teleport", "tp"},
+            description = "Teleports a player",
+            permissions = {"canary.command.teleport"},
+            toolTip = "/tp [target player] <destination player | <<x> <y> <z>>>",
+            min = 1,
+            version = 2
+    )
+    public void teleport(MessageReceiver caller, String[] args) {
+        natives.get("teleport").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"testfor"},
+            description = "Counts entities (players, mobs, items, etc.) matching specified conditions.",
+            permissions = {"canary.command.testfor"},
+            toolTip = "/testfor <player|targetselector> [datatag]",
+            min = 1,
+            version = 2
+    )
+    public void testfor(MessageReceiver caller, String[] args) {
+        natives.get("testfor").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"testforblock"},
+            description = "Tests whether a certain block is in a specific location.",
+            permissions = {"canary.command.testforblock"},
+            toolTip = "/testforblock <x> <y> <z> <TileName> [dataValue] [dataTag]",
+            min = 1,
+            version = 2
+    )
+    public void testforblock(MessageReceiver caller, String[] args) {
+        natives.get("testforblock").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"time"},
+            description = "Changes or queries the world's game time.",
+            permissions = {"canary.command.time"},
+            toolTip = "/time <add|query|set> <value>",
+            min = 2,
+            version = 2
+    )
+    public void time(MessageReceiver caller, String[] args) {
+        natives.get("time").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"toggledownfall"},
+            description = "Toggles the weather.",
+            permissions = {"canary.command.toggledownfall"},
+            toolTip = "/Toggles the weather.",
+            min = 0,
+            version = 2
+    )
+    public void toggledownfall(MessageReceiver caller, String[] args) {
+        natives.get("toggledownfall").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"weather"},
+            description = "Sets the weather.",
+            permissions = {"canary.command.weather"},
+            toolTip = "/weather <clear|rain|thunder> [duration in seconds]",
+            min = 1,
+            version = 2
+    )
+    public void weather(MessageReceiver caller, String[] args) {
+        natives.get("weather").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"xp", "experience"},
+            description = "Adds experience to a player.",
+            permissions = {"canary.command.xp"},
+            toolTip = "/xp <amount[L]> [player]",
+            min = 1,
+            version = 2
+    )
+    public void xp(MessageReceiver caller, String[] args) {
+        natives.get("xp").execute(caller, args);
+    }
     /* END: Vanilla command wrappers */
 
     /* All the reused tab complete stuff */
