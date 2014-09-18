@@ -885,135 +885,137 @@ public class CommandList implements CommandListener {
 
     /* START: Vanilla command wrappers... */
     @Command(
-                    aliases = { "achievement" },
-                    description = "Gives an Achievement",
-                    permissions = { "canary.command.achievement" },
-                    toolTip = "/achievement give <stat_name> [player]",
-                    min = 2,
-                    max = 3,
-                    version = 2
+            aliases = {"achievement"},
+            description = "Gives an Achievement",
+            permissions = {"canary.command.achievement"},
+            toolTip = "/achievement give <stat_name> [player]",
+            min = 2,
+            max = 3,
+            version = 2
     )
     public void achievement(MessageReceiver caller, String[] args) {
         natives.get("achievement").execute(caller, args);
     }
 
     @Command(
-                    aliases = { "say", "broadcast" },
-                    description = "Broadcasts a message",
-                    permissions = { "canary.command.broadcast" },
-                    toolTip = "/say <message>",
-                    min = 1,
-                    version = 2
+            aliases = {"say", "broadcast"},
+            description = "Broadcasts a message",
+            permissions = {"canary.command.broadcast"},
+            toolTip = "/say <message>",
+            min = 1,
+            version = 2
     )
     public void broadcast(MessageReceiver caller, String[] args) {
         natives.get("broadcast").execute(caller, args);
     }
 
     @Command(
-                    aliases = { "clear", "clearinventory", "clearinv" },
-                    description = "Clears inventory",
-                    permissions = { "canary.command.clear" },
-                    toolTip = "/clear <player> [item] [data]",
-                    min = 1,
-                    version = 2
+            aliases = {"clear", "clearinventory", "clearinv"},
+            description = "Clears inventory",
+            permissions = {"canary.command.clear"},
+            toolTip = "/clear <player> [item] [data]",
+            min = 1,
+            version = 2
     )
     public void clear(MessageReceiver caller, String[] args) {
         natives.get("clear").execute(caller, args);
     }
 
     @Command(
-                    aliases = { "defaultgamemode", "defaultmode" },
-                    description = "Sets everyones GameMode",
-                    permissions = { "canary.command.defaultgamemode" },
-                    toolTip = "/defaultgamemode <gamemode>",
-                    min = 1,
-                    version = 2
+            aliases = {"defaultgamemode", "defaultmode"},
+            description = "Sets everyones GameMode",
+            permissions = {"canary.command.defaultgamemode"},
+            toolTip = "/defaultgamemode <gamemode>",
+            min = 1,
+            version = 2
     )
     public void defaultgamemode(MessageReceiver caller, String[] args) {
         natives.get("defaultgamemode").execute(caller, args);
     }
 
     @Command(
-                    aliases = { "setworldspawn", "setspawn" },
-                    description = "Sets everyones GameMode",
-                    permissions = { "canary.command.setworldspawn" },
-                    toolTip = "/setworldspawn [<x> <y> <z>]",
-                    min = 0,
-                    version = 2
+            aliases = {"setworldspawn", "setspawn"},
+            description = "Sets everyones GameMode",
+            permissions = {"canary.command.setworldspawn"},
+            toolTip = "/setworldspawn [<x> <y> <z>]",
+            min = 0,
+            version = 2
     )
     public void defaultspawnpoint(MessageReceiver caller, String[] args) {
         natives.get("defaultspawnpoint").execute(caller, args);
     }
 
     @Command(
-                    aliases = { "difficulty" },
-                    description = "Sets world difficulty",
-                    permissions = { "canary.command.difficulty" },
-                    toolTip = "/difficulty <new difficulty> [world]",
-                    min = 1,
-                    version = 2
+            aliases = {"difficulty"},
+            description = "Sets world difficulty",
+            permissions = {"canary.command.difficulty"},
+            toolTip = "/difficulty <new difficulty> [world]",
+            min = 1,
+            version = 2
     )
     public void difficulty(MessageReceiver caller, String[] args) {
         natives.get("difficulty").execute(caller, args);
     }
 
     @Command(
-                    aliases = { "emote", "me" },
-                    description = "Express an emotion",
-                    permissions = { "canary.command.emote" },
-                    toolTip = "/emote <action...>",
-                    version = 2
+            aliases = {"emote", "me"},
+            description = "Express an emotion",
+            permissions = {"canary.command.emote"},
+            toolTip = "/emote <action...>",
+            version = 2
     )
     public void emote(MessageReceiver caller, String[] args) {
         natives.get("emote").execute(caller, args);
     }
 
     @Command(
-                    aliases = { "effect" },
-                    description = "Enchants target's held item",
-                    permissions = { "canary.command.enchant" },
-                    toolTip = "/enchant <player> <enchantment ID> [level]",
-                    min = 2,
-                    version = 2
+            aliases = {"effect"},
+            description = "Enchants target's held item",
+            permissions = {"canary.command.enchant"},
+            toolTip = "/enchant <player> <enchantment ID> [level]",
+            min = 2,
+            version = 2
     )
     public void enchant(MessageReceiver caller, String[] args) {
         natives.get("enchant").execute(caller, args);
     }
 
     @Command(
-                    aliases = { "gamemode", "mode" },
-                    description = "Sets a targets GameMode",
-                    permissions = { "canary.command.gamemode" },
-                    toolTip = "/gamemode <player> <mode>",
-                    min = 2,
-                    version = 2
+            aliases = {"gamemode", "mode"},
+            description = "Sets a targets GameMode",
+            permissions = {"canary.command.gamemode"},
+            toolTip = "/gamemode <player> <mode>",
+            min = 2,
+            version = 2
     )
     public void gamemode(MessageReceiver caller, String[] args) {
         natives.get("gamemode").execute(caller, args);
     }
 
     @Command(
-                    aliases = { "gamerule" },
-                    description = "Sets a game rule",
-                    permissions = { "canary.command.gamerule" },
-                    toolTip = "/gamerule <rule name> [value]",
-                    version = 2
+            aliases = {"gamerule"},
+            description = "Sets a game rule",
+            permissions = {"canary.command.gamerule"},
+            toolTip = "/gamerule <rule name> [value]",
+            version = 2
     )
     public void gamerule(MessageReceiver caller, String[] args) {
         natives.get("gamerule").execute(caller, args);
     }
 
     @Command(
-                    aliases = { "give", "item", "i" },
-                    description = "Gives an item",
-                    permissions = { "canary.command.give" },
-                    toolTip = "/give <player> <item> [amount] [data] [dataTag]",
-                    min = 2,
-                    version = 2
+            aliases = {"give", "item", "i"},
+            description = "Gives an item",
+            permissions = {"canary.command.give"},
+            toolTip = "/give <player> <item> [amount] [data] [dataTag]",
+            min = 2,
+            version = 2
     )
     public void give(MessageReceiver caller, String[] args) {
         natives.get("give").execute(caller, args);
     }
+
+
     /* END: Vanilla command wrappers */
 
     /* All the reused tab complete stuff */
