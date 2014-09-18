@@ -5,6 +5,7 @@ import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.commands.*;
 import net.canarymod.commandsys.commands.groupmod.*;
 import net.canarymod.commandsys.commands.playermod.*;
+import net.canarymod.commandsys.commands.vanilla.*;
 import net.canarymod.commandsys.commands.warp.WarpList;
 import net.canarymod.commandsys.commands.warp.WarpRemove;
 import net.canarymod.commandsys.commands.warp.WarpSet;
@@ -12,11 +13,7 @@ import net.canarymod.commandsys.commands.warp.WarpUse;
 import net.canarymod.commandsys.commands.world.CreateWorldCommand;
 import net.canarymod.commandsys.commands.world.LoadWorldCommand;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static net.canarymod.commandsys.TabCompleteHelper.*;
 
@@ -37,7 +34,6 @@ public class CommandList implements CommandListener {
         temp.put("compass", new Compass());
         temp.put("createvanilla", new CreateVanilla());
         temp.put("pos", new GetPosition());
-        temp.put("give", new Give());
         temp.put("groupmod_base", new GroupBase());
         temp.put("groupmod_add", new GroupCreate());
         temp.put("groupmod_perms_add", new GroupPermissionAdd());
@@ -71,9 +67,7 @@ public class CommandList implements CommandListener {
         temp.put("kill", new Kill());
         temp.put("kit", new KitCommand());
         temp.put("listplugins", new ListPlugins());
-        temp.put("mobspawn", new MobspawnCommand());
         temp.put("motd", new Motd());
-        temp.put("msg", new PrivateMessage());
         temp.put("mute", new Mute());
         temp.put("playerlist", new PlayerList());
         temp.put("enableplugin", new PluginCommand(false, false));
@@ -81,25 +75,55 @@ public class CommandList implements CommandListener {
         temp.put("reloadplugin", new PluginCommand(false, true));
         temp.put("reload", new ReloadCommand());
         temp.put("sethome", new SetHome());
-        temp.put("setspawn", new SetSpawn());
         temp.put("warp", new WarpUse());
         temp.put("setwarp", new WarpSet());
         temp.put("listwarps", new WarpList());
         temp.put("delwarp", new WarpRemove());
         temp.put("spawn", new SpawnCommand());
         temp.put("stop", new StopServer());
-        temp.put("teleport", new TeleportCommand());
         temp.put("teleporthere", new TeleportHereCommand());
         temp.put("whitelist", new WhitelistCommand());
         temp.put("god", new GodCommand());
         temp.put("reservelist", new ReservelistCommand());
-        temp.put("clearinventory", new ClearInventoryCommand());
         temp.put("canarymod", new CanaryModCommand());
         temp.put("playerinfo", new PlayerInformation());
         temp.put("sysinfo", new SystemInformation());
         temp.put("uptime", new Uptime());
         temp.put("loadworld", new LoadWorldCommand());
         temp.put("createworld", new CreateWorldCommand());
+
+        /* The Vanilla Wrappers */
+        temp.put("achievement", new Achievement());
+        temp.put("broadcast", new Broadcast());
+        temp.put("clear", new Clear());
+        temp.put("defaultgamemode", new DefaultGameMode());
+        temp.put("defaultspawnpoint", new DefaultSpawnpoint());
+        temp.put("difficulty", new Difficulty());
+        temp.put("effect", new Effect());
+        temp.put("emote", new Emote());
+        temp.put("enchant", new Enchant());
+        temp.put("gamemode", new GameMode());
+        temp.put("gamerule", new GameRule());
+        temp.put("give", new Give());
+        temp.put("tell", new Message());
+        temp.put("tellraw", new MessageRaw());
+        temp.put("playsound", new PlaySound());
+        temp.put("save-all", new SaveAll());
+        temp.put("save-off", new SaveOff());
+        temp.put("save-on", new SaveOn());
+        temp.put("scoreboard", new Scoreboard());
+        temp.put("setblock", new SetBlock());
+        temp.put("spawnpoint", new SpawnPoint());
+        temp.put("spreadplayers", new SpreadPlayers());
+        temp.put("summon", new Summon());
+        temp.put("teleport", new Teleport());
+        temp.put("testfor", new TestFor());
+        temp.put("testforblock", new TestForBlock());
+        temp.put("time", new Time());
+        temp.put("toggledownfall", new ToggleDownfall());
+        temp.put("weather", new Weather());
+        temp.put("xp", new XP());
+
         natives = Collections.unmodifiableMap(temp);
     }
 
@@ -606,16 +630,6 @@ public class CommandList implements CommandListener {
         natives.get("listplugins").execute(caller, parameters);
     }
 
-    @Command(aliases = { "mobspawn", "mspawn", "spawnmob" },
-            description = "mobspawn info",
-            permissions = { "canary.command.player.mobspawn" },
-            toolTip = "/mobspawn <mobname> [rider] [amount]",
-            min = 2,
-            max = 4)
-    public void mobSpawnCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("mobspawn").execute(caller, parameters);
-    }
-
     @Command(aliases = { "motd" },
             description = "motd info",
             permissions = { "canary.command.motd" },
@@ -623,17 +637,6 @@ public class CommandList implements CommandListener {
             min = 1)
     public void motdCommand(MessageReceiver caller, String[] parameters) {
         natives.get("motd").execute(caller, parameters);
-    }
-
-    @Command(aliases = { "msg", "tell" },
-            description = "msg info",
-            permissions = { "canary.command.player.msg" },
-            toolTip = "/msg <playername> <message>",
-            min = 3,
-            tabCompleteMethod = "matchOnlinePlayer"
-    )
-    public void msgCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("msg").execute(caller, parameters);
     }
 
     @Command(aliases = { "mute", "stfu" },
@@ -773,28 +776,6 @@ public class CommandList implements CommandListener {
         natives.get("stop").execute(caller, parameters);
     }
 
-    @Command(aliases = { "tp", "teleport" },
-            description = "tp info",
-            permissions = { "canary.command.teleport.self" },
-            toolTip = "/tp <player|x y z [world]> ",
-            min = 2,
-            tabCompleteMethod = "matchOnlinePlayer"
-    )
-    public void teleportCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("teleport").execute(caller, parameters);
-    }
-
-    @Command(aliases = { "tphere", "teleporthere" },
-            description = "tphere info",
-            permissions = { "canary.command.teleport.other" },
-            toolTip = "/tphere <player>",
-            min = 2,
-            tabCompleteMethod = "matchOnlinePlayer"
-    )
-    public void teleportOtherCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("teleporthere").execute(caller, parameters);
-    }
-
     @Command(aliases = { "whitelist", "wlist", "wl" },
             description = "whitelist info",
             permissions = { "canary.command.super.whitelist" },
@@ -841,19 +822,6 @@ public class CommandList implements CommandListener {
         return parameters.length == 1 ? matchTo(parameters, new String[]{ "add", "remove" })
                 : parameters.length == 2 && parameters[0].equals("remove") ? matchTo(parameters, Canary.reservelist().getReservations())
                 : null;
-    }
-
-    @Command(aliases = { "clearinventory", "clearinv" },
-            description = "clearinventory info",
-            permissions = { "canary.command.super.clearinventory" },
-            toolTip = "/clearinventory [player]",
-            min = 1,
-            max = 2,
-            tabCompleteMethod = "matchOnlinePlayer"
-
-    )
-    public void clearInventoryCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("clearinventory").execute(caller, parameters);
     }
 
     @Command(aliases = { "canarymod", "version" },
@@ -914,6 +882,139 @@ public class CommandList implements CommandListener {
     public void createWorld(MessageReceiver caller, String[] args) {
         natives.get("createworld").execute(caller, args);
     }
+
+    /* START: Vanilla command wrappers... */
+    @Command(
+                    aliases = { "achievement" },
+                    description = "Gives an Achievement",
+                    permissions = { "canary.command.achievement" },
+                    toolTip = "/achievement give <stat_name> [player]",
+                    min = 2,
+                    max = 3,
+                    version = 2
+    )
+    public void achievement(MessageReceiver caller, String[] args) {
+        natives.get("achievement").execute(caller, args);
+    }
+
+    @Command(
+                    aliases = { "say", "broadcast" },
+                    description = "Broadcasts a message",
+                    permissions = { "canary.command.broadcast" },
+                    toolTip = "/say <message>",
+                    min = 1,
+                    version = 2
+    )
+    public void broadcast(MessageReceiver caller, String[] args) {
+        natives.get("broadcast").execute(caller, args);
+    }
+
+    @Command(
+                    aliases = { "clear", "clearinventory", "clearinv" },
+                    description = "Clears inventory",
+                    permissions = { "canary.command.clear" },
+                    toolTip = "/clear <player> [item] [data]",
+                    min = 1,
+                    version = 2
+    )
+    public void clear(MessageReceiver caller, String[] args) {
+        natives.get("clear").execute(caller, args);
+    }
+
+    @Command(
+                    aliases = { "defaultgamemode", "defaultmode" },
+                    description = "Sets everyones GameMode",
+                    permissions = { "canary.command.defaultgamemode" },
+                    toolTip = "/defaultgamemode <gamemode>",
+                    min = 1,
+                    version = 2
+    )
+    public void defaultgamemode(MessageReceiver caller, String[] args) {
+        natives.get("defaultgamemode").execute(caller, args);
+    }
+
+    @Command(
+                    aliases = { "setworldspawn", "setspawn" },
+                    description = "Sets everyones GameMode",
+                    permissions = { "canary.command.setworldspawn" },
+                    toolTip = "/setworldspawn [<x> <y> <z>]",
+                    min = 0,
+                    version = 2
+    )
+    public void defaultspawnpoint(MessageReceiver caller, String[] args) {
+        natives.get("defaultspawnpoint").execute(caller, args);
+    }
+
+    @Command(
+                    aliases = { "difficulty" },
+                    description = "Sets world difficulty",
+                    permissions = { "canary.command.difficulty" },
+                    toolTip = "/difficulty <new difficulty> [world]",
+                    min = 1,
+                    version = 2
+    )
+    public void difficulty(MessageReceiver caller, String[] args) {
+        natives.get("difficulty").execute(caller, args);
+    }
+
+    @Command(
+                    aliases = { "emote", "me" },
+                    description = "Express an emotion",
+                    permissions = { "canary.command.emote" },
+                    toolTip = "/emote <action...>",
+                    version = 2
+    )
+    public void emote(MessageReceiver caller, String[] args) {
+        natives.get("emote").execute(caller, args);
+    }
+
+    @Command(
+                    aliases = { "effect" },
+                    description = "Enchants target's held item",
+                    permissions = { "canary.command.enchant" },
+                    toolTip = "/enchant <player> <enchantment ID> [level]",
+                    min = 2,
+                    version = 2
+    )
+    public void enchant(MessageReceiver caller, String[] args) {
+        natives.get("enchant").execute(caller, args);
+    }
+
+    @Command(
+                    aliases = { "gamemode", "mode" },
+                    description = "Sets a targets GameMode",
+                    permissions = { "canary.command.gamemode" },
+                    toolTip = "/gamemode <player> <mode>",
+                    min = 2,
+                    version = 2
+    )
+    public void gamemode(MessageReceiver caller, String[] args) {
+        natives.get("gamemode").execute(caller, args);
+    }
+
+    @Command(
+                    aliases = { "gamerule" },
+                    description = "Sets a game rule",
+                    permissions = { "canary.command.gamerule" },
+                    toolTip = "/gamerule <rule name> [value]",
+                    version = 2
+    )
+    public void gamerule(MessageReceiver caller, String[] args) {
+        natives.get("gamerule").execute(caller, args);
+    }
+
+    @Command(
+                    aliases = { "give", "item", "i" },
+                    description = "Gives an item",
+                    permissions = { "canary.command.give" },
+                    toolTip = "/give <player> <item> [amount] [data] [dataTag]",
+                    min = 2,
+                    version = 2
+    )
+    public void give(MessageReceiver caller, String[] args) {
+        natives.get("give").execute(caller, args);
+    }
+    /* END: Vanilla command wrappers */
 
     /* All the reused tab complete stuff */
     @TabComplete

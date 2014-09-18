@@ -96,7 +96,7 @@ public @interface Command {
      * <p/>
      * Example:
      * <pre>
-     *     @TabComplete //Annotation is required for safety, its also helps identify what is a tab complete in source
+     *     {@literal @TabComplete} //Annotation is required for safety, its also helps identify what is a tab complete in source
      *     public List<String> tabCompleteForCommand(MessageReceiver msgrec, String[] args){
      *         return args.length == 1 ? TabCompleteHelper.matchTo(args, new String[]{ "tabA", "tabB", "tabC" }) : null;
      *     }
@@ -107,12 +107,14 @@ public @interface Command {
      * @return method name
      */
     String tabCompleteMethod() default "";
-    
+
     /**
-     * The version of the command system to use,
-     * NOTE: this is only a canarymod thing and it is not getting affected by the plugin
-     * NOTE: the only available parameters are "1.0" and "2.0".
-     * 
+     * The version of the command system to use.
+     * Version 1 passes the command name with the arguments,
+     * where as Version 2 adjusts the arguments to remove command name.
+     * <p/>
+     * NOTE: Available versions are '1' and '2'.
+     *
      * @return version of the command system
      */
     int version() default 1;
