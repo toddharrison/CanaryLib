@@ -95,11 +95,10 @@ public class LineTracer {
         
         /* convert negative rotation values to positive */
         rotX = playerLoc.getRotation();
-        rotX = rotX < 0 ? (360 + rotX) : rotX;
+        rotX = rotX < 0 ? Math.abs(rotX) : 360 - rotX;
         /* convert minecraft pitch to degree pitch */
-        rotY = playerLoc.getPitch() * -1;
-        if (rotY < 0) rotY = 270 + (90 + rotY);
-        
+        rotY = 90 + playerLoc.getPitch();
+                
         currentX = playerLoc.getX();
         /* Add Eye Height to the Y */
         currentY = playerLoc.getY() + viewHeight;
@@ -182,10 +181,11 @@ public class LineTracer {
         somnersMadness:
         while ((length <= range) && (currentBlock == null || block == null || currentBlock.equals(block))) {
             length += step;
-            yOffset = (step * Math.sin(Math.toRadians(rotY)));
-            zOffset = (step * Math.cos(Math.toRadians(rotX)));
-            xOffset = (step * Math.sin(Math.toRadians(rotX)));
-            currentX = (-1 * xOffset) + currentX;// stuff is backwards, multiply by -1
+            double common = (step * Math.sin(Math.toRadians(rotY)));
+            yOffset = (step * Math.cos(Math.toRadians(rotY)));
+            zOffset = (common * Math.cos(Math.toRadians(rotX)));
+            xOffset = (common * Math.sin(Math.toRadians(rotX)));
+            currentX = xOffset + currentX;// stuff is backwards, multiply by -1
             currentY = yOffset + currentY;
             currentZ = zOffset + currentZ;
             
