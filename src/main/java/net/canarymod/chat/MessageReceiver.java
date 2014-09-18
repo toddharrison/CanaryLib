@@ -56,4 +56,11 @@ public interface MessageReceiver {
      *         permission, <tt>false</tt> otherwise.
      */
     public boolean safeHasPermission(String permission);
+
+    /**
+     * Gets the type of MessageReceiver the instance is
+     *
+     * @return receiver type
+     */
+    public ReceiverType getReceiverType();
 }

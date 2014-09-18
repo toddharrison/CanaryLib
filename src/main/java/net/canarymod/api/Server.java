@@ -118,6 +118,17 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
     public boolean consoleCommand(String command, CommandBlockLogic cmdBlockLogic);
 
     /**
+     * Passes a pre-processed Vanilla Command into the the Vanilla Command System
+     * NOTE: Does not trigger a ConsoleCommandHook call
+     *
+     * @param caller
+     *         the MessageReceiver executing the command
+     * @param command
+     *         the command being executed
+     */
+    public void executeVanillaCommand(MessageReceiver caller, String command);
+
+    /**
      * Set a timer in the built-in vanilla Timer System.
      *
      * @param uniqueName
@@ -265,15 +276,21 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      */
     public World getDefaultWorld();
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getName();
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void notice(String message);
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean hasPermission(String node);
 
@@ -284,9 +301,12 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      */
     public ConfigurationManager getConfigurationManager();
 
-    /** Signal the server to shut down and exit.
-     * @param message The shutdown message, or {@code null} for the default
-     * message.
+    /**
+     * Signal the server to shut down and exit.
+     *
+     * @param message
+     *         The shutdown message, or {@code null} for the default
+     *         message.
      */
     public void initiateShutdown(String message);
 
