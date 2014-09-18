@@ -180,7 +180,7 @@ public class LineTracer {
         if (currentBlock != null && !currentBlock.isAir()) return null;
         
         somnersMadness:
-        while ((length <= range) && (currentBlock == null || currentBlock.equals(block))) {
+        while ((length <= range) && (currentBlock == null || block == null || currentBlock.equals(block))) {
             length += step;
             yOffset = (step * Math.sin(Math.toRadians(rotY)));
             zOffset = (step * Math.cos(Math.toRadians(rotX)));
@@ -190,6 +190,7 @@ public class LineTracer {
             currentZ = zOffset + currentZ;
             
             block = playerLoc.getWorld().getBlockAt(ToolBox.floorToBlock(currentX),ToolBox.floorToBlock(currentY), ToolBox.floorToBlock(currentZ));
+            
             if (block != null && !block.equals(currentBlock)) {
                 /* set last values to current values */
                 lastBlock = currentBlock;
