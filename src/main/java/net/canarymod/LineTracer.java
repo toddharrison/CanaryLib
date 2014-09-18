@@ -13,7 +13,7 @@ import net.canarymod.api.world.position.Location;
  */
 public class LineTracer {
     private Location playerLoc;
-    private Block currentBlock, lastBlock;
+    private Block currentBlock, lastBlock, targetBlock;
     private double rotX, rotY, viewHeight;
     private double length, step;
     private int range;
@@ -115,10 +115,11 @@ public class LineTracer {
      * @return the Target {@link Block}
      */
     public Block getTargetBlock() {
-        while ((getNextBlock() != null) && (getCurBlock().getTypeId() == 0)) {
-            /* do nothing, just skip to next iteration */
+        while ((length <= range) && targetBlock == null) {
+            /* do nothing, just keep looping til we get out of range of have a block */
+            getNextBlock();
         }
-        return getCurBlock();
+        return targetBlock;
     }
 
     /**
@@ -128,80 +129,59 @@ public class LineTracer {
      *         the {@link Block} type id
      */
     public void setTargetBlock(int type) {
-        while ((getNextBlock() != null) && (getCurBlock().getTypeId() == 0)) {
-            ;
-        }
-        if (getCurBlock() != null) {
-            playerLoc.getWorld().setBlockAt(currentBlock.getX(), currentBlock.getY(), currentBlock.getZ(), (short) type);
+        Block block = getTargetBlock();
+        if (block != null) {
+            playerLoc.getWorld().setBlockAt(block.getX(), block.getY(), block.getZ(), (short) type);
         }
     }
 
     /**
-     * Returns the block attached to the face at the cursor, or null if out of range
+     * Returns STEPS forward along line of vision and returns block.
+     * This method skips all Air Blocks.
      *
-     * @return the face {@link Block}
-     */
-    public Block getFaceBlock() {
-        while ((getNextBlock() != null) && (getCurBlock().getTypeId() == 0)) {
-            ;
-        }
-        if (getCurBlock() != null) {
-            return getLastBlock();
-        }
-        else {
-            return null;
-        }
-    }
-
-    /**
-     * Sets the type of the block attached to the face at the cursor
-     *
-     * @param type
-     *         the {@link Block} type id
-     */
-    public void setFaceBlock(int type) {
-        while ((getNextBlock() != null) && (getCurBlock().getTypeId() == 0)) {
-            ;
-        }
-        if (getCurBlock() != null) {
-            playerLoc.getWorld().setBlockAt((int)last_x, (int)last_y, (int)last_z, (short) type);
-        }
-    }
-
-    /**
-     * Returns STEPS forward along line of vision and returns block
-     *
-     * @return the next {@link Block}
+     * @return the next {@link Block} or null if none exists
      */
     public Block getNextBlock() {
         Block block = null;
-        /* We already found the target block, return null */
-        if (currentBlock != null && !currentBlock.isAir()) return null;
         
-        somnersMadness:
-        while ((length <= range) && (currentBlock == null || block == null || currentBlock.equals(block))) {
+        while ((length <= range) && continueLoop(block)) {
             length += step;
+            /* common is the first half of the equation, prevents us from calculating twice */
             double common = (step * Math.sin(Math.toRadians(rotY)));
+            /* calculate the offsets */
             yOffset = (step * Math.cos(Math.toRadians(rotY)));
             zOffset = (common * Math.cos(Math.toRadians(rotX)));
             xOffset = (common * Math.sin(Math.toRadians(rotX)));
-            currentX = xOffset + currentX;// stuff is backwards, multiply by -1
+            /* Apply offset to current coordinates */
+            currentX = xOffset + currentX;
             currentY = yOffset + currentY;
             currentZ = zOffset + currentZ;
             
             block = playerLoc.getWorld().getBlockAt(ToolBox.floorToBlock(currentX),ToolBox.floorToBlock(currentY), ToolBox.floorToBlock(currentZ));
             
-            if (block != null && !block.equals(currentBlock)) {
+            if (block != null && !block.equals(currentBlock) && !block.isAir()) {
                 /* set last values to current values */
                 lastBlock = currentBlock;
                 currentBlock = block;
                 last_x = currentX;
                 last_y = currentY;
                 last_z = currentZ;
-                break somnersMadness;
+                break;
             }
         }
+        /* set target block for later */
+        if (targetBlock == null) {
+            targetBlock = block;
+        }
         return block;
+    }
+    
+    /* Checks if loop can continue above */
+    private boolean continueLoop(Block block) {
+        if (block == null) return true;
+        if (currentBlock != null && currentBlock.equals(block)) return true;
+        if (block.isAir()) return true;
+        return false;
     }
 
     /**
