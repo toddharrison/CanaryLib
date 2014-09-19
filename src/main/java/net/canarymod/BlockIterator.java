@@ -105,10 +105,11 @@ public class BlockIterator implements Iterator<Block> {
             }
             return tracer.getCurBlock();
         }
-        else if (tracer.getNextBlock() == null) {
+        Block block = tracer.getNextBlock();
+        if (block == null) {
             throw new NoSuchElementException("No more blocks");
         }
-        return tracer.getNextBlock();
+        return block;
     }
 
     /**
