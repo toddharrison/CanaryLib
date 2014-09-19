@@ -988,7 +988,7 @@ public class CommandList implements CommandListener {
             description = "Sets a player's game mode.",
             permissions = {"canary.command.gamemode"},
             toolTip = "/gamemode <mode> [player]",
-            min = 2,
+            min = 1,
             version = 2
     )
     public void gamemode(MessageReceiver caller, String[] args) {
@@ -1154,7 +1154,7 @@ public class CommandList implements CommandListener {
             aliases = {"teleport", "tp"},
             description = "Teleports a player",
             permissions = {"canary.command.teleport"},
-            toolTip = "/tp [target player] <destination player | <<x> <y> <z>>>",
+            toolTip = "/tp [target] <player | <<x> <y> <z>>> | /tp <target> <x> <y> <z> <world_fqname> [load]",
             min = 1,
             version = 2
     )
