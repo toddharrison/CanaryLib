@@ -15,6 +15,9 @@ import static net.canarymod.Canary.getServer;
 abstract class VanillaCommandWrapper implements NativeCommand {
 
     private String rebuildForVanilla(String cmd, String[] parameters) {
+        if (parameters.length == 0) {
+            return cmd;
+        }
         return cmd + " " + StringUtils.joinString(parameters, " ", 0);
     }
 
