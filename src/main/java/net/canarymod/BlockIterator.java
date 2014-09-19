@@ -80,6 +80,10 @@ public class BlockIterator implements Iterator<Block> {
      */
     @Override
     public boolean hasNext() {
+        if (alreadyAdvanced) { 
+            /* we've already done this check, so check the curent LineTracer block */
+            return tracer.getCurBlock() != null;
+        }
         alreadyAdvanced = true; // Need to track if we have advanced or not
         return tracer.getNextBlock() != null;
     }
