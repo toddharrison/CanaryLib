@@ -920,7 +920,7 @@ public class CommandList implements CommandListener {
             description = "Deletes a world",
             permissions = {"canary.command.deleteworld"},
             toolTip = "/deleteworld <world_fqName>",
-            min = 0,
+            min = 1,
             version = 2,
             tabCompleteMethod = "deleteworldTabComplete"
     )
