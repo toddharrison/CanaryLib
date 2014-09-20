@@ -16,24 +16,24 @@ import net.canarymod.commandsys.NativeCommand;
 public class UnbanCommand implements NativeCommand {
 
     public void execute(MessageReceiver caller, String[] cmd) {
-        if (cmd.length < 2) {
+        if (cmd.length < 1) {
             Canary.help().getHelp(caller, "unban");
             return;
         }
-        Player p = Canary.getServer().getPlayer(cmd[1]);
+        Player p = Canary.getServer().getPlayer(cmd[0]);
         String uuid = null;
         if (p != null) {
             uuid = p.getUUIDString();
         }
         else {
-            OfflinePlayer op = Canary.getServer().getOfflinePlayer(cmd[1]);
+            OfflinePlayer op = Canary.getServer().getOfflinePlayer(cmd[0]);
             if (op != null) {
                 uuid = op.getUUIDString();
             }
         }
         if (uuid != null) {
-            Canary.bans().unban(cmd[1]);
-            caller.message(Colors.YELLOW + Translator.translateAndFormat("unban success", cmd[1]));
+            Canary.bans().unban(uuid);
+            caller.message(Colors.YELLOW + Translator.translateAndFormat("unban success", cmd[0]));
         }
         else {
             // TODO tell them something wasn't valid

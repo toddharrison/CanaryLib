@@ -135,7 +135,8 @@ public class CommandList implements CommandListener {
             permissions = {"canary.super.ban", "canary.command.super.ban"},
             toolTip = "/ban <player> [reason] [#number hour|day|week|month]",
             min = 2,
-            tabCompleteMethod = "banTabComplete"
+            tabCompleteMethod = "banTabComplete",
+            version = 2
     )
     public void banCommand(MessageReceiver caller, String[] parameters) {
         natives.get("ban").execute(caller, parameters);
@@ -153,7 +154,8 @@ public class CommandList implements CommandListener {
             permissions = {"canary.super.unban", "canary.command.super.unban"},
             toolTip = "/unban <player>",
             min = 2,
-            tabCompleteMethod = "unbanTabComplete"
+            tabCompleteMethod = "unbanTabComplete",
+            version = 2
     )
     public void unbanCommand(MessageReceiver caller, String[] parameters) {
         natives.get("unban").execute(caller, parameters);

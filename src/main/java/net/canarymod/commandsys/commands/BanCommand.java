@@ -19,17 +19,18 @@ import net.visualillusionsent.utils.StringUtils;
  */
 public class BanCommand implements NativeCommand {
 
+    /**
     public void execute(MessageReceiver caller, String[] parameters) {
         if (parameters.length < 2) {
             Canary.help().getHelp(caller, "ban");
             return;
         }
         Ban ban = new Ban();
-        PlayerReference ref = Canary.getServer().matchKnownPlayer(parameters[1]);
+        
         String reason = "Permanently Banned";
         long timestamp = -1L;
-
-        if (parameters.length >= 3) {
+        
+        if (parameters.length >= 2) {
             try {
                 timestamp = ToolBox.parseTime(Long.parseLong(parameters[parameters.length - 2]), parameters[parameters.length - 1]);
                 reason = StringUtils.joinString(parameters, " ", 2, parameters.length - 2);
@@ -39,6 +40,14 @@ public class BanCommand implements NativeCommand {
                 timestamp = -1L;
             }
         }
+        
+        Player[] playerSelectorArray = Canary.playerSelector().matchPlayers(caller, parameters[0]);
+        if (playerSelectorArray != null) {
+            
+        }
+            
+        PlayerReference ref = Canary.getServer().matchKnownPlayer(parameters[1]);
+
         ban.setReason(reason);
         ban.setTimestamp(timestamp);
         ban.setBanningPlayer(caller.getName());
@@ -54,6 +63,55 @@ public class BanCommand implements NativeCommand {
         }
         else {
             caller.notice(Translator.translate("ban failed") + " " + Translator.translateAndFormat("unknown player", parameters[1]));
+        }
+    }
+    */
+    
+    public void execute(MessageReceiver caller, String[] parameters) {
+        String reason = "Permanently Banned";
+        long timestamp = -1L;
+        
+        reason = StringUtils.joinString(parameters, " ", 1);
+        if (parameters.length >= 3) {
+            try {
+                timestamp = ToolBox.parseTime(Long.parseLong(parameters[parameters.length - 2]), parameters[parameters.length - 1]);
+                reason = StringUtils.joinString(parameters, " ", 1, parameters.length - 3);
+            }
+            catch (NumberFormatException e) {
+                timestamp = -1L;
+            }
+        }
+        
+        Player[] playerSelectorArray = Canary.playerSelector().matchPlayers(caller, parameters[0]);
+        if (playerSelectorArray != null) {
+            for(Player p : playerSelectorArray) {
+                Ban ban = new Ban();
+                ban.setReason(reason);
+                ban.setTimestamp(timestamp);
+                ban.setBanningPlayer(caller.getName());
+                ban.setUUID(p.getUUIDString());
+                ban.setSubject(p.getName());
+                Canary.bans().issueBan(ban);
+                Canary.hooks().callHook(new BanHook(p, p.getIP(), caller, reason, timestamp));
+                caller.notice(Translator.translateAndFormat("ban banned", p.getName()));
+                p.kick(reason);
+            }
+            return;
+        }
+        else {
+            PlayerReference ref = Canary.getServer().matchKnownPlayer(parameters[0]);
+            Ban ban = new Ban();
+            ban.setReason(reason);
+            ban.setTimestamp(timestamp);
+            ban.setBanningPlayer(caller.getName());
+            ban.setUUID(ref.getUUIDString());
+            ban.setSubject(ref.getName());
+            Canary.bans().issueBan(ban);
+            Canary.hooks().callHook(new BanHook(ref, ref.getIP(), caller, reason, timestamp));
+            caller.notice(Translator.translateAndFormat("ban banned", ref.getName()));
+            if (ref.isOnline() && ref instanceof Player) {
+                ((Player) ref).kick(reason);
+            }
         }
     }
 }
