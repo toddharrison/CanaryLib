@@ -18,9 +18,11 @@ public interface WorldManager {
      * @param autoload
      *
      * @return World dimension object
-     * @throws UnknownWorldException Thrown if the world with {@code name}
-     * doesn't exist, or when the world is not loaded and {@code autoload} is
-     * {@code false}.
+     *
+     * @throws UnknownWorldException
+     *         Thrown if the world with {@code name}
+     *         doesn't exist, or when the world is not loaded and {@code autoload} is
+     *         {@code false}.
      */
     public World getWorld(String name, boolean autoload);
 
@@ -35,9 +37,11 @@ public interface WorldManager {
      *         true if worlds should be loaded if they are not
      *
      * @return
-     * @throws UnknownWorldException Thrown if the world with {@code name}
-     * doesn't exist, or when the world is not loaded and {@code autoload} is
-     * {@code false}.
+     *
+     * @throws UnknownWorldException
+     *         Thrown if the world with {@code name}
+     *         doesn't exist, or when the world is not loaded and {@code autoload} is
+     *         {@code false}.
      */
     public World getWorld(String name, DimensionType type, boolean autoload);
 
@@ -76,7 +80,7 @@ public interface WorldManager {
      *
      * @param name
      */
-    public void destroyWorld(String name); // TODO: so this might NOT be such a good idea to implement... I left it protected...
+    public boolean destroyWorld(String name);
 
     /**
      * Load the world with the given name that is of the given world type.

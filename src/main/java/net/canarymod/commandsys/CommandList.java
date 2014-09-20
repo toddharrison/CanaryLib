@@ -10,10 +10,7 @@ import net.canarymod.commandsys.commands.warp.WarpList;
 import net.canarymod.commandsys.commands.warp.WarpRemove;
 import net.canarymod.commandsys.commands.warp.WarpSet;
 import net.canarymod.commandsys.commands.warp.WarpUse;
-import net.canarymod.commandsys.commands.world.CreateWorldCommand;
-import net.canarymod.commandsys.commands.world.LoadWorldCommand;
-import net.canarymod.commandsys.commands.world.MobClear;
-import net.canarymod.commandsys.commands.world.MobCount;
+import net.canarymod.commandsys.commands.world.*;
 
 import java.util.*;
 
@@ -95,6 +92,7 @@ public class CommandList implements CommandListener {
 
         temp.put("mobclear", new MobClear());
         temp.put("mobcount", new MobCount());
+        temp.put("deleteworld", new DeleteWorldCommand());
 
         /* The Vanilla Wrappers */
         temp.put("achievement", new Achievement());
@@ -894,7 +892,7 @@ public class CommandList implements CommandListener {
             aliases = {"clear"},
             parent = "mob",
             description = "Destroys mobs within a radius.",
-            permissions = {"canary.command.mob"},
+            permissions = {"canary.command.mob.clear"},
             toolTip = "/mob clear <h|p|t|u|a> [radius] [world <dimension>]  NOTE: (h = Hostiles p = Passives t = Tamed u = Utility (Like Items) and a = all)",
             helpLookup = "mob clear",
             min = 1,
@@ -908,13 +906,31 @@ public class CommandList implements CommandListener {
             aliases = {"count"},
             parent = "mob",
             description = "Gets a Mob count.",
-            permissions = {"canary.command.mob"},
+            permissions = {"canary.command.mob.count"},
             toolTip = "/mob count [world]",
             min = 0,
             version = 2
     )
     public void mobcount(MessageReceiver caller, String[] args) {
         natives.get("mobcount").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"deleteworld"},
+            description = "Deletes a world",
+            permissions = {"canary.command.deleteworld"},
+            toolTip = "/deleteworld <world_fqName>",
+            min = 0,
+            version = 2,
+            tabCompleteMethod = "deleteworldTabComplete"
+    )
+    public void deleteworld(MessageReceiver caller, String[] args) {
+        natives.get("deleteworld").execute(caller, args);
+    }
+
+    @TabComplete
+    public List<String> deleteworldTabComplete(MessageReceiver caller, String[] args) {
+        return args.length == 1 ? matchToKnownWorld(args) : null;
     }
 
     /* START: Vanilla command wrappers... */
