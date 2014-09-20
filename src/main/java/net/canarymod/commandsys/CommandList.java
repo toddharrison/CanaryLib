@@ -12,6 +12,8 @@ import net.canarymod.commandsys.commands.warp.WarpSet;
 import net.canarymod.commandsys.commands.warp.WarpUse;
 import net.canarymod.commandsys.commands.world.CreateWorldCommand;
 import net.canarymod.commandsys.commands.world.LoadWorldCommand;
+import net.canarymod.commandsys.commands.world.MobClear;
+import net.canarymod.commandsys.commands.world.MobCount;
 
 import java.util.*;
 
@@ -90,6 +92,9 @@ public class CommandList implements CommandListener {
         temp.put("uptime", new Uptime());
         temp.put("loadworld", new LoadWorldCommand());
         temp.put("createworld", new CreateWorldCommand());
+
+        temp.put("mobclear", new MobClear());
+        temp.put("mobcount", new MobCount());
 
         /* The Vanilla Wrappers */
         temp.put("achievement", new Achievement());
@@ -862,6 +867,56 @@ public class CommandList implements CommandListener {
         natives.get("createworld").execute(caller, args);
     }
 
+    @Command(
+            aliases = {"mob"},
+            description = "Gets a Mob count or destroys mobs within a radius.",
+            permissions = {"canary.command.mob"},
+            toolTip = "/mob count [world [dimension]] or /mob remove <h|p|t|u|a> [radius] [world [dimension]]",
+            min = 1,
+            version = 2,
+            tabCompleteMethod = "mobTabComplete"
+    )
+    public void mob(MessageReceiver caller, String[] args) {
+        Canary.help().getHelp(caller, "mob");
+    }
+
+    @TabComplete
+    public List<String> mobTabComplete(MessageReceiver caller, String[] args) {
+        return args.length == 1 ? matchTo(args, new String[]{"clear", "count"})
+                : args.length == 2 ?
+                args[0].equals("clear") ? matchTo(args, new String[]{"h", "ht", "hp", "hu", "htp", "htu", "htpu", "t", "tp", "tu", "tpu", "p", "pu", "u", "a"})
+                        : args[0].equals("count") ? matchToLoadedWorld(args)
+                        : null
+                : null;
+    }
+
+    @Command(
+            aliases = {"clear"},
+            parent = "mob",
+            description = "Destroys mobs within a radius.",
+            permissions = {"canary.command.mob"},
+            toolTip = "/mob clear <h|p|t|u|a> [radius] [world <dimension>]  NOTE: (h = Hostiles p = Passives t = Tamed u = Utility (Like Items) and a = all)",
+            helpLookup = "mob clear",
+            min = 1,
+            version = 2
+    )
+    public void mobclear(MessageReceiver caller, String[] args) {
+        natives.get("mobclear").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"count"},
+            parent = "mob",
+            description = "Gets a Mob count.",
+            permissions = {"canary.command.mob"},
+            toolTip = "/mob count [world]",
+            min = 0,
+            version = 2
+    )
+    public void mobcount(MessageReceiver caller, String[] args) {
+        natives.get("mobcount").execute(caller, args);
+    }
+
     /* START: Vanilla command wrappers... */
     @Command(
             aliases = {"achievement"},
@@ -1082,7 +1137,7 @@ public class CommandList implements CommandListener {
             aliases = {"save-on", "saveon"},
             description = "Turns on world data saving",
             permissions = {"canary.command.saveon"},
-            toolTip = "/save-off",
+            toolTip = "/save-on",
             min = 0,
             version = 2
     )
@@ -1179,7 +1234,7 @@ public class CommandList implements CommandListener {
             description = "Tests whether a certain block is in a specific location.",
             permissions = {"canary.command.testforblock"},
             toolTip = "/testforblock <x> <y> <z> <TileName> [dataValue] [dataTag]",
-            min = 1,
+            min = 4,
             version = 2
     )
     public void testforblock(MessageReceiver caller, String[] args) {
