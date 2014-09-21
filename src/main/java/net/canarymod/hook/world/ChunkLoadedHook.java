@@ -8,15 +8,18 @@ import net.canarymod.hook.Hook;
  * Chunk created hook
  *
  * @author Chris (damagefilter)
+ * @author Jason (darkdiplomat)
  */
 public final class ChunkLoadedHook extends Hook {
 
     private World world;
     private Chunk chunk;
+    private boolean newchunk;
 
-    public ChunkLoadedHook(Chunk chunk, World world) {
+    public ChunkLoadedHook(Chunk chunk, World world, boolean newchunk) {
         this.world = world;
         this.chunk = chunk;
+        this.newchunk = newchunk;
     }
 
     /**
@@ -37,8 +40,17 @@ public final class ChunkLoadedHook extends Hook {
         return world;
     }
 
+    /**
+     * Gets whether this chunk was a freshly created chunk
+     *
+     * @return {@code true} if new; {@code false} otherwise
+     */
+    public boolean isNew() {
+        return newchunk;
+    }
+
     @Override
     public final String toString() {
-        return String.format("%s[World=%s, Chunk=%s]", getHookName(), world, chunk);
+        return String.format("%s[World=%s, Chunk=%s, New=%b]", getHookName(), world, chunk, newchunk);
     }
 }
