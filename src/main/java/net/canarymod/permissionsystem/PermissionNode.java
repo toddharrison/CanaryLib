@@ -221,6 +221,25 @@ public class PermissionNode {
         }
     }
 
+    public void addPath(String[] path, boolean value, int index) {
+        // If we grant a permission on a path, all preceding segments need to become granted.
+        // Conversely, if we deny a specific node, all preceding segments should remain unchanged
+        // as other paths may require them to remain granted.
+
+        // If this nodes value is false but new value is true, grant this node
+        if (!getValue() && value) {
+            setValue(true);
+        }
+        if (index >= path.length) {
+            // end
+            return;
+        }
+        if (!hasChildNode(path[index])) {
+            addChildNode(new PermissionNode(path[index], value));
+        }
+        getChildNode(path[index]).addPath(path, value, ++index);
+    }
+
     /**
      * Resolves a given path of permission names into the resulting value.
      * This resolves the permission
@@ -231,8 +250,13 @@ public class PermissionNode {
     public boolean resolveToValue(String[] path, int index) {
         boolean hasWildcardChild = hasChildNode("*");
 
+        // If this is denied and it's not a wildcard, exit.
+        // Wildcards specify no direct path thus subsequent nodes may be allowed
+        if (!this.getValue() && !isWildcard()) {
+            return false;
+        }
         // That means this is the final node
-        if (path.length >= index) {
+        if (index >= path.length) {
             return this.getValue();
         }
         // Check explicit permission

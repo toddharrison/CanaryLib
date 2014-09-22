@@ -36,21 +36,30 @@ public class MultiworldPermissionProvider implements PermissionProvider {
         this.world = world;
         permissions = new ArrayList<PermissionNode>();
         this.isPlayerProvider = isPlayer;
+        // If world is not null, set the parent to the global providers
         if (world != null) {
-            // We need a parent then
             if (isPlayer) {
-                String uuid = owner;
                 if (!ToolBox.isUUID(owner)) {
-                    uuid = ToolBox.usernameToUUID(owner);
+                    owner = ToolBox.usernameToUUID(owner);
                 }
-                this.owner = uuid;
-                this.parent = Canary.permissionManager().getPlayerProvider(uuid, null);
+                this.parent = Canary.permissionManager().getPlayerProvider(owner, null);
             }
             else {
-                this.owner = owner;
                 this.parent = Canary.permissionManager().getGroupsProvider(owner, null);
             }
         }
+        // Set owner here, it might have been altered because of UUID mangling
+        this.owner = owner;
+    }
+
+    /**
+     * Testing constructor. Use only for testing changes to this provider
+     */
+    public MultiworldPermissionProvider() {
+        this.world = null;
+        permissions = new ArrayList<PermissionNode>();
+        this.isPlayerProvider = false;
+        this.owner = "admins";
     }
 
     /**
@@ -119,40 +128,13 @@ public class MultiworldPermissionProvider implements PermissionProvider {
      * @return
      */
     private PermissionNode addPath(String[] path, boolean value) {
-        PermissionNode node = null;
-        boolean newPath = false;
-
-        for (int current = 0; current < path.length; current++) {
-            if (current == 0) {
-                node = getRootNode(path[current]);
-                if (node == null) {
-                    newPath = true;
-                    node = new PermissionNode(path[current], value);
-                    permissions.add(node);
-                    continue;
-                }
-            }
-            if (newPath) {
-                PermissionNode n = new PermissionNode(path[current], value);
-                node.addChildNode(n);
-                node = n;
-            }
-            else {
-                if (current + 1 < path.length) {
-                    if (node.hasChildNode(path[current + 1])) {
-                        node = node.getChildNode(path[current + 1]);
-                        if (current + 1 == (path.length - 1)) { // This is the end of the path. Update the value
-                            node.setValue(value);
-                        }
-                    }
-                    else {
-                        PermissionNode n = new PermissionNode(path[current + 1], value);
-                        node.addChildNode(n);
-                        node = n;
-                    }
-                }
-            }
+        PermissionNode node = getRootNode(path[0]);
+        if (node == null) {
+            node = new PermissionNode(path[0], value);
+            permissions.add(node);
         }
+        node.addPath(path, value, 1);
+
         return node;
     }
 
@@ -190,6 +172,7 @@ public class MultiworldPermissionProvider implements PermissionProvider {
         PermissionNode node = addPath(paths, value);
 
         node.setId(id);
+        flushCache();
     }
 
     @Override
