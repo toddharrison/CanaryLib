@@ -592,4 +592,32 @@ public interface Entity {
      */
     public boolean isAmbient();
 
+    /**
+     * Returns whether this entity is on the ground
+     *
+     * @return {@code true} if on ground; {@code false} if not
+     */
+    public boolean isOnGround();
+
+    /**
+     * Returns whether this entity is in a web
+     *
+     * @return {@code true} if in a web; {@code false} if not
+     */
+    public boolean isInWeb();
+
+    /**
+     * Returns whether this entity is in water
+     *
+     * @return {@code true} if in water; {@code false} if not
+     */
+    public boolean isInWater();
+
+    /**
+     * Returns whether this entity is in lava
+     *
+     * @return {@code true} if in lava; {@code false} if not
+     */
+    public boolean isInLava();
+
 }
