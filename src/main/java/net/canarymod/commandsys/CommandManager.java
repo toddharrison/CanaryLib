@@ -312,44 +312,7 @@ public class CommandManager {
             }
 
             Command meta = method.getAnnotation(Command.class);
-            TabCompleteDispatch tabComplete = null;
-
-            darkdiplomatIsAWizard:
-            //If tab complete method fails, it shouldn't kill the command itself
-            if (!meta.tabCompleteMethod().isEmpty()) {
-                final Method tabCompMeth;
-                try {
-                    tabCompMeth = listener.getClass().getMethod(meta.tabCompleteMethod(), MessageReceiver.class, String[].class);
-                }
-                catch (NoSuchMethodException e) {
-                    log.warn(String.format("[%s/%s/%s] TabComplete initialization failure: Unable to locate specified Method", owner.getName(), listener.getClass().getSimpleName(), meta.tabCompleteMethod()));
-                    break darkdiplomatIsAWizard;
-                }
-
-                if (!tabCompMeth.isAnnotationPresent(TabComplete.class)) {
-                    log.warn(String.format("[%s/%s/%s] TabComplete initialization failure: TabComplete annotation missing", owner.getName(), listener.getClass().getSimpleName(), meta.tabCompleteMethod()));
-                    break darkdiplomatIsAWizard;
-                }
-
-                if (!List.class.isAssignableFrom(tabCompMeth.getReturnType())) {
-                    log.warn(String.format("[%s/%s/%s] AutoComplete initialization failure: Return type was not of List", owner.getName(), listener.getClass().getSimpleName(), meta.tabCompleteMethod()));
-                    break darkdiplomatIsAWizard;
-                }
-
-                tabComplete = new TabCompleteDispatch() {
-                    @Override
-                    public List<String> complete(MessageReceiver msgrec, String[] args) throws TabCompleteException {
-                        try {
-                            return (List<String>) tabCompMeth.invoke(listener, msgrec, args);
-                        }
-                        catch (Exception ex) {
-                            throw new TabCompleteException("AutoComplete failed to execute...", ex);
-                        }
-                    }
-                };
-            }
-
-            CanaryCommand command = new CanaryCommand(meta, owner, translator, tabComplete) {
+            CanaryCommand command = new CanaryCommand(meta, owner, translator, TabCompleteHelper.findDispatcherFor(listener, meta.aliases())) {
                 @Override
                 protected void execute(MessageReceiver caller, String[] parameters) {
                     try {
@@ -360,7 +323,6 @@ public class CommandManager {
                     }
                 }
             };
-
             newCommands.add(command);
         }
         // Sort load order so dependencies can be resolved properly

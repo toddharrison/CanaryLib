@@ -1,6 +1,7 @@
 package net.canarymod.commandsys;
 
 import net.canarymod.Canary;
+import net.canarymod.ToolBox;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.inventory.ItemType;
 import net.canarymod.api.world.DimensionType;
@@ -10,6 +11,7 @@ import net.canarymod.chat.MessageReceiver;
 import net.canarymod.kit.Kit;
 import net.canarymod.warp.Warp;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -225,7 +227,7 @@ public final class TabCompleteHelper {
      * @param args
      *         the arguments to grab the last argument of
      *
-     * @return a list of matching existing {@link World} names
+     * @return a list of matching existing {@link net.canarymod.api.world.World} names
      */
     public static List<String> matchToKnownWorld(String[] args) {
         return matchTo(args, Canary.getServer().getWorldManager().getExistingWorldsArray());
@@ -439,6 +441,46 @@ public final class TabCompleteHelper {
      */
     public static List<String> matchToItemTypeAndData(String[] args) {
         return matchTo(args, itemTypeNames(true));
+    }
+
+    /**
+     * Generates a new TabCompleteDispatch for a command.
+     * Returns null if nothing suitable was found within the given CommandListener
+     *
+     * @param listener the listener to scan
+     * @param aliases the aliases of ONE SINGLE COMMAND that apply for this dispatcher
+     *
+     * @return new dispatcher on success or null on failure
+     */
+    @SuppressWarnings("unchecked")
+    public static TabCompleteDispatch findDispatcherFor(final CommandListener listener, String[] aliases) {
+        Method[] methods = listener.getClass().getDeclaredMethods();
+        for (final Method method : methods) {
+            if(!method.isAnnotationPresent(TabComplete.class)) {
+                continue;
+            }
+            if (!List.class.isAssignableFrom(method.getReturnType())) {
+                Canary.log.error("Failed to get a tab complete dispatcher for " + aliases[0] + ". It does not return a list! Checking next ...");
+                continue; // Keep looking
+            }
+            TabComplete tabInfo = method.getAnnotation(TabComplete.class);
+            for (String alias : aliases) {
+                if (ToolBox.arrayContains(tabInfo.commands(), alias)) {
+                    return new TabCompleteDispatch() {
+                        @Override
+                        public List<String> complete(MessageReceiver msgrec, String[] args) throws TabCompleteException {
+                            try {
+                                return (List<String>) method.invoke(listener, msgrec, args);
+                            }
+                            catch (Exception e) {
+                                throw new TabCompleteException("Failed to execute tab completion ...", e);
+                            }
+                        }
+                    };
+                }
+            }
+        }
+        return null;
     }
 
     private static String[] itemTypeNames(boolean appendData) {

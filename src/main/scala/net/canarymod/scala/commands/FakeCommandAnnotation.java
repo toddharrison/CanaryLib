@@ -82,11 +82,6 @@ public class FakeCommandAnnotation implements Command {
     }
 
     @Override
-    public String tabCompleteMethod() {
-        return tabCompleteMethod;
-    }
-
-    @Override
     public Class<? extends Annotation> annotationType() {
         return Command.class;
     }
