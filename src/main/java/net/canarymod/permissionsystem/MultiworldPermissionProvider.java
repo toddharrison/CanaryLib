@@ -30,7 +30,7 @@ public class MultiworldPermissionProvider implements PermissionProvider {
     /**
      * Constructs a new PermissionProvider that's valid for the given world
      *
-     * @param world
+     * @param world the world
      */
     public MultiworldPermissionProvider(String world, boolean isPlayer, String owner) {
         this.world = world;
@@ -103,7 +103,7 @@ public class MultiworldPermissionProvider implements PermissionProvider {
      */
     private PermissionNode getRootNode(String name) {
         for (PermissionNode n : permissions) {
-            if (n.getName().equals(name) || n.isAsterisk()) {
+            if (n.getName().equals(name) || n.isWildcard()) {
                 return n;
             }
         }
@@ -165,45 +165,7 @@ public class MultiworldPermissionProvider implements PermissionProvider {
      */
     private boolean resolvePath(String[] path) {
         PermissionNode node = getRootNode(path[0]);
-        boolean hasAsterisk = getRootNode("*") != null, asteriskValue = hasAsterisk ? getRootNode("*").getValue() : false;
-
-        for (int current = 0; current < path.length; current++) {
-            if (node == null) {
-                return false;
-            }
-            if (node.isAsterisk()) {
-                // File the value only and continue with resolving
-                hasAsterisk = true;
-                asteriskValue = node.getValue();
-            }
-            if (node.hasChildNode("*")) {
-                // Register that we had an asterisk on the way, that's all we need to know!
-                hasAsterisk = true;
-                asteriskValue = node.getChildNode("*").getValue();
-            }
-            if (current + 1 < path.length) {
-                if (node.hasChildNode(path[current + 1])) {
-                    node = node.getChildNode(path[current + 1]);
-                }
-                else {
-                    if (hasAsterisk) { // No subsequent nodes, the asterisk value wins
-                        return asteriskValue;
-                    }
-                    // No asterisk was before this point, so it's false
-                    return false;
-                }
-            }
-        }
-        // Path was fully resolved, check if there was an asterisk on the way
-        if (hasAsterisk) {
-            // Only use asterisk if there's no overriding value behind it on the path
-            if (asteriskValue == node.getValue()) {
-                return asteriskValue;
-            }
-        }
-        // No asterisk or asterisk value is not the same.
-        // The overriding node will be used
-        return node.getValue();
+        return node != null && node.resolveToValue(path, 1);
     }
 
     /**
@@ -215,27 +177,7 @@ public class MultiworldPermissionProvider implements PermissionProvider {
      */
     private boolean hasPath(String[] path) {
         PermissionNode node = getRootNode(path[0]);
-
-        for (int current = 0; current < path.length; current++) {
-            if (current == 0) {
-                node = getRootNode("*");
-                if (node == null) {
-                    node = getRootNode(path[0]);
-                }
-            }
-            if (current + 1 < path.length) {
-                if (node == null) {
-                    return false;
-                }
-                if (node.hasChildNode(path[current + 1])) {
-                    node = node.getChildNode(path[current + 1]);
-                }
-                else if (node.hasChildNode("*")) {
-                    node = node.getChildNode("*");
-                }
-            }
-        }
-        return node != null && (node.getName().equals(path[path.length - 1]) || node.isAsterisk());
+        return node != null && node.resolvePath(path, 1);
     }
 
     @Override

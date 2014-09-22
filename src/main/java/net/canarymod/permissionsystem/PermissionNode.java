@@ -26,8 +26,8 @@ public class PermissionNode {
     /**
      * Create a new PermissionNode.
      *
-     * @param name
-     * @param value
+     * @param name the name
+     * @param value the value
      */
     public PermissionNode(String name, boolean value) {
         if (name == null) {
@@ -36,24 +36,6 @@ public class PermissionNode {
         this.name = name;
         this.value = value;
         this.id = -1;
-    }
-
-    /**
-     * Create a new PermissionNode wit a parent.
-     * This will have a volatile id until it's saved to database and loaded again.
-     *
-     * @param name
-     * @param value
-     * @param parent
-     */
-    protected PermissionNode(String name, boolean value, PermissionNode parent) {
-        if (name == null) {
-            throw new IllegalArgumentException("PermissionNode: Name cannot be null!");
-        }
-        this.name = name;
-        this.value = value;
-        this.id = 0;
-        setParentNode(parent);
     }
 
     /**
@@ -79,7 +61,7 @@ public class PermissionNode {
     /**
      * Sets the parent node.
      *
-     * @param parent
+     * @param parent the new parent
      */
     public void setParentNode(PermissionNode parent) {
         if (this.parent != null) {
@@ -90,27 +72,9 @@ public class PermissionNode {
     }
 
     /**
-     * Gets the parent node
-     *
-     * @return parent node or null of none
-     */
-    public PermissionNode getParentNode() {
-        return parent;
-    }
-
-    /**
-     * Check if this node has a parent
-     *
-     * @return
-     */
-    public boolean hasParent() {
-        return parent != null;
-    }
-
-    /**
      * Get the value of this node
      *
-     * @return
+     * @return the value of this node where true means "granted" false means "denied"
      */
     public boolean getValue() {
         return value;
@@ -119,7 +83,7 @@ public class PermissionNode {
     /**
      * Override the initially given value for this node
      *
-     * @param value
+     * @param value the value for this node
      */
     public void setValue(boolean value) {
         this.value = value;
@@ -128,7 +92,7 @@ public class PermissionNode {
     /**
      * Get the name of this node
      *
-     * @return
+     * @return the name
      */
     public String getName() {
         return name;
@@ -138,7 +102,7 @@ public class PermissionNode {
      * Returns the full path name for this node starting here,
      * upwards to the first node in the inheritance tree
      *
-     * @return
+     * @return a string representing the path up to this node
      */
     public String getFullPath() {
         List<PermissionNode> parents = parentsToList();
@@ -156,7 +120,7 @@ public class PermissionNode {
      * resulting in a reverse parent list. For example if this node was canary.world.canEnter,
      * the list would be ordered like this: canEnter,world,canary
      *
-     * @return
+     * @return list of parents
      */
     private List<PermissionNode> parentsToList() {
         ArrayList<PermissionNode> parents = new ArrayList<PermissionNode>();
@@ -176,9 +140,9 @@ public class PermissionNode {
     /**
      * Get a child node of this node with the given name
      *
-     * @param child
+     * @param child name of the child node
      *
-     * @return
+     * @return an instance of the child node. Might be null if the specified child does not exist
      */
     public PermissionNode getChildNode(String child) {
         return childs.get(child);
@@ -198,7 +162,7 @@ public class PermissionNode {
     /**
      * Get all childs for this node
      *
-     * @return
+     * @return a map of name=>permissionNode pairs representing this nodes children
      */
     public Map<String, PermissionNode> getChilds() {
         return childs;
@@ -207,7 +171,7 @@ public class PermissionNode {
     /**
      * Check if this node has childs
      *
-     * @return
+     * @return true if this node has children, false otherwise
      */
     public boolean hasChilds() {
         return childs.isEmpty();
@@ -216,7 +180,7 @@ public class PermissionNode {
     /**
      * Put the given PermissionNode into the child list of this PermissionNode
      *
-     * @param child
+     * @param child the child to add
      */
     public void addChildNode(PermissionNode child) {
         child.setParentNode(this);
@@ -227,15 +191,15 @@ public class PermissionNode {
      * Check if this is an asterisk permission, granting access to all
      * subsequent nodes
      *
-     * @return
+     * @return true if this is a wildcard node, false otherwise
      */
-    public boolean isAsterisk() {
+    public boolean isWildcard() {
         return name.equals("*");
     }
 
     @Override
     public String toString() {
-        return new StringBuilder().append("Name: ").append(name).append(" :: Value: ").append(value).toString();
+        return "Name: " + name + " :: Value: " + value;
     }
 
     /**
@@ -255,5 +219,60 @@ public class PermissionNode {
         else {
             return new PermissionNode(split[0], Boolean.valueOf(split[1]));
         }
+    }
+
+    /**
+     * Resolves a given path of permission names into the resulting value.
+     * This resolves the permission
+     * @param path the path
+     * @param index the current index in the string array
+     * @return true if permission on this path is granted, false otherwise
+     */
+    public boolean resolveToValue(String[] path, int index) {
+        boolean hasWildcardChild = hasChildNode("*");
+
+        // That means this is the final node
+        if (path.length >= index) {
+            return this.getValue();
+        }
+        // Check explicit permission
+        if (hasChildNode(path[index])) {
+            return getChildNode(path[index]).resolveToValue(path, ++index);
+        }
+        // Check implicit permission
+        else if (hasWildcardChild) {
+            return getChildNode("*").getValue();
+        }
+        // Cannot resolve path to the end.
+        // If this is a wildcard, return this value, false otherwise
+        return isWildcard() && this.getValue();
+    }
+
+    /**
+     * Purely resolves a path.
+     * This can be used to see if any given permission path
+     * can be fully resolved. Wildcards are taken into account
+     * @param path the path
+     * @param index the current index in the string array
+     * @return true if path can be resolved, false otherwise
+     */
+    public boolean resolvePath(String[] path, int index) {
+        boolean hasWildcardChild = hasChildNode("*");
+
+        // We reached the end.
+        if (path.length >= index) {
+            return true;
+        }
+        // Check explicit permission
+        if (hasChildNode(path[index])) {
+            return getChildNode(path[index]).resolvePath(path, ++index);
+        }
+        // Check implicit permission
+        else if (hasWildcardChild) {
+            return true;
+        }
+        // Cannot resolve path to the end.
+        // If this is a wildcard, it's still okay
+        return isWildcard();
     }
 }
