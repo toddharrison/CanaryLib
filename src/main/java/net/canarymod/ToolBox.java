@@ -30,6 +30,24 @@ public class ToolBox {
     private static Pattern uName = Pattern.compile("[A-Za-z0-9_]{3,16}");
 
     /**
+     * Check if an array contains a specified value
+     *
+     * @param haystack the array to look into
+     * @param needle the thign to look for
+     * @param <T> the type
+     * @return true if needle is found in haystack, false otherwise
+     */
+    public static <T> boolean arrayContains(T[] haystack, T needle) {
+//        return Arrays.asList(haystack).contains(needle); // could be this but in some cases pure iterating is slightly faster
+        for (T type : haystack) {
+            if (type != null && type.equals(needle)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Merge 2 arrays. This will just merge two arrays.
      *
      * @param first

@@ -374,67 +374,24 @@ public class CommandManager {
             String[] cmdp = cmd.meta.parent().split("\\.");
             boolean depMissing = true;
             // Check for local dependencies
+            // Needs looping one more time because the list isn't keyed (and shouldn't be anyway)
             for (CanaryCommand parent : newCommands) {
-                CanaryCommand tmp = null;
-                for (int i = 0; i < cmdp.length; i++) {
-                    if (i == 0) {
-                        for (String palias : parent.meta.aliases()) {
-                            if (palias.equals(cmdp[i])) {
-                                tmp = parent;
-                            }
-                        }
-                    }
-                    else {
-                        //First element wasn't found. Get out.
-                        if (tmp == null) {
-                            break;
-                        }
-                        if (tmp.hasSubCommand(cmdp[i])) {
-                            tmp = tmp.getSubCommand(cmdp[i]);
-                        }
-                        else {
-                            tmp = null;
-                            break;
-                        }
-                    }
-                }
-                if (tmp != null) {
-                    cmd.setParent(tmp);
-                    depMissing = false;
+                if (parent.hasAlias(cmdp[0])) {
+                    // addSubCommand returns true on success.
+                    depMissing = !parent.addSubCommand(cmdp, 1, cmd);;
+                    break;
                 }
             }
 
-            // Check for remote dependencies
-            if (depMissing) { // checking if it had found a local first
-                CanaryCommand temp = null;
-                for (int i = 0; i < cmdp.length; i++) {
-                    if (i == 0) {
-                        temp = commands.get(cmdp[0]);
-                    }
-                    else {
-                        if (temp == null) {
-                            break;
-                        }
-                        if (temp.hasSubCommand(cmdp[i])) {
-                            temp = temp.getSubCommand(cmdp[i]);
-                        }
-                        else {
-                            temp = null;
-                            break;
-                        }
-                    }
-                }
-                if (temp != null) {
-                    cmd.setParent(temp);
-                    depMissing = false;
-                }
-            }
-
-            // Throw Error if we did not find the Dependency
+            // Check for remote dependencies, what we wanted does not exist in the local ones
             if (depMissing) {
-                throw new CommandDependencyException(cmd.meta.aliases()[0] + " has an unsatisfied dependency, " +
-                        "( " + cmd.meta.parent() + " )" +
-                        "please adjust registration order of your listeners or fix your plugins dependencies");
+                CanaryCommand parent = commands.get(cmdp[0]);
+                if (parent == null || !parent.addSubCommand(cmdp, 1, cmd)) {
+                    // FIXME: It seems that this exception is suppressed during the loading of native methods. Bad!
+                    throw new CommandDependencyException(cmd.meta.aliases()[0] + " has an unsatisfied dependency, " +
+                            "( " + cmd.meta.parent() + " )" +
+                            "please adjust registration order of your listeners or fix your plugins dependencies");
+                }
             }
         }
         // KDone. Lets update commands list

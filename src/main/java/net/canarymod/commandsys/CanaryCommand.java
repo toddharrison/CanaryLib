@@ -1,6 +1,7 @@
 package net.canarymod.commandsys;
 
 import net.canarymod.Canary;
+import net.canarymod.ToolBox;
 import net.canarymod.Translator;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.config.Configuration;
@@ -153,6 +154,23 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
             }
         }
         return false;
+    }
+
+    public boolean hasAlias(String alias) {
+        return ToolBox.arrayContains(this.meta.aliases(), alias);
+    }
+
+    public boolean addSubCommand(String[] path, int index, CanaryCommand command) {
+        if (index >= path.length) {
+            // this is the final path node
+            if (!ToolBox.arrayContains(this.meta.aliases(), path[index-1])) {
+                return false;
+            }
+            command.setParent(this);
+            addSubCommand(command);
+            return true;
+        }
+        return hasSubCommand(path[index]) && getSubCommand(path[index]).addSubCommand(path, ++index, command);
     }
 
     /**
