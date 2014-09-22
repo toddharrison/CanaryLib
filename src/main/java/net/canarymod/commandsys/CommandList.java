@@ -135,14 +135,13 @@ public class CommandList implements CommandListener {
             permissions = {"canary.super.ban", "canary.command.super.ban"},
             toolTip = "/ban <player> [reason] [#number hour|day|week|month]",
             min = 2,
-            tabCompleteMethod = "banTabComplete",
             version = 2
     )
     public void banCommand(MessageReceiver caller, String[] parameters) {
         natives.get("ban").execute(caller, parameters);
     }
 
-    @TabComplete
+    @TabComplete(commands = {"ban"})
     public List<String> banTabComplete(MessageReceiver caller, String[] parameters) {
         return parameters.length == 1 ? matchToKnownPlayer(parameters)
                 : parameters.length >= 2 && parameters[parameters.length - 2].matches("\\d+") ? matchTo(parameters, new String[]{"hour", "day", "week", "month"})
@@ -154,14 +153,13 @@ public class CommandList implements CommandListener {
             permissions = {"canary.super.unban", "canary.command.super.unban"},
             toolTip = "/unban <player>",
             min = 2,
-            tabCompleteMethod = "unbanTabComplete",
             version = 2
     )
     public void unbanCommand(MessageReceiver caller, String[] parameters) {
         natives.get("unban").execute(caller, parameters);
     }
 
-    @TabComplete
+    @TabComplete(commands = {"unban"})
     public List<String> unbanTabComplete(MessageReceiver caller, String[] parameters) {
         return parameters.length == 1 ? matchToBannedSubject(parameters) : null;
     }
@@ -197,14 +195,13 @@ public class CommandList implements CommandListener {
             description = "groupmod info",
             permissions = {"canary.command.super.groupmod"},
             toolTip = "/groupmod <add|delete|rename|permission|list> [parameters...] [--help]",
-            min = 1,
-            tabCompleteMethod = "groupBaseTabComplete"
+            min = 1
     )
     public void groupBase(MessageReceiver caller, String[] parameters) {
         natives.get("groupmod_base").execute(caller, parameters);
     }
 
-    @TabComplete
+    @TabComplete(commands = {"groupmod"})
     public List<String> groupBaseTabComplete(MessageReceiver caller, String[] parameters) {
         //TODO: finish implemeting arguments
         switch (parameters.length) {
@@ -551,8 +548,7 @@ public class CommandList implements CommandListener {
             permissions = {"canary.command.teleport.home"},
             toolTip = "/home [playername]",
             min = 1,
-            max = 2,
-            tabCompleteMethod = "matchKnownPlayer"
+            max = 2
     )
     public void homeCommand(MessageReceiver caller, String[] parameters) {
         natives.get("home").execute(caller, parameters);
@@ -571,8 +567,7 @@ public class CommandList implements CommandListener {
             description = "kick info",
             permissions = {"canary.super.kick", "canary.command.super.kick"},
             toolTip = "/kick <playername> [reason]",
-            min = 2,
-            tabCompleteMethod = "matchOnlinePlayer"
+            min = 2
     )
     public void kickCommand(MessageReceiver caller, String[] parameters) {
         natives.get("kick").execute(caller, parameters);
@@ -582,8 +577,7 @@ public class CommandList implements CommandListener {
             description = "kill info",
             permissions = {"canary.command.player.kill"},
             toolTip = "/kill [playername]",
-            min = 1,
-            tabCompleteMethod = "matchOnlinePlayer"
+            min = 1
     )
     public void killCommand(MessageReceiver caller, String[] parameters) {
         natives.get("kill").execute(caller, parameters);
@@ -593,14 +587,13 @@ public class CommandList implements CommandListener {
             description = "kit info",
             permissions = {"canary.command.player.kit"},
             toolTip = "/kit <give|create|list> <name> <use delay> [G|P Groups|Players]",
-            min = 2,
-            tabCompleteMethod = "kitTabComplete"
+            min = 2
     )
     public void kitCommand(MessageReceiver caller, String[] parameters) {
         natives.get("kit").execute(caller, parameters);
     }
 
-    @TabComplete
+    @TabComplete(commands = {"kit"})
     public List<String> kitTabComplete(MessageReceiver caller, String[] parameters) {
         switch (parameters.length) {
             case 1:
@@ -635,8 +628,7 @@ public class CommandList implements CommandListener {
             description = "mute info",
             permissions = {"canary.super.mute", "canary.command.super.mute"},
             toolTip = "/mute <playername>",
-            min = 2,
-            tabCompleteMethod = "matchOnlinePlayer"
+            min = 2
     )
     public void muteCommand(MessageReceiver caller, String[] parameters) {
         natives.get("mute").execute(caller, parameters);
@@ -663,8 +655,7 @@ public class CommandList implements CommandListener {
             description = "plugin disable info",
             permissions = {"canary.command.plugin.disable"},
             toolTip = "/disableplugin <plugin>",
-            min = 2,
-            tabCompleteMethod = "matchPluginName"
+            min = 2
     )
     public void disablePluginCommand(MessageReceiver caller, String[] parameters) {
         natives.get("disableplugin").execute(caller, parameters);
@@ -674,8 +665,7 @@ public class CommandList implements CommandListener {
             description = "plugin reload info",
             permissions = {"canary.command.plugin.reload"},
             toolTip = "/reloadplugin <plugin>",
-            min = 2,
-            tabCompleteMethod = "matchPluginName"
+            min = 2
     )
     public void reloadPluginCommand(MessageReceiver caller, String[] parameters) {
         natives.get("reloadplugin").execute(caller, parameters);
@@ -705,8 +695,7 @@ public class CommandList implements CommandListener {
             permissions = {"canary.command.warp.use"},
             toolTip = "/warp <name>",
             min = 2,
-            max = 2,
-            tabCompleteMethod = "matchWarpNames"
+            max = 2
     )
     public void warpUse(MessageReceiver caller, String[] parameters) {
         natives.get("warp").execute(caller, parameters);
@@ -733,8 +722,7 @@ public class CommandList implements CommandListener {
             description = "delwarp info",
             permissions = {"canary.command.warp.remove"},
             toolTip = "/delwarp <name>",
-            min = 2,
-            tabCompleteMethod = "matchWarpNames"
+            min = 2
     )
     public void delWarpCommand(MessageReceiver caller, String[] parameters) {
         natives.get("delwarp").execute(caller, parameters);
@@ -745,8 +733,7 @@ public class CommandList implements CommandListener {
             permissions = {"canary.command.teleport.spawn"},
             toolTip = "/spawn [worldname] [player]",
             min = 1,
-            max = 3,
-            tabCompleteMethod = "matchWorldNamePlayerName"
+            max = 3
     )
     public void spawnCommand(MessageReceiver caller, String[] parameters) {
         natives.get("spawn").execute(caller, parameters);
@@ -764,14 +751,13 @@ public class CommandList implements CommandListener {
             description = "whitelist info",
             permissions = {"canary.command.super.whitelist"},
             toolTip = "/whitelist <add|remove> <playername>",
-            min = 3,
-            tabCompleteMethod = "whitelistTabComplete"
+            min = 3
     )
     public void whitelistCommand(MessageReceiver caller, String[] parameters) {
         natives.get("whitelist").execute(caller, parameters);
     }
 
-    @TabComplete
+    @TabComplete(commands = {"whitelist"})
     public List<String> whitelistTabComplete(MessageReceiver caller, String[] parameters) {
         return parameters.length == 1 ? matchTo(parameters, new String[]{"add", "remove"})
                 : parameters.length == 2 && parameters[0].equals("remove") ? matchTo(parameters, Canary.whitelist().getWhitelisted())
@@ -783,8 +769,7 @@ public class CommandList implements CommandListener {
             permissions = {"canary.command.god", "canary.command.god.other"},
             toolTip = "/god [playername]",
             min = 1,
-            max = 2,
-            tabCompleteMethod = "matchOnlinePlayer"
+            max = 2
     )
     public void godCommand(MessageReceiver caller, String[] parameters) {
         natives.get("god").execute(caller, parameters);
@@ -794,14 +779,13 @@ public class CommandList implements CommandListener {
             description = "reservelist info",
             permissions = {"canary.command.super.reservelist"},
             toolTip = "/reservelist <add|remove> <playername>",
-            min = 3,
-            tabCompleteMethod = "reservelistTabComplete"
+            min = 3
     )
     public void reservelistCommand(MessageReceiver caller, String[] parameters) {
         natives.get("reservelist").execute(caller, parameters);
     }
 
-    @TabComplete
+    @TabComplete(commands = {"reservelist"})
     public List<String> reservelistTabComplete(MessageReceiver caller, String[] parameters) {
         return parameters.length == 1 ? matchTo(parameters, new String[]{"add", "remove"})
                 : parameters.length == 2 && parameters[0].equals("remove") ? matchTo(parameters, Canary.reservelist().getReservations())
@@ -819,8 +803,7 @@ public class CommandList implements CommandListener {
     @Command(aliases = {"playerinfo", "pinfo"},
             description = "Player Information",
             permissions = {"canary.command.player.information"},
-            toolTip = "/playerinfo [player]",
-            tabCompleteMethod = "matchKnownPlayer"
+            toolTip = "/playerinfo [player]"
     )
     public void playerinfo(MessageReceiver caller, String[] parameters) {
         natives.get("playerinfo").execute(caller, parameters);
@@ -847,8 +830,7 @@ public class CommandList implements CommandListener {
             description = "loads a world",
             permissions = {"canary.commmand.world.load"},
             toolTip = "/loadworld <worldName> [dimensionType]",
-            min = 2,
-            tabCompleteMethod = "matchWorldNameDimension"
+            min = 2
     )
     public void loadWorld(MessageReceiver caller, String[] args) {
         natives.get("loadworld").execute(caller, args);
@@ -860,8 +842,7 @@ public class CommandList implements CommandListener {
             permissions = {"canary.command.world.create"},
             toolTip = "/createworld <name> [seed] [dimensionType] [worldType]",
             min = 2,
-            max = 5,
-            tabCompleteMethod = "matchPast2DimensionTypeWorldType"
+            max = 5
     )
     public void createWorld(MessageReceiver caller, String[] args) {
         natives.get("createworld").execute(caller, args);
@@ -873,14 +854,13 @@ public class CommandList implements CommandListener {
             permissions = {"canary.command.mob"},
             toolTip = "/mob count [world [dimension]] or /mob remove <h|p|t|u|a> [radius] [world [dimension]]",
             min = 1,
-            version = 2,
-            tabCompleteMethod = "mobTabComplete"
+            version = 2
     )
     public void mob(MessageReceiver caller, String[] args) {
         Canary.help().getHelp(caller, "mob");
     }
 
-    @TabComplete
+    @TabComplete(commands = {"mob"})
     public List<String> mobTabComplete(MessageReceiver caller, String[] args) {
         return args.length == 1 ? matchTo(args, new String[]{"clear", "count"})
                 : args.length == 2 ?
@@ -923,14 +903,13 @@ public class CommandList implements CommandListener {
             permissions = {"canary.command.deleteworld"},
             toolTip = "/deleteworld <world_fqName>",
             min = 1,
-            version = 2,
-            tabCompleteMethod = "deleteworldTabComplete"
+            version = 2
     )
     public void deleteworld(MessageReceiver caller, String[] args) {
         natives.get("deleteworld").execute(caller, args);
     }
 
-    @TabComplete
+    @TabComplete(commands = {"deleteworld"})
     public List<String> deleteworldTabComplete(MessageReceiver caller, String[] args) {
         return args.length == 1 ? matchToKnownWorld(args) : null;
     }
@@ -1308,53 +1287,53 @@ public class CommandList implements CommandListener {
     }
     /* END: Vanilla command wrappers */
 
-    /* All the reused tab complete stuff */
-    @TabComplete
+    /* Completion logics that can be applied to multiple commands*/
+    @TabComplete(commands = {"playerinfo", "home"})
     public List<String> matchKnownPlayer(MessageReceiver caller, String[] args) {
         return args.length == 1 ? matchToKnownPlayer(args) : null;
     }
 
-    @TabComplete
+    @TabComplete(commands = {"kick", "kill", "mute", "god"})
     public List<String> matchOnlinePlayer(MessageReceiver caller, String[] args) {
         return args.length == 1 ? matchToOnlinePlayer(args) : null;
     }
 
-    @TabComplete
+    @TabComplete(commands = {"warp", "delwarp"})
     public List<String> matchWarpNames(MessageReceiver caller, String[] args) {
         return args.length == 1 ? matchToWarpNames(args, caller) : null;
     }
 
-    @TabComplete
+    @TabComplete(commands = {"disableplugin", "reloadplugin"})
     public List<String> matchPluginName(MessageReceiver caller, String[] args) {
         return args.length == 1 ? matchTo(args, Canary.manager().getPluginNames().toArray(new String[0])) : null;
     }
 
-    @TabComplete
+    @TabComplete(commands = {"spawn"}) // soooo....
     public List<String> matchWorldNamePlayerName(MessageReceiver caller, String[] args) {
         return args.length == 1 ? matchToKnownWorld(args)
                 : args.length == 2 ? matchToOnlinePlayer(args)
                 : null;
     }
 
-    @TabComplete
+    @TabComplete(commands = {"loadworld"}) // aherm
     public List<String> matchWorldNameDimension(MessageReceiver caller, String[] args) {
         return args.length == 1 ? matchToKnownWorld(args)
                 : args.length == 2 ? matchToDimension(args)
                 : null;
     }
 
-    @TabComplete
+    @TabComplete(commands = "createworld") // *cough*
     public List<String> matchPast2DimensionTypeWorldType(MessageReceiver caller, String[] args) {
         return args.length == 3 ? matchToDimension(args)
                 : args.length == 4 ? matchToWorldType(args)
                 : null;
     }
-
-    @TabComplete
-    public List<String> matchItemTypeDataAmountPlayerNames(MessageReceiver caller, String[] args) {
-        return args.length == 1 ? matchToItemTypeAndData(args)
-                : args.length == 2 ? new ArrayList<String>(0)
-                : args.length == 3 ? matchToOnlinePlayer(args)
-                : null;
-    }
+// Unused entirely
+//    @TabComplete
+//    public List<String> matchItemTypeDataAmountPlayerNames(MessageReceiver caller, String[] args) {
+//        return args.length == 1 ? matchToItemTypeAndData(args)
+//                : args.length == 2 ? new ArrayList<String>(0)
+//                : args.length == 3 ? matchToOnlinePlayer(args)
+//                : null;
+//    }
 }

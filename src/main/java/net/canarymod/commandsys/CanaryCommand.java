@@ -60,7 +60,6 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
         this.tabComplete = tabComplete;
     }
 
-
     /**
      * Parses this command using the specified parameters.
      *
@@ -77,7 +76,7 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
             }
         }
 
-        // command lenght checks
+        // command length checks
         if (parameters.length < meta.min() || ((parameters.length > meta.max()) && (meta.max() != -1))) {
             onBadSyntax(caller, parameters);
             return true;

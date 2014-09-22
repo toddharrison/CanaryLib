@@ -89,26 +89,6 @@ public @interface Command {
     int max() default -1;
 
     /**
-     * The name of the method to use for this command's TabComplete.
-     * <p/>
-     * Specified method should have the return type of {@code List<String>}<br/>
-     * and the parameters {@link net.canarymod.chat.MessageReceiver} and {@link String[]}
-     * <p/>
-     * Example:
-     * <pre>
-     *     {@literal @TabComplete} //Annotation is required for safety, its also helps identify what is a tab complete in source
-     *     public List<String> tabCompleteForCommand(MessageReceiver msgrec, String[] args){
-     *         return args.length == 1 ? TabCompleteHelper.matchTo(args, new String[]{ "tabA", "tabB", "tabC" }) : null;
-     *     }
-     * </pre>
-     * <p/>
-     * NOTE: This does not work on Commands specified with a parent, the parent will need to handle all children command completes
-     *
-     * @return method name
-     */
-    String tabCompleteMethod() default "";
-
-    /**
      * The version of the command system to use.
      * Version 1 passes the command name with the arguments,
      * where as Version 2 adjusts the arguments to remove command name.
