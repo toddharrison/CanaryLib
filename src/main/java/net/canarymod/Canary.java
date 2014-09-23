@@ -23,8 +23,10 @@ import net.canarymod.user.OperatorsProvider;
 import net.canarymod.user.ReservelistProvider;
 import net.canarymod.user.UserAndGroupsProvider;
 import net.canarymod.user.WhitelistProvider;
+import net.canarymod.util.JsonNBTUtility;
 import net.canarymod.warp.WarpProvider;
 import net.visualillusionsent.utils.JarUtils;
+
 import java.util.HashMap;
 
 /**
@@ -59,6 +61,7 @@ public abstract class Canary implements TaskOwner {
     protected ScoreboardManager scoreboardManager;
     protected MessageOfTheDay motd;
     protected PlayerSelector playerSelector;
+    protected JsonNBTUtility jsonNBT;
 
     // Serializer Cache
     HashMap<Class<?>, Serializer<?>> serializers = new HashMap<Class<?>, Serializer<?>>();
@@ -152,9 +155,9 @@ public abstract class Canary implements TaskOwner {
     }
 
     /**
-     * @deprecated Use {@link Canary#manager()}
-     *
      * @return {@link net.canarymod.plugin.PluginManager}
+     *
+     * @deprecated Use {@link Canary#manager()}
      */
     public static IPluginManager loader() {
         return instance.pluginManager;
@@ -229,10 +232,10 @@ public abstract class Canary implements TaskOwner {
     public static MessageOfTheDay motd() {
         return instance.motd;
     }
-    
+
     /**
      * Gets the {@link PlayerSelector}
-     * 
+     *
      * @return {@link PlayerSelector}
      */
     public static PlayerSelector playerSelector() {
@@ -270,7 +273,9 @@ public abstract class Canary implements TaskOwner {
         instance.server = server;
     }
 
-    /** Enables all plugins */
+    /**
+     * Enables all plugins
+     */
     public static void enablePlugins() {
         if (!pluginsUp && instance.server != null) {
             log.info("Enabling Plugins...");
@@ -298,7 +303,7 @@ public abstract class Canary implements TaskOwner {
      */
     @SuppressWarnings("unchecked")
     public static <T> String serialize(T object) {
-        Serializer<T> ser = (Serializer<T>) instance.serializers.get(object.getClass());
+        Serializer<T> ser = (Serializer<T>)instance.serializers.get(object.getClass());
 
         if (ser != null) {
             return ser.serialize(object);
@@ -318,7 +323,7 @@ public abstract class Canary implements TaskOwner {
      */
     @SuppressWarnings("unchecked")
     public static <T> T deserialize(String data, Class<T> shell) {
-        Serializer<T> ser = (Serializer<T>) instance.serializers.get(shell);
+        Serializer<T> ser = (Serializer<T>)instance.serializers.get(shell);
 
         if (ser != null) {
             try {
@@ -424,5 +429,14 @@ public abstract class Canary implements TaskOwner {
             jarPath = JarUtils.getJarPath(Canary.class);
         }
         return jarPath;
+    }
+
+    /**
+     * Retrieves the JsonNBT Utility
+     *
+     * @return JsonNBTUtility
+     */
+    public static JsonNBTUtility jsonNBT() {
+        return instance.jsonNBT;
     }
 }
