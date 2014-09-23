@@ -1,6 +1,5 @@
 package net.canarymod.api.inventory;
 
-import com.google.common.annotations.Beta;
 import net.canarymod.api.nbt.CompoundTag;
 
 /**
@@ -8,23 +7,14 @@ import net.canarymod.api.nbt.CompoundTag;
  *
  * @author Jason (darkdiplomat)
  */
-@Beta
 public interface MapData {
 
     /**
-     * Gets the name of the Map (typically map_#)
+     * Gets the name of the Map (map_[id])
      *
      * @return the name of the Map
      */
     public String getMapName();
-
-    /**
-     * Sets the name of the Map
-     *
-     * @param name
-     *         the maps new name
-     */
-    public void setMapName(String name);
 
     /**
      * Gets the X-wise (Block Coordinates) center for the Map
@@ -87,16 +77,39 @@ public interface MapData {
     public void setColors(byte[] colors);
 
     /**
+     * Sets whether the map should auto update
+     * <p/>
+     * NOTE: Setting the colors will disable auto update, <br/>
+     * turning auto update on will cause the map to output the terrain data
+     *
+     * @param updating
+     *         {@code true} to auto update; {@code false} to stop auto update
+     */
+    public void setMapUpdating(boolean updating);
+
+    /**
+     * Gets whether the map is auto updating
+     *
+     * @return {@code true} if auto updating; {@code false} if not
+     */
+    public boolean isMapUpdating();
+
+    /**
      * Sends an update to holders of the Map
      */
     public void update();
 
     /**
      * Marks a vertical range of pixels as being modified so they will be resent to clients.
+     * <p/>
+     * NOTE: Coordinates are specific to the Map itself, not the world.
      *
      * @param x
+     * the X-wise point (column) on the map (0 to 127)
      * @param yLowest
+     * the lowest Y-wise point (row) on the map
      * @param yHighest
+     * the highest Y-wise point (row) on the map
      */
     public void setColumnDirty(int x, int yLowest, int yHighest);
 
