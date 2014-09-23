@@ -1,5 +1,17 @@
 package net.canarymod.database.xml;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import net.canarymod.database.Column;
 import net.canarymod.database.Column.DataType;
 import net.canarymod.database.DataAccess;
@@ -15,18 +27,6 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Represent access to an XML database
@@ -368,7 +368,9 @@ public class XmlDatabase extends Database {
         boolean hasUpdated = false;
         String[] fields = new String[filters.size()];
         filters.keySet().toArray(fields); // We know those are strings
-        for (Element element : table.getRootElement().getChildren()) {
+        Iterator<Element> elementIterator = table.getRootElement().getChildren().iterator();
+        while (elementIterator.hasNext()) {
+            Element element = elementIterator.next();
             int equalFields = 0;
 
             for (String field : fields) {
@@ -730,9 +732,8 @@ public class XmlDatabase extends Database {
             List<?> entries = (List<?>) obj;
 
             // First detach everything so there won't be dupes
-            for (Element el : element.getChildren()) {
-                el.detach();
-            }
+            element.getChildren().clear();
+            
             if (obj == null) {
                 return;
             }
