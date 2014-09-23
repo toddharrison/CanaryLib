@@ -1,5 +1,7 @@
 package net.canarymod.api.inventory;
 
+import com.google.common.collect.Multimap;
+import net.canarymod.api.attributes.AttributeModifier;
 import net.canarymod.api.nbt.CompoundTag;
 
 /**
@@ -299,5 +301,20 @@ public interface Item extends Cloneable {
      * @return clone of the Item
      */
     public Item clone();
+
+    /**
+     * Gets the Multimap of Attributes
+     *
+     * @return attributes multimap
+     */
+    public Multimap<String, AttributeModifier> getAttributes();
+
+    /**
+     * Updates the native Multimap of Attributes
+     *
+     * @param attributeMap
+     *         the attribute map to be set
+     */
+    public void updateAttributes(Multimap<String, AttributeModifier> attributeMap);
 
 }
