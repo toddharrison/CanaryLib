@@ -3,6 +3,7 @@ package net.canarymod.api.factory;
 import net.canarymod.api.inventory.Enchantment;
 import net.canarymod.api.inventory.Item;
 import net.canarymod.api.inventory.ItemType;
+import net.canarymod.api.inventory.MapData;
 
 /**
  * Item Manufacturing Factory
@@ -145,5 +146,15 @@ public interface ItemFactory {
      * @return a new {@link Enchantment} if arguments are valid
      */
     Enchantment newEnchantment(Enchantment.Type type, short level);
+
+    /**
+     * Gets the MapData for a Map Item
+     *
+     * @param item
+     *         the map item
+     *
+     * @return MapData or {@code null} if item passed was not a Map
+     */
+    MapData getMapData(Item item);
 
 }
