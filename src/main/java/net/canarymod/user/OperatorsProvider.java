@@ -118,8 +118,17 @@ public class OperatorsProvider {
      */
     public void addPlayer(String entry) {
         if (!ops.contains(entry)) {
-            ops.add(entry);
-            backboneOps.addOpEntry(entry);
+            if (!ToolBox.isUUID(entry)) {
+                String uuid = ToolBox.usernameToUUID(entry);
+                if (ops.contains(uuid)) {
+                    ops.add(uuid);
+                    backboneOps.addOpEntry(uuid);
+                }
+            }
+            else {
+                ops.add(entry);
+                backboneOps.addOpEntry(entry);
+            }
         }
     }
 
@@ -133,7 +142,8 @@ public class OperatorsProvider {
         if (ops.contains(entry)) {
             ops.remove(entry);
             backboneOps.removeOpEntry(entry);
-        } else if (!ToolBox.isUUID(entry)) {
+        }
+        else if (!ToolBox.isUUID(entry)) {
             String uuid = ToolBox.usernameToUUID(entry);
             if (ops.contains(uuid)) {
                 ops.remove(uuid);
