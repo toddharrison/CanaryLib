@@ -5,6 +5,7 @@ import net.canarymod.api.world.DimensionType;
 import net.canarymod.api.world.UnknownWorldException;
 import net.canarymod.api.world.World;
 import net.canarymod.config.Configuration;
+import net.visualillusionsent.utils.PropertiesFile;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -28,6 +29,7 @@ public class ToolBox {
     private static TimeZone tz_GMT = TimeZone.getTimeZone("GMT");
     private static Pattern uuid = Pattern.compile("[0-9a-f]{8}\\-([0-9a-f]{4}\\-){3}[0-9a-f]{12}");
     private static Pattern uName = Pattern.compile("[A-Za-z0-9_]{3,16}");
+    protected static final PropertiesFile userLookup = new PropertiesFile("uuidreverselookup.cfg");
 
     /**
      * Check if an array contains a specified value
@@ -445,7 +447,7 @@ public class ToolBox {
     public static String usernameToUUID(String username) {
         if (!uName.matcher(username).matches()) {
             if (uuid.matcher(username).matches()) {
-                return username; // smuck passed in a UUID so pass it back
+                return username; // shmuck passed in a UUID so pass it back
             }
             return null; // username isn't valid, so don't bother checking against the mojang API
         }
@@ -453,6 +455,19 @@ public class ToolBox {
         if (Canary.getServer() != null) {
             Player p = Canary.getServer().getPlayer(username);
             if (p != null) return p.getUUIDString(); // player is online, so don't query the mojang API
+        }
+
+        // Check the reverse lookup cache
+        if (userLookup.getPropertiesMap().containsValue(username)) {
+            for (Map.Entry<String, String> entry : userLookup.getPropertiesMap().entrySet()) {
+                if (entry.getValue().equals(username)) {
+                    if (userLookup.getComments(entry.getKey()).length > 0) {
+                        if (!userLookupExpired(userLookup.getComments(entry.getKey())[0].replace(";Verified: ", "").trim())) {
+                            return entry.getKey();
+                        }
+                    }
+                }
+            }
         }
         
         String uuid = null;
@@ -485,11 +500,16 @@ public class ToolBox {
             // Add the hyphens back in
             uuid = uuid.substring(0, 8) + "-" + uuid.substring(8, 12) + "-" + uuid.substring(12, 16) + "-" + uuid.substring(16, 20) + "-" + uuid.substring(20, 32);
         }
+
+        // Update the userLookup
+        userLookup.setString(uuid, username);
+        userLookup.setComments(uuid, ";Verified: " + System.currentTimeMillis());
+        userLookup.save();
         return uuid;
     }
 
     /**
-     * Ask's Mojang's API for a UUID for a given UserName
+     * Asks Mojang's API for a UUID for a given UserName
      *
      * @param username
      *         the user name to get a UUID for
@@ -499,5 +519,18 @@ public class ToolBox {
     public static UUID uuidFromUsername(String username) {
         String uuidString = usernameToUUID(username);
         return uuidString != null ? UUID.fromString(uuidString) : null;
+    }
+
+    protected static boolean userLookupExpired(String timestamp) {
+        long time = 0;
+        try {
+            time = Long.parseLong(timestamp);
+        }
+        catch (NumberFormatException nfex) {
+            return true; // re-verify
+        }
+
+        // 3 days seems legit
+        return time == 0 || TimeUnit.MILLISECONDS.toDays(time) + 3 < TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis());
     }
 }

@@ -3,6 +3,7 @@ package net.canarymod.commandsys.commands.system;
 import net.canarymod.Canary;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.MessageReceiver;
+import net.canarymod.chat.TextFormat;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.OperatorsProvider;
 
@@ -26,6 +27,17 @@ public final class Op implements NativeCommand {
                     return;
                 }
         }
-        opPro.addPlayer(args[0]); // Just assuming this worked here...
+        if (!opPro.isOpped(args[0])) {
+            opPro.addPlayer(args[0]);
+            if (opPro.isOpped(args[0])) { // Double check that is worked
+                Canary.getServer().broadcastMessageToOps(TextFormat.LIGHT_GRAY + "[SERVER] Opped " + args[0]);
+            }
+            else {
+                caller.notice("Failed to op " + args[0]);
+            }
+        }
+        else {
+            caller.notice(args[0] + " is already an Operator");
+        }
     }
 }

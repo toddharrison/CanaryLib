@@ -23,7 +23,7 @@ public class Translator extends LocaleHelper {
     private static final String canaryLang = "lang/canary/"; //allow plugins to borrow the lang directory for their lang files
     private static final boolean doUpdate = Configuration.getServerConfig().updateLang();
     private static final String[] locales = new String[]{ // The Default Supported
-            "en_US", "da_DK", "nl_NL", "fi_FI", "fr_FR", "de_DE", "de_CH", "it_IT", "la_LA", "no_NO",
+                                                                "en_US", "da_DK", "nl_NL", "fi_FI", "fr_FR", "de_DE", "it_IT", "no_NO",
             "pl_PL", "en_PT", "ru_RU", "es_ES", "sv_SE"
     };
     private static final Translator instance;

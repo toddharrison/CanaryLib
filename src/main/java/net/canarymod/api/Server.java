@@ -237,13 +237,31 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
     public Player getPlayerFromUUID(UUID uuid);
 
     /**
-     * Send (broadcast) the given messsage to ALL players on the server,
+     * Send (broadcast) the given message to ALL players on the server,
      * in all worlds.
      *
      * @param message
      *         the message to be broadcasted
      */
     public void broadcastMessage(String message);
+
+    /**
+     * Send (broadcast) the given message to ALL Operators on the server,
+     * in all worlds.
+     *
+     * @param message
+     *         the message to be broadcasted
+     */
+    public void broadcastMessageToOps(String message);
+
+    /**
+     * Send (broadcast) the given message to ALL Administrators on the server,
+     * in all worlds.
+     *
+     * @param message
+     *         the message to be broadcasted
+     */
+    public void broadcastMessageToAdmins(String message);
 
     /**
      * Load a {@link World} with the given name from file.

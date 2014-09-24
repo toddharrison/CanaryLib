@@ -7,6 +7,7 @@ import net.canarymod.commandsys.commands.groupmod.*;
 import net.canarymod.commandsys.commands.playermod.*;
 import net.canarymod.commandsys.commands.system.DeOp;
 import net.canarymod.commandsys.commands.system.Op;
+import net.canarymod.commandsys.commands.system.OpList;
 import net.canarymod.commandsys.commands.vanilla.*;
 import net.canarymod.commandsys.commands.warp.WarpList;
 import net.canarymod.commandsys.commands.warp.WarpRemove;
@@ -100,6 +101,7 @@ public class CommandList implements CommandListener {
         temp.put("deleteworld", new DeleteWorldCommand());
         temp.put("op", new Op());
         temp.put("deop", new DeOp());
+        temp.put("oplist", new OpList());
 
         /* The Vanilla Wrappers */
         temp.put("achievement", new Achievement());
@@ -858,11 +860,23 @@ public class CommandList implements CommandListener {
                     aliases = { "deop" },
                     description = "Takes Op from a Player",
                     permissions = { "canary.command.deop" }, // Really no point, Requires Op
-                    toolTip = "/op <player>",
+                    toolTip = "/deop <player>",
                     version = 2
     )
     public void deop(MessageReceiver caller, String[] args) {
         natives.get("deop").execute(caller, args);
+    }
+
+    @Command(
+                    aliases = { "oplist" },
+                    description = "Displays a list of Operators",
+                    permissions = { "canary.command.oplist" }, // Really no point, Requires Op
+                    toolTip = "/oplist",
+                    min = 0,
+                    version = 2
+    )
+    public void oplist(MessageReceiver caller, String[] args) {
+        natives.get("oplist").execute(caller, args);
     }
 
     /* START: Vanilla command wrappers... */

@@ -120,7 +120,7 @@ public class OperatorsProvider {
         if (!ops.contains(entry)) {
             if (!ToolBox.isUUID(entry)) {
                 String uuid = ToolBox.usernameToUUID(entry);
-                if (ops.contains(uuid)) {
+                if (!ops.contains(uuid)) {
                     ops.add(uuid);
                     backboneOps.addOpEntry(uuid);
                 }
