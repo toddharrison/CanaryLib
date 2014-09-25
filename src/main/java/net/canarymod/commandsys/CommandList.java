@@ -117,8 +117,8 @@ public class CommandList implements CommandListener {
         temp.put("gamemode", new GameMode());
         temp.put("gamerule", new GameRule());
         temp.put("give", new Give());
-        temp.put("tell", new Message());
-        temp.put("tellraw", new MessageRaw());
+        temp.put("message", new Message());
+        temp.put("messageraw", new MessageRaw());
         temp.put("playsound", new PlaySound());
         temp.put("save-all", new SaveAll());
         temp.put("save-off", new SaveOff());
