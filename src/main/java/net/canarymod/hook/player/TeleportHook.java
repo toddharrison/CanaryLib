@@ -24,16 +24,25 @@ public final class TeleportHook extends CancelableHook {
     /**
      * Get the {@link Player} instance.
      *
-     * @return
+     * @return the teleporting Player
      */
     public Player getPlayer() {
         return player;
     }
 
     /**
+     * Gets the {@link Player}'s current location
+     *
+     * @return the current {@link Location} of the Player
+     */
+    public Location getCurrentLocation() {
+        return player.getLocation();
+    }
+
+    /**
      * Get the destination {@link Location} for the teleport.
      *
-     * @return
+     * @return the {@link Location} of the destination
      */
     public Location getDestination() {
         return destination;
