@@ -9,7 +9,7 @@ import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.warp.Warp;
 
 /**
- * Command to teleport you to your own or another player home 
+ * Command to teleport you to your own or another player home
  *
  * @author Chris (damagefilter)
  */
@@ -31,24 +31,41 @@ public class Home implements NativeCommand {
         caller.notice(Translator.translate("home console"));
     }
 
-    //Special behaviour for command blocks, they teleport the given player to their homes
+    // Special behaviour for command blocks, they teleport the given player to their homes
     private void others(MessageReceiver player, String[] args) {
+        if (args.length < 1) {
+            Canary.help().getHelp(player, "home");
+            return;
+        }
         if (player.hasPermission("canary.command.teleport.home.other")) {
-            Player target = Canary.getServer().matchPlayer(args[1]);
-
+            Player[] others = Canary.playerSelector().matchPlayers(player, args[0]);
+            if (others != null) {
+                for (Player other : others) {
+                    if (other != null) {
+                        if (other.hasHome()) {
+                            other.teleportTo(other.getHome());
+                        }
+                        else {
+                            player.notice(Translator.translateAndFormat("no home set other", new Object[]{ other.getName() }));
+                        }
+                    }
+                }
+                return;
+            }
+            Player target = Canary.getServer().matchPlayer(args[0]);
             if (target != null) {
                 if (target.hasHome()) {
                     target.teleportTo(target.getHome());
                 }
                 else {
-                    player.notice(Translator.translateAndFormat("no home set other", target.getName()));
+                    player.notice(Translator.translateAndFormat("no home set other", new Object[]{ target.getName() }));
                 }
             }
         }
     }
 
     private void player(Player player, String[] args) {
-        if (args.length == 1) {
+        if (args == null || args.length == 0) {
             if (player.hasHome()) {
                 player.notice(Translator.translate("home teleport"));
                 player.teleportTo(player.getHome());
@@ -58,29 +75,7 @@ public class Home implements NativeCommand {
             }
         }
         else {
-            if (player.hasPermission("canary.command.teleport.home.other")) {
-                Player target = Canary.getServer().matchPlayer(args[1]);
-
-                if (target != null) {
-                    if (target.hasHome()) {
-                        player.notice(Translator.translateAndFormat("home teleport other", target.getName()));
-                        player.teleportTo(target.getHome());
-                    }
-                    else {
-                        player.notice(Translator.translateAndFormat("no home set other", target.getName()));
-                    }
-                }
-                else {
-                    Warp home = Canary.warps().getHome(args[1]);
-                    if (home != null) {
-                        player.notice(Translator.translateAndFormat("home teleport other", args[1]));
-                        player.teleportTo(home.getLocation());
-                    }
-                    else {
-                        player.notice(Translator.translateAndFormat("no home set other", args[1]));
-                    }
-                }
-            }
+            others((MessageReceiver) player, args);
         }
     }
 

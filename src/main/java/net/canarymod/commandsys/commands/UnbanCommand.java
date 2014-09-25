@@ -16,10 +16,6 @@ import net.canarymod.commandsys.NativeCommand;
 public class UnbanCommand implements NativeCommand {
 
     public void execute(MessageReceiver caller, String[] cmd) {
-        if (cmd.length < 1) {
-            Canary.help().getHelp(caller, "unban");
-            return;
-        }
         Player p = Canary.getServer().getPlayer(cmd[0]);
         String uuid = null;
         if (p != null) {

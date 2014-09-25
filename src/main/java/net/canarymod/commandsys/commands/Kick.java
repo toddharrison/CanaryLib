@@ -15,19 +15,34 @@ import net.visualillusionsent.utils.StringUtils;
  */
 public class Kick implements NativeCommand {
 
-    public void execute(MessageReceiver caller, String[] parameters) {
-        Player target = Canary.getServer().matchPlayer(parameters[1]);
-        if (target != null) {
-            String reason = Translator.translateAndFormat("kick message", caller.getName());
-            if (parameters.length > 2) {
-                reason = StringUtils.joinString(parameters, " ", 2);
+    public void execute(MessageReceiver caller, String[] parameters)
+    {
+        Player[] targets = Canary.playerSelector().matchPlayers(caller, parameters[0]);
+        Player target = Canary.getServer().matchPlayer(parameters[0]);
+        if (targets != null) {
+            for (Player player : targets) {
+                if (player != null) {
+                    String reason = Translator.translateAndFormat("kick message", new Object[]{ caller.getName() });
+                    if (parameters.length >= 2) {
+                        reason = StringUtils.joinString(parameters, " ", 1);
+                    }
+                    new KickHook(player, caller, reason).call();
+                    player.kickNoHook(reason);
+                    caller.notice(Translator.translateAndFormat("kick kicked", new Object[]{ player.getName() }));
+                }
             }
-            new KickHook(target, caller, reason).call(); // Call KickHook here to pass the caller that is actually doing the kicking
-            target.kickNoHook(reason); // Don't call the hook again
-            caller.notice(Translator.translateAndFormat("kick kicked", target.getName()));
+        }
+        else if (target != null) {
+            String reason = Translator.translateAndFormat("kick message", new Object[]{ caller.getName() });
+            if (parameters.length >= 2) {
+                reason = StringUtils.joinString(parameters, " ", 1);
+            }
+            new KickHook(target, caller, reason).call();
+            target.kickNoHook(reason);
+            caller.notice(Translator.translateAndFormat("kick kicked", new Object[]{ target.getName() }));
         }
         else {
-            caller.notice(Translator.translate("kick failed") + " " + Translator.translateAndFormat("unknown player", parameters[1]));
+            caller.notice(Translator.translate("kick failed") + " " + Translator.translateAndFormat("unknown player", new Object[]{ parameters[1] }));
         }
     }
 

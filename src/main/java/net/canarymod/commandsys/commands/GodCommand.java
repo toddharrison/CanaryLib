@@ -11,16 +11,15 @@ import net.canarymod.commandsys.NativeCommand;
 public class GodCommand implements NativeCommand {
 
     public void execute(MessageReceiver caller, String[] parameters) {
-        if (caller instanceof Player) {
+        if ((caller instanceof Player)) {
             player((Player) caller, parameters);
-        }
-        else {
+        } else {
             console(caller, parameters);
         }
     }
 
     private void console(MessageReceiver caller, String[] args) {
-        if (args.length != 2) {
+        if (args.length != 1) {
             Canary.help().getHelp(caller, "god");
             return;
         }
@@ -28,30 +27,10 @@ public class GodCommand implements NativeCommand {
             caller.notice(Translator.translate("god failed"));
             return;
         }
-        Player other = Canary.getServer().getPlayer(args[1]);
-        if (other == null) {
-            caller.notice(Translator.translate("god failed") + " " + Translator.translateAndFormat("unknown player", args[1]));
-            return;
-        }
-        if (other.getMode() == GameMode.CREATIVE) {
-            caller.notice(Translator.translateAndFormat("god creative other", other.getName()));
-            return;
-        }
-        if (other.getCapabilities().isInvulnerable()) {
-            other.getCapabilities().setInvulnerable(false);
-            caller.notice(Translator.translateAndFormat("god disabled other", other.getName()));
-            other.notice(Translator.translate("god disabled"));
-        }
-        else {
-            other.getCapabilities().setInvulnerable(true);
-            caller.notice(Translator.translateAndFormat("god enabled other", other.getName()));
-            other.notice(Translator.translate("god enabled"));
-        }
-
+        doAction(args[0], caller);
     }
 
     private void player(Player player, String[] args) {
-        // Give to player
         if (args.length == 1) {
             if (!player.hasPermission("canary.command.god")) {
                 player.notice(Translator.translate("god failed"));
@@ -70,35 +49,62 @@ public class GodCommand implements NativeCommand {
                 player.notice(Translator.translate("god enabled"));
             }
         }
-        // Give to other
         else if (args.length == 2) {
             if (!player.hasPermission("canary.command.god.other")) {
                 player.notice(Translator.translate("god failed"));
                 return;
             }
-            Player other = Canary.getServer().matchPlayer(args[1]);
-            if (other == null) {
-                player.notice(Translator.translate("god failed") + " " + Translator.translateAndFormat("unknown player", args[1]));
-                return;
-            }
-            if (other.getMode() == GameMode.CREATIVE) {
-                player.notice(Translator.translateAndFormat("god creative other", other.getName()));
-                return;
-            }
-            if (other.getCapabilities().isInvulnerable()) {
-                other.getCapabilities().setInvulnerable(false);
-                player.notice(Translator.translateAndFormat("god disabled other", other.getName()));
-                other.notice(Translator.translate("god disabled"));
-            }
-            else {
-                other.getCapabilities().setInvulnerable(true);
-                player.notice(Translator.translateAndFormat("god enabled other", other.getName()));
-                other.notice(Translator.translate("god enabled"));
-            }
+            doAction(args[1], player);
         }
         else {
             player.notice(Translator.translate("god failed") + " " + Translator.translate("usage"));
             Canary.help().getHelp(player, "god");
+        }
+    }
+
+    private void doAction(String pattern, MessageReceiver caller) {
+        Player[] others = Canary.playerSelector().matchPlayers(caller, pattern);
+        if (others != null) {
+            for (Player player : others) {
+                if (player == null) {
+                    caller.notice(Translator.translate("god failed") + " " + Translator.translateAndFormat("unknown player", new Object[]{ pattern }));
+                    return;
+                }
+                if (player.getMode() == GameMode.CREATIVE) {
+                    caller.notice(Translator.translateAndFormat("god creative other", new Object[]{ player.getName() }));
+                    return;
+                }
+                if (player.getCapabilities().isInvulnerable()) {
+                    player.getCapabilities().setInvulnerable(false);
+                    caller.notice(Translator.translateAndFormat("god disabled other", new Object[]{ player.getName() }));
+                    player.notice(Translator.translate("god disabled"));
+                }
+                else {
+                    player.getCapabilities().setInvulnerable(true);
+                    caller.notice(Translator.translateAndFormat("god enabled other", new Object[]{ player.getName() }));
+                    player.notice(Translator.translate("god enabled"));
+                }
+            }
+            return;
+        }
+        Player other = Canary.getServer().getPlayer(pattern);
+        if (other == null) {
+            caller.notice(Translator.translate("god failed") + " " + Translator.translateAndFormat("unknown player", new Object[]{ pattern }));
+            return;
+        }
+        if (other.getMode() == GameMode.CREATIVE) {
+            caller.notice(Translator.translateAndFormat("god creative other", new Object[]{ other.getName() }));
+            return;
+        }
+        if (other.getCapabilities().isInvulnerable()) {
+            other.getCapabilities().setInvulnerable(false);
+            caller.notice(Translator.translateAndFormat("god disabled other", new Object[]{ other.getName() }));
+            other.notice(Translator.translate("god disabled"));
+        }
+        else {
+            other.getCapabilities().setInvulnerable(true);
+            caller.notice(Translator.translateAndFormat("god enabled other", new Object[]{ other.getName() }));
+            other.notice(Translator.translate("god enabled"));
         }
     }
 }

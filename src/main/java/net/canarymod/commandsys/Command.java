@@ -79,7 +79,7 @@ public @interface Command {
      *
      * @return minimum parameters
      */
-    int min() default 1;
+    int min() default 0;
 
     /**
      * The max amounts of parameters. -1 for infinite amount

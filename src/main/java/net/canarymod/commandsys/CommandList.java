@@ -143,7 +143,7 @@ public class CommandList implements CommandListener {
              description = "ban info",
              permissions = { "canary.super.ban", "canary.command.super.ban" },
              toolTip = "/ban <player> [reason] [#number hour|day|week|month]",
-             min = 2,
+             min = 1,
              version = 2
     )
     public void banCommand(MessageReceiver caller, String[] parameters) {
@@ -154,7 +154,7 @@ public class CommandList implements CommandListener {
              description = "unban info",
              permissions = { "canary.super.unban", "canary.command.super.unban" },
              toolTip = "/unban <player>",
-             min = 2,
+             min = 1,
              version = 2
     )
     public void unbanCommand(MessageReceiver caller, String[] parameters) {
@@ -521,8 +521,9 @@ public class CommandList implements CommandListener {
              description = "home info",
              permissions = { "canary.command.teleport.home" },
              toolTip = "/home [playername]",
-             min = 1,
-             max = 2
+             min = 0,
+             max = 1,
+             version = 2
     )
     public void homeCommand(MessageReceiver caller, String[] parameters) {
         natives.get("home").execute(caller, parameters);
@@ -541,7 +542,8 @@ public class CommandList implements CommandListener {
              description = "kick info",
              permissions = { "canary.super.kick", "canary.command.super.kick" },
              toolTip = "/kick <playername> [reason]",
-             min = 2
+             min = 1,
+             version = 2
     )
     public void kickCommand(MessageReceiver caller, String[] parameters) {
         natives.get("kick").execute(caller, parameters);
@@ -551,7 +553,7 @@ public class CommandList implements CommandListener {
              description = "kill info",
              permissions = { "canary.command.player.kill" },
              toolTip = "/kill [playername]",
-             min = 1
+             version = 2
     )
     public void killCommand(MessageReceiver caller, String[] parameters) {
         natives.get("kill").execute(caller, parameters);
@@ -721,8 +723,9 @@ public class CommandList implements CommandListener {
              description = "enable god mode",
              permissions = { "canary.command.god", "canary.command.god.other" },
              toolTip = "/god [playername]",
-             min = 1,
-             max = 2
+             min = 0,
+             max = 1,
+             version = 2
     )
     public void godCommand(MessageReceiver caller, String[] parameters) {
         natives.get("god").execute(caller, parameters);

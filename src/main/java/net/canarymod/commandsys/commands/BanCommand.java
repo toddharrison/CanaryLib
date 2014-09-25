@@ -18,56 +18,12 @@ import net.visualillusionsent.utils.StringUtils;
  * @author Jason (darkdiplomat)
  */
 public class BanCommand implements NativeCommand {
-
-    /**
+    
     public void execute(MessageReceiver caller, String[] parameters) {
-        if (parameters.length < 2) {
+        if (parameters.length < 1) {
             Canary.help().getHelp(caller, "ban");
             return;
         }
-        Ban ban = new Ban();
-        
-        String reason = "Permanently Banned";
-        long timestamp = -1L;
-        
-        if (parameters.length >= 2) {
-            try {
-                timestamp = ToolBox.parseTime(Long.parseLong(parameters[parameters.length - 2]), parameters[parameters.length - 1]);
-                reason = StringUtils.joinString(parameters, " ", 2, parameters.length - 2);
-            }
-            catch (NumberFormatException e) {
-                reason = StringUtils.joinString(parameters, " ", 2);
-                timestamp = -1L;
-            }
-        }
-        
-        Player[] playerSelectorArray = Canary.playerSelector().matchPlayers(caller, parameters[0]);
-        if (playerSelectorArray != null) {
-            
-        }
-            
-        PlayerReference ref = Canary.getServer().matchKnownPlayer(parameters[1]);
-
-        ban.setReason(reason);
-        ban.setTimestamp(timestamp);
-        ban.setBanningPlayer(caller.getName());
-        if (ref != null) {
-            ban.setUUID(ref.getUUIDString());
-            ban.setSubject(ref.getName());
-            Canary.bans().issueBan(ban);
-            Canary.hooks().callHook(new BanHook(ref, ref.getIP(), caller, reason, timestamp));
-            caller.notice(Translator.translateAndFormat("ban banned", ref.getName()));
-            if (ref.isOnline() && ref instanceof Player) {
-                ((Player) ref).kick(reason);
-            }
-        }
-        else {
-            caller.notice(Translator.translate("ban failed") + " " + Translator.translateAndFormat("unknown player", parameters[1]));
-        }
-    }
-    */
-    
-    public void execute(MessageReceiver caller, String[] parameters) {
         String reason = "Permanently Banned";
         long timestamp = -1L;
         
