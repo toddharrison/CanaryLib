@@ -177,7 +177,7 @@ public class BackboneUsers extends Backbone {
         data.subgroups = groupNames;
 
         String prefix = player.getPrefix();
-        if (prefix.equals(player.getGroup().getPrefix())) {
+        if (prefix != null && prefix.equals(player.getGroup().getPrefix())) {
             data.prefix = null;
         }
         else {
@@ -187,6 +187,7 @@ public class BackboneUsers extends Backbone {
         try {
             HashMap<String, Object> filter = new HashMap<String, Object>();
             filter.put("uuid", player.getUUIDString());
+            filter.put("name", player.getName());
             Database.get().update(data, filter);
         }
         catch (DatabaseWriteException e) {

@@ -1,6 +1,7 @@
 package net.canarymod.user;
 
 import net.canarymod.Canary;
+import net.canarymod.ToolBox;
 import net.canarymod.api.OfflinePlayer;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.backbone.BackboneGroups;
@@ -11,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import static net.canarymod.Canary.log;
-import net.canarymod.ToolBox;
 
 /**
  * Access to the backbone for users and groups
@@ -248,7 +248,6 @@ public class UserAndGroupsProvider {
      * @param player
      */
     public void addOrUpdatePlayerData(Player player) {
-        player.initPlayerData();
         backboneUsers.addUser(player);
         String[] content = new String[3];
         String prefix = player.getPrefix();
@@ -364,11 +363,11 @@ public class UserAndGroupsProvider {
      * @return true if the player was online, false otherwise.
      */
     private boolean refreshPlayerInstance(String uuid) {
-        Player p = Canary.getServer().getPlayerFromUUID(uuid);
-        if (p != null) {
-            addOrUpdatePlayerData(p);
-            return true;
-        }
+        //Player p = Canary.getServer().getPlayerFromUUID(uuid);
+        //if (p != null) {
+        //    addOrUpdatePlayerData(p);
+        //    return true;
+        //}
         return false;
     }
 }
