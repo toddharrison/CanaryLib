@@ -1,16 +1,16 @@
 package net.canarymod.commandsys.commands;
 
-import java.lang.management.ManagementFactory;
-import java.lang.management.RuntimeMXBean;
-import java.text.MessageFormat;
-import java.util.TimeZone;
-
 import net.canarymod.Canary;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.chat.TextFormat;
 import net.canarymod.commandsys.NativeCommand;
 import net.visualillusionsent.utils.DateUtils;
 import net.visualillusionsent.utils.SystemUtils;
+
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
+import java.text.MessageFormat;
+import java.util.TimeZone;
 
 /**
  * System Information read-out command
@@ -32,10 +32,10 @@ public class SystemInformation implements NativeCommand {
         int gmtH = rawOff / (60 * 60 * 1000); // GMT offset Hours
         int gmtM = (rawOff / (60 * 1000)) % 60; // GMT offset Minutes
         caller.message(TextFormat.ORANGE + "   *** " + TextFormat.LIGHT_RED + "SYSTEM INFO" + TextFormat.ORANGE + " ***");
-        caller.message(TextFormat.ORANGE + "OS Name: " + TextFormat.WHITE + SystemUtils.SYSTEM_OS);
-        caller.message(TextFormat.ORANGE + "OS Version: " + TextFormat.WHITE + SystemUtils.SYSTEM_VERSION);
-        caller.message(TextFormat.ORANGE + "OS Architecture: " + TextFormat.WHITE + SystemUtils.SYSTEM_ARCH);
-        caller.message(TextFormat.ORANGE + "Java Vendor: " + TextFormat.WHITE + System.getProperty("java.vendor")); // VIUtils 1.1.1 will have a constant for this later
+        caller.message(TextFormat.ORANGE + "OS Name: " + TextFormat.WHITE + SystemUtils.OPERATING_SYSTEM);
+        caller.message(TextFormat.ORANGE + "OS Version: " + TextFormat.WHITE + SystemUtils.OS_VERSION);
+        caller.message(TextFormat.ORANGE + "OS Architecture: " + TextFormat.WHITE + SystemUtils.OS_ARCHITECTURE);
+        caller.message(TextFormat.ORANGE + "Java Vendor: " + TextFormat.WHITE + SystemUtils.JAVA_VENDOR);
         caller.message(TextFormat.ORANGE + "Java Version: " + TextFormat.WHITE + SystemUtils.JAVA_VERSION);
         caller.message(TextFormat.ORANGE + "Avalible Processors: " + TextFormat.WHITE + rtime.availableProcessors());
         caller.message(TextFormat.ORANGE + String.format("RAM: \u00A7F%.2fMb Free \u00A76| \u00A7F%.2fMb Allocated \u00A76| \u00A7F%.2fMb Max", freeMem, alloMem, maxMem));

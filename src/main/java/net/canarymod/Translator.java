@@ -3,10 +3,10 @@ package net.canarymod;
 import net.canarymod.config.Configuration;
 import net.visualillusionsent.utils.FileUtils;
 import net.visualillusionsent.utils.LocaleHelper;
-import net.visualillusionsent.utils.UtilityException;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class Translator extends LocaleHelper {
     private static final String canaryLang = "lang/canary/"; //allow plugins to borrow the lang directory for their lang files
     private static final boolean doUpdate = Configuration.getServerConfig().updateLang();
     private static final String[] locales = new String[]{ // The Default Supported
-                                                                "en_US", "da_DK", "nl_NL", "fi_FI", "fr_FR", "de_DE", "it_IT", "no_NO",
+            "en_US", "da_DK", "nl_NL", "fi_FI", "fr_FR", "de_DE", "it_IT", "no_NO",
             "pl_PL", "en_PT", "ru_RU", "es_ES", "sv_SE"
     };
     private static final Translator instance;
@@ -176,7 +176,7 @@ public class Translator extends LocaleHelper {
         try {
             FileUtils.cloneFileFromJar(Canary.getCanaryJarPath(), "resources/lang/".concat(locale), canaryLang.concat(locale));
         }
-        catch (UtilityException uex) {
+        catch (IOException ioex) {
             log.error("Failed to transfer lang file for locale: ".concat(locale.replace(".lang", "")));
         }
     }
