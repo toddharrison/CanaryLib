@@ -1,4 +1,4 @@
-package net.canarymod.commandsys.commands;
+package net.canarymod.commandsys.commands.warp;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
@@ -6,7 +6,6 @@ import net.canarymod.api.Server;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
-import net.canarymod.warp.Warp;
 
 /**
  * Command to teleport you to your own or another player home
@@ -46,7 +45,7 @@ public class Home implements NativeCommand {
                             other.teleportTo(other.getHome());
                         }
                         else {
-                            player.notice(Translator.translateAndFormat("no home set other", new Object[]{ other.getName() }));
+                            player.notice(Translator.translateAndFormat("no home set other", new Object[]{other.getName()}));
                         }
                     }
                 }
@@ -58,7 +57,7 @@ public class Home implements NativeCommand {
                     target.teleportTo(target.getHome());
                 }
                 else {
-                    player.notice(Translator.translateAndFormat("no home set other", new Object[]{ target.getName() }));
+                    player.notice(Translator.translateAndFormat("no home set other", new Object[]{target.getName()}));
                 }
             }
         }

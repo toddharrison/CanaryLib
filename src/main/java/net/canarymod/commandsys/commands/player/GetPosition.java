@@ -1,4 +1,4 @@
-package net.canarymod.commandsys.commands;
+package net.canarymod.commandsys.commands.player;
 
 import net.canarymod.Translator;
 import net.canarymod.api.entity.living.humanoid.Player;

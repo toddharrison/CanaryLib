@@ -1,4 +1,4 @@
-package net.canarymod.commandsys.commands;
+package net.canarymod.commandsys.commands.system;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;

@@ -1,4 +1,4 @@
-package net.canarymod.commandsys.commands;
+package net.canarymod.commandsys.commands.player;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
@@ -37,32 +37,32 @@ public class Kill implements NativeCommand {
             player.kill();
         }
         else if (player.hasPermission("canary.command.player.kill.other")) {
-            doAction((MessageReceiver)player, args);
+            doAction((MessageReceiver) player, args);
         }
     }
-    
+
     private void doAction(MessageReceiver caller, String[] args) {
         Player[] targets = Canary.playerSelector().matchPlayers(caller, args[0]);
         if (targets != null) {
             for (Player target : targets) {
                 if (target != null) {
                     target.kill();
-                    caller.notice(Translator.translateAndFormat("killed other", new Object[]{ target.getName() }));
+                    caller.notice(Translator.translateAndFormat("killed other", new Object[]{target.getName()}));
                 }
                 else {
-                    caller.notice(Translator.translate("not killed") + " " + Translator.translateAndFormat("unknown player", new Object[]{ args[0] }));
+                    caller.notice(Translator.translate("not killed") + " " + Translator.translateAndFormat("unknown player", new Object[]{args[0]}));
                 }
             }
             return;
         }
-        
+
         Player target = Canary.getServer().matchPlayer(args[0]);
         if (target != null) {
             target.kill();
-            caller.notice(Translator.translateAndFormat("killed other", new Object[]{ target.getName() }));
+            caller.notice(Translator.translateAndFormat("killed other", new Object[]{target.getName()}));
         }
         else {
-            caller.notice(Translator.translate("not killed") + " " + Translator.translateAndFormat("unknown player", new Object[]{ args[0] }));
+            caller.notice(Translator.translate("not killed") + " " + Translator.translateAndFormat("unknown player", new Object[]{args[0]}));
         }
     }
 

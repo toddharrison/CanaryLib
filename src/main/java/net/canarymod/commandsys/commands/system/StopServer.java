@@ -1,4 +1,4 @@
-package net.canarymod.commandsys.commands;
+package net.canarymod.commandsys.commands.system;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
@@ -7,7 +7,7 @@ import net.canarymod.commandsys.NativeCommand;
 import net.visualillusionsent.utils.StringUtils;
 
 /**
- * Command to stop Canary  
+ * Command to stop Canary
  *
  * @author Chris (damagefilter)
  */

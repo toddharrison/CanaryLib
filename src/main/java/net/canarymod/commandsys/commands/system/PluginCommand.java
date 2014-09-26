@@ -1,4 +1,4 @@
-package net.canarymod.commandsys.commands;
+package net.canarymod.commandsys.commands.system;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
@@ -93,6 +93,7 @@ public class PluginCommand implements NativeCommand {
      * Check if we have a permanent disable/enable requests
      *
      * @param params
+     *
      * @return
      */
     private boolean getPermanentParameter(String[] params) {

@@ -1,4 +1,4 @@
-package net.canarymod.commandsys.commands;
+package net.canarymod.commandsys.commands.system;
 
 // TODO: This isn't actually working, we could try another attempt or remove the command
 public class RestartServer {

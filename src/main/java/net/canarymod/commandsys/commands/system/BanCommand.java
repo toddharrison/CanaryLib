@@ -1,4 +1,4 @@
-package net.canarymod.commandsys.commands;
+package net.canarymod.commandsys.commands.system;
 
 import net.canarymod.Canary;
 import net.canarymod.ToolBox;
@@ -18,7 +18,7 @@ import net.visualillusionsent.utils.StringUtils;
  * @author Jason (darkdiplomat)
  */
 public class BanCommand implements NativeCommand {
-    
+
     public void execute(MessageReceiver caller, String[] parameters) {
         if (parameters.length < 1) {
             Canary.help().getHelp(caller, "ban");
@@ -26,7 +26,7 @@ public class BanCommand implements NativeCommand {
         }
         String reason = "Permanently Banned";
         long timestamp = -1L;
-        
+
         reason = StringUtils.joinString(parameters, " ", 1);
         if (parameters.length >= 3) {
             try {
@@ -37,10 +37,10 @@ public class BanCommand implements NativeCommand {
                 timestamp = -1L;
             }
         }
-        
+
         Player[] playerSelectorArray = Canary.playerSelector().matchPlayers(caller, parameters[0]);
         if (playerSelectorArray != null) {
-            for(Player p : playerSelectorArray) {
+            for (Player p : playerSelectorArray) {
                 Ban ban = new Ban();
                 ban.setReason(reason);
                 ban.setTimestamp(timestamp);

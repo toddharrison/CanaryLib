@@ -1,4 +1,4 @@
-package net.canarymod.commandsys.commands;
+package net.canarymod.commandsys.commands.system;
 
 import net.canarymod.Canary;
 import net.canarymod.api.entity.living.humanoid.Player;
@@ -10,7 +10,7 @@ import net.canarymod.commandsys.NativeCommand;
 import java.util.List;
 
 /**
- * Command to list the players currently connected to the server  
+ * Command to list the players currently connected to the server
  *
  * @author Chris (damagefilter)
  */

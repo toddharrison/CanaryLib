@@ -1,8 +1,5 @@
-package net.canarymod.commandsys.commands;
+package net.canarymod.commandsys.commands.system;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import net.canarymod.Canary;
 import net.canarymod.Translator;
 import net.canarymod.api.entity.living.humanoid.Player;
@@ -12,6 +9,10 @@ import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.kit.Kit;
 import net.canarymod.user.Group;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Kit Command
@@ -24,7 +25,8 @@ public class KitCommand implements NativeCommand {
     public void execute(MessageReceiver caller, String[] parameters) {
         if (caller instanceof Player) {
             player((Player) caller, parameters);
-        } else {
+        }
+        else {
             server(caller, parameters);
         }
     }
@@ -52,21 +54,24 @@ public class KitCommand implements NativeCommand {
                             recipient
                                     .message(Colors.YELLOW
                                             + Translator.translateAndFormat(
-                                                    "kit given other",
-                                                    caller.getName()));
+                                            "kit given other",
+                                            caller.getName()));
                             return;
-                        } else {
+                        }
+                        else {
                             caller.notice(Translator.translateAndFormat(
                                     "kit unavailable other",
                                     recipient.getName()));
                             return;
                         }
-                    } else {
+                    }
+                    else {
                         caller.notice(Translator.translateAndFormat(
                                 "kit invalid", args[2]));
                         return;
                     }
-                } else {
+                }
+                else {
                     caller.notice(Translator.translateAndFormat(
                             "unknown player", args[3]));
                     return;
@@ -96,20 +101,17 @@ public class KitCommand implements NativeCommand {
         //
         // LIST KITS
         //
-        if (args[1].equalsIgnoreCase("list"))
-        {
+        if (args[1].equalsIgnoreCase("list")) {
             player.message(Colors.YELLOW + "Available Kits: ");
             List<Kit> kits = Canary.kits().getAllKits();
             StringBuilder kitList = new StringBuilder();
 
             for (Kit k : kits) {
                 List<String> groups = new ArrayList<String>();
-                for (String s : k.getGroups())
-                {
+                for (String s : k.getGroups()) {
                     groups.add(s);
                 }
-                if (groups.contains(player.getGroup().getName()) || player.isAdmin())
-                {
+                if (groups.contains(player.getGroup().getName()) || player.isAdmin()) {
                     kitList.append(k.getName()).append(",");
                 }
             }
@@ -130,12 +132,14 @@ public class KitCommand implements NativeCommand {
                         player.message(Colors.YELLOW
                                 + Translator.translate("kit given"));
                         return;
-                    } else {
+                    }
+                    else {
                         player.notice(Translator.translate("kit unavailable"));
                         return;
                     }
 
-                } else {
+                }
+                else {
                     player.notice(Translator.translateAndFormat("kit invalid",
                             args[2]));
                     return;
@@ -157,21 +161,24 @@ public class KitCommand implements NativeCommand {
                             recipient
                                     .message(Colors.YELLOW
                                             + Translator.translateAndFormat(
-                                                    "kit given other",
-                                                    player.getName()));
+                                            "kit given other",
+                                            player.getName()));
                             return;
-                        } else {
+                        }
+                        else {
                             player.notice(Translator.translateAndFormat(
                                     "kit unavailable other",
                                     recipient.getName()));
                             return;
                         }
-                    } else {
+                    }
+                    else {
                         player.notice(Translator.translateAndFormat(
                                 "kit invalid", args[2]));
                         return;
                     }
-                } else {
+                }
+                else {
                     player.notice(Translator.translateAndFormat(
                             "unknown player", args[3]));
                     return;
@@ -207,7 +214,7 @@ public class KitCommand implements NativeCommand {
                 // ADD GROUPS KIT
                 if (args[4].equalsIgnoreCase("G")
                         && player
-                                .hasPermission("canary.command.player.kit.group")) {
+                        .hasPermission("canary.command.player.kit.group")) {
                     String[] groups = new String[args.length - 5];
 
                     for (int i = 0; i < groups.length; i++) {
@@ -215,7 +222,8 @@ public class KitCommand implements NativeCommand {
 
                         if (g != null) {
                             groups[i] = g.getName();
-                        } else {
+                        }
+                        else {
                             groups[i] = Canary.usersAndGroups()
                                     .getDefaultGroup().getName();
                         }
@@ -230,12 +238,12 @@ public class KitCommand implements NativeCommand {
                     Canary.kits().addKit(newKit);
                     player.message(Colors.YELLOW
                             + Translator.translateAndFormat(
-                                    "kit created group", args[2]));
+                            "kit created group", args[2]));
                     return;
                 } // ADD PLAYER PRIVATE KIT
                 else if (args[4].equalsIgnoreCase("G")
                         && player
-                                .hasPermission("canary.command.player.kit.private")) {
+                        .hasPermission("canary.command.player.kit.private")) {
                     String[] players = new String[args.length - 5];
 
                     System.arraycopy(args, 5, players, 0, players.length);
@@ -249,9 +257,10 @@ public class KitCommand implements NativeCommand {
                     Canary.kits().addKit(newKit);
                     player.message(Colors.YELLOW
                             + Translator.translateAndFormat(
-                                    "kit created private", args[2]));
+                            "kit created private", args[2]));
                     return;
-                } else {
+                }
+                else {
                     player.notice(Translator
                             .translateAndFormat("usage",
                                     "/kit create <name> <use delay> [G|P Groups|Players]")

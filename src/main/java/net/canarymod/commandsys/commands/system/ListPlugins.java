@@ -1,4 +1,4 @@
-package net.canarymod.commandsys.commands;
+package net.canarymod.commandsys.commands.system;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
@@ -21,7 +21,8 @@ public class ListPlugins implements NativeCommand {
     public void execute(MessageReceiver caller, String[] parameters) {
         if (caller instanceof Player) {
             player((Player) caller);
-        } else {
+        }
+        else {
             console(caller);
         }
     }
@@ -32,7 +33,8 @@ public class ListPlugins implements NativeCommand {
         caller.notice("**** PLUGINS ****");
         if (list != null) {
             caller.notice(list);
-        } else {
+        }
+        else {
             caller.notice(Translator.translate("no plugins"));
         }
     }
@@ -43,7 +45,8 @@ public class ListPlugins implements NativeCommand {
         player.message(Colors.YELLOW + "Plugins: ");
         if (list != null) {
             player.message(list);
-        } else {
+        }
+        else {
             player.notice(Translator.translate("no plugins"));
         }
     }
@@ -54,7 +57,8 @@ public class ListPlugins implements NativeCommand {
         for (PluginDescriptor plugin : descriptors) {
             if (plugin.getCurrentState() == PluginState.ENABLED) {
                 sb.append(Colors.LIGHT_GREEN).append(plugin.getName()).append(Colors.WHITE).append(", ");
-            } else {
+            }
+            else {
                 sb.append(Colors.LIGHT_RED).append(plugin.getName()).append(Colors.WHITE).append(", ");
             }
         }
@@ -62,7 +66,8 @@ public class ListPlugins implements NativeCommand {
         String list;
         if (str.length() > 1) {
             list = str.substring(0, str.length() - 1);
-        } else {
+        }
+        else {
             list = null;
         }
         return list;

@@ -1,14 +1,14 @@
-package net.canarymod.commandsys.commands;
-
-import java.lang.management.ManagementFactory;
-import java.text.MessageFormat;
-import java.util.TimeZone;
+package net.canarymod.commandsys.commands.system;
 
 import net.canarymod.ToolBox;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.chat.TextFormat;
 import net.canarymod.commandsys.NativeCommand;
 import net.visualillusionsent.utils.DateUtils;
+
+import java.lang.management.ManagementFactory;
+import java.text.MessageFormat;
+import java.util.TimeZone;
 
 /**
  * Server Uptime Command

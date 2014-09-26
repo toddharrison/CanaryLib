@@ -6,13 +6,7 @@ import net.canarymod.chat.MessageReceiver;
 import net.visualillusionsent.utils.LocaleHelper;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static net.canarymod.Canary.log;
 
@@ -312,7 +306,7 @@ public class CommandManager {
             }
 
             Command meta = method.getAnnotation(Command.class);
-            CanaryCommand command = new CanaryCommand(meta, owner, translator, TabCompleteHelper.findDispatcherFor(listener, meta.aliases())) {
+            CanaryCommand command = new CanaryCommand(meta, owner, translator, TabCompleteHelper.findDispatcherFor(listener, meta.aliases(), meta.parent().isEmpty() ? null : meta.parent())) {
                 @Override
                 protected void execute(MessageReceiver caller, String[] parameters) {
                     try {
@@ -487,9 +481,22 @@ public class CommandManager {
      * @return list string of possible completion
      */
     public List<String> tabComplete(MessageReceiver msgrec, String command, String[] args) {
+        String[] argsClone = args.clone(); // don't mess up the original stuff
         CanaryCommand cmd = commands.get(command);
-        if (cmd != null) {
-            return cmd.tabComplete(msgrec, args);
+        // Recurse the sub commands
+        while (cmd != null && !argsClone[0].isEmpty()) {
+            if (cmd.hasSubCommand(argsClone[0])) {
+                CanaryCommand subTest = cmd.getSubCommand(argsClone[0]);
+                if (subTest.hasTabComplete()) { // Check for a tab complete method
+                    cmd = subTest; // reset command
+                    argsClone = Arrays.copyOfRange(argsClone, 1, args.length);
+                    continue;
+                }
+            }
+            break;
+        }
+        if (cmd != null && cmd.hasTabComplete()) {
+            return cmd.tabComplete(msgrec, argsClone);
         }
         return null;
     }

@@ -1,4 +1,4 @@
-package net.canarymod.commandsys.commands;
+package net.canarymod.commandsys.commands.warp;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
@@ -9,7 +9,7 @@ import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 
 /**
- * Command to teleport yourself or someoneelse to spawn  
+ * Command to teleport yourself or someoneelse to spawn
  *
  * @author Chris (damagefilter)
  */

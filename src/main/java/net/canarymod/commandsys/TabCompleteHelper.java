@@ -453,7 +453,8 @@ public final class TabCompleteHelper {
      * @return new dispatcher on success or null on failure
      */
     @SuppressWarnings("unchecked")
-    public static TabCompleteDispatch findDispatcherFor(final CommandListener listener, String[] aliases) {
+    public static TabCompleteDispatch findDispatcherFor(final CommandListener listener, String[] aliases, String parent) {
+        String full = parent != null ? parent + " %s" : "%s";
         Method[] methods = listener.getClass().getDeclaredMethods();
         for (final Method method : methods) {
             if(!method.isAnnotationPresent(TabComplete.class)) {
@@ -465,7 +466,7 @@ public final class TabCompleteHelper {
             }
             TabComplete tabInfo = method.getAnnotation(TabComplete.class);
             for (String alias : aliases) {
-                if (ToolBox.arrayContains(tabInfo.commands(), alias)) {
+                if (ToolBox.arrayContains(tabInfo.commands(), String.format(full, alias))) {
                     return new TabCompleteDispatch() {
                         @Override
                         public List<String> complete(MessageReceiver msgrec, String[] args) throws TabCompleteException {

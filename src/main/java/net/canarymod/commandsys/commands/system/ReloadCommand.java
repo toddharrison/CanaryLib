@@ -1,4 +1,4 @@
-package net.canarymod.commandsys.commands;
+package net.canarymod.commandsys.commands.system;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
@@ -7,9 +7,9 @@ import net.canarymod.commandsys.NativeCommand;
 
 /**
  * Command to reload the server (config, perms player data, etc.)
- * @see Canary#reload()
  *
  * @author Chris (damagefilter)
+ * @see Canary#reload()
  */
 public class ReloadCommand implements NativeCommand {
 

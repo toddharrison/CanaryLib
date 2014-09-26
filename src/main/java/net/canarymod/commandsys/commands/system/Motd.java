@@ -1,11 +1,10 @@
-package net.canarymod.commandsys.commands;
+package net.canarymod.commandsys.commands.system;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.CommandException;
 import net.canarymod.commandsys.NativeCommand;
-import net.canarymod.config.Configuration;
 
 /**
  * Command to view the Message Of The Day

@@ -33,9 +33,13 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
      * Creates a new CanaryMod command complete with localehelper for translating meta info,
      * command owner and the meta data from the Command annotation
      *
-     * @param meta       the {@link Command}
-     * @param owner      the {@link CommandOwner}
-     * @param translator the {@link LocaleHelper} translator instance
+     * @param meta
+     *         the {@link Command}
+     * @param owner
+     *         the {@link CommandOwner}
+     * @param translator
+     *         the {@link LocaleHelper} translator instance
+     *
      * @see LocaleHelper
      */
     public CanaryCommand(Command meta, CommandOwner owner, LocaleHelper translator) {
@@ -46,11 +50,16 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
      * Creates a new CanaryMod command complete with localehelper for translating meta info,
      * command owner and the meta data from the Command annotation
      *
-     * @param meta        the {@link Command}
-     * @param owner       the {@link CommandOwner}
-     * @param translator  the {@link LocaleHelper} translator instance
-     * @param tabComplete the {@link net.canarymod.commandsys.TabCompleteDispatch} if one is specified and usable (can be null)<br/>
-     *                    If no TabCompleteDispatch is present, an implementation can override {@link #tabComplete(net.canarymod.chat.MessageReceiver, String[])} instead
+     * @param meta
+     *         the {@link Command}
+     * @param owner
+     *         the {@link CommandOwner}
+     * @param translator
+     *         the {@link LocaleHelper} translator instance
+     * @param tabComplete
+     *         the {@link net.canarymod.commandsys.TabCompleteDispatch} if one is specified and usable (can be null)<br/>
+     *         If no TabCompleteDispatch is present, an implementation can override {@link #tabComplete(net.canarymod.chat.MessageReceiver, String[])} instead
+     *
      * @see LocaleHelper
      */
     public CanaryCommand(Command meta, CommandOwner owner, LocaleHelper translator, TabCompleteDispatch tabComplete) {
@@ -63,8 +72,11 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
     /**
      * Parses this command using the specified parameters.
      *
-     * @param caller     This command's caller.
-     * @param parameters The parameters for the command to use.
+     * @param caller
+     *         This command's caller.
+     * @param parameters
+     *         The parameters for the command to use.
+     *
      * @return <tt>true</tt> if the command was executed, <tt>false</tt> otherwise.
      */
     boolean parseCommand(MessageReceiver caller, String[] parameters) {
@@ -89,7 +101,9 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
     /**
      * Checks whether the given MessageReceiver has any of the permissions required to use this command.
      *
-     * @param msgrec the command executor
+     * @param msgrec
+     *         the command executor
+     *
      * @return {@code true} if has permission; {@code false} if not
      */
     public boolean canUse(MessageReceiver msgrec) {
@@ -122,7 +136,9 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
     /**
      * Creates a recursively created list of all subcommands and their subcommands etc etc
      *
-     * @param list the list of Commands
+     * @param list
+     *         the list of Commands
+     *
      * @return list of Sub Command
      */
     public List<CanaryCommand> getSubCommands(List<CanaryCommand> list) {
@@ -162,7 +178,7 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
     public boolean addSubCommand(String[] path, int index, CanaryCommand command) {
         if (index >= path.length) {
             // this is the final path node
-            if (!ToolBox.arrayContains(this.meta.aliases(), path[index-1])) {
+            if (!ToolBox.arrayContains(this.meta.aliases(), path[index - 1])) {
                 return false;
             }
             command.setParent(this);
@@ -176,7 +192,8 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
      * Set the parent of this Command.
      * This will sort out relations with the old parent if required.
      *
-     * @param parent the parent command
+     * @param parent
+     *         the parent command
      */
     protected void setParent(CanaryCommand parent) {
         if (this.parent != null) {
@@ -199,7 +216,8 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
     /**
      * Remove command from the list of subsequent commands
      *
-     * @param cmd the sub command to remove
+     * @param cmd
+     *         the sub command to remove
      */
     protected void removeSubCommand(CanaryCommand cmd) {
         subcommands.remove(cmd);
@@ -208,7 +226,8 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
     /**
      * Add command for subsequent command execution
      *
-     * @param cmd the sub command to add
+     * @param cmd
+     *         the sub command to add
      */
     protected void addSubCommand(CanaryCommand cmd) {
         subcommands.add(cmd);
@@ -217,7 +236,8 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
     /**
      * Called when the permission to this command is denied.
      *
-     * @param caller This command's caller.
+     * @param caller
+     *         This command's caller.
      */
     protected void onPermissionDenied(MessageReceiver caller) {
         if (Configuration.getServerConfig().getShowUnknownCommand()) {
@@ -229,13 +249,16 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
      * Should be called when a bad syntax is detected.
      * Called automatically when the number of parameters is out of range.
      *
-     * @param caller     This command's caller.
-     * @param parameters The parameters to the command (including the command itself).
+     * @param caller
+     *         This command's caller.
+     * @param parameters
+     *         The parameters to the command (including the command itself).
      */
     protected void onBadSyntax(MessageReceiver caller, String[] parameters) {
         if (!meta.helpLookup().isEmpty()) {
             Canary.help().getHelp(caller, meta.helpLookup());
-        } else {
+        }
+        else {
             Canary.help().getHelp(caller, meta.aliases()[0]);
         }
     }
@@ -243,15 +266,19 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
     /**
      * Called when a AutoComplete is asked for
      *
-     * @param msgrec the {@link net.canarymod.chat.MessageReceiver} using tabComplete
-     * @param args   the current arguments of the command
+     * @param msgrec
+     *         the {@link net.canarymod.chat.MessageReceiver} using tabComplete
+     * @param args
+     *         the current arguments of the command
+     *
      * @return list of possible completions
      */
     protected List<String> tabComplete(MessageReceiver msgrec, String[] args) {
         if (tabComplete != null) {
             try {
                 return tabComplete.complete(msgrec, args);
-            } catch (TabCompleteException acex) {
+            }
+            catch (TabCompleteException acex) {
                 log.warn("Fail:", acex);
             }
         }
@@ -259,11 +286,22 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
     }
 
     /**
+     * Checks if the command has a tab complete method associated with it
+     *
+     * @return {@code true} if has tab complete; {@code false} if not
+     */
+    protected boolean hasTabComplete() {
+        return tabComplete != null;
+    }
+
+    /**
      * Executes a command.
      * NOTE: should not be called directly. Use parseCommand() instead!
      *
-     * @param caller     This command's caller.
-     * @param parameters The parameters to this command (including the command itself).
+     * @param caller
+     *         This command's caller.
+     * @param parameters
+     *         The parameters to this command (including the command itself).
      */
     protected abstract void execute(MessageReceiver caller, String[] parameters);
 

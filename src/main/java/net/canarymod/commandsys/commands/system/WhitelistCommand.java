@@ -1,4 +1,4 @@
-package net.canarymod.commandsys.commands;
+package net.canarymod.commandsys.commands.system;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
@@ -7,7 +7,7 @@ import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 
 /**
- * Command to add or remove a player from the whitelist  
+ * Command to add or remove a player from the whitelist
  *
  * @author Chris (damagefilter)
  */
