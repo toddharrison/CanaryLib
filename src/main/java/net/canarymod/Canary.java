@@ -27,6 +27,8 @@ import net.canarymod.util.JsonNBTUtility;
 import net.canarymod.warp.WarpProvider;
 import net.visualillusionsent.utils.JarUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -429,6 +431,29 @@ public abstract class Canary implements TaskOwner {
             jarPath = JarUtils.getJarPath(Canary.class);
         }
         return jarPath;
+    }
+
+    /**
+     * Attempts to get a Canonical File of the working directory with fall back to absolute
+     *
+     * @return the working directory file
+     */
+    public static File getWorkingDirectory() {
+        try {
+            return new File(".").getCanonicalFile();
+        }
+        catch (IOException e) {
+            return new File(".").getAbsoluteFile(); // For those moments when Java goes full retard
+        }
+    }
+
+    /**
+     * Gets the Working Directory path as a string
+     *
+     * @return working directory path
+     */
+    public static String getWorkingPath() {
+        return getWorkingDirectory().getAbsolutePath();
     }
 
     /**
