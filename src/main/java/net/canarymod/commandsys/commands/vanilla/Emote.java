@@ -12,6 +12,6 @@ public final class Emote extends VanillaCommandWrapper {
 
     @Override
     public void execute(MessageReceiver caller, String[] parameters) {
-        passOn(caller, "emote", parameters);
+        passOn(caller, "me", parameters);
     }
 }
