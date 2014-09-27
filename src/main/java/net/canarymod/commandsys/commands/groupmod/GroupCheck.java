@@ -15,13 +15,13 @@ import net.canarymod.user.Group;
 public class GroupCheck implements NativeCommand {
     // groupmod check <group>
     public void execute(MessageReceiver caller, String[] args) {
-        if (args[args.length - 1].equals("--help")) {
+        if (args[0].equals("--help")) {
             Canary.help().getHelp(caller, "groupmod check");
             return;
         }
-        Group g = Canary.usersAndGroups().getGroup(args[1]);
+        Group g = Canary.usersAndGroups().getGroup(args[0]);
         if (g == null) {
-            caller.notice(Translator.translateAndFormat("unknown group", args[1]));
+            caller.notice(Translator.translateAndFormat("unknown group", args[0]));
             return;
         }
         caller.message("Name: " + g.getName());

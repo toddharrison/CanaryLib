@@ -148,254 +148,330 @@ public class CommandList implements CommandListener {
         natives = Collections.unmodifiableMap(temp);
     }
 
-    // XXX groupmod start
-    @Command(aliases = {"groupmod", "group"},
+    /* groupmod start */
+    @Command(
+            aliases = {"groupmod", "group"},
             description = "groupmod info",
-            permissions = {"canary.command.super.groupmod"},
-            toolTip = "/groupmod <add|delete|rename|permission|list> [parameters...] [--help]",
-            min = 1
+            permissions = {"canary.command.groupmod"},
+            toolTip = "/groupmod <add|delete|rename|permission|list> [parameters...] [--help]"
     )
     public void groupBase(MessageReceiver caller, String[] parameters) {
         natives.get("groupmod_base").execute(caller, parameters);
     }
 
-    @Command(aliases = {"add", "create"},
+    @TabComplete(commands = {"groupmod"})
+    public List<String> groupBaseTabComplete(MessageReceiver caller, String[] parameters) {
+        return parameters.length == 1 ? matchTo(parameters, new String[]{"add", "delete", "rename", "permission", "list"}) : null;
+    }
+
+    @Command(
+            aliases = {"add", "create"},
             parent = "groupmod",
             helpLookup = "groupmod add",
             description = "group add info",
-            permissions = {"canary.command.super.groupmod.add"},
+            permissions = {"canary.command.groupmod.add"},
             toolTip = "/groupmod add <name> [[parent] [world[:dimension]]]",
-            min = 2,
-            max = 4
+            max = 3,
+            version = 2
     )
     public void groupAdd(MessageReceiver caller, String[] parameters) {
         natives.get("groupmod_add").execute(caller, parameters);
     }
 
-    @Command(aliases = {"permission", "perms"},
+    @TabComplete(commands = {"groupmod add", "groupmod create"})
+    public List<String> groupmodAddTabComplete(MessageReceiver caller, String[] parameters) {
+        switch (parameters.length) {
+            // case 1 would be user submitted and unknown
+            case 2:
+                return matchToGroup(parameters);
+            case 3:
+                return matchToKnownWorld(parameters);
+            default:
+                return null;
+        }
+    }
+
+    @Command(
+            aliases = {"permission", "perms"},
             parent = "groupmod",
             helpLookup = "groupmod permission",
             description = "group permission info",
-            permissions = {"canary.command.super.groupmod.permissions"},
-            toolTip = "/groupmod permission <add|remove|check|list> [arguments...] [--help]",
-            min = 2)
+            permissions = {"canary.command.groupmod.permissions"},
+            toolTip = "/groupmod permission <add|remove|check|list> [arguments...] [--help]"
+    )
     public void groupPerms(MessageReceiver caller, String[] parameters) {
         Canary.help().getHelp(caller, "groupmod permission");
     }
 
-    @Command(aliases = {"add"},
+    @TabComplete(commands = {"groupmod permission", "groupmod perms"})
+    public List<String> groupmodPermissionTabComplete(MessageReceiver caller, String[] parameters) {
+        return parameters.length == 1 ? matchTo(parameters, new String[]{"add", "remove", "check", "list"}) : null;
+    }
+
+    @Command(
+            aliases = {"add"},
             parent = "groupmod.permission",
             helpLookup = "groupmod permission add",
             description = "groupmod permission add info",
-            permissions = {"canary.command.super.groupmod.permissions"},
+            permissions = {"canary.command.groupmod.permissions.add"},
             toolTip = "/groupmod permission add <group> <path>:[value]",
-            min = 3)
+            min = 2
+    )
     public void groupPermissionsAdd(MessageReceiver caller, String[] parameters) {
         natives.get("groupmod_perms_add").execute(caller, parameters);
     }
 
-    @Command(aliases = {"remove"},
+    @Command(
+            aliases = {"remove"},
             parent = "groupmod.permission",
             helpLookup = "groupmod permission remove",
             description = "groupmod permission remove info",
-            permissions = {"canary.command.super.groupmod.permissions"},
+            permissions = {"canary.command.groupmod.permissions.remove"},
             toolTip = "/groupmod permission remove <group> <path>:[value]",
-            min = 3)
+            min = 2,
+            version = 2
+    )
     public void groupPermissionsRemove(MessageReceiver caller, String[] parameters) {
         natives.get("groupmod_perms_remove").execute(caller, parameters);
     }
 
-    @Command(aliases = {"check"},
+    @Command(
+            aliases = {"check"},
             parent = "groupmod.permission",
             helpLookup = "groupmod permission check",
             description = "groupmod permission check info",
-            permissions = {"canary.command.super.groupmod.permissions"},
+            permissions = {"canary.command.groupmod.permissions.check"},
             toolTip = "/groupmod permission check <group> <path>:[value]",
-            min = 3)
+            min = 2,
+            version = 2
+    )
     public void groupPermissionsCheck(MessageReceiver caller, String[] parameters) {
         natives.get("groupmod_perms_check").execute(caller, parameters);
     }
 
-    @Command(aliases = {"list"},
+    @TabComplete(commands = {"groupmod permission add", "groupmod permission remove", "groupmod permission check"})
+    public List<String> groupmodPermissionAddRemoveCheckTabComplete(MessageReceiver caller, String[] parameters) {
+        return parameters.length == 1 ? matchToGroup(parameters)
+                : parameters.length == 2 && parameters[2].contains(":") ? matchTo(parameters, new String[]{parameters[2].split(":")[0].concat(":true"), parameters[2].split(":")[0].concat(":false")})
+                : null;
+    }
+
+    @Command(
+            aliases = {"list"},
             parent = "groupmod.permission",
             helpLookup = "groupmod permission list",
             description = "groupmod permission list info",
-            permissions = {"canary.command.super.groupmod.permissions"},
+            permissions = {"canary.command.groupmod.permissions"},
             toolTip = "/groupmod permission list <group>",
-            min = 2)
+            version = 2
+    )
     public void groupPermissionsList(MessageReceiver caller, String[] parameters) {
         natives.get("groupmod_perms_list").execute(caller, parameters);
     }
 
-    @Command(aliases = {"flush"},
+    @Command(
+            aliases = {"flush"},
             parent = "groupmod.permission",
             helpLookup = "groupmod permission flush",
             description = "group permissionflush info",
-            permissions = {"canary.command.super.groupmod.flush"},
+            permissions = {"canary.command.groupmod.flush"},
             toolTip = "/groupmod permission flush <group>",
-            min = 2)
+            version = 2
+    )
     public void groupFlush(MessageReceiver caller, String[] parameters) {
         natives.get("groupmod_perms_flush").execute(caller, parameters);
     }
 
-    @Command(aliases = {"list", "show"},
+    @Command(
+            aliases = {"list", "show"},
             parent = "groupmod",
             helpLookup = "groupmod list",
             description = "group list info",
-            permissions = {"canary.command.super.groupmod.list"},
-            toolTip = "/groupmod list")
+            permissions = {"canary.command.groupmod.list"},
+            toolTip = "/groupmod list"
+    )
     public void groupList(MessageReceiver caller, String[] parameters) {
         natives.get("groupmod_list").execute(caller, parameters);
     }
 
-    @Command(aliases = {"delete", "remove"},
+    @Command(
+            aliases = {"remove", "delete"},
             parent = "groupmod",
             helpLookup = "groupmod remove",
             description = "group remove info",
-            permissions = {"canary.command.super.groupmod.delete"},
+            permissions = {"canary.command.groupmod.remove"},
             toolTip = "/groupmod remove <name>",
-            min = 2)
+            version = 2
+    )
     public void groupRemove(MessageReceiver caller, String[] parameters) {
         natives.get("groupmod_remove").execute(caller, parameters);
     }
 
-    @Command(aliases = {"check", "show"},
+    @Command(
+            aliases = {"check", "show"},
             parent = "groupmod",
             helpLookup = "groupmod check",
             description = "group check info",
-            permissions = {"canary.command.super.groupmod.check"},
+            permissions = {"canary.command.groupmod.check"},
             toolTip = "/groupmod check <name>",
-            min = 2)
+            version = 2
+    )
     public void groupCheck(MessageReceiver caller, String[] parameters) {
         natives.get("groupmod_check").execute(caller, parameters);
     }
 
-    @Command(aliases = {"rename"},
+    @Command(
+            aliases = {"rename"},
             parent = "groupmod",
             helpLookup = "groupmod rename",
             description = "group rename info",
-            permissions = {"canary.command.super.groupmod.rename"},
+            permissions = {"canary.command.groupmod.rename"},
             toolTip = "/groupmod rename <group> <newname>",
-            min = 3)
+            min = 2,
+            version = 2
+    )
     public void groupRename(MessageReceiver caller, String[] parameters) {
         natives.get("groupmod_rename").execute(caller, parameters);
     }
 
-    @Command(aliases = {"prefix"},
+    @Command(
+            aliases = {"prefix"},
             parent = "groupmod",
             helpLookup = "groupmod prefix",
             description = "group prefix info",
-            permissions = {"canary.command.super.groupmod.prefix"},
+            permissions = {"canary.command.groupmod.prefix"},
             toolTip = "/groupmod prefix <group> <prefix>",
-            min = 2)
+            min = 2,
+            version = 2
+    )
     public void groupPrefix(MessageReceiver caller, String[] parameters) {
         natives.get("groupmod_prefix").execute(caller, parameters);
     }
 
-    @Command(aliases = {"parent"},
+    @Command(
+            aliases = {"parent"},
             parent = "groupmod",
             helpLookup = "groupmod parent",
             description = "group parent info",
-            permissions = {"canary.command.super.groupmod.parent"},
+            permissions = {"canary.command.groupmod.parent"},
             toolTip = "/groupmod parent <group> <parent group>",
-            min = 3)
+            min = 2,
+            version = 2
+    )
     public void groupParent(MessageReceiver caller, String[] parameters) {
         natives.get("groupmod_parent").execute(caller, parameters);
     }
-    // groupmod end
+    // TODO: TABCOMPLETE ^
 
-
-    @Command(
-            aliases = {"ban"},
-            description = "ban info",
-            permissions = {"canary.command.ban"},
-            toolTip = "/ban <player> [reason] [#number hour|day|week|month]",
-            min = 1,
-            version = 2
-    )
-    public void banCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("ban").execute(caller, parameters);
+    @TabComplete(commands = {"groupmod permissions list", "groupmod permission flush", "groupmod remove", "groupmod check", "groupmod rename", "groupmod prefix"})
+    public List<String> matchToGroupTabComplete(MessageReceiver caller, String[] parameters) {
+        return parameters.length == 1 ? matchToGroup(parameters) : null;
     }
+    /* groupmod end */
 
-    @Command(
-            aliases = {"unban"},
-            description = "unban info",
-            permissions = {"canary.command.unban"},
-            toolTip = "/unban <player>",
-            min = 1,
-            version = 2
-    )
-    public void unbanCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("unban").execute(caller, parameters);
-    }
-
+    /* player */
     @Command(
             aliases = {"compass"},
             description = "compass info",
             permissions = {"canary.command.player.compass"},
-            toolTip = "/compass",
-            min = 1
+            toolTip = "/compass"
     )
     public void compassCommand(MessageReceiver caller, String[] parameters) {
         natives.get("compass").execute(caller, parameters);
     }
 
-    @Command(aliases = {"createvanilla", "makevanilla"},
-            description = "makevanilla info",
-            permissions = {"canary.super.createvanilla", "canary.command.super.createvanilla"},
-            toolTip = "/createvanilla <defaultworld>",
-            min = 2)
-    public void createVanillaCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("createvanilla").execute(caller, parameters);
-    }
-
-    @Command(aliases = {"pos", "getpos"},
+    @Command(
+            aliases = {"pos", "getpos"},
             description = "getpos info",
             permissions = {"canary.command.player.getpos"},
-            toolTip = "/getpos")
+            toolTip = "/getpos"
+    )
     public void getPosCommand(MessageReceiver caller, String[] parameters) {
         natives.get("pos").execute(caller, parameters);
     }
 
+    @Command(
+            aliases = {"god", "godmode"},
+            description = "enable god mode",
+            permissions = {"canary.command.god", "canary.command.god.other"},
+            toolTip = "/god [playername]",
+            min = 0,
+            max = 1,
+            version = 2
+    )
+    public void godCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("god").execute(caller, parameters);
+    }
 
-    // XXX PLAYER Start
-    @Command(aliases = {"playermod", "player"},
+    @Command(
+            aliases = {"kill", "murder"},
+            description = "kill info",
+            permissions = {"canary.command.player.kill"},
+            toolTip = "/kill [playername]",
+            version = 2
+    )
+    public void killCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("kill").execute(caller, parameters);
+    }
+
+    /* playermod start */
+    @Command(
+            aliases = {"playermod", "player"},
             description = "playermod info",
-            permissions = {"canary.command.super.playermod"},
-            toolTip = "/playermod <add|remove|prefix|permission|group> [parameters...] [--help]")
+            permissions = {"canary.command.playermod"},
+            toolTip = "/playermod <add|remove|prefix|permission|group> [parameters...] [--help]"
+    )
     public void playerBase(MessageReceiver caller, String[] parameters) {
         natives.get("playermod").execute(caller, parameters);
     }
 
-    @Command(aliases = {"add", "create"},
+    @TabComplete(commands = {"playermod", "player"})
+    public List<String> playerBaseTabComplete(MessageReceiver caller, String[] parameters) {
+        return parameters.length == 1 ? matchTo(parameters, new String[]{"add", "remove", "prefix", "permission", "group"}) : null;
+    }
+
+    @Command(
+            aliases = {"add", "create"},
             parent = "playermod",
             helpLookup = "playermod add",
             description = "playermod add info",
-            permissions = {"canary.command.super.playermod.add"},
+            permissions = {"canary.command.playermod.add"},
             toolTip = "/playermod add <name> <group>",
-            min = 3)
+            min = 2,
+            version = 2
+    )
     public void playerAdd(MessageReceiver caller, String[] parameters) {
         natives.get("playermod_add").execute(caller, parameters);
     }
 
-    @Command(aliases = {"permission", "perms"},
+    @TabComplete(commands = {"playermod add"})
+    public List<String> playerAddTabComplete(MessageReceiver caller, String[] parameters) {
+        return parameters.length == 1 ? matchToOnlinePlayer(parameters)
+                : parameters.length == 2 ? matchToGroup(parameters)
+                : null;
+    }
+
+    @Command(
+            aliases = {"permission", "perms"},
             parent = "playermod",
             helpLookup = "playermod permission",
             description = "playermod permission info",
-            permissions = {"canary.command.super.playermod.permissions"},
-            toolTip = "/playermod permission <add|remove|check|list> [arguments...] [--help]", // <player> <path>:[value] <add|remove|check|list>
-            min = 1)
+            permissions = {"canary.command.playermod.permissions"},
+            toolTip = "/playermod permission <add|remove|check|list> [arguments...] [--help]"
+    )
     public void playerPermissions(MessageReceiver caller, String[] parameters) {
         Canary.help().getHelp(caller, "playermod permission");
     }
 
-    @Command(aliases = {"add"},
+    @Command(
+            aliases = {"add"},
             parent = "playermod.permission",
             helpLookup = "playermod permission add",
             description = "playermod permission add info",
-            permissions = {"canary.command.super.playermod.permissions"},
+            permissions = {"canary.command.playermod.permissions"},
             toolTip = "/playermod permission add <player> <path>:[value]",
-            min = 3)
+            min = 3
+    )
     public void playerPermissionsAdd(MessageReceiver caller, String[] parameters) {
         natives.get("playermod_perms_add").execute(caller, parameters);
     }
@@ -520,8 +596,41 @@ public class CommandList implements CommandListener {
     public void playerGroupRemove(MessageReceiver caller, String[] parameters) {
         natives.get("playermod_group_remove").execute(caller, parameters);
     }
+    /* playermod end */
 
-    // playermod end
+
+    @Command(
+            aliases = {"ban"},
+            description = "ban info",
+            permissions = {"canary.command.ban"},
+            toolTip = "/ban <player> [reason] [#number hour|day|week|month]",
+            min = 1,
+            version = 2
+    )
+    public void banCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("ban").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = {"unban"},
+            description = "unban info",
+            permissions = {"canary.command.unban"},
+            toolTip = "/unban <player>",
+            min = 1,
+            version = 2
+    )
+    public void unbanCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("unban").execute(caller, parameters);
+    }
+
+    @Command(aliases = {"createvanilla", "makevanilla"},
+            description = "makevanilla info",
+            permissions = {"canary.super.createvanilla", "canary.command.super.createvanilla"},
+            toolTip = "/createvanilla <defaultworld>",
+            min = 2)
+    public void createVanillaCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("createvanilla").execute(caller, parameters);
+    }
 
     @Command(aliases = {"help"},
             description = "help info",
@@ -562,16 +671,6 @@ public class CommandList implements CommandListener {
     )
     public void kickCommand(MessageReceiver caller, String[] parameters) {
         natives.get("kick").execute(caller, parameters);
-    }
-
-    @Command(aliases = {"kill", "murder"},
-            description = "kill info",
-            permissions = {"canary.command.player.kill"},
-            toolTip = "/kill [playername]",
-            version = 2
-    )
-    public void killCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("kill").execute(caller, parameters);
     }
 
     @Command(aliases = {"kit"},
@@ -732,18 +831,6 @@ public class CommandList implements CommandListener {
     )
     public void whitelistCommand(MessageReceiver caller, String[] parameters) {
         natives.get("whitelist").execute(caller, parameters);
-    }
-
-    @Command(aliases = {"god", "godmode"},
-            description = "enable god mode",
-            permissions = {"canary.command.god", "canary.command.god.other"},
-            toolTip = "/god [playername]",
-            min = 0,
-            max = 1,
-            version = 2
-    )
-    public void godCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("god").execute(caller, parameters);
     }
 
     @Command(aliases = {"reservelist", "rlist", "rl"},
@@ -1336,29 +1423,6 @@ public class CommandList implements CommandListener {
             case 2:
                 if (parameters[1].equals("give")) {
                     return matchToKitNames(parameters, caller);
-                }
-            default:
-                return null;
-        }
-    }
-
-    @TabComplete(commands = {"groupmod"})
-    public List<String> groupBaseTabComplete(MessageReceiver caller, String[] parameters) {
-        //TODO: finish implemeting arguments
-        switch (parameters.length) {
-            case 1:
-                return matchTo(parameters, new String[]{"add", "delete", "rename", "permission", "list"});
-            case 2:
-                if (parameters[0].matches("(delete|remove|rename)")) {
-                    return matchToGroup(parameters);
-                }
-            case 3:
-                if (parameters[1].equals("permission")) {
-                    return matchTo(parameters, new String[]{"add", "delete", "check", "list", "flush"});
-                }
-            case 4:
-                if (parameters[1].matches("(add|create)")) {
-                    return matchToGroup(parameters);
                 }
             default:
                 return null;

@@ -447,8 +447,10 @@ public final class TabCompleteHelper {
      * Generates a new TabCompleteDispatch for a command.
      * Returns null if nothing suitable was found within the given CommandListener
      *
-     * @param listener the listener to scan
-     * @param aliases the aliases of ONE SINGLE COMMAND that apply for this dispatcher
+     * @param listener
+     *         the listener to scan
+     * @param aliases
+     *         the aliases of ONE SINGLE COMMAND that apply for this dispatcher
      *
      * @return new dispatcher on success or null on failure
      */
@@ -457,7 +459,7 @@ public final class TabCompleteHelper {
         String full = parent != null ? parent + " %s" : "%s";
         Method[] methods = listener.getClass().getDeclaredMethods();
         for (final Method method : methods) {
-            if(!method.isAnnotationPresent(TabComplete.class)) {
+            if (!method.isAnnotationPresent(TabComplete.class)) {
                 continue;
             }
             if (!List.class.isAssignableFrom(method.getReturnType())) {
@@ -466,7 +468,7 @@ public final class TabCompleteHelper {
             }
             TabComplete tabInfo = method.getAnnotation(TabComplete.class);
             for (String alias : aliases) {
-                if (ToolBox.arrayContains(tabInfo.commands(), String.format(full, alias))) {
+                if (ToolBox.arrayContains(tabInfo.commands(), String.format(full, alias).replaceAll("\\.", " "))) {
                     return new TabCompleteDispatch() {
                         @Override
                         public List<String> complete(MessageReceiver msgrec, String[] args) throws TabCompleteException {

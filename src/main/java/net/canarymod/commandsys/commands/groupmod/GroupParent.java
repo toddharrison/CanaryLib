@@ -15,22 +15,22 @@ import net.canarymod.user.Group;
 public class GroupParent implements NativeCommand {
     // group) rename <foo> <bar>
     public void execute(MessageReceiver caller, String[] args) {
-        if (args[args.length - 1].equals("--help")) {
+        if (args[0].equals("--help")) {
             Canary.help().getHelp(caller, "group parent");
             return;
         }
-        Group group = Canary.usersAndGroups().getGroup(args[1]);
-        Group parent = Canary.usersAndGroups().getGroup(args[2]); // Must exist
+        Group group = Canary.usersAndGroups().getGroup(args[0]);
+        Group parent = Canary.usersAndGroups().getGroup(args[1]); // Must exist
         if (group == null) {
-            caller.notice(Translator.translateAndFormat("group unknown", args[1]));
+            caller.notice(Translator.translateAndFormat("group unknown", args[0]));
             return;
         }
         if (parent == null) {
-            caller.notice(Translator.translateAndFormat("group unknown", args[2]));
+            caller.notice(Translator.translateAndFormat("group unknown", args[1]));
             return;
         }
-        if(parent.getWorldName() != null && group.getWorldName() != null) {
-            if(!parent.getWorldName().equals(group.getWorldName())) {
+        if (parent.getWorldName() != null && group.getWorldName() != null) {
+            if (!parent.getWorldName().equals(group.getWorldName())) {
                 caller.notice(Translator.translateAndFormat("group parent world mismatch", parent.getName(), parent.getWorldName(), group.getWorldName()));
                 return;
             }

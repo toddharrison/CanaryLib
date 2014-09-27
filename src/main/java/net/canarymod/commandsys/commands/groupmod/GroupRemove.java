@@ -21,9 +21,9 @@ public class GroupRemove implements NativeCommand {
             Canary.help().getHelp(caller, "group remove");
             return;
         }
-        Group group = Canary.usersAndGroups().getGroup(args[1]);
+        Group group = Canary.usersAndGroups().getGroup(args[0]);
         if (group == null) {
-            caller.notice(Translator.translateAndFormat("unknown group", args[1]));
+            caller.notice(Translator.translateAndFormat("unknown group", args[0]));
             return;
         }
         if (group.getName().equalsIgnoreCase(Canary.usersAndGroups().getDefaultGroup().getName())) {

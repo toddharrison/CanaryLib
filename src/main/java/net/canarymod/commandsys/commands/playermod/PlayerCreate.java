@@ -9,26 +9,26 @@ import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.Group;
 
 /**
- * Command to add a player (for permissions, groups, etc.) to the database    
+ * Command to add a player (for permissions, groups, etc.) to the database
  *
  * @author Chris (damagefilter)
  */
 public class PlayerCreate implements NativeCommand {
     // player) add <playername> <groupname>
     public void execute(MessageReceiver caller, String[] args) {
-        if (args[args.length - 1].equals("--help")) {
+        if (args[0].equals("--help")) {
             Canary.help().getHelp(caller, "playermod add");
             return;
         }
-        Group g = Canary.usersAndGroups().getGroup(args[2]);
-        Player target = Canary.getServer().matchPlayer(args[1]);
+        Group g = Canary.usersAndGroups().getGroup(args[1]);
+        Player target = Canary.getServer().matchPlayer(args[0]);
         if (g == null) {
-            caller.notice(Translator.translateAndFormat("unknown group", args[2]));
+            caller.notice(Translator.translateAndFormat("unknown group", args[1]));
             return;
         }
 
         if (target == null) {
-            Canary.usersAndGroups().addOfflinePlayer(args[1], g.getName());
+            Canary.usersAndGroups().addOfflinePlayer(args[0], g.getName());
             caller.message(Colors.YELLOW + Translator.translate("modify group set"));
             return;
         }

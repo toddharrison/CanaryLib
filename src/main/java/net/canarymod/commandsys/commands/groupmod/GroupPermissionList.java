@@ -14,9 +14,9 @@ import net.canarymod.user.Group;
 public class GroupPermissionList implements NativeCommand {
     // groupmod permission add group value
     public void execute(MessageReceiver caller, String[] args) {
-        Group group = Canary.usersAndGroups().getGroup(args[1]);
+        Group group = Canary.usersAndGroups().getGroup(args[0]);
         if (group == null) {
-            caller.notice(Translator.translateAndFormat("unknown group", args[1]));
+            caller.notice(Translator.translateAndFormat("unknown group", args[0]));
             return;
         }
         group.getPermissionProvider().printPermissionsToCaller(caller);

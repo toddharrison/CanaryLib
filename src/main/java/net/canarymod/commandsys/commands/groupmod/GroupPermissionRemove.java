@@ -16,12 +16,12 @@ import net.canarymod.user.Group;
 public class GroupPermissionRemove implements NativeCommand {
     // groupmod permission add group value
     public void execute(MessageReceiver caller, String[] args) {
-        Group group = Canary.usersAndGroups().getGroup(args[1]);
+        Group group = Canary.usersAndGroups().getGroup(args[0]);
         if (group == null) {
-            caller.notice(Translator.translateAndFormat("unknown group", args[1]));
+            caller.notice(Translator.translateAndFormat("unknown group", args[0]));
             return;
         }
-        PermissionNode node = PermissionNode.fromString(args[2]);
+        PermissionNode node = PermissionNode.fromString(args[1]);
         Canary.permissionManager().removeGroupPermission(node.getName(), group);
         caller.message(Colors.YELLOW + Translator.translate("modify permission removed"));
     }

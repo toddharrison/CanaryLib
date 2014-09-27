@@ -16,12 +16,12 @@ import net.canarymod.user.Group;
 public class GroupPermissionAdd implements NativeCommand {
     // groupmod permission add group value
     public void execute(MessageReceiver caller, String[] args) {
-        Group group = Canary.usersAndGroups().getGroup(args[1]);
+        Group group = Canary.usersAndGroups().getGroup(args[0]);
         if (group == null) {
-            caller.notice(Translator.translateAndFormat("unknown group", args[1]));
+            caller.notice(Translator.translateAndFormat("unknown group", args[0]));
             return;
         }
-        PermissionNode node = PermissionNode.fromString(args[2]);
+        PermissionNode node = PermissionNode.fromString(args[1]);
         group.getPermissionProvider().addPermission(node.getName(), node.getValue());
         caller.message(Colors.YELLOW + Translator.translate("modify permission added"));
     }
