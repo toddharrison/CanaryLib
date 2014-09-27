@@ -3,6 +3,8 @@ package net.canarymod.commandsys.commands.vanilla;
 import net.canarymod.Translator;
 import net.canarymod.chat.MessageReceiver;
 
+import static net.canarymod.commandsys.CanaryCommandPermissions.GIVE$OTHER;
+
 /**
  * Give command wrapper
  *
@@ -13,7 +15,7 @@ public final class Give extends VanillaCommandWrapper {
 
     @Override
     public void execute(MessageReceiver caller, String[] parameters) {
-        if (isNotSelfOrServer(caller, parameters[0]) && !caller.hasPermission("canary.command.give.other")) {
+        if (isNotSelfOrServer(caller, parameters[0]) && !caller.hasPermission(GIVE$OTHER)) {
             caller.notice(Translator.nativeTranslate("commands.generic.permission"));
             return;
         }

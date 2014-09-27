@@ -7,6 +7,9 @@ import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 
+import static net.canarymod.commandsys.CanaryCommandPermissions.GOD;
+import static net.canarymod.commandsys.CanaryCommandPermissions.GOD$OTHER;
+
 /** @author Somners */
 public class GodCommand implements NativeCommand {
 
@@ -24,7 +27,7 @@ public class GodCommand implements NativeCommand {
             Canary.help().getHelp(caller, "god");
             return;
         }
-        if (!caller.hasPermission("canary.command.god.other")) {
+        if (!caller.hasPermission(GOD$OTHER)) {
             caller.notice(Translator.translate("god failed"));
             return;
         }
@@ -33,7 +36,7 @@ public class GodCommand implements NativeCommand {
 
     private void player(Player player, String[] args) {
         if (args.length == 1) {
-            if (!player.hasPermission("canary.command.god")) {
+            if (!player.hasPermission(GOD)) {
                 player.notice(Translator.translate("god failed"));
                 return;
             }
@@ -51,7 +54,7 @@ public class GodCommand implements NativeCommand {
             }
         }
         else if (args.length == 2) {
-            if (!player.hasPermission("canary.command.god.other")) {
+            if (!player.hasPermission(GOD$OTHER)) {
                 player.notice(Translator.translate("god failed"));
                 return;
             }

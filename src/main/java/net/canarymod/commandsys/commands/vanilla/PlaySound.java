@@ -3,6 +3,8 @@ package net.canarymod.commandsys.commands.vanilla;
 import net.canarymod.Translator;
 import net.canarymod.chat.MessageReceiver;
 
+import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYSOUND$OTHER;
+
 /**
  * PlaySound command wrapper
  *
@@ -13,7 +15,7 @@ public final class PlaySound extends VanillaCommandWrapper {
 
     @Override
     public void execute(MessageReceiver caller, String[] parameters) {
-        if (isNotSelfOrServer(caller, parameters[1]) && !caller.hasPermission("canary.command.playsound.other")) {
+        if (isNotSelfOrServer(caller, parameters[1]) && !caller.hasPermission(PLAYSOUND$OTHER)) {
             caller.notice(Translator.nativeTranslate("commands.generic.permission"));
             return;
         }

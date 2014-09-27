@@ -3,6 +3,8 @@ package net.canarymod.commandsys.commands.vanilla;
 import net.canarymod.Translator;
 import net.canarymod.chat.MessageReceiver;
 
+import static net.canarymod.commandsys.CanaryCommandPermissions.ACHIEVEMENT$OTHER;
+
 /**
  * Achievement command wrapper
  *
@@ -14,7 +16,7 @@ public final class Achievement extends VanillaCommandWrapper {
     @Override
     public void execute(MessageReceiver caller, String[] parameters) {
         if (parameters.length > 2) {
-            if (isNotSelfOrServer(caller, parameters[0]) && !caller.hasPermission("canary.command.achievement.other")) {
+            if (isNotSelfOrServer(caller, parameters[0]) && !caller.hasPermission(ACHIEVEMENT$OTHER)) {
                 caller.notice(Translator.nativeTranslate("commands.generic.permission"));
                 return;
             }

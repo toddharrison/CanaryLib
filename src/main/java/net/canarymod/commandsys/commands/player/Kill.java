@@ -36,7 +36,7 @@ public class Kill implements NativeCommand {
             player.notice(Translator.translate("player suicide"));
             player.kill();
         }
-        else if (player.hasPermission("canary.command.player.kill.other")) {
+        else if (player.hasPermission("canary.command.kill.other")) {
             doAction((MessageReceiver) player, args);
         }
     }

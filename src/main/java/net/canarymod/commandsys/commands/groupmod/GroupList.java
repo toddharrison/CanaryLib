@@ -14,7 +14,7 @@ import net.canarymod.user.Group;
 public class GroupList implements NativeCommand {
     // group) list
     public void execute(MessageReceiver caller, String[] args) {
-        if (args[args.length - 1].equals("--help")) {
+        if (args.length > 0 && args[0].equals("--help")) {
             Canary.help().getHelp(caller, "groupmod list");
             return;
         }

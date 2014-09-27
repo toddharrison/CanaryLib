@@ -7,6 +7,9 @@ import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 
+import static net.canarymod.commandsys.CanaryCommandPermissions.HOME$OTHER;
+
+
 /**
  * Command to teleport you to your own or another player home
  *
@@ -36,7 +39,7 @@ public class Home implements NativeCommand {
             Canary.help().getHelp(player, "home");
             return;
         }
-        if (player.hasPermission("canary.command.teleport.home.other")) {
+        if (player.hasPermission(HOME$OTHER)) {
             Player[] others = Canary.playerSelector().matchPlayers(player, args[0]);
             if (others != null) {
                 for (Player other : others) {

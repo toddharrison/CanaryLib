@@ -21,6 +21,7 @@ public class GroupCreate implements NativeCommand {
             Canary.help().getHelp(caller, "groupmod add");
             return;
         }
+
         String worldName = null;
         Group parent = null;
         Group group = new Group();
@@ -57,9 +58,11 @@ public class GroupCreate implements NativeCommand {
                 worldName = world != null ? world.getFqName() : null;
                 if (worldName == null) {
                     //So that's both null, all is invalid!
-                    caller.notice(Translator.translateAndFormat("group unknown world", args[1]));
-                    caller.notice(Translator.translateAndFormat("group unknown parent", args[1]));
-                    return;
+                    if (parent == null) { // only if this one last check fails
+                        caller.notice(Translator.translateAndFormat("group unknown world", args[1]));
+                        caller.notice(Translator.translateAndFormat("group unknown parent", args[1]));
+                        return;
+                    }
                 }
             }
         }

@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static net.canarymod.commandsys.CanaryCommandPermissions.*;
 import static net.canarymod.commandsys.TabCompleteHelper.*;
 
 /**
@@ -148,12 +149,17 @@ public class CommandList implements CommandListener {
         natives = Collections.unmodifiableMap(temp);
     }
 
+    private static String perm(CanaryCommandPermissions perm) {
+        return perm.toString();
+    }
+
     /* groupmod start */
     @Command(
             aliases = {"groupmod", "group"},
             description = "groupmod info",
-            permissions = {"canary.command.groupmod"},
-            toolTip = "/groupmod <add|delete|rename|permission|list> [parameters...] [--help]"
+            permissions = {GROUPMOD},
+            toolTip = "/groupmod <add|delete|rename|permission|list> [parameters...] [--help]",
+            version = 2
     )
     public void groupBase(MessageReceiver caller, String[] parameters) {
         natives.get("groupmod_base").execute(caller, parameters);
@@ -169,7 +175,7 @@ public class CommandList implements CommandListener {
             parent = "groupmod",
             helpLookup = "groupmod add",
             description = "group add info",
-            permissions = {"canary.command.groupmod.add"},
+            permissions = {GROUPMOD$ADD},
             toolTip = "/groupmod add <name> [[parent] [world[:dimension]]]",
             max = 3,
             version = 2
@@ -196,7 +202,7 @@ public class CommandList implements CommandListener {
             parent = "groupmod",
             helpLookup = "groupmod permission",
             description = "group permission info",
-            permissions = {"canary.command.groupmod.permissions"},
+            permissions = {GROUPMOD$PERMISSIONS},
             toolTip = "/groupmod permission <add|remove|check|list> [arguments...] [--help]"
     )
     public void groupPerms(MessageReceiver caller, String[] parameters) {
@@ -213,7 +219,7 @@ public class CommandList implements CommandListener {
             parent = "groupmod.permission",
             helpLookup = "groupmod permission add",
             description = "groupmod permission add info",
-            permissions = {"canary.command.groupmod.permissions.add"},
+            permissions = {GROUPMOD$PERMISSIONS$ADD},
             toolTip = "/groupmod permission add <group> <path>:[value]",
             min = 2
     )
@@ -226,7 +232,7 @@ public class CommandList implements CommandListener {
             parent = "groupmod.permission",
             helpLookup = "groupmod permission remove",
             description = "groupmod permission remove info",
-            permissions = {"canary.command.groupmod.permissions.remove"},
+            permissions = {GROUPMOD$PERMISSIONS$REMOVE},
             toolTip = "/groupmod permission remove <group> <path>:[value]",
             min = 2,
             version = 2
@@ -240,7 +246,7 @@ public class CommandList implements CommandListener {
             parent = "groupmod.permission",
             helpLookup = "groupmod permission check",
             description = "groupmod permission check info",
-            permissions = {"canary.command.groupmod.permissions.check"},
+            permissions = {GROUPMOD$PERMISSIONS$CHECK},
             toolTip = "/groupmod permission check <group> <path>:[value]",
             min = 2,
             version = 2
@@ -261,7 +267,7 @@ public class CommandList implements CommandListener {
             parent = "groupmod.permission",
             helpLookup = "groupmod permission list",
             description = "groupmod permission list info",
-            permissions = {"canary.command.groupmod.permissions"},
+            permissions = {GROUPMOD$PERMISSIONS$LIST},
             toolTip = "/groupmod permission list <group>",
             version = 2
     )
@@ -274,7 +280,7 @@ public class CommandList implements CommandListener {
             parent = "groupmod.permission",
             helpLookup = "groupmod permission flush",
             description = "group permissionflush info",
-            permissions = {"canary.command.groupmod.flush"},
+            permissions = {GROUPMOD$PERMISSIONS$FLUSH},
             toolTip = "/groupmod permission flush <group>",
             version = 2
     )
@@ -287,7 +293,7 @@ public class CommandList implements CommandListener {
             parent = "groupmod",
             helpLookup = "groupmod list",
             description = "group list info",
-            permissions = {"canary.command.groupmod.list"},
+            permissions = {GROUPMOD$LIST},
             toolTip = "/groupmod list"
     )
     public void groupList(MessageReceiver caller, String[] parameters) {
@@ -299,7 +305,7 @@ public class CommandList implements CommandListener {
             parent = "groupmod",
             helpLookup = "groupmod remove",
             description = "group remove info",
-            permissions = {"canary.command.groupmod.remove"},
+            permissions = {GROUPMOD$REMOVE},
             toolTip = "/groupmod remove <name>",
             version = 2
     )
@@ -312,7 +318,7 @@ public class CommandList implements CommandListener {
             parent = "groupmod",
             helpLookup = "groupmod check",
             description = "group check info",
-            permissions = {"canary.command.groupmod.check"},
+            permissions = {GROUPMOD$CHECK},
             toolTip = "/groupmod check <name>",
             version = 2
     )
@@ -325,7 +331,7 @@ public class CommandList implements CommandListener {
             parent = "groupmod",
             helpLookup = "groupmod rename",
             description = "group rename info",
-            permissions = {"canary.command.groupmod.rename"},
+            permissions = {GROUPMOD$RENAME},
             toolTip = "/groupmod rename <group> <newname>",
             min = 2,
             version = 2
@@ -339,7 +345,7 @@ public class CommandList implements CommandListener {
             parent = "groupmod",
             helpLookup = "groupmod prefix",
             description = "group prefix info",
-            permissions = {"canary.command.groupmod.prefix"},
+            permissions = {GROUPMOD$PREFIX},
             toolTip = "/groupmod prefix <group> <prefix>",
             min = 2,
             version = 2
@@ -353,7 +359,7 @@ public class CommandList implements CommandListener {
             parent = "groupmod",
             helpLookup = "groupmod parent",
             description = "group parent info",
-            permissions = {"canary.command.groupmod.parent"},
+            permissions = {GROUPMOD$PARENT},
             toolTip = "/groupmod parent <group> <parent group>",
             min = 2,
             version = 2
@@ -377,7 +383,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"compass"},
             description = "compass info",
-            permissions = {"canary.command.player.compass"},
+            permissions = {COMPASS},
             toolTip = "/compass"
     )
     public void compassCommand(MessageReceiver caller, String[] parameters) {
@@ -387,7 +393,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"pos", "getpos"},
             description = "getpos info",
-            permissions = {"canary.command.player.getpos"},
+            permissions = {GETPOS},
             toolTip = "/getpos"
     )
     public void getPosCommand(MessageReceiver caller, String[] parameters) {
@@ -397,7 +403,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"god", "godmode"},
             description = "enable god mode",
-            permissions = {"canary.command.god", "canary.command.god.other"},
+            permissions = {GOD, GOD$OTHER},
             toolTip = "/god [playername]",
             min = 0,
             max = 1,
@@ -410,7 +416,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"kill", "murder"},
             description = "kill info",
-            permissions = {"canary.command.player.kill"},
+            permissions = {KILL, KILL$OTHER},
             toolTip = "/kill [playername]",
             version = 2
     )
@@ -422,7 +428,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"playermod", "player"},
             description = "playermod info",
-            permissions = {"canary.command.playermod"},
+            permissions = {PLAYERMOD},
             toolTip = "/playermod <add|remove|prefix|permission|group> [parameters...] [--help]"
     )
     public void playerBase(MessageReceiver caller, String[] parameters) {
@@ -439,7 +445,7 @@ public class CommandList implements CommandListener {
             parent = "playermod",
             helpLookup = "playermod add",
             description = "playermod add info",
-            permissions = {"canary.command.playermod.add"},
+            permissions = {PLAYERMOD$ADD},
             toolTip = "/playermod add <name> <group>",
             min = 2,
             version = 2
@@ -460,7 +466,7 @@ public class CommandList implements CommandListener {
             parent = "playermod",
             helpLookup = "playermod permission",
             description = "playermod permission info",
-            permissions = {"canary.command.playermod.permissions"},
+            permissions = {PLAYERMOD$PERMISSIONS},
             toolTip = "/playermod permission <add|remove|check|list> [arguments...] [--help]"
     )
     public void playerPermissions(MessageReceiver caller, String[] parameters) {
@@ -472,7 +478,7 @@ public class CommandList implements CommandListener {
             parent = "playermod.permission",
             helpLookup = "playermod permission add",
             description = "playermod permission add info",
-            permissions = {"canary.command.playermod.permissions"},
+            permissions = {PLAYERMOD$PERMISSIONS$ADD},
             toolTip = "/playermod permission add <player> <path>:[value]",
             min = 2,
             version = 2
@@ -486,7 +492,7 @@ public class CommandList implements CommandListener {
             parent = "playermod.permission",
             helpLookup = "playermod permission remove",
             description = "playermod permission remove info",
-            permissions = {"canary.command.playermod.permissions"},
+            permissions = {PLAYERMOD$PERMISSIONS$REMOVE},
             toolTip = "/playermod permission remove <player> <path>",
             min = 2,
             version = 2
@@ -507,7 +513,7 @@ public class CommandList implements CommandListener {
             parent = "playermod.permission",
             helpLookup = "playermod permission check",
             description = "playermod permission check info",
-            permissions = {"canary.command.playermod.permissions"},
+            permissions = {PLAYERMOD$PERMISSIONS$CHECK},
             toolTip = "/playermod permission check <player> <path>",
             min = 2,
             version = 2
@@ -521,7 +527,7 @@ public class CommandList implements CommandListener {
             parent = "playermod.permission",
             helpLookup = "playermod permission list",
             description = "playermod permission list info",
-            permissions = {"canary.command.playermod.permissions"},
+            permissions = {PLAYERMOD$PERMISSIONS$LIST},
             toolTip = "/playermod permission list <player>",
             version = 2
     )
@@ -534,7 +540,7 @@ public class CommandList implements CommandListener {
             parent = "playermod",
             helpLookup = "playermod prefix",
             description = "playermod prefix info",
-            permissions = {"canary.command.playermod.prefix"},
+            permissions = {PLAYERMOD$PREFIX},
             toolTip = "/playermod prefix <name> <prefix>",
             version = 2
     )
@@ -547,7 +553,7 @@ public class CommandList implements CommandListener {
             parent = "playermod",
             helpLookup = "playermod remove",
             description = "playermod remove info",
-            permissions = {"canary.command.playermod.remove"},
+            permissions = {PLAYERMOD$REMOVE},
             toolTip = "/playermod remove <name>",
             version = 2
     )
@@ -560,7 +566,7 @@ public class CommandList implements CommandListener {
             parent = "playermod",
             helpLookup = "playermod group",
             description = "playermod group info",
-            permissions = {"canary.command.playermod.group"},
+            permissions = {PLAYERMOD$GROUP},
             toolTip = "/playermod group <list|check|set|add> [arguments...] [--help]"
     )
     public void playerGroup(MessageReceiver caller, String[] parameters) {
@@ -577,7 +583,7 @@ public class CommandList implements CommandListener {
             parent = "playermod.group",
             helpLookup = "playermod group set",
             description = "playermod group set info",
-            permissions = {"canary.command.playermod.group.set"},
+            permissions = {PLAYERMOD$GROUP$SET},
             toolTip = "/playermod group set <player> <group> [--help]",
             version = 2
     )
@@ -590,7 +596,7 @@ public class CommandList implements CommandListener {
             parent = "playermod.group",
             helpLookup = "playermod group add",
             description = "playermod group add info",
-            permissions = {"canary.command.playermod.group.add"},
+            permissions = {PLAYERMOD$GROUP$ADD},
             toolTip = "/playermod group add <player> <group> [--help]",
             version = 2
     )
@@ -603,7 +609,7 @@ public class CommandList implements CommandListener {
             parent = "playermod.group",
             helpLookup = "playermod group list",
             description = "playermod group list info",
-            permissions = {"canary.command.playermod.group.list"},
+            permissions = {PLAYERMOD$GROUP$LIST},
             toolTip = "/playermod group list <player> [--help]",
             version = 2
     )
@@ -616,7 +622,7 @@ public class CommandList implements CommandListener {
             parent = "playermod.group",
             helpLookup = "playermod group check",
             description = "playermod group check info",
-            permissions = {"canary.command.playermod.group.check"},
+            permissions = {PLAYERMOD$GROUP$CHECK},
             toolTip = "/playermod group check <player> <group> [--help]",
             min = 2,
             version = 2
@@ -630,7 +636,7 @@ public class CommandList implements CommandListener {
             parent = "playermod.group",
             helpLookup = "playermod group remove",
             description = "playermod group remove info",
-            permissions = {"canary.command.playermod.group.remove"},
+            permissions = {PLAYERMOD$GROUP$REMOVE},
             toolTip = "/playermod group remove <player> <group> [--help]",
             min = 2,
             version = 2
@@ -651,7 +657,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"ban"},
             description = "ban info",
-            permissions = {"canary.command.ban"},
+            permissions = {BAN},
             toolTip = "/ban <player> [reason] [#number hour|day|week|month]",
             min = 1,
             version = 2
@@ -670,7 +676,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"canarymod", "version"},
             description = "CanaryMod Information",
-            permissions = {"canary.command.canarymod"},
+            permissions = {CANARYMOD},
             toolTip = "/canarymod"
     )
     public void canarymodInfoCommand(MessageReceiver caller, String[] parameters) {
@@ -680,7 +686,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"createvanilla", "makevanilla"},
             description = "makevanilla info",
-            permissions = {"canary.command.createvanilla"},
+            permissions = {CREATEVANILLA},
             toolTip = "/createvanilla <defaultworld>",
             version = 2
     )
@@ -707,7 +713,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"help"},
             description = "help info",
-            permissions = {"canary.command.help"},
+            permissions = {HELP},
             toolTip = "/help [search terms] [page]"
     )
     public void helpCommand(MessageReceiver caller, String[] parameters) {
@@ -717,7 +723,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"ipban"},
             description = "ipban info",
-            permissions = {"canary.command.ipban"},
+            permissions = {IPBAN},
             toolTip = "/ipban <player> [reason] [#number hour|day|week|month]",
             min = 2
     )
@@ -728,7 +734,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"kick"},
             description = "kick info",
-            permissions = {"canary.command.kick"},
+            permissions = {KICK},
             toolTip = "/kick <playername> [reason]",
             min = 1,
             version = 2
@@ -740,7 +746,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"kit"},
             description = "kit info",
-            permissions = {"canary.command.player.kit"},
+            permissions = {KIT},
             toolTip = "/kit <give|create|list> <name> <use delay> [G|P Groups|Players]",
             min = 2
     )
@@ -765,7 +771,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"listplugins", "plugins"},
             description = "lplugin info",
-            permissions = {"canary.command.plugin.list"},
+            permissions = {PLUGIN$LIST},
             toolTip = "/listplugins"
     )
     public void listPluginsCommand(MessageReceiver caller, String[] parameters) {
@@ -775,7 +781,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"motd"},
             description = "motd info",
-            permissions = {"canary.command.motd"},
+            permissions = {MOTD},
             toolTip = "/motd"
     )
     public void motdCommand(MessageReceiver caller, String[] parameters) {
@@ -785,7 +791,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"mute", "stfu"},
             description = "mute info",
-            permissions = {"canary.command.mute"},
+            permissions = {MUTE},
             toolTip = "/mute <playername>",
             version = 2
     )
@@ -818,7 +824,7 @@ public class CommandList implements CommandListener {
 
     @Command(aliases = {"playerinfo", "pinfo"},
             description = "Player Information",
-            permissions = {"canary.command.player.information"},
+            permissions = {PLAYER$INFO},
             toolTip = "/playerinfo [player]"
     )
     public void playerinfo(MessageReceiver caller, String[] parameters) {
@@ -828,7 +834,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"playerlist", "players", "who"},
             description = "who info",
-            permissions = {"canary.command.player.list"},
+            permissions = {PLAYER$LIST},
             toolTip = "/who"
     )
     public void playerListCommand(MessageReceiver caller, String[] parameters) {
@@ -838,7 +844,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"enableplugin"},
             description = "plugin enable info",
-            permissions = {"canary.command.plugin.enable"},
+            permissions = {PLUGIN$ENABLE},
             toolTip = "/enableplugin <plugin>",
             version = 2
     )
@@ -849,7 +855,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"disableplugin"},
             description = "plugin disable info",
-            permissions = {"canary.command.plugin.disable"},
+            permissions = {PLUGIN$DISABLE},
             toolTip = "/disableplugin <plugin>",
             version = 2
     )
@@ -860,7 +866,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"reloadplugin"},
             description = "plugin reload info",
-            permissions = {"canary.command.plugin.reload"},
+            permissions = {PLUGIN$RELOAD},
             toolTip = "/reloadplugin <plugin>",
             version = 2
     )
@@ -876,7 +882,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"reload"},
             description = "reload info",
-            permissions = {"canary.command.reload"},
+            permissions = {RELOAD},
             toolTip = "/reload")
     public void reloadCommand(MessageReceiver caller, String[] parameters) {
         natives.get("reload").execute(caller, parameters);
@@ -885,7 +891,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"reservelist", "rlist", "rl"},
             description = "reservelist info",
-            permissions = {"canary.command.reservelist"},
+            permissions = {RESERVELIST},
             toolTip = "/reservelist <add|remove> <playername>",
             min = 2,
             version = 2
@@ -907,7 +913,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"stop", "shutdown"},
             description = "stop info",
-            permissions = {"canary.command.stop"},
+            permissions = {STOP},
             toolTip = "/stop"
     )
     public void stopCommand(MessageReceiver caller, String[] parameters) {
@@ -917,7 +923,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"sysinfo"},
             description = "System Information",
-            permissions = {"canary.command.sysinfo"},
+            permissions = {SYSINFO},
             toolTip = "/sysinfo"
     )
     public void sysinfo(MessageReceiver caller, String[] parameters) {
@@ -927,7 +933,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"unban"},
             description = "unban info",
-            permissions = {"canary.command.unban"},
+            permissions = {UNBAN},
             toolTip = "/unban <player>",
             min = 1,
             version = 2
@@ -944,7 +950,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"uptime"},
             description = "server uptime",
-            permissions = {"canary.command.uptime"},
+            permissions = {UPTIME},
             toolTip = "/uptime"
     )
     public void uptime(MessageReceiver caller, String[] parameters) {
@@ -953,7 +959,7 @@ public class CommandList implements CommandListener {
 
     @Command(aliases = {"whitelist", "wlist", "wl"},
             description = "whitelist info",
-            permissions = {"canary.command.whitelist"},
+            permissions = {WHITELIST},
             toolTip = "/whitelist <add|remove> <playername>",
             min = 3
     )
@@ -970,7 +976,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"achievement"},
             description = "Gives a player an achievement or increases a statistic.",
-            permissions = {"canary.command.achievement"},
+            permissions = {ACHIEVEMENT},
             toolTip = "/achievement <give|take> <stat_name|*> [player]",
             min = 2,
             max = 3,
@@ -983,7 +989,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"say", "broadcast"},
             description = "Broadcasts a message",
-            permissions = {"canary.command.broadcast"},
+            permissions = {BROADCAST},
             toolTip = "/say <message>",
             min = 1,
             version = 2
@@ -995,7 +1001,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"clear", "clearinventory", "clearinv"},
             description = "Clears items from player inventory.",
-            permissions = {"canary.command.clear"},
+            permissions = {CLEAR},
             toolTip = "/clear <player> [item] [data] [maxCount] [dataTag]",
             min = 1,
             version = 2
@@ -1007,7 +1013,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"debug"},
             description = "Starts or stops a debugging session.",
-            permissions = {"canary.command.debug"},
+            permissions = {DEBUG},
             toolTip = "/debug <start|stop|chunk> [<x> <y> <z>]",
             min = 1,
             version = 2
@@ -1019,7 +1025,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"defaultgamemode", "defaultmode"},
             description = "Sets the default game mode (creative, survival, etc.) for new players entering a multiplayer server.",
-            permissions = {"canary.command.defaultgamemode"},
+            permissions = {DEFAULTGAMEMODE},
             toolTip = "/defaultgamemode <gamemode>",
             min = 1,
             version = 2
@@ -1031,7 +1037,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"setworldspawn", "setspawn"},
             description = "Sets everyones GameMode",
-            permissions = {"canary.command.setworldspawn"},
+            permissions = {SETWORLDSPAWN},
             toolTip = "/setworldspawn [<x> <y> <z>]",
             min = 0,
             version = 2
@@ -1043,7 +1049,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"difficulty"},
             description = "Sets the difficulty level (peaceful, easy, etc.).",
-            permissions = {"canary.command.difficulty"},
+            permissions = {DIFFICULTY},
             toolTip = "/difficulty <new difficulty> [world]",
             min = 1,
             version = 2
@@ -1055,7 +1061,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"effect"},
             description = "The effect command manages status effects on players and other entities.",
-            permissions = {"canary.command.enchant"},
+            permissions = {EFFECT},
             toolTip = "/effect <player> <clear|effect> [seconds] [amplifier] [hideParticles]",
             min = 2,
             version = 2
@@ -1067,7 +1073,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"emote", "me"},
             description = "Express an emotion",
-            permissions = {"canary.command.emote"},
+            permissions = {EMOTE},
             toolTip = "/emote <action...>",
             version = 2
     )
@@ -1078,7 +1084,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"enchant"},
             description = "Enchants target's held item",
-            permissions = {"canary.command.enchant"},
+            permissions = {ENCHANT},
             toolTip = "/enchant <player> <enchantment ID> [level]",
             min = 2,
             version = 2
@@ -1090,7 +1096,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"gamemode", "mode"},
             description = "Sets a player's game mode.",
-            permissions = {"canary.command.gamemode"},
+            permissions = {GAMEMODE},
             toolTip = "/gamemode <mode> [player]",
             min = 1,
             version = 2
@@ -1102,7 +1108,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"gamerule"},
             description = "Sets or queries a game rule value.",
-            permissions = {"canary.command.gamerule"},
+            permissions = {GAMERULE},
             toolTip = "/gamerule <rule name> [value]",
             version = 2
     )
@@ -1113,7 +1119,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"give", "item", "i"},
             description = "Gives an item to a player.",
-            permissions = {"canary.command.give"},
+            permissions = {GIVE},
             toolTip = "/give <player> <item> [amount] [data] [dataTag]",
             min = 2,
             version = 2
@@ -1125,7 +1131,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"message", "msg", "tell"},
             description = "Sends a private message to a player",
-            permissions = {"canary.command.message"},
+            permissions = {MESSAGE},
             toolTip = "/tell <player> <private message ...>",
             min = 2,
             version = 2
@@ -1137,7 +1143,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"messageraw", "msgraw", "tellraw"},
             description = "Sends a private message to a player",
-            permissions = {"canary.command.message"},
+            permissions = {MESSAGERAW},
             toolTip = "/tellraw <player> <raw json message>",
             min = 2,
             version = 2
@@ -1149,7 +1155,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"playsound"},
             description = "Plays a sound",
-            permissions = {"canary.command.playsound"},
+            permissions = {PLAYSOUND},
             toolTip = "/playsound <sound> <player> [x] [y] [z] [volume] [pitch] [minimumVolume]",
             min = 2,
             version = 2
@@ -1161,7 +1167,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"save-all", "saveall"},
             description = "Saves world data",
-            permissions = {"canary.command.saveall"},
+            permissions = {SAVE$ALL},
             toolTip = "/save-all",
             min = 0,
             version = 2
@@ -1173,7 +1179,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"save-off", "saveoff"},
             description = "Turns off world data saving",
-            permissions = {"canary.command.saveoff"},
+            permissions = {SAVE$OFF},
             toolTip = "/save-off",
             min = 0,
             version = 2
@@ -1185,7 +1191,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"save-on", "saveon"},
             description = "Turns on world data saving",
-            permissions = {"canary.command.saveon"},
+            permissions = {SAVE$ON},
             toolTip = "/save-on",
             min = 0,
             version = 2
@@ -1197,7 +1203,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"scoreboard"},
             description = "SCORE(BOARD)!",
-            permissions = {"canary.command.scoreboard"},
+            permissions = {SCOREBOARD},
             toolTip = "/scoreboard <objectives|players|teams>",
             min = 1,
             version = 2
@@ -1209,7 +1215,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"setblock"},
             description = "Sets a block",
-            permissions = {"canary.command.setblock"},
+            permissions = {SETBLOCK},
             toolTip = "/setblock <x> <y> <z> <TileName> [dataValue] [oldBlockHandling] [dataTag]",
             min = 4,
             version = 2
@@ -1221,7 +1227,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"spawnpoint"},
             description = "Spawnpoint setting (Player based)",
-            permissions = {"canary.command.spawnpoint"},
+            permissions = {SPAWNPOINT},
             toolTip = "/spawnpoint [player [<x> <y> <z>]]",
             min = 0,
             version = 2
@@ -1233,7 +1239,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"spreadplayers"},
             description = "Spreads out them players",
-            permissions = {"canary.command.spreadplayers"},
+            permissions = {SPREADPLAYERS},
             toolTip = "/spreadplayers <x> <z> <spreadDistance> <maxRange> <respectTeams true|false> <player ...>",
             min = 4,
             version = 2
@@ -1245,7 +1251,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"summon", "mspawn", "mobspawn", "spawnmob"},
             description = "Summons an entity",
-            permissions = {"canary.command.summon"},
+            permissions = {SUMMON},
             toolTip = "/summon <EntityName> [x] [y] [z] [dataTag]",
             min = 1,
             version = 2
@@ -1257,7 +1263,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"teleport", "tp"},
             description = "Teleports a player",
-            permissions = {"canary.command.teleport"},
+            permissions = {TELEPORT, TELEPORT$OTHER},
             toolTip = "/tp [target] <player | <<x> <y> <z>>> | /tp <target> <x> <y> <z> <world_fqname> [load]",
             min = 1,
             version = 2
@@ -1269,7 +1275,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"testfor"},
             description = "Counts entities (players, mobs, items, etc.) matching specified conditions.",
-            permissions = {"canary.command.testfor"},
+            permissions = {TESTFOR},
             toolTip = "/testfor <player|targetselector> [datatag]",
             min = 1,
             version = 2
@@ -1281,7 +1287,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"testforblock"},
             description = "Tests whether a certain block is in a specific location.",
-            permissions = {"canary.command.testforblock"},
+            permissions = {TESTFORBLOCK},
             toolTip = "/testforblock <x> <y> <z> <TileName> [dataValue] [dataTag]",
             min = 4,
             version = 2
@@ -1293,7 +1299,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"time"},
             description = "Changes or queries the world's game time.",
-            permissions = {"canary.command.time"},
+            permissions = {TIME},
             toolTip = "/time <add|query|set> <value>",
             min = 2,
             version = 2
@@ -1305,7 +1311,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"toggledownfall"},
             description = "Toggles the weather.",
-            permissions = {"canary.command.toggledownfall"},
+            permissions = {TOGGLEDOWNFALL},
             toolTip = "/Toggles the weather.",
             min = 0,
             version = 2
@@ -1317,7 +1323,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"weather"},
             description = "Sets the weather.",
-            permissions = {"canary.command.weather"},
+            permissions = {WEATHER},
             toolTip = "/weather <clear|rain|thunder> [duration in seconds]",
             min = 1,
             version = 2
@@ -1329,7 +1335,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"xp", "experience"},
             description = "Adds experience to a player.",
-            permissions = {"canary.command.xp"},
+            permissions = {XP},
             toolTip = "/xp <amount[L]> [player]",
             min = 1,
             version = 2
@@ -1342,7 +1348,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"home"},
             description = "home info",
-            permissions = {"canary.command.teleport.home"},
+            permissions = {HOME},
             toolTip = "/home [playername]",
             min = 0,
             max = 1,
@@ -1355,7 +1361,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"sethome"},
             description = "sethome info",
-            permissions = {"canary.command.teleport.sethome"},
+            permissions = {HOME$SET},
             toolTip = "/sethome [player]",
             min = 1,
             max = 2
@@ -1366,7 +1372,7 @@ public class CommandList implements CommandListener {
 
     @Command(aliases = {"spawn"},
             description = "spawn info",
-            permissions = {"canary.command.teleport.spawn"},
+            permissions = {SPAWN},
             toolTip = "/spawn [worldname] [player]",
             min = 1,
             max = 3
@@ -1385,7 +1391,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"listwarps", "warps"},
             description = "lwarps info",
-            permissions = {"canary.command.warp.list"},
+            permissions = {WARP$LIST},
             toolTip = "/listwarps"
     )
     public void listWarpsCommand(MessageReceiver caller, String[] parameters) {
@@ -1395,7 +1401,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"delwarp", "removewarp"},
             description = "delwarp info",
-            permissions = {"canary.command.warp.remove"},
+            permissions = {WARP$REMOVE},
             toolTip = "/delwarp <name>",
             version = 2
     )
@@ -1406,7 +1412,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"setwarp"},
             description = "setwarp info",
-            permissions = {"canary.command.warp.set"},
+            permissions = {WARP$SET},
             toolTip = "/setwarp <name> [G <group>|P <player>]",
             version = 2
     )
@@ -1417,7 +1423,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"warp"},
             description = "warp info",
-            permissions = {"canary.command.warp.use"},
+            permissions = {WARP$USE},
             toolTip = "/warp <name>",
             version = 2
     )
@@ -1433,7 +1439,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"createworld"},
             description = "creates a world",
-            permissions = {"canary.command.world.create"},
+            permissions = {WORLD$CREATE},
             toolTip = "/createworld <name> [seed] [dimensionType] [worldType]",
             max = 5,
             version = 2
@@ -1457,7 +1463,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"deleteworld"},
             description = "Deletes a world",
-            permissions = {"canary.command.deleteworld"},
+            permissions = {WORLD$DELETE},
             toolTip = "/deleteworld <world_fqName>",
             min = 1,
             version = 2
@@ -1474,7 +1480,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"loadworld"},
             description = "loads a world",
-            permissions = {"canary.commmand.world.load"},
+            permissions = {WORLD$LOAD},
             toolTip = "/loadworld <worldName> [dimensionType]",
             version = 2
     )
@@ -1492,7 +1498,7 @@ public class CommandList implements CommandListener {
     @Command(
             aliases = {"mob"},
             description = "Gets a Mob count or destroys mobs within a radius.",
-            permissions = {"canary.command.mob"},
+            permissions = {MOB},
             toolTip = "/mob count [world [dimension]] or /mob remove <h|p|t|u|a> [radius] [world [dimension]]",
             min = 1,
             version = 2
@@ -1505,7 +1511,7 @@ public class CommandList implements CommandListener {
             aliases = {"clear"},
             parent = "mob",
             description = "Destroys mobs within a radius.",
-            permissions = {"canary.command.mob.clear"},
+            permissions = {MOB$CLEAR},
             toolTip = "/mob clear <h|p|t|u|a> [radius] [world <dimension>]  NOTE: (h = Hostiles p = Passives t = Tamed u = Utility (Like Items) and a = all)",
             helpLookup = "mob clear",
             min = 1,
@@ -1519,7 +1525,7 @@ public class CommandList implements CommandListener {
             aliases = {"count"},
             parent = "mob",
             description = "Gets a Mob count.",
-            permissions = {"canary.command.mob.count"},
+            permissions = {MOB$COUNT},
             toolTip = "/mob count [world]",
             min = 0,
             version = 2

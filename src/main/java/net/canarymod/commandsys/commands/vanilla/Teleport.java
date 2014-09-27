@@ -3,6 +3,8 @@ package net.canarymod.commandsys.commands.vanilla;
 import net.canarymod.Translator;
 import net.canarymod.chat.MessageReceiver;
 
+import static net.canarymod.commandsys.CanaryCommandPermissions.TELEPORT$OTHER;
+
 /**
  * Teleport command wrapper
  *
@@ -18,7 +20,7 @@ public final class Teleport extends VanillaCommandWrapper {
             // Ok so we know its a target player or destination player, move to next check
             if (parameters.length > 1 && !parameters[1].matches("\\d+")) { // if digit - allow it
                 // We know there is a target player specified
-                if (!caller.hasPermission("canary.command.teleport.other")) {
+                if (!caller.hasPermission(TELEPORT$OTHER)) {
                     caller.notice(Translator.nativeTranslate("commands.generic.permission"));
                     return;
                 }
