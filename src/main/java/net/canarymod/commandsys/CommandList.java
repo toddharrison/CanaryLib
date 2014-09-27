@@ -897,7 +897,10 @@ public class CommandList implements CommandListener {
     @TabComplete(commands = {"reservelist"})
     public List<String> reservelistTabComplete(MessageReceiver caller, String[] parameters) {
         return parameters.length == 1 ? matchTo(parameters, new String[]{"add", "remove"})
-                : parameters.length == 2 && parameters[0].equals("remove") ? matchTo(parameters, Canary.reservelist().getReservations())
+                : parameters.length == 2 ?
+                parameters[0].equals("remove") ? matchTo(parameters, Canary.reservelist().getReservations())
+                        : parameters[0].equals("add") ? matchToKnownPlayer(parameters)
+                        : null
                 : null;
     }
 
