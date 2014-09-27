@@ -159,6 +159,7 @@ public class CommandList implements CommandListener {
             description = "groupmod info",
             permissions = {GROUPMOD},
             toolTip = "/groupmod <add|delete|rename|permission|list> [parameters...] [--help]",
+            min = 1,
             version = 2
     )
     public void groupBase(MessageReceiver caller, String[] parameters) {
@@ -203,7 +204,8 @@ public class CommandList implements CommandListener {
             helpLookup = "groupmod permission",
             description = "group permission info",
             permissions = {GROUPMOD$PERMISSIONS},
-            toolTip = "/groupmod permission <add|remove|check|list> [arguments...] [--help]"
+            toolTip = "/groupmod permission <add|remove|check|list> [arguments...] [--help]",
+            min = 1
     )
     public void groupPerms(MessageReceiver caller, String[] parameters) {
         Canary.help().getHelp(caller, "groupmod permission");
@@ -269,6 +271,7 @@ public class CommandList implements CommandListener {
             description = "groupmod permission list info",
             permissions = {GROUPMOD$PERMISSIONS$LIST},
             toolTip = "/groupmod permission list <group>",
+            min = 1,
             version = 2
     )
     public void groupPermissionsList(MessageReceiver caller, String[] parameters) {
@@ -282,6 +285,7 @@ public class CommandList implements CommandListener {
             description = "group permissionflush info",
             permissions = {GROUPMOD$PERMISSIONS$FLUSH},
             toolTip = "/groupmod permission flush <group>",
+            min = 1,
             version = 2
     )
     public void groupFlush(MessageReceiver caller, String[] parameters) {
@@ -307,6 +311,7 @@ public class CommandList implements CommandListener {
             description = "group remove info",
             permissions = {GROUPMOD$REMOVE},
             toolTip = "/groupmod remove <name>",
+            min = 1,
             version = 2
     )
     public void groupRemove(MessageReceiver caller, String[] parameters) {
@@ -320,6 +325,7 @@ public class CommandList implements CommandListener {
             description = "group check info",
             permissions = {GROUPMOD$CHECK},
             toolTip = "/groupmod check <name>",
+            min = 1,
             version = 2
     )
     public void groupCheck(MessageReceiver caller, String[] parameters) {
@@ -405,8 +411,6 @@ public class CommandList implements CommandListener {
             description = "enable god mode",
             permissions = {GOD, GOD$OTHER},
             toolTip = "/god [playername]",
-            min = 0,
-            max = 1,
             version = 2
     )
     public void godCommand(MessageReceiver caller, String[] parameters) {
@@ -430,6 +434,7 @@ public class CommandList implements CommandListener {
             description = "playermod info",
             permissions = {PLAYERMOD},
             toolTip = "/playermod <add|remove|prefix|permission|group> [parameters...] [--help]",
+            min = 1,
             version = 2
     )
     public void playerBase(MessageReceiver caller, String[] parameters) {
@@ -689,6 +694,7 @@ public class CommandList implements CommandListener {
             description = "makevanilla info",
             permissions = {CREATEVANILLA},
             toolTip = "/createvanilla <defaultworld>",
+            min = 1,
             version = 2
     )
     public void createVanillaCommand(MessageReceiver caller, String[] parameters) {
@@ -700,6 +706,7 @@ public class CommandList implements CommandListener {
             description = "Takes Op from a Player",
             permissions = {"canary.command.deop"}, // Really no point, Requires Op
             toolTip = "/deop <player>",
+            min = 1,
             version = 2
     )
     public void deop(MessageReceiver caller, String[] args) {
@@ -726,7 +733,8 @@ public class CommandList implements CommandListener {
             description = "ipban info",
             permissions = {IPBAN},
             toolTip = "/ipban <player> [reason] [#number hour|day|week|month]",
-            min = 2
+            min = 1,
+            version = 2
     )
     public void ipBanCommand(MessageReceiver caller, String[] parameters) {
         natives.get("ipban").execute(caller, parameters);
@@ -749,7 +757,8 @@ public class CommandList implements CommandListener {
             description = "kit info",
             permissions = {KIT},
             toolTip = "/kit <give|create|list> <name> <use delay> [G|P Groups|Players]",
-            min = 2
+            min = 1,
+            version = 2
     )
     public void kitCommand(MessageReceiver caller, String[] parameters) {
         natives.get("kit").execute(caller, parameters);
@@ -794,6 +803,7 @@ public class CommandList implements CommandListener {
             description = "mute info",
             permissions = {MUTE},
             toolTip = "/mute <playername>",
+            min = 1,
             version = 2
     )
     public void muteCommand(MessageReceiver caller, String[] parameters) {
@@ -805,6 +815,7 @@ public class CommandList implements CommandListener {
             description = "Give Op to a Player",
             permissions = {"canary.command.op"}, // Really no point, Requires Op
             toolTip = "/op <player>",
+            min = 1,
             version = 2
     )
     public void op(MessageReceiver caller, String[] args) {
@@ -816,7 +827,6 @@ public class CommandList implements CommandListener {
             description = "Displays a list of Operators",
             permissions = {"canary.command.oplist"}, // Really no point, Requires Op
             toolTip = "/oplist",
-            min = 0,
             version = 2
     )
     public void oplist(MessageReceiver caller, String[] args) {
@@ -847,6 +857,7 @@ public class CommandList implements CommandListener {
             description = "plugin enable info",
             permissions = {PLUGIN$ENABLE},
             toolTip = "/enableplugin <plugin>",
+            min = 1,
             version = 2
     )
     public void enablePluginCommand(MessageReceiver caller, String[] parameters) {
@@ -858,6 +869,7 @@ public class CommandList implements CommandListener {
             description = "plugin disable info",
             permissions = {PLUGIN$DISABLE},
             toolTip = "/disableplugin <plugin>",
+            min = 1,
             version = 2
     )
     public void disablePluginCommand(MessageReceiver caller, String[] parameters) {
@@ -869,6 +881,7 @@ public class CommandList implements CommandListener {
             description = "plugin reload info",
             permissions = {PLUGIN$RELOAD},
             toolTip = "/reloadplugin <plugin>",
+            min = 1,
             version = 2
     )
     public void reloadPluginCommand(MessageReceiver caller, String[] parameters) {
@@ -958,11 +971,12 @@ public class CommandList implements CommandListener {
         natives.get("uptime").execute(caller, parameters);
     }
 
-    @Command(aliases = {"whitelist", "wlist", "wl"},
+    @Command(
+            aliases = {"whitelist", "wlist", "wl"},
             description = "whitelist info",
             permissions = {WHITELIST},
             toolTip = "/whitelist <add|remove> <playername>",
-            min = 3
+            min = 2
     )
     public void whitelistCommand(MessageReceiver caller, String[] parameters) {
         natives.get("whitelist").execute(caller, parameters);
@@ -1040,7 +1054,6 @@ public class CommandList implements CommandListener {
             description = "Sets everyones GameMode",
             permissions = {SETWORLDSPAWN},
             toolTip = "/setworldspawn [<x> <y> <z>]",
-            min = 0,
             version = 2
     )
     public void defaultspawnpoint(MessageReceiver caller, String[] args) {
@@ -1076,6 +1089,7 @@ public class CommandList implements CommandListener {
             description = "Express an emotion",
             permissions = {EMOTE},
             toolTip = "/emote <action...>",
+            min = 1,
             version = 2
     )
     public void emote(MessageReceiver caller, String[] args) {
@@ -1111,6 +1125,7 @@ public class CommandList implements CommandListener {
             description = "Sets or queries a game rule value.",
             permissions = {GAMERULE},
             toolTip = "/gamerule <rule name> [value]",
+            min = 1,
             version = 2
     )
     public void gamerule(MessageReceiver caller, String[] args) {
@@ -1170,7 +1185,6 @@ public class CommandList implements CommandListener {
             description = "Saves world data",
             permissions = {SAVE$ALL},
             toolTip = "/save-all",
-            min = 0,
             version = 2
     )
     public void saveall(MessageReceiver caller, String[] args) {
@@ -1182,7 +1196,6 @@ public class CommandList implements CommandListener {
             description = "Turns off world data saving",
             permissions = {SAVE$OFF},
             toolTip = "/save-off",
-            min = 0,
             version = 2
     )
     public void saveoff(MessageReceiver caller, String[] args) {
@@ -1194,7 +1207,6 @@ public class CommandList implements CommandListener {
             description = "Turns on world data saving",
             permissions = {SAVE$ON},
             toolTip = "/save-on",
-            min = 0,
             version = 2
     )
     public void saveon(MessageReceiver caller, String[] args) {
@@ -1230,7 +1242,6 @@ public class CommandList implements CommandListener {
             description = "Spawnpoint setting (Player based)",
             permissions = {SPAWNPOINT},
             toolTip = "/spawnpoint [player [<x> <y> <z>]]",
-            min = 0,
             version = 2
     )
     public void spawnpoint(MessageReceiver caller, String[] args) {
@@ -1314,7 +1325,6 @@ public class CommandList implements CommandListener {
             description = "Toggles the weather.",
             permissions = {TOGGLEDOWNFALL},
             toolTip = "/Toggles the weather.",
-            min = 0,
             version = 2
     )
     public void toggledownfall(MessageReceiver caller, String[] args) {
@@ -1351,8 +1361,6 @@ public class CommandList implements CommandListener {
             description = "home info",
             permissions = {HOME},
             toolTip = "/home [playername]",
-            min = 0,
-            max = 1,
             version = 2
     )
     public void homeCommand(MessageReceiver caller, String[] parameters) {
@@ -1364,8 +1372,7 @@ public class CommandList implements CommandListener {
             description = "sethome info",
             permissions = {HOME$SET},
             toolTip = "/sethome [player]",
-            min = 1,
-            max = 2
+            version = 2
     )
     public void setHomeCommand(MessageReceiver caller, String[] parameters) {
         natives.get("sethome").execute(caller, parameters);
@@ -1404,6 +1411,7 @@ public class CommandList implements CommandListener {
             description = "delwarp info",
             permissions = {WARP$REMOVE},
             toolTip = "/delwarp <name>",
+            min = 1,
             version = 2
     )
     public void delWarpCommand(MessageReceiver caller, String[] parameters) {
@@ -1415,6 +1423,7 @@ public class CommandList implements CommandListener {
             description = "setwarp info",
             permissions = {WARP$SET},
             toolTip = "/setwarp <name> [G <group>|P <player>]",
+            min = 1,
             version = 2
     )
     public void setWarpCommand(MessageReceiver caller, String[] parameters) {
@@ -1426,6 +1435,7 @@ public class CommandList implements CommandListener {
             description = "warp info",
             permissions = {WARP$USE},
             toolTip = "/warp <name>",
+            min = 1,
             version = 2
     )
     public void warpUse(MessageReceiver caller, String[] parameters) {
@@ -1483,6 +1493,7 @@ public class CommandList implements CommandListener {
             description = "loads a world",
             permissions = {WORLD$LOAD},
             toolTip = "/loadworld <worldName> [dimensionType]",
+            min = 1,
             version = 2
     )
     public void loadWorld(MessageReceiver caller, String[] args) {
@@ -1528,7 +1539,6 @@ public class CommandList implements CommandListener {
             description = "Gets a Mob count.",
             permissions = {MOB$COUNT},
             toolTip = "/mob count [world]",
-            min = 0,
             version = 2
     )
     public void mobcount(MessageReceiver caller, String[] args) {

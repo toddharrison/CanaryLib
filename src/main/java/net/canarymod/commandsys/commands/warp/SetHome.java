@@ -2,6 +2,7 @@ package net.canarymod.commandsys.commands.warp;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
+import net.canarymod.api.PlayerReference;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.Colors;
 import net.canarymod.chat.MessageReceiver;
@@ -28,11 +29,13 @@ public class SetHome implements NativeCommand {
     }
 
     private void player(Player player, String[] args) {
-        if (args.length == 2) {
-            Player target = Canary.getServer().matchPlayer(args[1]);
+        if (args.length == 1) {
+            PlayerReference target = Canary.getServer().matchKnownPlayer(args[0]);
             if (target != null) {
                 target.setHome(player.getLocation());
-                target.message(Colors.YELLOW + "Your home has been set by " + player.getName());
+                if (target.isOnline()) {
+                    ((Player) target).message(Colors.YELLOW + "Your home has been set by " + player.getName());
+                }
                 player.message(Colors.YELLOW + target.getName() + "'s  home has been set.");
             }
             else {

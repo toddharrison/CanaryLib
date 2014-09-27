@@ -21,27 +21,27 @@ import net.visualillusionsent.utils.StringUtils;
 public class IpBanCommand implements NativeCommand {
 
     public void execute(MessageReceiver caller, String[] parameters) {
-        if (parameters.length < 2) {
+        if (parameters.length < 1) {
             Canary.help().getHelp(caller, "ipban");
             return;
         }
 
-        PlayerReference ref = Canary.getServer().matchKnownPlayer(parameters[1]);
-        if (ref == null && !IPAddressUtils.isIPv4Address(parameters[1])) {
-            caller.notice(Translator.translate("ban failed") + " " + Translator.translateAndFormat("unknown player", parameters[1]));
+        PlayerReference ref = Canary.getServer().matchKnownPlayer(parameters[0]);
+        if (ref == null && !IPAddressUtils.isIPv4Address(parameters[0])) {
+            caller.notice(Translator.translate("ban failed") + " " + Translator.translateAndFormat("unknown player", parameters[0]));
             return;
         }
         Ban ban = new Ban();
         String reason = "Permanently Banned";
         long timestamp = -1L;
 
-        if (parameters.length >= 3) {
+        if (parameters.length >= 2) {
             try {
-                timestamp = ToolBox.parseTime(Long.parseLong(parameters[parameters.length - 2]), parameters[parameters.length - 1]);
-                reason = StringUtils.joinString(parameters, " ", 2, parameters.length - 2);
+                timestamp = ToolBox.parseTime(Long.parseLong(parameters[parameters.length - 1]), parameters[parameters.length]);
+                reason = StringUtils.joinString(parameters, " ", 2, parameters.length - 1);
             }
             catch (NumberFormatException e) {
-                reason = StringUtils.joinString(parameters, " ", 2);
+                reason = StringUtils.joinString(parameters, " ", 1);
                 timestamp = -1L;
             }
         }
@@ -55,12 +55,12 @@ public class IpBanCommand implements NativeCommand {
             ban.setIp(ref.getIP());
         }
         else {
-            ban.setIp(parameters[1]);
+            ban.setIp(parameters[0]);
         }
 
         Canary.bans().issueBan(ban);
-        Canary.hooks().callHook(new BanHook(ref != null ? ref : null, ref != null ? ref.getIP() : parameters[1], caller, reason, timestamp));
-        caller.notice(Translator.translateAndFormat("ipban banned", parameters[1]));
+        Canary.hooks().callHook(new BanHook(ref != null ? ref : null, ref != null ? ref.getIP() : parameters[0], caller, reason, timestamp));
+        caller.notice(Translator.translateAndFormat("ipban banned", parameters[0]));
         if (ref != null && ref.isOnline() && ref instanceof Player) {
             ((Player) ref).kick(reason);
         }
