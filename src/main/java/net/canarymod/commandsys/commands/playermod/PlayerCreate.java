@@ -16,7 +16,7 @@ import net.canarymod.user.Group;
 public class PlayerCreate implements NativeCommand {
     // player) add <playername> <groupname>
     public void execute(MessageReceiver caller, String[] args) {
-        if (args[0].equals("--help")) {
+        if (args[args.length - 1].equals("--help")) {
             Canary.help().getHelp(caller, "playermod add");
             return;
         }

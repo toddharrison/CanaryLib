@@ -429,7 +429,8 @@ public class CommandList implements CommandListener {
             aliases = {"playermod", "player"},
             description = "playermod info",
             permissions = {PLAYERMOD},
-            toolTip = "/playermod <add|remove|prefix|permission|group> [parameters...] [--help]"
+            toolTip = "/playermod <add|remove|prefix|permission|group> [parameters...] [--help]",
+            version = 2
     )
     public void playerBase(MessageReceiver caller, String[] parameters) {
         natives.get("playermod").execute(caller, parameters);
