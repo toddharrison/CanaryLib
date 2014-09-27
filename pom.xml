@@ -103,37 +103,14 @@
         </repository>
     </repositories>
     <dependencies>
+        <!-- Compile Time Dependencies -->
         <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-library</artifactId>
-            <version>2.11.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.luaj</groupId>
-            <artifactId>luaj-jse</artifactId>
-            <version>3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>net.visualillusionsent</groupId>
+            <artifactId>viutils</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jdom</groupId>
             <artifactId>jdom2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.xerial</groupId>
-            <artifactId>sqlite-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>net.visualillusionsent</groupId>
-            <artifactId>viutils</artifactId>
         </dependency>
         <dependency>
             <groupId>com.mchange</groupId>
@@ -154,7 +131,28 @@
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
-            <version>1.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.luaj</groupId>
+            <artifactId>luaj-jse</artifactId>
+        </dependency>
+        <!-- Runtime Dependencies -->
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <!-- Test Dependencies -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
         </dependency>
     </dependencies>
     <build>
@@ -336,6 +334,7 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- Compile Time Dependencies -->
             <dependency>
                 <groupId>net.visualillusionsent</groupId>
                 <artifactId>viutils</artifactId>
@@ -373,6 +372,25 @@
                 <scope>compile</scope>
             </dependency>
             <dependency>
+                <groupId>org.scala-lang</groupId>
+                <artifactId>scala-library</artifactId>
+                <version>2.11.2</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.luaj</groupId>
+                <artifactId>luaj-jse</artifactId>
+                <version>3.0</version>
+                <scope>compile</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.googlecode.json-simple</groupId>
+                <artifactId>json-simple</artifactId>
+                <version>1.1.1</version>
+                <scope>compile</scope>
+            </dependency>
+            <!-- Runtime Dependencies -->
+            <dependency>
                 <groupId>org.xerial</groupId>
                 <artifactId>sqlite-jdbc</artifactId>
                 <version>3.7.2</version>
@@ -383,6 +401,13 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <version>5.1.21</version>
                 <scope>runtime</scope>
+            </dependency>
+            <!-- Test Dependencies -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.11</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
