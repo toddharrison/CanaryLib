@@ -16,7 +16,7 @@ import net.visualillusionsent.utils.StringUtils;
 public class GroupPrefix implements NativeCommand {
     // group) prefix <group> <prefix>
     public void execute(MessageReceiver caller, String[] args) {
-        if (args[0].equals("--help")) {
+        if (args[args.length - 1].equals("--help")) {
             Canary.help().getHelp(caller, "groupmod prefix");
             return;
         }

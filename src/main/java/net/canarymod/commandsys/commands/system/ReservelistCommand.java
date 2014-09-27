@@ -14,12 +14,12 @@ import net.canarymod.commandsys.NativeCommand;
 public class ReservelistCommand implements NativeCommand {
 
     public void execute(MessageReceiver caller, String[] args) {
-        if (args[1].equalsIgnoreCase("add")) {
-            Canary.reservelist().addPlayer(args[2]);
+        if (args[0].equalsIgnoreCase("add")) {
+            Canary.reservelist().addPlayer(args[1]);
             caller.message(Colors.YELLOW + Translator.translate("reservelist player added"));
         }
-        if (args[1].equalsIgnoreCase("remove")) {
-            Canary.reservelist().removePlayer(args[2]);
+        if (args[0].equalsIgnoreCase("remove")) {
+            Canary.reservelist().removePlayer(args[1]);
             caller.message(Colors.YELLOW + Translator.translate("reservelist player removed"));
         }
     }

@@ -2,6 +2,7 @@ package net.canarymod.commandsys;
 
 import net.canarymod.Canary;
 import net.canarymod.ToolBox;
+import net.canarymod.api.PlayerReference;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.inventory.ItemType;
 import net.canarymod.api.world.DimensionType;
@@ -9,6 +10,7 @@ import net.canarymod.api.world.WorldType;
 import net.canarymod.bansystem.Ban;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.kit.Kit;
+import net.canarymod.permissionsystem.PermissionNode;
 import net.canarymod.warp.Warp;
 
 import java.lang.reflect.Method;
@@ -441,6 +443,54 @@ public final class TabCompleteHelper {
      */
     public static List<String> matchToItemTypeAndData(String[] args) {
         return matchTo(args, itemTypeNames(true));
+    }
+
+    /**
+     * Matches the argument to possible {@link PlayerReference} permissions
+     *
+     * @param playerReference
+     *         the {@link net.canarymod.api.PlayerReference} to check permissions off
+     * @param arg
+     *         the argument to get matches for
+     *
+     * @return list of matching {@link PlayerReference} permissions
+     */
+    public static List<String> matchToPlayerPermission(Player playerReference, String arg) {
+        if (playerReference != null) {
+            List<PermissionNode> nodes = playerReference.getPermissionProvider().getPermissionMap();
+            String[] fullNodes = new String[nodes.size()];
+            for (int index = 0; index < nodes.size(); index++) {
+                fullNodes[index] = nodes.get(index).getFullPath();
+            }
+            if (fullNodes.length > 0) {
+                return matchTo(arg, fullNodes);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Matches the argument to possible {@link PlayerReference} permissions
+     *
+     * @param playerReference
+     *         the {@link net.canarymod.api.PlayerReference} to check permissions off
+     * @param args
+     *         the arguments to grab the last argument of
+     *
+     * @return list of matching {@link PlayerReference} permissions
+     */
+    public static List<String> matchToPlayerPermission(PlayerReference playerReference, String[] args) {
+        if (playerReference != null) {
+            List<PermissionNode> nodes = playerReference.getPermissionProvider().getPermissionMap();
+            String[] fullNodes = new String[nodes.size()];
+            for (int index = 0; index < nodes.size(); index++) {
+                fullNodes[index] = nodes.get(index).getFullPath();
+            }
+            if (fullNodes.length > 0) {
+                return matchTo(args, fullNodes);
+            }
+        }
+        return null;
     }
 
     /**

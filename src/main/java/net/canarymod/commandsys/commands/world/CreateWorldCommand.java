@@ -17,33 +17,33 @@ public final class CreateWorldCommand implements NativeCommand {
     public void execute(MessageReceiver caller, String[] parameters) {
         try {
             WorldManager manage = Canary.getServer().getWorldManager();
-            String name = parameters[1];
+            String name = parameters[0];
             DimensionType dType = DimensionType.NORMAL;
             WorldType wType = WorldType.DEFAULT;
             long seed = System.currentTimeMillis(); // The Mojang random seed secret revealed!
 
-            if (parameters.length > 2) {
-                if (parameters[2].matches("\\d+")) {
+            if (parameters.length > 1) {
+                if (parameters[1].matches("\\d+")) {
                     seed = Long.parseLong(parameters[2]);
                 }
                 else {
-                    seed = parameters[2].hashCode();
+                    seed = parameters[1].hashCode();
                 }
             }
-            if (parameters.length > 3) {
-                if (parameters[3].matches("\\d")) {
-                    dType = DimensionType.fromId(Integer.parseInt(parameters[3]));
+            if (parameters.length > 2) {
+                if (parameters[2].matches("\\d")) {
+                    dType = DimensionType.fromId(Integer.parseInt(parameters[2]));
                 }
                 else {
-                    dType = DimensionType.fromName(parameters[3].toUpperCase());
+                    dType = DimensionType.fromName(parameters[2].toUpperCase());
                 }
             }
             if (dType == null) {
                 caller.notice("Dimension Type is non-existant");
                 return;
             }
-            if (parameters.length > 4) {
-                wType = WorldType.fromString(parameters[4]);
+            if (parameters.length > 3) {
+                wType = WorldType.fromString(parameters[3]);
             }
             if (wType == null) {
                 caller.notice("World Type is non-existant");

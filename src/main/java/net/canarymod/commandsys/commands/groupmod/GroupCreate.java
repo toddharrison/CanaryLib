@@ -17,7 +17,7 @@ import net.canarymod.user.Group;
 public class GroupCreate implements NativeCommand {
     // group) add <name> [[parent] [world[:dimension]]]
     public void execute(MessageReceiver caller, String[] args) {
-        if (args[0].equals("--help")) {
+        if (args[args.length - 1].equals("--help")) {
             Canary.help().getHelp(caller, "groupmod add");
             return;
         }

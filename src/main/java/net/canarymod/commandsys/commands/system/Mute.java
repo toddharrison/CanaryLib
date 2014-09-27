@@ -4,6 +4,7 @@ import net.canarymod.Canary;
 import net.canarymod.Translator;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.MessageReceiver;
+import net.canarymod.chat.ReceiverType;
 import net.canarymod.commandsys.NativeCommand;
 
 /**
@@ -14,7 +15,7 @@ import net.canarymod.commandsys.NativeCommand;
 public class Mute implements NativeCommand {
 
     public void execute(MessageReceiver caller, String[] parameters) {
-        if (caller instanceof Player) {
+        if (caller.getReceiverType() == ReceiverType.PLAYER) {
             player((Player) caller, parameters);
         }
         else {
@@ -23,7 +24,7 @@ public class Mute implements NativeCommand {
     }
 
     private void console(MessageReceiver caller, String[] args) {
-        Player target = Canary.getServer().matchPlayer(args[1]);
+        Player target = Canary.getServer().matchPlayer(args[0]);
 
         if (target != null) {
             if (target.isMuted()) {
@@ -36,12 +37,12 @@ public class Mute implements NativeCommand {
             }
         }
         else {
-            caller.notice(Translator.translateAndFormat("unknown player", args[1]));
+            caller.notice(Translator.translateAndFormat("unknown player", args[0]));
         }
     }
 
     private void player(Player player, String[] args) {
-        Player target = Canary.getServer().matchPlayer(args[1]);
+        Player target = Canary.getServer().matchPlayer(args[0]);
 
         if (target != null) {
             if (target.isMuted()) {
@@ -54,7 +55,7 @@ public class Mute implements NativeCommand {
             }
         }
         else {
-            player.notice(Translator.translateAndFormat("unknown player", args[1]));
+            player.notice(Translator.translateAndFormat("unknown player", args[0]));
         }
     }
 

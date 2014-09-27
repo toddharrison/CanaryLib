@@ -3,7 +3,6 @@ package net.canarymod.commandsys.commands.system;
 import net.canarymod.Canary;
 import net.canarymod.Translator;
 import net.canarymod.chat.MessageReceiver;
-import net.canarymod.commandsys.CommandException;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.exceptions.InvalidPluginException;
 import net.canarymod.exceptions.PluginLoadFailedException;
@@ -15,9 +14,9 @@ import net.canarymod.logger.Logman;
  * @author Chris (damagefilter)
  */
 public class PluginCommand implements NativeCommand {
-    private boolean disable;
-    private boolean reload;
-    private boolean permanent = false;
+    private final boolean disable;
+    private final boolean reload;
+    private final boolean permanent = false;
 
     public PluginCommand(boolean disable, boolean reload) {
         this.reload = reload;
@@ -25,8 +24,7 @@ public class PluginCommand implements NativeCommand {
     }
 
     public void execute(MessageReceiver caller, String[] parameters) {
-        checkConditions(parameters);
-        String plugin = parameters[parameters.length - 1];
+        String plugin = parameters[0];
 
         if (reload) {
             reload(caller, plugin);
@@ -61,7 +59,6 @@ public class PluginCommand implements NativeCommand {
     }
 
     private void enable(MessageReceiver caller, String plugin) {
-        // TODO: Take into consideration the permanent value!
         try {
             if (Canary.manager().enablePlugin(plugin)) {
                 caller.notice(Translator.translateAndFormat("plugin enabled", plugin));
@@ -98,54 +95,6 @@ public class PluginCommand implements NativeCommand {
      */
     private boolean getPermanentParameter(String[] params) {
         return params[params.length - 2].equalsIgnoreCase("-p");
-    }
-
-    /**
-     * Analyze the command input and set the disable, permanent and reload booleans accordingly
-     *
-     * @param params
-     */
-    private void checkConditions(String[] params) {
-        if (params[0].toLowerCase().startsWith("plugin", 1)) {
-            if (params.length == 4) {
-                // we have a permanent condition (still check if the flag is right!)
-                this.permanent = getPermanentParameter(params);
-            }
-            if (params[1].equalsIgnoreCase("reload")) {
-                reload = true;
-                disable = false;
-            }
-            else if (params[1].equalsIgnoreCase("enable")) {
-                disable = false;
-                reload = false;
-            }
-            else {
-                disable = true;
-                reload = false;
-            }
-        }
-        else {
-            if (params.length == 3) {
-                // we have a permanent condition (still check if the flag is right!)
-                this.permanent = getPermanentParameter(params);
-            }
-            if (params[0].toLowerCase().contains("reloadplugin")) {
-                reload = true;
-                disable = false;
-            }
-            else if (params[0].toLowerCase().contains("enableplugin")) {
-                disable = false;
-                reload = false;
-            }
-            else if (params[0].toLowerCase().contains("disableplugin")) {
-                disable = true;
-                reload = false;
-            }
-            else {
-                throw new CommandException("Found invalid command structure! Should be a plugin command. But command is " + params[0]);
-            }
-
-        }
     }
 
 }

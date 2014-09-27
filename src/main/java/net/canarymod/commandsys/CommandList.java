@@ -361,7 +361,11 @@ public class CommandList implements CommandListener {
     public void groupParent(MessageReceiver caller, String[] parameters) {
         natives.get("groupmod_parent").execute(caller, parameters);
     }
-    // TODO: TABCOMPLETE ^
+
+    @TabComplete(commands = {"groupmod parent"})
+    public List<String> groupmodParentTabComplete(MessageReceiver caller, String[] parameters) {
+        return parameters.length == 1 || parameters.length == 2 ? matchToGroup(parameters) : null;
+    }
 
     @TabComplete(commands = {"groupmod permissions list", "groupmod permission flush", "groupmod remove", "groupmod check", "groupmod rename", "groupmod prefix"})
     public List<String> matchToGroupTabComplete(MessageReceiver caller, String[] parameters) {
@@ -470,135 +474,180 @@ public class CommandList implements CommandListener {
             description = "playermod permission add info",
             permissions = {"canary.command.playermod.permissions"},
             toolTip = "/playermod permission add <player> <path>:[value]",
-            min = 3
+            min = 2,
+            version = 2
     )
     public void playerPermissionsAdd(MessageReceiver caller, String[] parameters) {
         natives.get("playermod_perms_add").execute(caller, parameters);
     }
 
-    @Command(aliases = {"remove"},
+    @Command(
+            aliases = {"remove"},
             parent = "playermod.permission",
             helpLookup = "playermod permission remove",
             description = "playermod permission remove info",
-            permissions = {"canary.command.super.playermod.permissions"},
+            permissions = {"canary.command.playermod.permissions"},
             toolTip = "/playermod permission remove <player> <path>",
-            min = 3)
+            min = 2,
+            version = 2
+    )
     public void playerPermissionsRemove(MessageReceiver caller, String[] parameters) {
         natives.get("playermod_perms_remove").execute(caller, parameters);
     }
 
-    @Command(aliases = {"check"},
+    @TabComplete(commands = {"playermod permission remove"})
+    public List<String> playermodPermissionRemove(MessageReceiver caller, String[] parameters) {
+        return parameters.length == 1 ? matchToKnownPlayer(parameters)
+                : parameters.length == 2 ? matchToPlayerPermission(Canary.getServer().matchKnownPlayer(parameters[1]), parameters)
+                : null;
+    }
+
+    @Command(
+            aliases = {"check"},
             parent = "playermod.permission",
             helpLookup = "playermod permission check",
             description = "playermod permission check info",
-            permissions = {"canary.command.super.playermod.permissions"},
+            permissions = {"canary.command.playermod.permissions"},
             toolTip = "/playermod permission check <player> <path>",
-            min = 3)
+            min = 2,
+            version = 2
+    )
     public void playerPermissionsCheck(MessageReceiver caller, String[] parameters) {
         natives.get("playermod_perms_check").execute(caller, parameters);
     }
 
-    @Command(aliases = {"list"},
+    @Command(
+            aliases = {"list"},
             parent = "playermod.permission",
             helpLookup = "playermod permission list",
             description = "playermod permission list info",
-            permissions = {"canary.command.super.playermod.permissions"},
+            permissions = {"canary.command.playermod.permissions"},
             toolTip = "/playermod permission list <player>",
-            min = 2)
+            version = 2
+    )
     public void playerPermissionsList(MessageReceiver caller, String[] parameters) {
         natives.get("playermod_perms_list").execute(caller, parameters);
     }
 
-    @Command(aliases = {"prefix", "color"},
+    @Command(
+            aliases = {"prefix", "color"},
             parent = "playermod",
             helpLookup = "playermod prefix",
             description = "playermod prefix info",
-            permissions = {"canary.command.super.playermod.prefix"},
+            permissions = {"canary.command.playermod.prefix"},
             toolTip = "/playermod prefix <name> <prefix>",
-            min = 2)
+            version = 2
+    )
     public void playerPrefix(MessageReceiver caller, String[] parameters) {
         natives.get("playermod_prefix").execute(caller, parameters);
     }
 
-    @Command(aliases = {"remove", "delete"},
+    @Command(
+            aliases = {"remove", "delete"},
             parent = "playermod",
             helpLookup = "playermod remove",
             description = "playermod remove info",
-            permissions = {"canary.command.super.playermod.remove"},
+            permissions = {"canary.command.playermod.remove"},
             toolTip = "/playermod remove <name>",
-            min = 2)
+            version = 2
+    )
     public void playerRemove(MessageReceiver caller, String[] parameters) {
         natives.get("playermod_remove").execute(caller, parameters);
     }
 
-    @Command(aliases = {"group"},
+    @Command(
+            aliases = {"group"},
             parent = "playermod",
             helpLookup = "playermod group",
             description = "playermod group info",
-            permissions = {"canary.command.super.playermod.group"},
-            toolTip = "/playermod group <list|check|set|add> [arguments...] [--help]",
-            min = 1)
+            permissions = {"canary.command.playermod.group"},
+            toolTip = "/playermod group <list|check|set|add> [arguments...] [--help]"
+    )
     public void playerGroup(MessageReceiver caller, String[] parameters) {
         Canary.help().getHelp(caller, "playermod group");
     }
 
-    @Command(aliases = {"set"},
+    @TabComplete(commands = {"playermod permission remove"})
+    public List<String> playerGroupTabComplete(MessageReceiver caller, String[] parameters) {
+        return parameters.length == 1 ? matchTo(parameters, new String[]{"list", "check", "set", "add"}) : null;
+    }
+
+    @Command(
+            aliases = {"set"},
             parent = "playermod.group",
             helpLookup = "playermod group set",
             description = "playermod group set info",
-            permissions = {"canary.command.super.playermod.group.set"},
+            permissions = {"canary.command.playermod.group.set"},
             toolTip = "/playermod group set <player> <group> [--help]",
-            min = 2)
+            version = 2
+    )
     public void playerGroupSet(MessageReceiver caller, String[] parameters) {
         natives.get("playermod_group_set").execute(caller, parameters);
     }
 
-    @Command(aliases = {"add"},
+    @Command(
+            aliases = {"add"},
             parent = "playermod.group",
             helpLookup = "playermod group add",
             description = "playermod group add info",
-            permissions = {"canary.command.super.playermod.group.add"},
+            permissions = {"canary.command.playermod.group.add"},
             toolTip = "/playermod group add <player> <group> [--help]",
-            min = 2)
+            version = 2
+    )
     public void playerGroupAdd(MessageReceiver caller, String[] parameters) {
         natives.get("playermod_group_add").execute(caller, parameters);
     }
 
-    @Command(aliases = {"list"},
+    @Command(
+            aliases = {"list"},
             parent = "playermod.group",
             helpLookup = "playermod group list",
             description = "playermod group list info",
-            permissions = {"canary.command.super.playermod.group.list"},
+            permissions = {"canary.command.playermod.group.list"},
             toolTip = "/playermod group list <player> [--help]",
-            min = 2)
+            version = 2
+    )
     public void playerGroupList(MessageReceiver caller, String[] parameters) {
         natives.get("playermod_group_list").execute(caller, parameters);
     }
 
-    @Command(aliases = {"check"},
+    @Command(
+            aliases = {"check"},
             parent = "playermod.group",
             helpLookup = "playermod group check",
             description = "playermod group check info",
-            permissions = {"canary.command.super.playermod.group.check"},
+            permissions = {"canary.command.playermod.group.check"},
             toolTip = "/playermod group check <player> <group> [--help]",
-            min = 3)
+            min = 2,
+            version = 2
+    )
     public void playerGroupCheck(MessageReceiver caller, String[] parameters) {
         natives.get("playermod_group_check").execute(caller, parameters);
     }
 
-    @Command(aliases = {"remove"},
+    @Command(
+            aliases = {"remove"},
             parent = "playermod.group",
             helpLookup = "playermod group remove",
             description = "playermod group remove info",
-            permissions = {"canary.command.super.playermod.group.remove"},
+            permissions = {"canary.command.playermod.group.remove"},
             toolTip = "/playermod group remove <player> <group> [--help]",
-            min = 3)
+            min = 2,
+            version = 2
+    )
     public void playerGroupRemove(MessageReceiver caller, String[] parameters) {
         natives.get("playermod_group_remove").execute(caller, parameters);
     }
+
+    @TabComplete(commands = {"playermod group add", "playermod group remove", "playermod group set"})
+    public List<String> playermodGroupAddRemoveSet(MessageReceiver caller, String[] parameters) {
+        return parameters.length == 1 ? matchToKnownPlayer(parameters)
+                : parameters.length == 2 ? matchToGroup(parameters)
+                : null;
+    }
     /* playermod end */
 
-
+    /* system */
     @Command(
             aliases = {"ban"},
             description = "ban info",
@@ -611,60 +660,75 @@ public class CommandList implements CommandListener {
         natives.get("ban").execute(caller, parameters);
     }
 
-    @Command(
-            aliases = {"unban"},
-            description = "unban info",
-            permissions = {"canary.command.unban"},
-            toolTip = "/unban <player>",
-            min = 1,
-            version = 2
-    )
-    public void unbanCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("unban").execute(caller, parameters);
+    @TabComplete(commands = {"ban"})
+    public List<String> banTabComplete(MessageReceiver caller, String[] parameters) {
+        return parameters.length == 1 ? matchToKnownPlayer(parameters)
+                : parameters.length >= 2 && parameters[parameters.length - 2].matches("\\d+") ? matchTo(parameters, new String[]{"hour", "day", "week", "month"})
+                : null;
     }
 
-    @Command(aliases = {"createvanilla", "makevanilla"},
+    @Command(
+            aliases = {"canarymod", "version"},
+            description = "CanaryMod Information",
+            permissions = {"canary.command.canarymod"},
+            toolTip = "/canarymod"
+    )
+    public void canarymodInfoCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("canarymod").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = {"createvanilla", "makevanilla"},
             description = "makevanilla info",
-            permissions = {"canary.super.createvanilla", "canary.command.super.createvanilla"},
+            permissions = {"canary.command.createvanilla"},
             toolTip = "/createvanilla <defaultworld>",
-            min = 2)
+            version = 2
+    )
     public void createVanillaCommand(MessageReceiver caller, String[] parameters) {
         natives.get("createvanilla").execute(caller, parameters);
     }
 
-    @Command(aliases = {"help"},
+    @Command(
+            aliases = {"deop"},
+            description = "Takes Op from a Player",
+            permissions = {"canary.command.deop"}, // Really no point, Requires Op
+            toolTip = "/deop <player>",
+            version = 2
+    )
+    public void deop(MessageReceiver caller, String[] args) {
+        natives.get("deop").execute(caller, args);
+    }
+
+    @TabComplete(commands = {"deop"})
+    public List<String> deopTabComplete(MessageReceiver caller, String[] args) {
+        return args.length == 1 ? matchTo(args, Canary.ops().getOps()) : null;
+    }
+
+    @Command(
+            aliases = {"help"},
             description = "help info",
             permissions = {"canary.command.help"},
-            toolTip = "/help [search terms] [page]",
-            min = 1)
+            toolTip = "/help [search terms] [page]"
+    )
     public void helpCommand(MessageReceiver caller, String[] parameters) {
         natives.get("help").execute(caller, parameters);
     }
 
-    @Command(aliases = {"home"},
-            description = "home info",
-            permissions = {"canary.command.teleport.home"},
-            toolTip = "/home [playername]",
-            min = 0,
-            max = 1,
-            version = 2
-    )
-    public void homeCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("home").execute(caller, parameters);
-    }
-
-    @Command(aliases = {"ipban"},
+    @Command(
+            aliases = {"ipban"},
             description = "ipban info",
-            permissions = {"canary.super.ipban", "canary.command.super.ipban"},
+            permissions = {"canary.command.ipban"},
             toolTip = "/ipban <player> [reason] [#number hour|day|week|month]",
-            min = 2)
+            min = 2
+    )
     public void ipBanCommand(MessageReceiver caller, String[] parameters) {
         natives.get("ipban").execute(caller, parameters);
     }
 
-    @Command(aliases = {"kick"},
+    @Command(
+            aliases = {"kick"},
             description = "kick info",
-            permissions = {"canary.super.kick", "canary.command.super.kick"},
+            permissions = {"canary.command.kick"},
             toolTip = "/kick <playername> [reason]",
             min = 1,
             version = 2
@@ -673,7 +737,8 @@ public class CommandList implements CommandListener {
         natives.get("kick").execute(caller, parameters);
     }
 
-    @Command(aliases = {"kit"},
+    @Command(
+            aliases = {"kit"},
             description = "kit info",
             permissions = {"canary.command.player.kit"},
             toolTip = "/kit <give|create|list> <name> <use delay> [G|P Groups|Players]",
@@ -683,271 +748,49 @@ public class CommandList implements CommandListener {
         natives.get("kit").execute(caller, parameters);
     }
 
-    @Command(aliases = {"listplugins", "plugins"},
+    @TabComplete(commands = {"kit"})
+    public List<String> kitTabComplete(MessageReceiver caller, String[] parameters) {
+        switch (parameters.length) {
+            case 1:
+                return matchTo(parameters, new String[]{"give", "create", "list"});
+            case 2:
+                if (parameters[1].equals("give")) {
+                    return matchToKitNames(parameters, caller);
+                }
+            default:
+                return null;
+        }
+    }
+
+    @Command(
+            aliases = {"listplugins", "plugins"},
             description = "lplugin info",
             permissions = {"canary.command.plugin.list"},
-            toolTip = "/listplugins")
+            toolTip = "/listplugins"
+    )
     public void listPluginsCommand(MessageReceiver caller, String[] parameters) {
         natives.get("listplugins").execute(caller, parameters);
     }
 
-    @Command(aliases = {"motd"},
+    @Command(
+            aliases = {"motd"},
             description = "motd info",
             permissions = {"canary.command.motd"},
-            toolTip = "/motd",
-            min = 1)
+            toolTip = "/motd"
+    )
     public void motdCommand(MessageReceiver caller, String[] parameters) {
         natives.get("motd").execute(caller, parameters);
     }
 
-    @Command(aliases = {"mute", "stfu"},
+    @Command(
+            aliases = {"mute", "stfu"},
             description = "mute info",
-            permissions = {"canary.super.mute", "canary.command.super.mute"},
+            permissions = {"canary.command.mute"},
             toolTip = "/mute <playername>",
-            min = 2
+            version = 2
     )
     public void muteCommand(MessageReceiver caller, String[] parameters) {
         natives.get("mute").execute(caller, parameters);
-    }
-
-    @Command(aliases = {"playerlist", "players", "who"},
-            description = "who info",
-            permissions = {"canary.command.player.list"},
-            toolTip = "/who")
-    public void playerListCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("playerlist").execute(caller, parameters);
-    }
-
-    @Command(aliases = {"enableplugin"},
-            description = "plugin enable info",
-            permissions = {"canary.command.plugin.enable"},
-            toolTip = "/enableplugin <plugin>",
-            min = 2)
-    public void enablePluginCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("enableplugin").execute(caller, parameters);
-    }
-
-    @Command(aliases = {"disableplugin"},
-            description = "plugin disable info",
-            permissions = {"canary.command.plugin.disable"},
-            toolTip = "/disableplugin <plugin>",
-            min = 2
-    )
-    public void disablePluginCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("disableplugin").execute(caller, parameters);
-    }
-
-    @Command(aliases = {"reloadplugin"},
-            description = "plugin reload info",
-            permissions = {"canary.command.plugin.reload"},
-            toolTip = "/reloadplugin <plugin>",
-            min = 2
-    )
-    public void reloadPluginCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("reloadplugin").execute(caller, parameters);
-    }
-
-    @Command(aliases = {"reload"},
-            description = "reload info",
-            permissions = {"canary.super.reload", "canary.command.super.reload"},
-            toolTip = "/reload")
-    public void reloadCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("reload").execute(caller, parameters);
-    }
-
-    @Command(aliases = {"sethome"},
-            description = "sethome info",
-            permissions = {"canary.command.teleport.sethome"},
-            toolTip = "/sethome [player]",
-            min = 1,
-            max = 2
-    )
-    public void setHomeCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("sethome").execute(caller, parameters);
-    }
-
-    @Command(aliases = {"warp"},
-            description = "warp info",
-            permissions = {"canary.command.warp.use"},
-            toolTip = "/warp <name>",
-            min = 2,
-            max = 2
-    )
-    public void warpUse(MessageReceiver caller, String[] parameters) {
-        natives.get("warp").execute(caller, parameters);
-    }
-
-    @Command(aliases = {"setwarp"},
-            description = "setwarp info",
-            permissions = {"canary.command.warp.set"},
-            toolTip = "/setwarp <name> [G <group>|P <player>]",
-            min = 2)
-    public void setWarpCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("setwarp").execute(caller, parameters);
-    }
-
-    @Command(aliases = {"listwarps", "warps"},
-            description = "lwarps info",
-            permissions = {"canary.command.warp.list"},
-            toolTip = "/listwarps")
-    public void listWarpsCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("listwarps").execute(caller, parameters);
-    }
-
-    @Command(aliases = {"delwarp", "removewarp"},
-            description = "delwarp info",
-            permissions = {"canary.command.warp.remove"},
-            toolTip = "/delwarp <name>",
-            min = 2
-    )
-    public void delWarpCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("delwarp").execute(caller, parameters);
-    }
-
-    @Command(aliases = {"spawn"},
-            description = "spawn info",
-            permissions = {"canary.command.teleport.spawn"},
-            toolTip = "/spawn [worldname] [player]",
-            min = 1,
-            max = 3
-    )
-    public void spawnCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("spawn").execute(caller, parameters);
-    }
-
-    @Command(aliases = {"stop", "shutdown"},
-            description = "stop info",
-            permissions = {"canary.super.command.stop"},
-            toolTip = "/stop")
-    public void stopCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("stop").execute(caller, parameters);
-    }
-
-    @Command(aliases = {"whitelist", "wlist", "wl"},
-            description = "whitelist info",
-            permissions = {"canary.command.super.whitelist"},
-            toolTip = "/whitelist <add|remove> <playername>",
-            min = 3
-    )
-    public void whitelistCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("whitelist").execute(caller, parameters);
-    }
-
-    @Command(aliases = {"reservelist", "rlist", "rl"},
-            description = "reservelist info",
-            permissions = {"canary.command.super.reservelist"},
-            toolTip = "/reservelist <add|remove> <playername>",
-            min = 3
-    )
-    public void reservelistCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("reservelist").execute(caller, parameters);
-    }
-
-    @Command(aliases = {"canarymod", "version"},
-            description = "CanaryMod Information",
-            permissions = {"canary.command.canarymod"},
-            toolTip = "/canarymod")
-    public void canarymodInfoCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("canarymod").execute(caller, parameters);
-    }
-
-    @Command(aliases = {"playerinfo", "pinfo"},
-            description = "Player Information",
-            permissions = {"canary.command.player.information"},
-            toolTip = "/playerinfo [player]"
-    )
-    public void playerinfo(MessageReceiver caller, String[] parameters) {
-        natives.get("playerinfo").execute(caller, parameters);
-    }
-
-    @Command(aliases = {"sysinfo"},
-            description = "System Information",
-            permissions = {"canary.command.sysinfo"},
-            toolTip = "/sysinfo")
-    public void sysinfo(MessageReceiver caller, String[] parameters) {
-        natives.get("sysinfo").execute(caller, parameters);
-    }
-
-    @Command(aliases = {"uptime"},
-            description = "server uptime",
-            permissions = {"canary.command.uptime"},
-            toolTip = "/uptime")
-    public void uptime(MessageReceiver caller, String[] parameters) {
-        natives.get("uptime").execute(caller, parameters);
-    }
-
-    @Command(
-            aliases = {"loadworld"},
-            description = "loads a world",
-            permissions = {"canary.commmand.world.load"},
-            toolTip = "/loadworld <worldName> [dimensionType]",
-            min = 2
-    )
-    public void loadWorld(MessageReceiver caller, String[] args) {
-        natives.get("loadworld").execute(caller, args);
-    }
-
-    @Command(
-            aliases = {"createworld"},
-            description = "creates a world",
-            permissions = {"canary.command.world.create"},
-            toolTip = "/createworld <name> [seed] [dimensionType] [worldType]",
-            min = 2,
-            max = 5
-    )
-    public void createWorld(MessageReceiver caller, String[] args) {
-        natives.get("createworld").execute(caller, args);
-    }
-
-    @Command(
-            aliases = {"mob"},
-            description = "Gets a Mob count or destroys mobs within a radius.",
-            permissions = {"canary.command.mob"},
-            toolTip = "/mob count [world [dimension]] or /mob remove <h|p|t|u|a> [radius] [world [dimension]]",
-            min = 1,
-            version = 2
-    )
-    public void mob(MessageReceiver caller, String[] args) {
-        Canary.help().getHelp(caller, "mob");
-    }
-
-    @Command(
-            aliases = {"clear"},
-            parent = "mob",
-            description = "Destroys mobs within a radius.",
-            permissions = {"canary.command.mob.clear"},
-            toolTip = "/mob clear <h|p|t|u|a> [radius] [world <dimension>]  NOTE: (h = Hostiles p = Passives t = Tamed u = Utility (Like Items) and a = all)",
-            helpLookup = "mob clear",
-            min = 1,
-            version = 2
-    )
-    public void mobclear(MessageReceiver caller, String[] args) {
-        natives.get("mobclear").execute(caller, args);
-    }
-
-    @Command(
-            aliases = {"count"},
-            parent = "mob",
-            description = "Gets a Mob count.",
-            permissions = {"canary.command.mob.count"},
-            toolTip = "/mob count [world]",
-            min = 0,
-            version = 2
-    )
-    public void mobcount(MessageReceiver caller, String[] args) {
-        natives.get("mobcount").execute(caller, args);
-    }
-
-    @Command(
-            aliases = {"deleteworld"},
-            description = "Deletes a world",
-            permissions = {"canary.command.deleteworld"},
-            toolTip = "/deleteworld <world_fqName>",
-            min = 1,
-            version = 2
-    )
-    public void deleteworld(MessageReceiver caller, String[] args) {
-        natives.get("deleteworld").execute(caller, args);
     }
 
     @Command(
@@ -962,17 +805,6 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"deop"},
-            description = "Takes Op from a Player",
-            permissions = {"canary.command.deop"}, // Really no point, Requires Op
-            toolTip = "/deop <player>",
-            version = 2
-    )
-    public void deop(MessageReceiver caller, String[] args) {
-        natives.get("deop").execute(caller, args);
-    }
-
-    @Command(
             aliases = {"oplist"},
             description = "Displays a list of Operators",
             permissions = {"canary.command.oplist"}, // Really no point, Requires Op
@@ -984,7 +816,154 @@ public class CommandList implements CommandListener {
         natives.get("oplist").execute(caller, args);
     }
 
-    /* START: Vanilla command wrappers... */
+    @Command(aliases = {"playerinfo", "pinfo"},
+            description = "Player Information",
+            permissions = {"canary.command.player.information"},
+            toolTip = "/playerinfo [player]"
+    )
+    public void playerinfo(MessageReceiver caller, String[] parameters) {
+        natives.get("playerinfo").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = {"playerlist", "players", "who"},
+            description = "who info",
+            permissions = {"canary.command.player.list"},
+            toolTip = "/who"
+    )
+    public void playerListCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("playerlist").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = {"enableplugin"},
+            description = "plugin enable info",
+            permissions = {"canary.command.plugin.enable"},
+            toolTip = "/enableplugin <plugin>",
+            version = 2
+    )
+    public void enablePluginCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("enableplugin").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = {"disableplugin"},
+            description = "plugin disable info",
+            permissions = {"canary.command.plugin.disable"},
+            toolTip = "/disableplugin <plugin>",
+            version = 2
+    )
+    public void disablePluginCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("disableplugin").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = {"reloadplugin"},
+            description = "plugin reload info",
+            permissions = {"canary.command.plugin.reload"},
+            toolTip = "/reloadplugin <plugin>",
+            version = 2
+    )
+    public void reloadPluginCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("reloadplugin").execute(caller, parameters);
+    }
+
+    @TabComplete(commands = {"disableplugin", "reloadplugin"})
+    public List<String> matchPluginName(MessageReceiver caller, String[] args) {
+        return args.length == 1 ? matchTo(args, Canary.manager().getPluginNames().toArray(new String[0])) : null;
+    }
+
+    @Command(
+            aliases = {"reload"},
+            description = "reload info",
+            permissions = {"canary.command.reload"},
+            toolTip = "/reload")
+    public void reloadCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("reload").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = {"reservelist", "rlist", "rl"},
+            description = "reservelist info",
+            permissions = {"canary.command.reservelist"},
+            toolTip = "/reservelist <add|remove> <playername>",
+            min = 2,
+            version = 2
+    )
+    public void reservelistCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("reservelist").execute(caller, parameters);
+    }
+
+    @TabComplete(commands = {"reservelist"})
+    public List<String> reservelistTabComplete(MessageReceiver caller, String[] parameters) {
+        return parameters.length == 1 ? matchTo(parameters, new String[]{"add", "remove"})
+                : parameters.length == 2 && parameters[0].equals("remove") ? matchTo(parameters, Canary.reservelist().getReservations())
+                : null;
+    }
+
+    @Command(
+            aliases = {"stop", "shutdown"},
+            description = "stop info",
+            permissions = {"canary.command.stop"},
+            toolTip = "/stop"
+    )
+    public void stopCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("stop").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = {"sysinfo"},
+            description = "System Information",
+            permissions = {"canary.command.sysinfo"},
+            toolTip = "/sysinfo"
+    )
+    public void sysinfo(MessageReceiver caller, String[] parameters) {
+        natives.get("sysinfo").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = {"unban"},
+            description = "unban info",
+            permissions = {"canary.command.unban"},
+            toolTip = "/unban <player>",
+            min = 1,
+            version = 2
+    )
+    public void unbanCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("unban").execute(caller, parameters);
+    }
+
+    @TabComplete(commands = {"unban"})
+    public List<String> unbanTabComplete(MessageReceiver caller, String[] parameters) {
+        return parameters.length == 1 ? matchToBannedSubject(parameters) : null;
+    }
+
+    @Command(
+            aliases = {"uptime"},
+            description = "server uptime",
+            permissions = {"canary.command.uptime"},
+            toolTip = "/uptime"
+    )
+    public void uptime(MessageReceiver caller, String[] parameters) {
+        natives.get("uptime").execute(caller, parameters);
+    }
+
+    @Command(aliases = {"whitelist", "wlist", "wl"},
+            description = "whitelist info",
+            permissions = {"canary.command.whitelist"},
+            toolTip = "/whitelist <add|remove> <playername>",
+            min = 3
+    )
+    public void whitelistCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("whitelist").execute(caller, parameters);
+    }
+
+    @TabComplete(commands = {"whitelist"})
+    public List<String> whitelistTabComplete(MessageReceiver caller, String[] parameters) {
+        return parameters.length == 1 ? matchTo(parameters, new String[]{"add", "remove"}) : null;
+    }
+
+    /* vanilla start */
     @Command(
             aliases = {"achievement"},
             description = "Gives a player an achievement or increases a statistic.",
@@ -1355,16 +1334,92 @@ public class CommandList implements CommandListener {
     public void xp(MessageReceiver caller, String[] args) {
         natives.get("xp").execute(caller, args);
     }
-    /* END: Vanilla command wrappers */
+    /* vanilla end */
 
-    @TabComplete(commands = {"playerinfo", "home", "op"})
-    public List<String> matchKnownPlayer(MessageReceiver caller, String[] args) {
-        return args.length == 1 ? matchToKnownPlayer(args) : null;
+    @Command(
+            aliases = {"home"},
+            description = "home info",
+            permissions = {"canary.command.teleport.home"},
+            toolTip = "/home [playername]",
+            min = 0,
+            max = 1,
+            version = 2
+    )
+    public void homeCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("home").execute(caller, parameters);
     }
 
-    @TabComplete(commands = {"kick", "kill", "mute", "god"})
-    public List<String> matchOnlinePlayer(MessageReceiver caller, String[] args) {
-        return args.length == 1 ? matchToOnlinePlayer(args) : null;
+    @Command(
+            aliases = {"sethome"},
+            description = "sethome info",
+            permissions = {"canary.command.teleport.sethome"},
+            toolTip = "/sethome [player]",
+            min = 1,
+            max = 2
+    )
+    public void setHomeCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("sethome").execute(caller, parameters);
+    }
+
+    @Command(aliases = {"spawn"},
+            description = "spawn info",
+            permissions = {"canary.command.teleport.spawn"},
+            toolTip = "/spawn [worldname] [player]",
+            min = 1,
+            max = 3
+    )
+    public void spawnCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("spawn").execute(caller, parameters);
+    }
+
+    @TabComplete(commands = {"spawn"})
+    public List<String> matchWorldNamePlayerName(MessageReceiver caller, String[] args) {
+        return args.length == 1 ? matchToKnownWorld(args)
+                : args.length == 2 ? matchToOnlinePlayer(args)
+                : null;
+    }
+
+    @Command(
+            aliases = {"listwarps", "warps"},
+            description = "lwarps info",
+            permissions = {"canary.command.warp.list"},
+            toolTip = "/listwarps"
+    )
+    public void listWarpsCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("listwarps").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = {"delwarp", "removewarp"},
+            description = "delwarp info",
+            permissions = {"canary.command.warp.remove"},
+            toolTip = "/delwarp <name>",
+            version = 2
+    )
+    public void delWarpCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("delwarp").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = {"setwarp"},
+            description = "setwarp info",
+            permissions = {"canary.command.warp.set"},
+            toolTip = "/setwarp <name> [G <group>|P <player>]",
+            version = 2
+    )
+    public void setWarpCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("setwarp").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = {"warp"},
+            description = "warp info",
+            permissions = {"canary.command.warp.use"},
+            toolTip = "/warp <name>",
+            version = 2
+    )
+    public void warpUse(MessageReceiver caller, String[] parameters) {
+        natives.get("warp").execute(caller, parameters);
     }
 
     @TabComplete(commands = {"warp", "delwarp"})
@@ -1372,30 +1427,40 @@ public class CommandList implements CommandListener {
         return args.length == 1 ? matchToWarpNames(args, caller) : null;
     }
 
-    @TabComplete(commands = {"disableplugin", "reloadplugin"})
-    public List<String> matchPluginName(MessageReceiver caller, String[] args) {
-        return args.length == 1 ? matchTo(args, Canary.manager().getPluginNames().toArray(new String[0])) : null;
+    @Command(
+            aliases = {"createworld"},
+            description = "creates a world",
+            permissions = {"canary.command.world.create"},
+            toolTip = "/createworld <name> [seed] [dimensionType] [worldType]",
+            max = 5,
+            version = 2
+    )
+    public void createWorld(MessageReceiver caller, String[] args) {
+        natives.get("createworld").execute(caller, args);
     }
 
-    @TabComplete(commands = {"spawn"}) // soooo....
-    public List<String> matchWorldNamePlayerName(MessageReceiver caller, String[] args) {
-        return args.length == 1 ? matchToKnownWorld(args)
-                : args.length == 2 ? matchToOnlinePlayer(args)
-                : null;
+    @TabComplete(commands = {"createworld"})
+    public List<String> createWorldTabComplete(MessageReceiver caller, String[] args) {
+        switch (args.length) {
+            case 3:
+                return matchToDimension(args);
+            case 4:
+                return matchToWorldType(args);
+            default:
+                return null;
+        }
     }
 
-    @TabComplete(commands = {"loadworld"}) // aherm
-    public List<String> matchWorldNameDimension(MessageReceiver caller, String[] args) {
-        return args.length == 1 ? matchToKnownWorld(args)
-                : args.length == 2 ? matchToDimension(args)
-                : null;
-    }
-
-    @TabComplete(commands = "createworld") // *cough*
-    public List<String> matchPast2DimensionTypeWorldType(MessageReceiver caller, String[] args) {
-        return args.length == 3 ? matchToDimension(args)
-                : args.length == 4 ? matchToWorldType(args)
-                : null;
+    @Command(
+            aliases = {"deleteworld"},
+            description = "Deletes a world",
+            permissions = {"canary.command.deleteworld"},
+            toolTip = "/deleteworld <world_fqName>",
+            min = 1,
+            version = 2
+    )
+    public void deleteworld(MessageReceiver caller, String[] args) {
+        natives.get("deleteworld").execute(caller, args);
     }
 
     @TabComplete(commands = {"deleteworld"})
@@ -1403,42 +1468,61 @@ public class CommandList implements CommandListener {
         return args.length == 1 ? matchToKnownWorld(args) : null;
     }
 
-    @TabComplete(commands = {"ban"})
-    public List<String> banTabComplete(MessageReceiver caller, String[] parameters) {
-        return parameters.length == 1 ? matchToKnownPlayer(parameters)
-                : parameters.length >= 2 && parameters[parameters.length - 2].matches("\\d+") ? matchTo(parameters, new String[]{"hour", "day", "week", "month"})
+    @Command(
+            aliases = {"loadworld"},
+            description = "loads a world",
+            permissions = {"canary.commmand.world.load"},
+            toolTip = "/loadworld <worldName> [dimensionType]",
+            version = 2
+    )
+    public void loadWorld(MessageReceiver caller, String[] args) {
+        natives.get("loadworld").execute(caller, args);
+    }
+
+    @TabComplete(commands = {"loadworld"})
+    public List<String> matchWorldNameDimension(MessageReceiver caller, String[] args) {
+        return args.length == 1 ? matchToKnownWorld(args)
+                : args.length == 2 ? matchToDimension(args)
                 : null;
     }
 
-    @TabComplete(commands = {"unban"})
-    public List<String> unbanTabComplete(MessageReceiver caller, String[] parameters) {
-        return parameters.length == 1 ? matchToBannedSubject(parameters) : null;
+    @Command(
+            aliases = {"mob"},
+            description = "Gets a Mob count or destroys mobs within a radius.",
+            permissions = {"canary.command.mob"},
+            toolTip = "/mob count [world [dimension]] or /mob remove <h|p|t|u|a> [radius] [world [dimension]]",
+            min = 1,
+            version = 2
+    )
+    public void mob(MessageReceiver caller, String[] args) {
+        Canary.help().getHelp(caller, "mob");
     }
 
-    @TabComplete(commands = {"kit"})
-    public List<String> kitTabComplete(MessageReceiver caller, String[] parameters) {
-        switch (parameters.length) {
-            case 1:
-                return matchTo(parameters, new String[]{"give", "create", "list"});
-            case 2:
-                if (parameters[1].equals("give")) {
-                    return matchToKitNames(parameters, caller);
-                }
-            default:
-                return null;
-        }
+    @Command(
+            aliases = {"clear"},
+            parent = "mob",
+            description = "Destroys mobs within a radius.",
+            permissions = {"canary.command.mob.clear"},
+            toolTip = "/mob clear <h|p|t|u|a> [radius] [world <dimension>]  NOTE: (h = Hostiles p = Passives t = Tamed u = Utility (Like Items) and a = all)",
+            helpLookup = "mob clear",
+            min = 1,
+            version = 2
+    )
+    public void mobclear(MessageReceiver caller, String[] args) {
+        natives.get("mobclear").execute(caller, args);
     }
 
-    @TabComplete(commands = {"whitelist"})
-    public List<String> whitelistTabComplete(MessageReceiver caller, String[] parameters) {
-        return parameters.length == 1 ? matchTo(parameters, new String[]{"add", "remove"}) : null;
-    }
-
-    @TabComplete(commands = {"reservelist"})
-    public List<String> reservelistTabComplete(MessageReceiver caller, String[] parameters) {
-        return parameters.length == 1 ? matchTo(parameters, new String[]{"add", "remove"})
-                : parameters.length == 2 && parameters[0].equals("remove") ? matchTo(parameters, Canary.reservelist().getReservations())
-                : null;
+    @Command(
+            aliases = {"count"},
+            parent = "mob",
+            description = "Gets a Mob count.",
+            permissions = {"canary.command.mob.count"},
+            toolTip = "/mob count [world]",
+            min = 0,
+            version = 2
+    )
+    public void mobcount(MessageReceiver caller, String[] args) {
+        natives.get("mobcount").execute(caller, args);
     }
 
     @TabComplete(commands = {"mob"})
@@ -1451,8 +1535,17 @@ public class CommandList implements CommandListener {
                 : null;
     }
 
-    @TabComplete(commands = {"deop"})
-    public List<String> deopTabComplete(MessageReceiver caller, String[] args) {
-        return args.length == 1 ? matchTo(args, Canary.ops().getOps()) : null;
+    @TabComplete(commands = {"playerinfo", "home", "op", "playermod permission add",
+            "playermod permission check", "playermod prefix", "playermod remove",
+            "playermod group list"
+    })
+    public List<String> matchKnownPlayer(MessageReceiver caller, String[] args) {
+        return args.length == 1 ? matchToKnownPlayer(args) : null;
     }
+
+    @TabComplete(commands = {"kick", "kill", "mute", "god"})
+    public List<String> matchOnlinePlayer(MessageReceiver caller, String[] args) {
+        return args.length == 1 ? matchToOnlinePlayer(args) : null;
+    }
+
 }

@@ -14,13 +14,13 @@ import net.canarymod.warp.Warp;
  */
 public class WarpRemove implements NativeCommand {
     public void execute(MessageReceiver caller, String[] args) {
-        if (Canary.warps().warpExists(args[1])) {
-            Warp target = Canary.warps().getWarp(args[1]);
+        if (Canary.warps().warpExists(args[0])) {
+            Warp target = Canary.warps().getWarp(args[0]);
             Canary.warps().removeWarp(target);
             caller.message(Colors.YELLOW + Translator.translateAndFormat("warp removed", target.getName()));
         }
         else {
-            caller.notice(Translator.translateAndFormat("warp unknown", args[1]));
+            caller.notice(Translator.translateAndFormat("warp unknown", args[0]));
         }
     }
 }

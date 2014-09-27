@@ -2,8 +2,7 @@ package net.canarymod.commandsys.commands.playermod;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
-import net.canarymod.api.OfflinePlayer;
-import net.canarymod.api.entity.living.humanoid.Player;
+import net.canarymod.api.PlayerReference;
 import net.canarymod.chat.Colors;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
@@ -21,25 +20,18 @@ public class PlayerGroupCheck implements NativeCommand {
             Canary.help().getHelp(caller, "playermod group check");
             return;
         }
-        Player target = Canary.getServer().matchPlayer(args[1]);
+        PlayerReference target = Canary.getServer().matchKnownPlayer(args[0]);
 
         if (target == null) {
-            OfflinePlayer oplayer = Canary.getServer().getOfflinePlayer(args[1]);
-            for (Group g : oplayer.getPlayerGroups()) {
-                if (g.getName().equals(args[2])) {
-                    caller.message(Colors.LIGHT_GREEN + args[2] + ": " + Translator.translate("yes"));
-                    return;
-                }
-            }
-            caller.message(Colors.LIGHT_RED + args[2] + ": " + Translator.translate("no"));
+            caller.notice(Translator.translateAndFormat("unknown player", args[0]));
             return;
         }
         for (Group g : target.getPlayerGroups()) {
             if (g.getName().equals(args[2])) {
-                caller.message(Colors.LIGHT_GREEN + args[2] + ": " + Translator.translate("yes"));
+                caller.message(Colors.LIGHT_GREEN + args[1] + ": " + Translator.translate("yes"));
                 return;
             }
         }
-        caller.message(Colors.LIGHT_RED + args[2] + ": " + Translator.translate("no"));
+        caller.message(Colors.LIGHT_RED + args[1] + ": " + Translator.translate("no"));
     }
 }

@@ -1,5 +1,6 @@
 package net.canarymod.permissionsystem;
 
+import net.canarymod.api.PlayerReference;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.backbone.BackbonePermissions;
 import net.canarymod.user.Group;
@@ -54,7 +55,7 @@ public class PermissionManager {
         backbone.removePermission(path, world);
     }
 
-    public void removePlayerPermission(String path, Player player) {
+    public void removePlayerPermission(String path, PlayerReference player) {
         backbone.removePermission(path, player.getName(), player.getWorld().getFqName(), true);
         removePlayerPermission(path, player.getName(), player.getWorld().getFqName());
         player.getPermissionProvider().reload();

@@ -20,8 +20,8 @@ public final class LoadWorldCommand implements NativeCommand {
     public final void execute(MessageReceiver caller, String[] parameters) {
         try {
             WorldManager manage = Canary.getServer().getWorldManager();
-            String worldName = parameters[1];
-            String fqName = parameters[1];
+            String worldName = parameters[0];
+            String fqName = parameters[0];
             DimensionType type = null;
 
             if (matcher.reset(worldName).matches()) {
@@ -29,12 +29,12 @@ public final class LoadWorldCommand implements NativeCommand {
                 worldName = worldName.substring(0, worldName.lastIndexOf('_'));
                 type = DimensionType.fromName(dim);
             }
-            else if (parameters.length > 2) {
-                if (parameters[2].matches("\\d")) {
-                    type = DimensionType.fromId(Integer.parseInt(parameters[2]));
+            else if (parameters.length > 1) {
+                if (parameters[1].matches("\\d")) {
+                    type = DimensionType.fromId(Integer.parseInt(parameters[1]));
                 }
                 else {
-                    type = DimensionType.fromName(parameters[2].toUpperCase());
+                    type = DimensionType.fromName(parameters[1].toUpperCase());
                 }
                 fqName = worldName + "_" + type.getName();
             }
@@ -50,7 +50,7 @@ public final class LoadWorldCommand implements NativeCommand {
                     }
                 }
                 else {
-                    caller.notice("World '" + parameters[1] + "' does not exist...");
+                    caller.notice("World '" + parameters[0] + "' does not exist...");
                 }
             }
             else {
@@ -58,7 +58,7 @@ public final class LoadWorldCommand implements NativeCommand {
             }
         }
         catch (Exception ex) {
-            caller.notice("Failed to load '" + parameters[1] + "'. See console for error.");
+            caller.notice("Failed to load '" + parameters[0] + "'. See console for error.");
         }
     }
 }

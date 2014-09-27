@@ -11,7 +11,7 @@ import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.warp.Warp;
 
 /**
- * Command to warp yourself to a warp     
+ * Command to warp yourself to a warp
  *
  * @author Chris (damagefilter)
  */
@@ -22,7 +22,7 @@ public class WarpUse implements NativeCommand {
         }
         else {
             Player player = (Player) caller;
-            Warp target = Canary.warps().getWarp(args[1]);
+            Warp target = Canary.warps().getWarp(args[0]);
 
             if (target != null) {
                 if (target.warp(player)) {
@@ -34,7 +34,7 @@ public class WarpUse implements NativeCommand {
                     return;
                 }
             }
-            player.notice(Translator.translateAndFormat("warp unknown", args[1]));
+            player.notice(Translator.translateAndFormat("warp unknown", args[0]));
         }
     }
 }

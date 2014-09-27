@@ -19,7 +19,7 @@ public class CreateVanilla implements NativeCommand {
         world = world + "_NORMAL";
 
         if (parameters.length > 1) {
-            world = parameters[1];
+            world = parameters[0];
         }
 
         if (!converter.convert(world)) {

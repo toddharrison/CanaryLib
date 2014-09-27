@@ -15,7 +15,7 @@ import net.canarymod.user.Group;
 public class GroupRename implements NativeCommand {
     // group) rename <foo> <bar>
     public void execute(MessageReceiver caller, String[] args) {
-        if (args[0].equals("--help")) {
+        if (args[args.length - 1].equals("--help")) {
             Canary.help().getHelp(caller, "group rename");
             return;
         }
