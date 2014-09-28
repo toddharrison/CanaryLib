@@ -1,7 +1,5 @@
 package net.canarymod.help;
 
-import java.util.*;
-
 import net.canarymod.Translator;
 import net.canarymod.api.Server;
 import net.canarymod.api.entity.living.humanoid.Player;
@@ -9,6 +7,8 @@ import net.canarymod.chat.Colors;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.CanaryCommand;
 import net.canarymod.commandsys.CommandOwner;
+
+import java.util.*;
 
 /**
  * @author Jos (Jarvix)
@@ -325,10 +325,12 @@ public class HelpManager {
         if (printToolTip) {
             list.add(Colors.LIGHT_GRAY + node.getTooltip());
         }
+        ArrayList<HelpNode> subadded = new ArrayList<HelpNode>();
         for (String sub : node.subCommands) {
             HelpNode subNode = nodes.get(sub);
             if (subNode != null && subNode.canUse(caller)) {
-                if (subNode.isSubCommand() && subNode.getParent().equals(node.getCommand())) {
+                if (subNode.isSubCommand() && subNode.getParent().equals(node.getCommand()) && !subadded.contains(subNode)) {
+                    subadded.add(subNode);
                     list.add("    " + subNode.getPrintableAliases(Colors.ORANGE) + " - " + Colors.YELLOW + subNode.getDescription());
                     if (printToolTip) {
                         list.add("    " + Colors.LIGHT_GRAY + subNode.getTooltip());
@@ -336,6 +338,7 @@ public class HelpManager {
                 }
             }
         }
+        subadded.clear();
     }
 
     private HelpNode getNode(String name) {

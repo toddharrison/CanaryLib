@@ -35,7 +35,6 @@ public class CommandList implements CommandListener {
         HashMap<String, NativeCommand> temp = new HashMap<String, NativeCommand>();
 
         /* groupmod */
-        temp.put("groupmod_base", new GroupBase());
         temp.put("groupmod_add", new GroupCreate());
         temp.put("groupmod_perms_add", new GroupPermissionAdd());
         temp.put("groupmod_perms_remove", new GroupPermissionRemove());
@@ -156,6 +155,7 @@ public class CommandList implements CommandListener {
     /* groupmod start */
     @Command(
             aliases = {"groupmod", "group"},
+            helpLookup = "groupmod",
             description = "groupmod info",
             permissions = {GROUPMOD},
             toolTip = "/groupmod <add|delete|rename|permission|list> [parameters...] [--help]",
@@ -163,7 +163,7 @@ public class CommandList implements CommandListener {
             version = 2
     )
     public void groupBase(MessageReceiver caller, String[] parameters) {
-        natives.get("groupmod_base").execute(caller, parameters);
+        Canary.help().getHelp(caller, "groupmod");
     }
 
     @TabComplete(commands = {"groupmod"})
@@ -843,7 +843,7 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"playerlist", "players", "who"},
+            aliases = {"playerlist", "players", "who", "list"},
             description = "who info",
             permissions = {PLAYER$LIST},
             toolTip = "/who"
