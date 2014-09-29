@@ -155,7 +155,7 @@ public class LineTracer {
     public Block getNextBlock(boolean doAir) {
         Block block = null;
 
-        while (length <= range && !outOfWorld(currentX, currentY, currentZ)) {
+        while ((length <= range) && continueLoop(block)) {
             length += step;
             /* common is the first half of the equation, prevents us from calculating twice */
             double common = (step * Math.sin(Math.toRadians(rotY)));
@@ -167,10 +167,18 @@ public class LineTracer {
             currentX = xOffset + currentX;
             currentY = yOffset + currentY;
             currentZ = zOffset + currentZ;
-            
+
+            if (outOfWorld(currentX, currentY, currentZ)) {
+                currentBlock = block = null;
+                break;
+            }
+
             block = playerLoc.getWorld().getBlockAt(ToolBox.floorToBlock(currentX),ToolBox.floorToBlock(currentY), ToolBox.floorToBlock(currentZ));
 
-            if (block != null && !block.equals(currentBlock) && (doAir && block.isAir())) {
+            if (block != null && !block.equals(currentBlock)) {
+                if (block.isAir() && !doAir) {
+                    continue;
+                }
                 /* set last values to current values */
                 lastBlock = currentBlock;
                 currentBlock = block;
@@ -180,15 +188,30 @@ public class LineTracer {
                 break;
             }
         }
+
+        /* Reset block to null if the block was air and not tracking air */
+        if (block != null && block.isAir() && !doAir) {
+            block = null;
+        }
+
         /* set target block for later */
         if (targetBlock == null) {
             targetBlock = block;
         }
+
         return block;
     }
 
+    /* Checks if loop can continue above */
+    private boolean continueLoop(Block block) {
+        if (block == null) return true;
+        if (currentBlock != null && currentBlock.equals(block)) return true;
+        if (block.isAir()) return true;
+        return false;
+    }
+
     private boolean outOfWorld(double x, double y, double z) {
-        return x < -30000000 || x > 30000000 || y < 0 || y > 256 || z < -30000000 || z > 30000000;
+        return ToolBox.floorToBlock(x) < -30000000 || ToolBox.floorToBlock(x) > 30000000 || ToolBox.floorToBlock(y) < 0 || ToolBox.floorToBlock(y) > 256 || ToolBox.floorToBlock(z) < -30000000 || ToolBox.floorToBlock(z) > 30000000;
     }
 
     /**

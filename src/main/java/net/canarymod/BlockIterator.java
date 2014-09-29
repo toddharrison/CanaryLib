@@ -169,7 +169,7 @@ public class BlockIterator implements Iterator<Block> {
             return tracer.getCurBlock() != null;
         }
         alreadyAdvanced = true; // Need to track if we have advanced or not
-        return tracer.getNextBlock() != null;
+        return tracer.getNextBlock(doAir) != null;
     }
 
     /**
@@ -189,7 +189,7 @@ public class BlockIterator implements Iterator<Block> {
             }
             return tracer.getCurBlock();
         }
-        Block block = tracer.getNextBlock();
+        Block block = tracer.getNextBlock(doAir);
         if (block == null) {
             throw new NoSuchElementException("No more blocks");
         }
