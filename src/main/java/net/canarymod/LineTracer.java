@@ -106,7 +106,6 @@ public class LineTracer {
         last_x = currentX;
         last_y = currentY;
         last_z = currentZ;
-        
     }
 
     /**
@@ -129,9 +128,9 @@ public class LineTracer {
      *         the {@link Block} type id
      */
     public void setTargetBlock(int type) {
-        Block block = getTargetBlock();
-        if (block != null) {
-            playerLoc.getWorld().setBlockAt(block.getX(), block.getY(), block.getZ(), (short) type);
+        if (targetBlock != null) {
+            targetBlock.setTypeId((short) type);
+            targetBlock.update();
         }
     }
 
@@ -142,9 +141,21 @@ public class LineTracer {
      * @return the next {@link Block} or null if none exists
      */
     public Block getNextBlock() {
+        return getNextBlock(false);
+    }
+
+    /**
+     * Returns STEPS forward along line of vision and returns block.
+     *
+     * @param doAir
+     *         set to {@code true} to check air; {@code false} otherwise
+     *
+     * @return the next {@link Block} or null if none exists
+     */
+    public Block getNextBlock(boolean doAir) {
         Block block = null;
-        
-        while ((length <= range) && continueLoop(block)) {
+
+        while (length <= range && !outOfWorld(currentX, currentY, currentZ)) {
             length += step;
             /* common is the first half of the equation, prevents us from calculating twice */
             double common = (step * Math.sin(Math.toRadians(rotY)));
@@ -158,8 +169,8 @@ public class LineTracer {
             currentZ = zOffset + currentZ;
             
             block = playerLoc.getWorld().getBlockAt(ToolBox.floorToBlock(currentX),ToolBox.floorToBlock(currentY), ToolBox.floorToBlock(currentZ));
-            
-            if (block != null && !block.equals(currentBlock) && !block.isAir()) {
+
+            if (block != null && !block.equals(currentBlock) && (doAir && block.isAir())) {
                 /* set last values to current values */
                 lastBlock = currentBlock;
                 currentBlock = block;
@@ -175,13 +186,9 @@ public class LineTracer {
         }
         return block;
     }
-    
-    /* Checks if loop can continue above */
-    private boolean continueLoop(Block block) {
-        if (block == null) return true;
-        if (currentBlock != null && currentBlock.equals(block)) return true;
-        if (block.isAir()) return true;
-        return false;
+
+    private boolean outOfWorld(double x, double y, double z) {
+        return x < -30000000 || x > 30000000 || y < 0 || y > 256 || z < -30000000 || z > 30000000;
     }
 
     /**
@@ -200,8 +207,9 @@ public class LineTracer {
      *         the {@link Block} type id
      */
     public void setCurBlock(int type) {
-        if (getCurBlock() != null) {
-            playerLoc.getWorld().setBlockAt(ToolBox.floorToBlock(currentX), ToolBox.floorToBlock(currentY), ToolBox.floorToBlock(currentZ), (short) type);
+        if (currentBlock != null) {
+            currentBlock.setTypeId((short) type);
+            currentBlock.update();
         }
     }
 
@@ -221,8 +229,9 @@ public class LineTracer {
      *         the {@link Block} type id
      */
     public void setLastBlock(int type) {
-        if (getLastBlock() != null) {
-            playerLoc.getWorld().setBlockAt(lastBlock.getX(), lastBlock.getY(), lastBlock.getZ(), (short) type);
+        if (lastBlock != null) {
+            lastBlock.setTypeId((short) type);
+            lastBlock.update();
         }
     }
 }

@@ -13,6 +13,7 @@ import java.util.NoSuchElementException;
  */
 public class BlockIterator implements Iterator<Block> {
     private final LineTracer tracer;
+    private final boolean doAir;
     private boolean alreadyAdvanced;
 
     /**
@@ -23,6 +24,33 @@ public class BlockIterator implements Iterator<Block> {
      */
     public BlockIterator(Player in_player) {
         this.tracer = new LineTracer(in_player);
+        this.doAir = false;
+    }
+
+    /**
+     * Constructor requiring player, uses default values<br />
+     * Skips air blocks
+     *
+     * @param in_player
+     *         the {@link Player} to check Line of Sight for
+     * @param doAir
+     *         set to {@code true} to include Air blocks
+     */
+    public BlockIterator(Player in_player, boolean doAir) {
+        this.tracer = new LineTracer(in_player);
+        this.doAir = doAir;
+    }
+
+    /**
+     * Constructor requiring location, uses default values<br />
+     * Skips air blocks
+     *
+     * @param in_location
+     *         the {@link Location} to check Line of Sight for
+     */
+    public BlockIterator(Location in_location) {
+        this.tracer = new LineTracer(in_location);
+        this.doAir = false;
     }
 
     /**
@@ -30,9 +58,28 @@ public class BlockIterator implements Iterator<Block> {
      *
      * @param in_location
      *         the {@link Location} to check Line of Sight for
+     * @param doAir
+     *         set to {@code true} to include Air blocks
      */
-    public BlockIterator(Location in_location) {
+    public BlockIterator(Location in_location, boolean doAir) {
         this.tracer = new LineTracer(in_location);
+        this.doAir = doAir;
+    }
+
+    /**
+     * Constructor requiring player, max range, and a stepping value<br />
+     * Skips air blocks
+     *
+     * @param in_player
+     *         the {@link Player} to check Line of Sight for
+     * @param in_range
+     *         the maximum range to check
+     * @param in_step
+     *         the stepping value, the amount Y to increase/decrease the further away the checks get
+     */
+    public BlockIterator(Player in_player, int in_range, double in_step) {
+        this.tracer = new LineTracer(in_player, in_range, in_step);
+        this.doAir = false;
     }
 
     /**
@@ -44,9 +91,28 @@ public class BlockIterator implements Iterator<Block> {
      *         the maximum range to check
      * @param in_step
      *         the stepping value, the amount Y to increase/decrease the further away the checks get
+     * @param doAir
+     *         set to {@code true} to include Air blocks
      */
-    public BlockIterator(Player in_player, int in_range, double in_step) {
+    public BlockIterator(Player in_player, int in_range, double in_step, boolean doAir) {
         this.tracer = new LineTracer(in_player, in_range, in_step);
+        this.doAir = doAir;
+    }
+
+    /**
+     * Constructor requiring location, max range, and a stepping value<br />
+     * Skips air blocks
+     *
+     * @param in_location
+     *         the {@link Location} to check Line of Sight for
+     * @param in_range
+     *         the maximum range to check
+     * @param in_step
+     *         the stepping value, the amount Y to increase/decrease the further away the checks get
+     */
+    public BlockIterator(Location in_location, int in_range, double in_step) {
+        this.tracer = new LineTracer(in_location, in_range, in_step);
+        this.doAir = false;
     }
 
     /**
@@ -58,9 +124,24 @@ public class BlockIterator implements Iterator<Block> {
      *         the maximum range to check
      * @param in_step
      *         the stepping value, the amount Y to increase/decrease the further away the checks get
+     * @param doAir
+     *         set to {@code true} to include Air blocks
      */
-    public BlockIterator(Location in_location, int in_range, double in_step) {
+    public BlockIterator(Location in_location, int in_range, double in_step, boolean doAir) {
         this.tracer = new LineTracer(in_location, in_range, in_step);
+        this.doAir = false;
+    }
+
+    /**
+     * Creats a BlockIterator from a {@link net.canarymod.LineTracer}<br />
+     * Skips air blocks
+     *
+     * @param tracer
+     *         the LineTracer to use with this BlockIterator
+     */
+    public BlockIterator(LineTracer tracer) {
+        this.tracer = tracer;
+        this.doAir = false;
     }
 
     /**
@@ -68,9 +149,12 @@ public class BlockIterator implements Iterator<Block> {
      *
      * @param tracer
      *         the LineTracer to use with this BlockIterator
+     * @param doAir
+     *         set to {@code true} to include Air blocks
      */
-    public BlockIterator(LineTracer tracer) {
+    public BlockIterator(LineTracer tracer, boolean doAir) {
         this.tracer = tracer;
+        this.doAir = doAir;
     }
 
     /**
@@ -118,5 +202,41 @@ public class BlockIterator implements Iterator<Block> {
     @Override
     public void remove() {
         tracer.getCurBlock().setType(BlockType.Air);
+        tracer.getCurBlock().update();
+    }
+
+    /**
+     * Replaces the current block with the given BlockType
+     *
+     * @param type
+     *         the block type used to replace the current block
+     */
+    public void replace(BlockType type) {
+        tracer.getCurBlock().setType(type);
+        tracer.getCurBlock().update();
+    }
+
+    /**
+     * Replaces the current block type to the given BlockType Id
+     *
+     * @param type
+     *         the new block id
+     */
+    public void replace(int type) {
+        tracer.getCurBlock().setTypeId((short) type);
+        tracer.getCurBlock().update();
+    }
+
+    /**
+     * Replaces the current block type to the given BlockType Id and data
+     *
+     * @param type
+     *         the new block id
+     * @param data
+     *         the new block data
+     */
+    public void replace(int type, int data) {
+        tracer.getCurBlock().setTypeId((short) type);
+        tracer.getCurBlock().setData((short) data);
     }
 }
