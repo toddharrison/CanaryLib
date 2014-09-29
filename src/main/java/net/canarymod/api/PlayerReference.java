@@ -1,5 +1,7 @@
 package net.canarymod.api;
 
+import net.canarymod.api.statistics.Achievement;
+import net.canarymod.api.statistics.Stat;
 import net.canarymod.api.world.World;
 import net.canarymod.api.world.position.Location;
 import net.canarymod.api.world.position.Position;
@@ -46,7 +48,9 @@ public interface PlayerReference {
     /**
      * Check if this player has the given permission
      *
-     * @param path the permission path
+     * @param path
+     *         the permission path
+     *
      * @return {@code true} if has permission; {@code false} otherwise
      */
     public boolean hasPermission(String path);
@@ -54,14 +58,16 @@ public interface PlayerReference {
     /**
      * Set this players group
      *
-     * @param group the {@link net.canarymod.user.Group} to set
+     * @param group
+     *         the {@link net.canarymod.user.Group} to set
      */
     public void setGroup(Group group);
 
     /**
      * Add a group to this players sub groups
      *
-     * @param group the {@link Group} to add
+     * @param group
+     *         the {@link Group} to add
      */
     public void addGroup(Group group);
 
@@ -69,7 +75,9 @@ public interface PlayerReference {
      * Remove this group from the player.<br>
      * You can NOT delete the default group.
      *
-     * @param g the {@link Group} to remove
+     * @param g
+     *         the {@link Group} to remove
+     *
      * @return {@code true} if successful; {@code false} otherwise
      */
     public boolean removeGroup(Group g);
@@ -78,7 +86,9 @@ public interface PlayerReference {
      * Remove a group with this name from the player.<br>
      * You can NOT delete the default group.
      *
-     * @param g the name of the {@link Group} to remove
+     * @param g
+     *         the name of the {@link Group} to remove
+     *
      * @return {@code true} if successful; {@code false} otherwise
      */
     public boolean removeGroup(String g);
@@ -86,8 +96,11 @@ public interface PlayerReference {
     /**
      * Check if player is in the given group
      *
-     * @param group   the {@link Group} to check
-     * @param parents {@code true} if you want to take parent groups into account; {@code false} otherwise
+     * @param group
+     *         the {@link Group} to check
+     * @param parents
+     *         {@code true} if you want to take parent groups into account; {@code false} otherwise
+     *
      * @return {@code true} if the player is in the group, {@code false} otherwise
      */
     public boolean isInGroup(Group group, boolean parents);
@@ -95,8 +108,11 @@ public interface PlayerReference {
     /**
      * Check if player is in the given group
      *
-     * @param group   the name of the group to check
-     * @param parents {@code true} if you want to take parent groups into account; {@code false} otherwise
+     * @param group
+     *         the name of the group to check
+     * @param parents
+     *         {@code true} if you want to take parent groups into account; {@code false} otherwise
+     *
      * @return {@code true} if the player is in the group; {@code false} otherwise
      */
     public boolean isInGroup(String group, boolean parents);
@@ -104,7 +120,8 @@ public interface PlayerReference {
     /**
      * Set this players prefix
      *
-     * @param prefix the prefix to be set
+     * @param prefix
+     *         the prefix to be set
      */
     public void setPrefix(String prefix);
 
@@ -153,7 +170,8 @@ public interface PlayerReference {
     /**
      * Mute or unmute this offline player
      *
-     * @param muted {@code true} to mute; {@code false} to unmute
+     * @param muted
+     *         {@code true} to mute; {@code false} to unmute
      */
     public void setMuted(boolean muted);
 
@@ -195,14 +213,16 @@ public interface PlayerReference {
     /**
      * Sets the Player's {@link GameMode}
      *
-     * @param mode the {@link GameMode} to set
+     * @param mode
+     *         the {@link GameMode} to set
      */
     public void setMode(GameMode mode);
 
     /**
      * Sets the Player's {@link GameMode}
      *
-     * @param mode 0 for Survival; 1 for Creative; 2 for Adventure
+     * @param mode
+     *         0 for Survival; 1 for Creative; 2 for Adventure
      */
     public void setModeId(int mode);
 
@@ -223,7 +243,8 @@ public interface PlayerReference {
     /**
      * Set whether this player can modify the world
      *
-     * @param canModify {@code true} if can build; {@code false} if not
+     * @param canModify
+     *         {@code true} if can build; {@code false} if not
      */
     public void setCanBuild(boolean canModify);
 
@@ -237,21 +258,24 @@ public interface PlayerReference {
     /**
      * Set whether this player can bypass permission checks
      *
-     * @param canIgnore {@code true} if can ignore restrictions; {@code false} if not
+     * @param canIgnore
+     *         {@code true} if can ignore restrictions; {@code false} if not
      */
     public void setCanIgnoreRestrictions(boolean canIgnore);
 
     /**
      * Add to the level of food exhaustion of a player
      *
-     * @param exhaustion the exhaustion to add
+     * @param exhaustion
+     *         the exhaustion to add
      */
     public void addExhaustion(float exhaustion);
 
     /**
      * Set the food exhaustion level to the specified value
      *
-     * @param exhaustion the exhaustion to set
+     * @param exhaustion
+     *         the exhaustion to set
      */
     public void setExhaustion(float exhaustion);
 
@@ -265,7 +289,8 @@ public interface PlayerReference {
     /**
      * Set this players food level
      *
-     * @param hunger the hunger to set
+     * @param hunger
+     *         the hunger to set
      */
     public void setHunger(int hunger);
 
@@ -279,14 +304,16 @@ public interface PlayerReference {
     /**
      * Add experience to the player
      *
-     * @param experience the experience amount
+     * @param experience
+     *         the experience amount
      */
     public void addExperience(int experience);
 
     /**
      * Remove experience from the player
      *
-     * @param experience the experience amount
+     * @param experience
+     *         the experience amount
      */
     public void removeExperience(int experience);
 
@@ -300,7 +327,8 @@ public interface PlayerReference {
     /**
      * Set the experience of this player
      *
-     * @param xp the experience amount
+     * @param xp
+     *         the experience amount
      */
     public void setExperience(int xp);
 
@@ -314,28 +342,32 @@ public interface PlayerReference {
     /**
      * Explicitly override this players level.
      *
-     * @param level the new player level
+     * @param level
+     *         the new player level
      */
     public void setLevel(int level);
 
     /**
      * Add the specific amount of levels to the player.
      *
-     * @param level amount of levels to add
+     * @param level
+     *         amount of levels to add
      */
     public void addLevel(int level);
 
     /**
      * Explicitly remove the amount of levels from the player.
      *
-     * @param level amount of levels to remove
+     * @param level
+     *         amount of levels to remove
      */
     public void removeLevel(int level);
 
     /**
      * Set this players home location
      *
-     * @param loc The new home location.
+     * @param loc
+     *         The new home location.
      */
     public void setHome(Location loc);
 
@@ -384,7 +416,8 @@ public interface PlayerReference {
     /**
      * Set this player's health.
      *
-     * @param health the health to be set
+     * @param health
+     *         the health to be set
      */
     public void setHealth(float health);
 
@@ -392,8 +425,74 @@ public interface PlayerReference {
      * Increase this player's health. This does not set but add the amount of
      * health
      *
-     * @param health to increase the health with (negative values decrease)
+     * @param health
+     *         to increase the health with (negative values decrease)
      */
     public void increaseHealth(float health);
 
+    /**
+     * Sets the value of a given {@link net.canarymod.api.statistics.Stat}
+     *
+     * @param stat
+     *         the {@link net.canarymod.api.statistics.Stat} to set value of
+     * @param value
+     *         the value to be set
+     */
+    public void setStat(Stat stat, int value);
+
+    /**
+     * Increases the value of a given {@link net.canarymod.api.statistics.Stat}
+     *
+     * @param stat
+     *         the {@link net.canarymod.api.statistics.Stat} to increase value of
+     * @param value
+     *         the amount to increase
+     */
+    public void increaseStat(Stat stat, int value);
+
+    /**
+     * Decrease the value of a given {@link net.canarymod.api.statistics.Stat}
+     *
+     * @param stat
+     *         the {@link net.canarymod.api.statistics.Stat} to decrease value of
+     * @param value
+     *         the amount to decrease
+     */
+    public void decreaseStat(Stat stat, int value);
+
+    /**
+     * Gets the value of a {@link net.canarymod.api.statistics.Stat}
+     *
+     * @param stat
+     *         the {@link net.canarymod.api.statistics.Stat} to get value of
+     *
+     * @return stat value
+     */
+    public int getStat(Stat stat);
+
+    /**
+     * Checks if the {@link net.canarymod.api.statistics.Achievement} has been awarded
+     *
+     * @param achievement
+     *         the {@link net.canarymod.api.statistics.Achievement} to check
+     *
+     * @return {@code true} if has achievement; {@code false} if not
+     */
+    public boolean hasAchievement(Achievement achievement);
+
+    /**
+     * Removes an awarded {@link net.canarymod.api.statistics.Achievement} and any child achievements
+     *
+     * @param achievement
+     *         the {@link net.canarymod.api.statistics.Achievement} to be removed
+     */
+    public void removeAchievement(Achievement achievement);
+
+    /**
+     * Awards an {@link net.canarymod.api.statistics.Achievement} and any parent achievements requried
+     *
+     * @param achievement
+     *         the {@link net.canarymod.api.statistics.Achievement} to be awarded
+     */
+    public void awardAchievement(Achievement achievement);
 }
