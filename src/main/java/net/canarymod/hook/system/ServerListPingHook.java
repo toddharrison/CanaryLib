@@ -10,6 +10,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.net.InetAddress;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,16 +21,27 @@ import java.util.List;
  * @author Jason (darkdiplomat)
  */
 public class ServerListPingHook extends CancelableHook {
+    private final InetAddress requester;
     private final List<GameProfile> profiles;
     private String motd, favicon;
     private int maxPlayers, currentPlayers;
 
-    public ServerListPingHook(String motd, int currentPlayers, int maxPlayers, String favicon, List<GameProfile> profiles) {
+    public ServerListPingHook(InetAddress requester, String motd, int currentPlayers, int maxPlayers, String favicon, List<GameProfile> profiles) {
+        this.requester = requester;
         this.motd = motd;
         this.maxPlayers = maxPlayers;
         this.currentPlayers = currentPlayers;
         this.favicon = favicon;
         this.profiles = profiles;
+    }
+
+    /**
+     * Gets the {@link java.net.InetAddress} (IP) of the requesting party
+     *
+     * @return {@link java.net.InetAddress} of requesting party
+     */
+    public InetAddress getRequesterAddress() {
+        return requester;
     }
 
     /**
@@ -154,7 +166,7 @@ public class ServerListPingHook extends CancelableHook {
     /**
      * Sets the server favicon from a given {@link java.awt.image.BufferedImage}
      *
-     * @param favicon
+     * @param image
      *         the path to the png image file
      *
      * @throws IOException
