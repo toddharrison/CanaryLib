@@ -11,6 +11,8 @@ import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.Group;
 import net.canarymod.warp.Warp;
 
+import static net.canarymod.commandsys.CanaryCommandPermissions.*;
+
 /**
  * Command to set a warp (including private and group warps)
  *
@@ -22,13 +24,13 @@ public class WarpSet implements NativeCommand {
             caller.notice(Translator.translate("setwarp console"));
         }
         else {
-            Player player = (Player) caller;
-            if (Canary.warps().warpExists(args[0]) && !player.hasPermission("canary.command.warp.setwarp.admin")) {
+            Player player = (Player)caller;
+            if (Canary.warps().warpExists(args[0]) && !player.hasPermission(WARP$SET$ADMIN)) {
                 player.notice(Translator.translate("setwarp failed"));
                 return;
             }
             // SET PUBLIC WARP
-            if (args.length == 2 && player.hasPermission("canary.command.warp.set.public")) {
+            if (args.length == 2) {
                 Warp newWarp = new Warp(player.getLocation(), args[0]);
 
                 Canary.warps().addWarp(newWarp);
@@ -36,7 +38,7 @@ public class WarpSet implements NativeCommand {
             }
             else if (args.length > 3) {
                 // SET GROUP SPECIFIC WARP
-                if (args[2].equalsIgnoreCase("G") && player.hasPermission("canary.command.warp.set.group")) {
+                if (args[2].equalsIgnoreCase("G") && player.hasPermission(WARP$SET$GROUP)) {
                     Group[] groups = new Group[args.length - 2];
 
                     for (int i = 0; i < groups.length; i++) {
@@ -49,7 +51,7 @@ public class WarpSet implements NativeCommand {
                     return;
                 }
                 // SET PRIVATE WARP
-                if (args[0].equalsIgnoreCase("P") && player.hasPermission("canary.command.warp.set.private")) {
+                if (args[0].equalsIgnoreCase("P") && player.hasPermission(WARP$SET$PRIVATE)) {
                     Warp newWarp = new Warp(player.getLocation(), args[0], args[2], false);
 
                     Canary.warps().addWarp(newWarp);
