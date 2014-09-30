@@ -11,16 +11,19 @@ import net.canarymod.hook.CancelableHook;
  * @author Jason (darkdiplomat)
  */
 public final class StatGainedHook extends CancelableHook {
-    private Player player;
-    private Stat stat;
+    private final Player player;
+    private final Stat stat;
+    private int gain;
 
     /**
      * Constructs a new StatGainedHook
      *
-     * @param player the {@link Player} gaining a stat
-     * @param stat   the {@link Stat} being gained
+     * @param player
+     *         the {@link Player} gaining a stat
+     * @param stat
+     *         the {@link Stat} being gained
      */
-    public StatGainedHook(Player player, Stat stat) {
+    public StatGainedHook(Player player, Stat stat, int gain) {
         this.player = player;
         this.stat = stat;
     }
@@ -41,6 +44,15 @@ public final class StatGainedHook extends CancelableHook {
      */
     public Stat getStat() {
         return stat;
+    }
+
+    /**
+     * Gets the amount of the stat gained
+     *
+     * @return gain amount
+     */
+    public int getGain() {
+        return gain;
     }
 
     @Override
