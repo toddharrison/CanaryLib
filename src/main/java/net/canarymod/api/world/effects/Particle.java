@@ -38,6 +38,13 @@ public class Particle {
         SNOWSHOVEL("snowshovel"), //
         ANGRYVILLAGER("angryVillager"), //
         HAPPYVILLAGER("happyVillager"), //
+        BARRIER("barrier"),
+        //
+        DROPLET("droplet"),
+        //
+        MOBAPPEARANCE("mobAppearance"),
+        TAKE("take"),
+        //
 
         ;
 
