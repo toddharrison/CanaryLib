@@ -10,6 +10,8 @@ public enum GameMode {
     SURVIVAL, //
     CREATIVE, //
     ADVENTURE, //
+    SPECTATOR,
+    //
     ;
 
     public final int getId() {
@@ -22,6 +24,8 @@ public enum GameMode {
                 return CREATIVE;
             case 2:
                 return ADVENTURE;
+            case 3:
+                return SPECTATOR;
             default:
                 return SURVIVAL;
         }
