@@ -99,26 +99,26 @@ public final class ItemType {
     public static final ItemType RedMushroom = new ItemType(40, true, "minecraft:red_mushroom");
     public static final ItemType GoldBlock = new ItemType(41, true, "minecraft:gold_block");
     public static final ItemType IronBlock = new ItemType(42, true, "minecraft:iron_block");
-    public static final ItemType DoublestepOrnateStone = new ItemType(43, 0, true, "minecraft:double_stone_slab");
-    public static final ItemType DoublestepSandStoneTrim = new ItemType(43, 1, true, "minecraft:double_stone_slab");
-    public static final ItemType DoublestepWood = new ItemType(43, 2, true, "minecraft:double_stone_slab");
-    public static final ItemType DoublestepCobble = new ItemType(43, 3, true, "minecraft:double_stone_slab");
-    public static final ItemType DoublestepBrickBlock = new ItemType(43, 4, true, "minecraft:double_stone_slab");
-    public static final ItemType DoublestepStoneBricks = new ItemType(43, 5, true, "minecraft:double_stone_slab");
-    public static final ItemType DoublestepNetherBrick = new ItemType(43, 6, true, "minecraft:double_stone_slab");
-    public static final ItemType DoublestepQuartz = new ItemType(43, 9, true, "minecraft:double_stone_slab");
-    public static final ItemType DoublestepStone = new ItemType(43, 8, true, "minecraft:double_stone_slab");
-    public static final ItemType DoublestepSandStone = new ItemType(43, 11, true, "minecraft:double_stone_slab");
-    public static final ItemType StepOrnateStone = new ItemType(44, 0, true, "minecraft:stone_slab");
-    public static final ItemType StepSandStoneTrim = new ItemType(44, 1, true, "minecraft:stone_slab");
-    public static final ItemType StepWood = new ItemType(44, 2, true, "minecraft:stone_slab");
-    public static final ItemType StepCobble = new ItemType(44, 3, true, "minecraft:stone_slab");
-    public static final ItemType StepBrickBlock = new ItemType(44, 4, true, "minecraft:stone_slab");
-    public static final ItemType StepStoneBricks = new ItemType(44, 5, true, "minecraft:stone_slab");
-    public static final ItemType StepNetherBricks = new ItemType(44, 6, true, "minecraft:stone_slab");
-    public static final ItemType StepQuartz = new ItemType(44, 7, true, "minecraft:stone_slab");
-    public static final ItemType StepStone = new ItemType(44, 10, true, "minecraft:stone_slab");
-    public static final ItemType StepSandStone = new ItemType(44, 11, true, "minecraft:stone_slab");
+    public static final ItemType DoubleOrnateStoneSlab = new ItemType(43, 0, true, "minecraft:double_stone_slab");
+    public static final ItemType DoubleSandStoneTrimSlab = new ItemType(43, 1, true, "minecraft:double_stone_slab");
+    public static final ItemType DoubleWoodSlab = new ItemType(43, 2, true, "minecraft:double_stone_slab");
+    public static final ItemType DoubleCobbleSlab = new ItemType(43, 3, true, "minecraft:double_stone_slab");
+    public static final ItemType DoubleBrickBlockSlab = new ItemType(43, 4, true, "minecraft:double_stone_slab");
+    public static final ItemType DoubleStoneBricksSlab = new ItemType(43, 5, true, "minecraft:double_stone_slab");
+    public static final ItemType DoubleNetherBrickSlab = new ItemType(43, 6, true, "minecraft:double_stone_slab");
+    public static final ItemType DoubleQuartzSlab = new ItemType(43, 9, true, "minecraft:double_stone_slab");
+    public static final ItemType DoubleStoneSlab = new ItemType(43, 8, true, "minecraft:double_stone_slab");
+    public static final ItemType DoubleSandstoneSlab = new ItemType(43, 11, true, "minecraft:double_stone_slab");
+    public static final ItemType OrnateStoneSlab = new ItemType(44, 0, true, "minecraft:stone_slab");
+    public static final ItemType SandStoneTrimSlab = new ItemType(44, 1, true, "minecraft:stone_slab");
+    public static final ItemType WoodSlab = new ItemType(44, 2, true, "minecraft:stone_slab");
+    public static final ItemType CobbleSlab = new ItemType(44, 3, true, "minecraft:stone_slab");
+    public static final ItemType BrickSlab = new ItemType(44, 4, true, "minecraft:stone_slab");
+    public static final ItemType StoneBricksSlab = new ItemType(44, 5, true, "minecraft:stone_slab");
+    public static final ItemType NetherBricksSlab = new ItemType(44, 6, true, "minecraft:stone_slab");
+    public static final ItemType QuartzSlab = new ItemType(44, 7, true, "minecraft:stone_slab");
+    public static final ItemType StoneSlab = new ItemType(44, 10, true, "minecraft:stone_slab");
+    public static final ItemType SandstoneSlab = new ItemType(44, 11, true, "minecraft:stone_slab");
     public static final ItemType BrickBlock = new ItemType(45, true, "minecraft:brick_block");
     public static final ItemType Tnt = new ItemType(46, true, "minecraft:tnt");
     public static final ItemType Bookshelf = new ItemType(47, true, "minecraft:bookshelf");
@@ -127,7 +127,7 @@ public final class ItemType {
     public static final ItemType Torch = new ItemType(50, true, "minecraft:torch");
     public static final ItemType FireBlock = new ItemType(51, true, "minecraft:fire");
     public static final ItemType MobSpawner = new ItemType(52, true, "minecraft:mob_spawner");
-    public static final ItemType WoodenStair = new ItemType(53, true, "minecraft:oak_stairs");
+    public static final ItemType WoodenStairs = new ItemType(53, true, "minecraft:oak_stairs");
     public static final ItemType Chest = new ItemType(54, true, "minecraft:chest");
     // Redstone wire not present, because Mojang
     public static final ItemType DiamondOre = new ItemType(56, true, "minecraft:diamond_ore");
@@ -141,7 +141,7 @@ public final class ItemType {
     // Wooden door not present, because Mojang
     public static final ItemType Ladder = new ItemType(65, true, "minecraft:ladder");
     public static final ItemType Rail = new ItemType(66, true, "minecraft:rail");
-    public static final ItemType CobbleStair = new ItemType(67, true, "minecraft:stone_stairs");
+    public static final ItemType CobbleStairs = new ItemType(67, true, "minecraft:stone_stairs");
     // Wall sign not present, because Mojang
     public static final ItemType Lever = new ItemType(69, true, "minecraft:lever");
     public static final ItemType StonePlate = new ItemType(70, true, "minecraft:stone_pressure_plate");
@@ -203,13 +203,13 @@ public final class ItemType {
     // Melon and pumpkin stem not present, because Mojang
     public static final ItemType Vines = new ItemType(106, true, "minecraft:vine");
     public static final ItemType FenceGate = new ItemType(107, true, "minecraft:fence_gate");
-    public static final ItemType BrickStair = new ItemType(108, true, "minecraft:brick_stairs");
-    public static final ItemType StoneBrickStair = new ItemType(109, true, "minecraft:stone_brick_stairs");
+    public static final ItemType BrickStairs = new ItemType(108, true, "minecraft:brick_stairs");
+    public static final ItemType StoneBrickStairs = new ItemType(109, true, "minecraft:stone_brick_stairs");
     public static final ItemType Mycelium = new ItemType(110, true, "minecraft:mycelium");
     public static final ItemType Lilypad = new ItemType(111, true, "minecraft:waterlily");
     public static final ItemType NetherBrick = new ItemType(112, true, "minecraft:nether_brick");
     public static final ItemType NetherBrickFence = new ItemType(113, true, "minecraft:nether_brick_fence");
-    public static final ItemType NetherBrickStair = new ItemType(114, true, "minecraft:nether_brick_stairs");
+    public static final ItemType NetherBrickStairs = new ItemType(114, true, "minecraft:nether_brick_stairs");
     // Nether wart not present, because Mojang
     public static final ItemType EnchantmentTable = new ItemType(116, true, "minecraft:enchanting_table");
     // Brewing stand and cauldron not present, because Mojang
@@ -219,28 +219,28 @@ public final class ItemType {
     public static final ItemType EnderDragonEgg = new ItemType(122, true, "minecraft:dragon_egg");
     public static final ItemType RedstoneLampOff = new ItemType(123, true, "minecraft:redstone_lamp");
     // Lit redstone lamp not present, because Mojang
-    public static final ItemType OakWoodDoubleStep = new ItemType(125, 0, true, "minecraft:double_wooden_slab");
-    public static final ItemType SpruceWoodDoubleStep = new ItemType(125, 1, true, "minecraft:double_wooden_slab");
-    public static final ItemType BirchWoodDoubleStep = new ItemType(125, 2, true, "minecraft:double_wooden_slab");
-    public static final ItemType JungleWoodDoubleStep = new ItemType(125, 3, true, "minecraft:double_wooden_slab");
-    public static final ItemType AcaciaWoodDoubleStep = new ItemType(125, 4, true, "minecraft:double_wooden_slab");
-    public static final ItemType DarkOakWoodDoubleStep = new ItemType(125, 5, true, "minecraft:double_wooden_slab");
-    public static final ItemType OakWoodStep = new ItemType(126, 0, true, "minecraft:wooden_slab");
-    public static final ItemType SpruceWoodStep = new ItemType(126, 1, true, "minecraft:wooden_slab");
-    public static final ItemType BirchWoodStep = new ItemType(126, 2, true, "minecraft:wooden_slab");
-    public static final ItemType JungleWoodStep = new ItemType(126, 3, true, "minecraft:wooden_slab");
-    public static final ItemType AcaciaWoodStep = new ItemType(126, 4, true, "minecraft:wooden_slab");
-    public static final ItemType DarkOakWoodStep = new ItemType(126, 5, true, "minecraft:wooden_slab");
+    public static final ItemType DoubleOakWoodSlab = new ItemType(125, 0, true, "minecraft:double_wooden_slab");
+    public static final ItemType DoubleSpruceWoodSlab = new ItemType(125, 1, true, "minecraft:double_wooden_slab");
+    public static final ItemType DoubleBirchWoodSlab = new ItemType(125, 2, true, "minecraft:double_wooden_slab");
+    public static final ItemType DoubleJungleWoodSlab = new ItemType(125, 3, true, "minecraft:double_wooden_slab");
+    public static final ItemType DoubleAcaciaWoodSlab = new ItemType(125, 4, true, "minecraft:double_wooden_slab");
+    public static final ItemType DoubleDarkOakWoodSlab = new ItemType(125, 5, true, "minecraft:double_wooden_slab");
+    public static final ItemType OakWoodSlab = new ItemType(126, 0, true, "minecraft:wooden_slab");
+    public static final ItemType SpruceWoodSlab = new ItemType(126, 1, true, "minecraft:wooden_slab");
+    public static final ItemType BirchWoodSlab = new ItemType(126, 2, true, "minecraft:wooden_slab");
+    public static final ItemType JungleWoodSlab = new ItemType(126, 3, true, "minecraft:wooden_slab");
+    public static final ItemType AcaciaWoodSlab = new ItemType(126, 4, true, "minecraft:wooden_slab");
+    public static final ItemType DarkOakWoodSlab = new ItemType(126, 5, true, "minecraft:wooden_slab");
     public static final ItemType CocoaPlant = new ItemType(127, true, "minecraft:cocoa");
-    public static final ItemType SandstoneStair = new ItemType(128, true, "minecraft:sandstone_stairs");
+    public static final ItemType SandstoneStairs = new ItemType(128, true, "minecraft:sandstone_stairs");
     public static final ItemType EmeraldOre = new ItemType(129, true, "minecraft:emerald_ore");
     public static final ItemType EnderChest = new ItemType(130, true, "minecraft:ender_chest");
     public static final ItemType TripwireHook = new ItemType(131, true, "minecraft:tripwire_hook");
     // Tripwire not present, because Mojang
     public static final ItemType EmeraldBlock = new ItemType(133, true, "minecraft:emerald_block");
-    public static final ItemType PineWoodStair = new ItemType(134, true, "minecraft:spruce_stairs");
-    public static final ItemType BirchWoodStair = new ItemType(135, true, "minecraft:birch_stairs");
-    public static final ItemType JungleWoodStair = new ItemType(136, true, "minecraft:jungle_stairs");
+    public static final ItemType PineWoodStairs = new ItemType(134, true, "minecraft:spruce_stairs");
+    public static final ItemType BirchWoodStairs = new ItemType(135, true, "minecraft:birch_stairs");
+    public static final ItemType JungleWoodStairs = new ItemType(136, true, "minecraft:jungle_stairs");
     public static final ItemType CommandBlock = new ItemType(137, true, "minecraft:command_block");
     public static final ItemType Beacon = new ItemType(138, true, "minecraft:beacon");
     public static final ItemType CobblestoneWall = new ItemType(139, 0, true, "minecraft:cobblestone_wall");
@@ -299,13 +299,13 @@ public final class ItemType {
     public static final ItemType GreenGlassPane = new ItemType(160, 13, true, "minecraft:stained_glass_pane");
     public static final ItemType RedGlassPane = new ItemType(160, 14, true, "minecraft:stained_glass_pane");
     public static final ItemType BlackGlassPane = new ItemType(160, 15, true, "minecraft:stained_glass_pane");
-    public static final ItemType AcaciaLeaves = new ItemType(161, 0, true, "minecraft:leaves2");
+    public static final ItemType AcaciaLeaves = new ItemType(161, true, "minecraft:leaves2");
     public static final ItemType DarkOakLeaves = new ItemType(161, 1, true, "minecraft:leaves2");
-    public static final ItemType AcaciaLog = new ItemType(162, 0, true, "minecraft:log2");
+    public static final ItemType AcaciaLog = new ItemType(162, true, "minecraft:log2");
     public static final ItemType DarkOakLog = new ItemType(162, 1, true, "minecraft:log2");
-    public static final ItemType AcaciaStairs = new ItemType(163, 0, true, "minecraft:acacia_stairs");
-    public static final ItemType DarkOakStairs = new ItemType(164, 0, true, "minecraft:dark_oak_stairs");
-    public static final ItemType HayBale = new ItemType(170, 0, true, "minecraft:hay_block");
+    public static final ItemType AcaciaStairs = new ItemType(163, true, "minecraft:acacia_stairs");
+    public static final ItemType DarkOakStairs = new ItemType(164, true, "minecraft:dark_oak_stairs");
+    public static final ItemType HayBale = new ItemType(170, true, "minecraft:hay_block");
     public static final ItemType WhiteCarpet = new ItemType(171, 0, true, "minecraft:carpet");
     public static final ItemType OrangeCarpet = new ItemType(171, 1, true, "minecraft:carpet");
     public static final ItemType MagentaCarpet = new ItemType(171, 2, true, "minecraft:carpet");
@@ -322,15 +322,34 @@ public final class ItemType {
     public static final ItemType GreenCarpet = new ItemType(171, 13, true, "minecraft:carpet");
     public static final ItemType RedCarpet = new ItemType(171, 14, true, "minecraft:carpet");
     public static final ItemType BlackCarpet = new ItemType(171, 15, true, "minecraft:carpet");
-    public static final ItemType HardenedClay = new ItemType(172, 0, true, "minecraft:hardened_clay");
-    public static final ItemType CoalBlock = new ItemType(173, 0, true, "minecraft:coal_block");
-    public static final ItemType PackedIce = new ItemType(174, 0, true, "minecraft:packed_ice");
-    public static final ItemType Sunflower = new ItemType(175, 0, true, "minecraft:double_plant");
+    public static final ItemType HardenedClay = new ItemType(172, true, "minecraft:hardened_clay");
+    public static final ItemType CoalBlock = new ItemType(173, true, "minecraft:coal_block");
+    public static final ItemType PackedIce = new ItemType(174, true, "minecraft:packed_ice");
+    public static final ItemType Sunflower = new ItemType(175, true, "minecraft:double_plant");
     public static final ItemType Lilac = new ItemType(175, 1, true, "minecraft:double_plant");
     public static final ItemType DoubleGrass = new ItemType(175, 2, true, "minecraft:double_plant");
     public static final ItemType LargeFern = new ItemType(175, 3, true, "minecraft:double_plant");
     public static final ItemType RoseBush = new ItemType(175, 4, true, "minecraft:double_plant");
     public static final ItemType Peony = new ItemType(175, 5, true, "minecraft:double_plant");
+    // Standing Banner not present cause Mojang (176
+    // Wall Banner not present cause Mojang (177
+    // DaylightSensorInverted not present cause Mojang (178
+    public static final ItemType RedSandstone = new ItemType(179, 0, true, "minecraft:red_sandstone");
+    public static final ItemType RedSandstoneOrnate = new ItemType(179, 1, true, "minecraft:red_sandstone");
+    public static final ItemType RedSandstoneBlank = new ItemType(179, 2, true, "minecraft:red_sandstone");
+    public static final ItemType RedSandstoneStairs = new ItemType(180, true, "minecraft_red_sandstone_stairs");
+    public static final ItemType RedSandstoneSlab = new ItemType(181, true, "minecraft:stone_slab2");
+    public static final ItemType DoubleRedSandstoneSlab = new ItemType(182, true, "minecraft:double_stone_slab2");
+    public static final ItemType SpruceFenceGate = new ItemType(183, true, "minecraft:spruce_fence_gate");
+    public static final ItemType BirchFenceGate = new ItemType(184, true, "minecraft:birch_fence_gate");
+    public static final ItemType JungleFenceGate = new ItemType(185, true, "minecraft:jungle_fence_gate");
+    public static final ItemType DarkOakFenceGate = new ItemType(186, true, "minecraft:dark_oak_fence_gate");
+    public static final ItemType AcaciaFenceGate = new ItemType(187, true, "minecraft:acacia_fence_gate");
+    public static final ItemType SpruceFence = new ItemType(188, true, "minecraft:spruce_fence");
+    public static final ItemType BirchFence = new ItemType(189, true, "minecraft:birch_fence");
+    public static final ItemType JungleFence = new ItemType(190, true, "minecraft:jungle_fence");
+    public static final ItemType DarkOakFence = new ItemType(191, true, "minecraft:dark_oak_fence");
+    public static final ItemType AcaciaFence = new ItemType(192, true, "minecraft:acacia_fence");
 
     /* Items */
     public static final ItemType IronSpade = new ItemType(256, "minecraft:iron_shovel");
@@ -512,12 +531,29 @@ public final class ItemType {
     public static final ItemType NetherQuartz = new ItemType(406, "minecraft:quartz");
     public static final ItemType MinecartTNT = new ItemType(407, "minecraft:tnt_minecart");
     public static final ItemType MinecartHopper = new ItemType(408, "minecraft:hopper_minecart");
+    public static final ItemType PrismarineShard = new ItemType(409, "minecraft:prismarine_shard");
+    public static final ItemType PrismarineCrystals = new ItemType(410, "minecraft:prismarine_cystals");
+    public static final ItemType RawRabbit = new ItemType(411, "minecraft:rabbit");
+    public static final ItemType CookedRabbit = new ItemType(412, "minecraft:cooked_rabbit");
+    public static final ItemType RabbitStew = new ItemType(413, "minecraft:rabbit_stew");
+    public static final ItemType RabbitFoot = new ItemType(414, "minecraft:rabbit_foot");
+    public static final ItemType RabbitHide = new ItemType(415, "minecraft:rabbit_hide");
+    public static final ItemType ArmorStand = new ItemType(416, true, "minecraft:armor_stand");
     public static final ItemType IronHorseArmor = new ItemType(417, "minecraft:iron_horse_armor");
     public static final ItemType GoldHorseArmor = new ItemType(418, "minecraft:golden_horse_armor");
     public static final ItemType DiamondHorseArmor = new ItemType(419, "minecraft:diamond_horse_armor");
     public static final ItemType Lead = new ItemType(420, "minecraft:lead");
     public static final ItemType NameTag = new ItemType(421, "minecraft:name_tag");
     public static final ItemType MinecartCommandBlock = new ItemType(422, "minecraft:command_block_minecart");
+    public static final ItemType RawMutton = new ItemType(423, "minecraft:mutton");
+    public static final ItemType CookedMutton = new ItemType(424, "minecraft:cooked_mutton");
+    public static final ItemType Banner = new ItemType(425, true, "minecraft:banner");
+    public static final ItemType SpruceDoor = new ItemType(426, true, "minecraft:spruce_door");
+    public static final ItemType BirchDoor = new ItemType(427, true, "minecraft:birch_door");
+    public static final ItemType JungleDoor = new ItemType(428, true, "minecraft:jungle_door");
+    public static final ItemType AcaciaDoor = new ItemType(429, true, "minecraft:acacia_door");
+    public static final ItemType DarkOakDoor = new ItemType(430, true, "minecraft:dark_oak_door");
+
     /* Records */
     public static final ItemType GoldRecord = new ItemType(2256, "minecraft:record_13");
     public static final ItemType GreenRecord = new ItemType(2257, "minecraft:record_cat");
