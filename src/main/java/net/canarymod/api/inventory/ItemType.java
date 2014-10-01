@@ -14,8 +14,15 @@ public final class ItemType {
     /* Blocks */
     // Air not present, because Mojang
     public static final ItemType Stone = new ItemType(1, true, "minecraft:stone");
+    public static final ItemType Granite = new ItemType(1, 1, true, "minecraft:stone");
+    public static final ItemType PolishedGranite = new ItemType(1, 2, true, "minecraft:stone");
+    public static final ItemType Diorite = new ItemType(1, 3, true, "minecraft:stone");
+    public static final ItemType PolishedDiorite = new ItemType(1, 4, true, "minecraft:stone");
+    public static final ItemType Andesite = new ItemType(1, 5, true, "minecraft:stone");
+    public static final ItemType PolishedAndesite = new ItemType(1, 6, true, "minecraft:stone");
     public static final ItemType Grass = new ItemType(2, true, "minecraft:grass");
-    public static final ItemType Dirt = new ItemType(3, true, "minecraft:dirt");
+    public static final ItemType Dirt = new ItemType(3, 0, "minecraft:dirt");
+    public static final ItemType CoarseDirt = new ItemType(3, 1, "minecraft:dirt");
     public static final ItemType Podzol = new ItemType(3, 2, true, "minecraft:dirt");
     public static final ItemType Cobble = new ItemType(4, true, "minecraft:cobblestone");
     public static final ItemType OakWood = new ItemType(5, 0, true, "minecraft:planks");

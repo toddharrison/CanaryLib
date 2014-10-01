@@ -12,8 +12,15 @@ import java.util.Map.Entry;
 public final class BlockType {
     public static final BlockType Air = new BlockType(0, 0, "minecraft:air");
     public static final BlockType Stone = new BlockType(1, 0, "minecraft:stone");
+    public static final BlockType Granite = new BlockType(1, 1, "minecraft:stone");
+    public static final BlockType PolishedGranite = new BlockType(1, 2, "minecraft:stone");
+    public static final BlockType Diorite = new BlockType(1, 3, "minecraft:stone");
+    public static final BlockType PolishedDiorite = new BlockType(1, 4, "minecraft:stone");
+    public static final BlockType Andesite = new BlockType(1, 5, "minecraft:stone");
+    public static final BlockType PolishedAndesite = new BlockType(1, 6, "minecraft:stone");
     public static final BlockType Grass = new BlockType(2, 0, "minecraft:grass");
     public static final BlockType Dirt = new BlockType(3, 0, "minecraft:dirt");
+    public static final BlockType CoarseDirt = new BlockType(3, 1, "minecraft:dirt");
     public static final BlockType Podzol = new BlockType(3, 2, "minecraft:dirt");
     public static final BlockType Cobble = new BlockType(4, 0, "minecraft:cobblestone");
     public static final BlockType OakWood = new BlockType(5, 0, "minecraft:planks");
@@ -403,8 +410,8 @@ public final class BlockType {
         if (machineName == null) {
             throw new CustomBlockTypeException("BlockType name cannot be null!");
         }
-        this.id = (short) id;
-        this.data = (short) data;
+        this.id = (short)id;
+        this.data = (short)data;
         this.machineName = machineName;
         Entry<String, Integer> uniqueType = new SimpleImmutableEntry<String, Integer>(machineName, data);
         if (!blockTypes.containsKey(uniqueType)) {
@@ -570,5 +577,4 @@ public final class BlockType {
     public static BlockType[] values() {
         return blockTypes.values().toArray(new BlockType[blockTypes.size()]);
     }
-
 }
