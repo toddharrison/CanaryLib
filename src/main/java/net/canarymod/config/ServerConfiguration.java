@@ -57,9 +57,10 @@ public class ServerConfiguration implements ConfigurationContainer {
         cfg.setComments("ban-expiration-date-message", "The message to prefix to the timestamp of a tempban expiration");
         cfg.getString("chat-format", "<%prefix%name&f> %message");
         cfg.setComments("chat-format", "Valid default placeholders are:",
-                "%prefix (player prefix), %name (player name), %group (main group)",
-                "You can use standard color codes at all times. Use & as identifier if you miss a § key",
-                "Plugins may extend the list of available placeholders");
+                        "%prefix (player prefix), %name (player name), %group (main group)",
+                        "You can use standard color codes at all times. Use & as identifier if you miss a § key",
+                        "Plugins may extend the list of available placeholders"
+                       );
         cfg.getBoolean("command-block-enabled", false);
         cfg.setComments("command-block-enabled", "Sets whether the Command Block is allowed or not");
         cfg.getString("command-block-group", "default");
@@ -79,6 +80,8 @@ public class ServerConfiguration implements ConfigurationContainer {
         }
         cfg.getString("default-world-name", "default");
         cfg.setComments("default-world-name", "Name of the default loaded world");
+        cfg.getInt("default-world-size", 29999984);
+        cfg.setComments("default-world-size", "This sets the maximum possible size in blocks, expressed as a radius, that the world border can obtain.");
         //cfg.getBoolean("logging", false); //REMOVED
         if (cfg.containsKey("logging")) { // Remove old key
             cfg.removeKey("logging");
@@ -89,11 +92,16 @@ public class ServerConfiguration implements ConfigurationContainer {
         // RESERVED SPACE
         cfg.getInt("max-players", 20);
         cfg.setComments("max-players", "The maximum allowed players online (Does not count ReserveList users connecting after server is full)");
+        cfg.getInt("max-tick-time", 60000);
+        cfg.setComments("max-tick-time", "The maximum number of milliseconds a single tick may take before the server watchdog stops the server. Setting to -1 disables WatchDog.");
         cfg.getString("motd", "CanaryMod Minecraft Server");
         cfg.setComments("motd", "The Server list Message of the Day");
+        cfg.getInt("network-compression-threshold", 256);
+        cfg.setComments("network-compression-threshold", "By default it allows packets that are n-1 bytes big to go normally, but a packet that n bytes or more will be compressed down.");
         cfg.getBoolean("online-mode", true);
         cfg.setComments("online-mode", "Sets whether to authenticate connecting users.",
-                "WARNING: Setting to false is INSECURE and should not be done in a production environment ");
+                        "WARNING: Setting to false is INSECURE and should not be done in a production environment."
+                       );
         cfg.getInt("player-idle-timeout", 1);
         cfg.setComments("player-idle-timeout", "Timeout in minutes before kicking an idle player");
         cfg.getBoolean("playerlist-enabled", true);
@@ -317,7 +325,8 @@ public class ServerConfiguration implements ConfigurationContainer {
     /**
      * Sets the time in minutes before a player is kicked for idling
      *
-     * @param timeout the idle timeout
+     * @param timeout
+     *         the idle timeout
      */
     public void setPlayerIdleTimeout(int timeout) {
         cfg.setInt("player-idle-timeout", timeout);
@@ -566,5 +575,32 @@ public class ServerConfiguration implements ConfigurationContainer {
      */
     public long getWorldCacheTimeout() {
         return cfg.getLong("world-cache-timeout", 60);
+    }
+
+    /**
+     * Gets the Network Compression Threshold
+     *
+     * @return network compression threshold
+     */
+    public int getNetworkCompressionThreshold() {
+        return cfg.getInt("network-compression-threshold", 256);
+    }
+
+    /**
+     * Gets the default max world size
+     *
+     * @return default max world size
+     */
+    public int getDefaultMaxWorldSize() {
+        return cfg.getInt("default-world-size", 29999984);
+    }
+
+    /**
+     * Gets the max time a tick may take
+     *
+     * @return max tick time
+     */
+    public int getMaxTickTime() {
+        return cfg.getInt("max-tick-time", 60000);
     }
 }
