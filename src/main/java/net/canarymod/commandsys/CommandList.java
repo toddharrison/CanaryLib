@@ -98,8 +98,10 @@ public class CommandList implements CommandListener {
 
         /* vanilla */
         temp.put("achievement", new Achievement());
+        temp.put("blockdata", new BlockData());
         temp.put("broadcast", new Broadcast());
         temp.put("clear", new Clear());
+        temp.put("clone", new Clone());
         temp.put("debug", new Debug());
         temp.put("defaultgamemode", new DefaultGameMode());
         temp.put("defaultspawnpoint", new DefaultSpawnpoint());
@@ -107,12 +109,17 @@ public class CommandList implements CommandListener {
         temp.put("effect", new Effect());
         temp.put("emote", new Emote());
         temp.put("enchant", new Enchant());
+        temp.put("entitydata", new EntityData());
+        temp.put("execute", new Execute());
+        temp.put("fill", new Fill());
         temp.put("gamemode", new GameMode());
         temp.put("gamerule", new GameRule());
         temp.put("give", new Give());
         temp.put("message", new Message());
         temp.put("messageraw", new MessageRaw());
+        temp.put("particle", new Particle());
         temp.put("playsound", new PlaySound());
+        temp.put("replaceitem", new ReplaceItem());
         temp.put("save-all", new SaveAll());
         temp.put("save-off", new SaveOff());
         temp.put("save-on", new SaveOn());
@@ -120,13 +127,18 @@ public class CommandList implements CommandListener {
         temp.put("setblock", new SetBlock());
         temp.put("spawnpoint", new SpawnPoint());
         temp.put("spreadplayers", new SpreadPlayers());
+        temp.put("stats", new Stats());
         temp.put("summon", new Summon());
         temp.put("teleport", new Teleport());
         temp.put("testfor", new TestFor());
         temp.put("testforblock", new TestForBlock());
+        temp.put("testforblocks", new TestForBlocks());
         temp.put("time", new Time());
+        temp.put("Title", new Title());
         temp.put("toggledownfall", new ToggleDownfall());
+        temp.put("trigger", new Trigger());
         temp.put("weather", new Weather());
+        temp.put("worldborder", new WorldBorder());
         temp.put("xp", new XP());
 
         /* warp */
@@ -1002,6 +1014,19 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
+            aliases = {"blockdata"},
+            description = "Modifies NBT data at a specific coordinate, the <dataTag> merges with the block at that position",
+            permissions = {BLOCKDATA},
+            toolTip = "/blockdata <x> <y> <z> <dataTag>",
+            min = 3,
+            max = 4,
+            version = 2
+    )
+    public void blockdata(MessageReceiver caller, String[] args) {
+        natives.get("blockdata").execute(caller, args);
+    }
+
+    @Command(
             aliases = {"say", "broadcast"},
             description = "Broadcasts a message",
             permissions = {BROADCAST},
@@ -1023,6 +1048,18 @@ public class CommandList implements CommandListener {
     )
     public void clear(MessageReceiver caller, String[] args) {
         natives.get("clear").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"clone"},
+            description = "Clones all the blocks (not entities) from a given area to a different given area. The clone can be replace, masked, or filtered",
+            permissions = {CLONE},
+            toolTip = "/clone <x1> <y1> <z1> <x2> <y2> <z2> <x> <y> <z> [mode]",
+            min = 9,
+            version = 2
+    )
+    public void clone(MessageReceiver caller, String[] args) {
+        natives.get("clone").execute(caller, args);
     }
 
     @Command(
@@ -1109,6 +1146,42 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
+            aliases = {"entitydata"},
+            description = "Works similarly to /blockdata, but for entities. Does not work on Players.",
+            permissions = {ENTITYDATA},
+            toolTip = "/entitydata <entity> <dataTag>",
+            min = 2,
+            version = 2
+    )
+    public void entitydata(MessageReceiver caller, String[] args) {
+        natives.get("entitydata").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"execute"},
+            description = "Allows commands to be run from the position of specified entities",
+            permissions = {EXECUTE},
+            toolTip = "/execute <entity> <x> <y> <z> [detect <x2> <y2> <z2> <block> <data>] <command…>",
+            min = 5,
+            version = 2
+    )
+    public void execute(MessageReceiver caller, String[] args) {
+        natives.get("execute").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"fill"},
+            description = "Fills a given volume with a specified block",
+            permissions = {FILL},
+            toolTip = "/fill <x1> <y1> <z1> <x2> <y2> <z2> <TileName> [dataValue] [oldBlockHandling] [dataTag]",
+            min = 7,
+            version = 2
+    )
+    public void fill(MessageReceiver caller, String[] args) {
+        natives.get("fill").execute(caller, args);
+    }
+
+    @Command(
             aliases = {"gamemode", "mode"},
             description = "Sets a player's game mode.",
             permissions = {GAMEMODE},
@@ -1169,6 +1242,18 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
+            aliases = {"particle"},
+            description = "Spawns particles in a given area",
+            permissions = {PARTICLE},
+            toolTip = "/particle <name> <x> <y> <z> <xd> <yd> <zd> <speed> [count] [force]",
+            min = 8,
+            version = 2
+    )
+    public void particle(MessageReceiver caller, String[] args) {
+        natives.get("particle").execute(caller, args);
+    }
+
+    @Command(
             aliases = {"playsound"},
             description = "Plays a sound",
             permissions = {PLAYSOUND},
@@ -1178,6 +1263,18 @@ public class CommandList implements CommandListener {
     )
     public void playsound(MessageReceiver caller, String[] args) {
         natives.get("playsound").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"replaceitem"},
+            description = "Can replace items in any inventory, including the inventories of mobs such as zombies",
+            permissions = {REPLACEITEM},
+            toolTip = "/replaceitem <entity <entity> | block <x> <y> <z>> <slot> <item> <slot> <item> [amount] [data value]",
+            min = 6,
+            version = 2
+    )
+    public void replaceitem(MessageReceiver caller, String[] args) {
+        natives.get("replaceitem").execute(caller, args);
     }
 
     @Command(
@@ -1261,6 +1358,18 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
+            aliases = {"stats"},
+            description = "Alternative and more featureful way of interacting with CommandStats",
+            permissions = {STATS},
+            toolTip = "/stats <entity <selector>|block [x] [y] [z]> <mode>",
+            min = 3,
+            version = 2
+    )
+    public void stats(MessageReceiver caller, String[] args) {
+        natives.get("stats").execute(caller, args);
+    }
+
+    @Command(
             aliases = {"summon", "mspawn", "mobspawn", "spawnmob"},
             description = "Summons an entity",
             permissions = {SUMMON},
@@ -1309,6 +1418,18 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
+            aliases = {"testforblocks"},
+            description = "Compares two areas of a world",
+            permissions = {TESTFORBLOCKS},
+            toolTip = "/testforblocks <x1> <y1> <z1> <x2> <y2> <z2> [mode]",
+            min = 6,
+            version = 2
+    )
+    public void testforblocks(MessageReceiver caller, String[] args) {
+        natives.get("testforblocks").execute(caller, args);
+    }
+
+    @Command(
             aliases = {"time"},
             description = "Changes or queries the world's game time.",
             permissions = {TIME},
@@ -1318,6 +1439,18 @@ public class CommandList implements CommandListener {
     )
     public void time(MessageReceiver caller, String[] args) {
         natives.get("time").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"title"},
+            description = "Can make text display on a players screen in the form of a title and/or subtitle using JSON",
+            permissions = {TITLE},
+            toolTip = "/title <params...>",
+            min = 1,
+            version = 2
+    )
+    public void title(MessageReceiver caller, String[] args) {
+        natives.get("title").execute(caller, args);
     }
 
     @Command(
@@ -1332,6 +1465,18 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
+            aliases = {"trigger"},
+            description = "Functions the same way as /scoreboard players set or /scoreboard players add, but can only modify objectives with the trigger criteria (referred to as \"triggers\") and can only modify the score of the player running the command",
+            permissions = {TRIGGER},
+            toolTip = "/trigger <objective> <add:set> <value>",
+            min = 3,
+            version = 2
+    )
+    public void trigger(MessageReceiver caller, String[] args) {
+        natives.get("trigger").execute(caller, args);
+    }
+
+    @Command(
             aliases = {"weather"},
             description = "Sets the weather.",
             permissions = {WEATHER},
@@ -1341,6 +1486,18 @@ public class CommandList implements CommandListener {
     )
     public void weather(MessageReceiver caller, String[] args) {
         natives.get("weather").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"worldborder"},
+            description = "World border modification",
+            permissions = {WORLDBORDER},
+            toolTip = "/worldborder <<set|add <sizeInBlocks> <timeInSeconds>>:center <x> <z>:damage <buffer|amount>:warning <time|distance>:get>",
+            min = 1,
+            version = 2
+    )
+    public void worldborder(MessageReceiver caller, String[] args) {
+        natives.get("worldborder").execute(caller, args);
     }
 
     @Command(
