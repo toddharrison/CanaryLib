@@ -30,13 +30,13 @@ public class WarpSet implements NativeCommand {
                 return;
             }
             // SET PUBLIC WARP
-            if (args.length == 2) {
+            if (args.length == 1) {
                 Warp newWarp = new Warp(player.getLocation(), args[0]);
 
                 Canary.warps().addWarp(newWarp);
                 player.message(Colors.YELLOW + Translator.translateAndFormat("setwarp success", args[0]));
             }
-            else if (args.length > 3) {
+            else if (args.length > 2) {
                 // SET GROUP SPECIFIC WARP
                 if (args[2].equalsIgnoreCase("G") && player.hasPermission(WARP$SET$GROUP)) {
                     Group[] groups = new Group[args.length - 2];
