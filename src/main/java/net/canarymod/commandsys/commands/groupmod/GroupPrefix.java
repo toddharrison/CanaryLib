@@ -21,7 +21,7 @@ public class GroupPrefix implements NativeCommand {
             return;
         }
         Group group = Canary.usersAndGroups().getGroup(args[0]);
-        if (group == null) {
+        if (group == null || !group.getName().equals(args[0])) {
             caller.notice(Translator.translateAndFormat("unknown group", args[0]));
             return;
         }

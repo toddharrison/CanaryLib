@@ -39,7 +39,7 @@ public class GroupCreate implements NativeCommand {
             worldName = world.getFqName();
 
             parent = Canary.usersAndGroups().getGroup(args[1]);
-            if (parent == null) {
+            if (parent == null || !parent.getName().equals(args[1])) {
                 caller.notice(Translator.translateAndFormat("group unknown parent", args[1]));
                 return;
             }

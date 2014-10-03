@@ -21,11 +21,11 @@ public class GroupParent implements NativeCommand {
         }
         Group group = Canary.usersAndGroups().getGroup(args[0]);
         Group parent = Canary.usersAndGroups().getGroup(args[1]); // Must exist
-        if (group == null) {
+        if (group == null || !group.getName().equals(args[0])) {
             caller.notice(Translator.translateAndFormat("group unknown", args[0]));
             return;
         }
-        if (parent == null) {
+        if (parent == null || !parent.getName().equals(args[1])) {
             caller.notice(Translator.translateAndFormat("group unknown", args[1]));
             return;
         }
