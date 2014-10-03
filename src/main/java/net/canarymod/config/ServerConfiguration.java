@@ -157,6 +157,8 @@ public class ServerConfiguration implements ConfigurationContainer {
         cfg.setComments("world-cache-timer-enabled", "Enable automatic unloading of unused worlds.");
         cfg.getLong("world-cache-timeout", 60);
         cfg.setComments("world-cache-timeout", "For how long should a world be empty before it will be unloaded (if use-world-cache is enabled)");
+        cfg.getBoolean("bungeecord", false);
+        cfg.setComments("bungeecord", "If you want to enable Bungeecord support. REQUIRES THAT ONLINE MODE IS DISABLED (false)");
 
         cfg.save();
     }
@@ -602,5 +604,14 @@ public class ServerConfiguration implements ConfigurationContainer {
      */
     public int getMaxTickTime() {
         return cfg.getInt("max-tick-time", 60000);
+    }
+
+    /**
+     * Checks if bungeecord support is enabled
+     *
+     * @return {@code true} if enabled; {@code false} if not
+     */
+    public boolean getBungeecordSupport() {
+        return cfg.getBoolean("bungeecord", false);
     }
 }
