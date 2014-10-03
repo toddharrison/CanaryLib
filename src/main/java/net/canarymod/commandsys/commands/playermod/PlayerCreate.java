@@ -22,7 +22,7 @@ public class PlayerCreate implements NativeCommand {
         }
         Group g = Canary.usersAndGroups().getGroup(args[1]);
         Player target = Canary.getServer().matchPlayer(args[0]);
-        if (g == null) {
+        if (g == null || !g.getName().equals(args[1])) {
             caller.notice(Translator.translateAndFormat("unknown group", args[1]));
             return;
         }

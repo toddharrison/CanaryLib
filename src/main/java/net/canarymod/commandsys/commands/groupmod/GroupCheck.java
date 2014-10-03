@@ -20,7 +20,7 @@ public class GroupCheck implements NativeCommand {
             return;
         }
         Group g = Canary.usersAndGroups().getGroup(args[0]);
-        if (g == null) {
+        if (g == null || !g.getName().equals(args[0])) {
             caller.notice(Translator.translateAndFormat("unknown group", args[0]));
             return;
         }
