@@ -26,7 +26,6 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
     private boolean isClosed = false;
     private boolean disabled = true;
     private final ArrayList<String> dependents = new ArrayList<String>();
-    private PluginDescriptor descriptor;
     private String name;
     /**
      * This is used to get the correct name during load process, before it is set in the field above.
@@ -81,7 +80,8 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
     /**
      * Set this Plugin's priority level. This will affect the order of hook execution.
      *
-     * @param priority the Priority level
+     * @param priority
+     *         the Priority level
      */
     final public void setPriority(int priority) {
         this.priority = priority;
@@ -110,15 +110,16 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
     /**
      * Gets the name of the Plugin's Jar File
      *
-     * @deprecated Plugins may or may not be in a jar file. This method will return null if there is no jar.
-     *
      * @return the Jar File name
+     *
+     * @deprecated Plugins may or may not be in a jar file. This method will return null if there is no jar.
      */
     public String getJarName() {
         String path = getPath();
         if (path.endsWith(".jar")) {
             return new File(path).getName();
-        } else {
+        }
+        else {
             return null;
         }
     }
@@ -126,21 +127,23 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
     /**
      * Gets the path of the Plugin's Jar file as {@literal "plugins/<jar>"}
      *
-     * @deprecated  Plugins may or may not be in a jar file. This method will return null if there is no jar.
-     *
      * @return the Plugin's Jar path
+     *
+     * @deprecated Plugins may or may not be in a jar file. This method will return null if there is no jar.
      */
     public String getJarPath() {
         String path = getPath();
         if (path.endsWith(".jar")) {
             return path;
-        } else {
+        }
+        else {
             return null;
         }
     }
 
     /**
      * Returns the path for this plugin. May be a file, or a directory.
+     *
      * @return
      */
     public String getPath() {
@@ -183,6 +186,7 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
      * Gets the server-wide configuration of the Plugin
      *
      * @return configuration of the Plugin
+     *
      * @see Configuration#getPluginConfig(Plugin)
      */
     public final PropertiesFile getConfig() {
@@ -192,8 +196,11 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
     /**
      * Gets the server-wide configuration of the Plugin
      *
-     * @param module Used to create multiple configurations for the Plugin.
+     * @param module
+     *         Used to create multiple configurations for the Plugin.
+     *
      * @return configuration of the Plugin
+     *
      * @see Configuration#getPluginConfig(Plugin, String)
      */
     public final PropertiesFile getModuleConfig(String module) {
@@ -204,8 +211,11 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
      * Gets the world-specific configuration of the Plugin.
      * If there is no world-specific configuration, it will take the server-wide configuration.
      *
-     * @param world the {@link World} to get configuration for
+     * @param world
+     *         the {@link World} to get configuration for
+     *
      * @return configuration of the Plugin for the specified {@link World}
+     *
      * @see Configuration#getPluginConfig(Plugin, World)
      */
     public final PropertiesFile getWorldConfig(World world) {
@@ -216,9 +226,13 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
      * Gets the world-specific configuration of the Plugin.
      * If there is no world-specific configuration, it will take the server-wide configuration.
      *
-     * @param module Used to create multiple configurations for the Plugin.
-     * @param world  the {@link World} to get configuration for
+     * @param module
+     *         Used to create multiple configurations for the Plugin.
+     * @param world
+     *         the {@link World} to get configuration for
+     *
      * @return configuration of the Plugin for the specified {@link World}
+     *
      * @see Configuration#getPluginConfig(Plugin, String, World)
      */
     public final PropertiesFile getWorldModuleConfig(String module, World world) {
@@ -247,7 +261,8 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
      * @return {@code true} if disabled; {@code false} if enabled
      */
     public final boolean isDisabled() {
-        return disabled;
+        // Checking for not ENABLED as a Plugin may just be in a KNOWN state but not ENABLED
+        return getDescriptor().getCurrentState() != PluginState.ENABLED;
     }
 
     /**
@@ -258,8 +273,11 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
      * that is not registered yet, it will fail.
      * So make sure you add commands in the correct order.
      *
-     * @param listener the {@link CommandListener}
-     * @param force    {@code true} to override existing commands; {@code false} for not
+     * @param listener
+     *         the {@link CommandListener}
+     * @param force
+     *         {@code true} to override existing commands; {@code false} for not
+     *
      * @throws CommandDependencyException
      */
     public final void registerCommands(CommandListener listener, boolean force) throws CommandDependencyException {
@@ -274,9 +292,13 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
      * that is not registered yet, it will fail.
      * So make sure you add commands in the correct order.
      *
-     * @param listener   the {@link CommandListener}
-     * @param translator the {@link LocaleHelper} instance used in Translations
-     * @param force      {@code true} to override existing commands; {@code false} for not
+     * @param listener
+     *         the {@link CommandListener}
+     * @param translator
+     *         the {@link LocaleHelper} instance used in Translations
+     * @param force
+     *         {@code true} to override existing commands; {@code false} for not
+     *
      * @throws CommandDependencyException
      */
     public final void registerCommands(CommandListener listener, LocaleHelper translator, boolean force) throws CommandDependencyException {
