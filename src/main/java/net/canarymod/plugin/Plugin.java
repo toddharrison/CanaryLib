@@ -26,7 +26,6 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
     private boolean isClosed = false;
     private boolean disabled = true;
     private final ArrayList<String> dependents = new ArrayList<String>();
-    private PluginDescriptor descriptor;
     private String name;
     /**
      * This is used to get the correct name during load process, before it is set in the field above.
@@ -247,7 +246,8 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
      * @return {@code true} if disabled; {@code false} if enabled
      */
     public final boolean isDisabled() {
-        return disabled;
+        // Checking for not ENABLED as a Plugin may just be in a KNOWN state but not ENABLED
+        return getDescriptor().getCurrentState() != PluginState.ENABLED;
     }
 
     /**
