@@ -13,13 +13,19 @@ import java.util.List;
  */
 public class Group {
 
-    /** ID for retrieving permissions from the database */
+    /**
+     * ID for retrieving permissions from the database
+     */
     private int id;
 
-    /** Group Name */
+    /**
+     * Group Name
+     */
     private String name;
 
-    /** Group Prefix/Color */
+    /**
+     * Group Prefix/Color
+     */
     private String prefix = null;
 
     /**
@@ -28,10 +34,14 @@ public class Group {
      */
     private String worldName = null;
 
-    /** The permission provider for querying permissions etc. */
+    /**
+     * The permission provider for querying permissions etc.
+     */
     private PermissionProvider permissions;
 
-    /** List of groups this group inherits/has control over */
+    /**
+     * List of groups this group inherits/has control over
+     */
     private List<Group> childGroups = new ArrayList<Group>();
 
     /**
@@ -40,7 +50,9 @@ public class Group {
      */
     private Group parent = null;
 
-    /** Is true if it's the default group */
+    /**
+     * Is true if it's the default group
+     */
     private boolean defaultGroup = false;
 
     /**
@@ -72,8 +84,7 @@ public class Group {
 
     /**
      * Check if this group has control over the given group, specifically, check
-     * if the given group is a child of this group, or if this group is admin or
-     * can ignore restrictions.<br>
+     * if the given group is a child of this group, or if this group is admin.<br>
      *
      * @param g
      *         the group to check control of
@@ -81,7 +92,7 @@ public class Group {
      * @return {@code true} if has control over
      */
     public boolean hasControlOver(Group g) {
-        if (isAdministratorGroup() || canIgnorerestrictions()) {
+        if (isAdministratorGroup()) {
             return true;
         }
         if (this.name.equals(g.name)) {
@@ -184,7 +195,6 @@ public class Group {
         this.prefix = prefix;
     }
 
-
     public boolean isDefaultGroup() {
         return defaultGroup;
     }
@@ -262,7 +272,9 @@ public class Group {
         return childGroups;
     }
 
-    /** @return the worldName fully qualified name for a world*/
+    /**
+     * @return the worldName fully qualified name for a world
+     */
     public String getWorldName() {
         return worldName;
     }
@@ -273,7 +285,7 @@ public class Group {
      */
     public void setWorldName(String worldName) {
         if (this.parent != null) {
-            if(this.parent.getWorldName() != null && !this.parent.getWorldName().equals(worldName)) {
+            if (this.parent.getWorldName() != null && !this.parent.getWorldName().equals(worldName)) {
                 return; //TODO: Throw exception?
             }
         }

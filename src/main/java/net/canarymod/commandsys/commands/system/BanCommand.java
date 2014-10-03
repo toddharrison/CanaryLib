@@ -7,6 +7,7 @@ import net.canarymod.api.PlayerReference;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.bansystem.Ban;
 import net.canarymod.chat.MessageReceiver;
+import net.canarymod.chat.ReceiverType;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.hook.player.BanHook;
 import net.visualillusionsent.utils.StringUtils;
@@ -24,6 +25,8 @@ public class BanCommand implements NativeCommand {
             Canary.help().getHelp(caller, "ban");
             return;
         }
+        boolean isPlayerCommandBlock = caller.getReceiverType() != ReceiverType.SERVER;
+
         String reason = "Permanently Banned";
         long timestamp = -1L;
 
@@ -41,6 +44,12 @@ public class BanCommand implements NativeCommand {
         Player[] playerSelectorArray = Canary.playerSelector().matchPlayers(caller, parameters[0]);
         if (playerSelectorArray != null) {
             for (Player p : playerSelectorArray) {
+                if (isPlayerCommandBlock) {
+                    Player c = (Player)caller;
+                    if (!c.getGroup().hasControlOver(p.getGroup())) {
+                        continue;
+                    }
+                }
                 Ban ban = new Ban();
                 ban.setReason(reason);
                 ban.setTimestamp(timestamp);
@@ -56,6 +65,13 @@ public class BanCommand implements NativeCommand {
         }
         else {
             PlayerReference ref = Canary.getServer().matchKnownPlayer(parameters[0]);
+            if (isPlayerCommandBlock) {
+                Player c = (Player)caller;
+                if (!c.getGroup().hasControlOver(ref.getGroup())) {
+                    caller.notice("nope!"); //TODO Better Message
+                    return;
+                }
+            }
             Ban ban = new Ban();
             ban.setReason(reason);
             ban.setTimestamp(timestamp);
@@ -66,7 +82,7 @@ public class BanCommand implements NativeCommand {
             Canary.hooks().callHook(new BanHook(ref, ref.getIP(), caller, reason, timestamp));
             caller.notice(Translator.translateAndFormat("ban banned", ref.getName()));
             if (ref.isOnline() && ref instanceof Player) {
-                ((Player) ref).kick(reason);
+                ((Player)ref).kick(reason);
             }
         }
     }
