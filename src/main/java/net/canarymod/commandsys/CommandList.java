@@ -833,10 +833,12 @@ public class CommandList implements CommandListener {
         natives.get("oplist").execute(caller, args);
     }
 
-    @Command(aliases = {"playerinfo", "pinfo"},
+    @Command(
+            aliases = {"playerinfo", "pinfo"},
             description = "Player Information",
             permissions = {PLAYER$INFO},
-            toolTip = "/playerinfo [player]"
+            toolTip = "/playerinfo [player]",
+            version = 2
     )
     public void playerinfo(MessageReceiver caller, String[] parameters) {
         natives.get("playerinfo").execute(caller, parameters);
