@@ -227,6 +227,13 @@ public interface PlayerReference {
     public void setModeId(int mode);
 
     /**
+     * Checks if this player is a Server Operator
+     *
+     * @return {@code true} if is op; {@code false} otherwise
+     */
+    public boolean isOperator();
+
+    /**
      * Check if this player has the admin flag set
      *
      * @return {@code true} if is Admin; {@code false} otherwise
