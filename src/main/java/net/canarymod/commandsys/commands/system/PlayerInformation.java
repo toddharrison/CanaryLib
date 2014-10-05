@@ -6,6 +6,7 @@ import net.canarymod.api.PlayerReference;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.position.Position;
 import net.canarymod.chat.MessageReceiver;
+import net.canarymod.chat.ReceiverType;
 import net.canarymod.chat.TextFormat;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.Group;
@@ -20,11 +21,16 @@ public class PlayerInformation implements NativeCommand {
 
     @Override
     public void execute(MessageReceiver caller, String[] args) {
+        if (caller.getReceiverType() != ReceiverType.PLAYER && args.length == 0) {
+            caller.notice("You must specify a target player");
+            return;
+        }
+
         PlayerReference subject = null;
-        if (args.length == 2) {
-            subject = Canary.getServer().matchPlayer(args[1]);
+        if (args.length == 1) {
+            subject = Canary.getServer().matchPlayer(args[0]);
             if (subject == null) {
-                subject = Canary.getServer().getOfflinePlayer(args[1]);
+                subject = Canary.getServer().getOfflinePlayer(args[0]);
             }
         }
         else if (caller instanceof Player) {
@@ -62,7 +68,7 @@ public class PlayerInformation implements NativeCommand {
             }
         }
         else {
-            caller.notice("Can't find player " + args[1]);
+            caller.notice("Can't find player " + args[0]);
         }
     }
 
