@@ -1,5 +1,7 @@
 package net.canarymod.api.world;
 
+import net.canarymod.config.WorldConfiguration;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -46,6 +48,15 @@ public interface WorldManager {
     public World getWorld(String name, DimensionType type, boolean autoload);
 
     /**
+     * Create a new world with the given name, seed will be selected randomly
+     *
+     * @param name
+     *
+     * @return
+     */
+    public boolean createWorld(String name, DimensionType dimensionType);
+
+    /**
      * Create a new world with the given name and seed
      *
      * @param name
@@ -53,7 +64,7 @@ public interface WorldManager {
      *
      * @return
      */
-    public boolean createWorld(String name, long seed, DimensionType type);
+    public boolean createWorld(String name, long seed, DimensionType dimensionType);
 
     /**
      * Create a new world with the given name and seed and GeneratorType
@@ -64,16 +75,20 @@ public interface WorldManager {
      *
      * @return
      */
-    public boolean createWorld(String name, long seed, DimensionType worldType, WorldType genType);
+    public boolean createWorld(String name, long seed, DimensionType dimensionType, WorldType worldType);
 
     /**
-     * Create a new world with the given name, seed will be selected randomly
+     * Creats a {@link net.canarymod.api.world.World} based on a passed {@link net.canarymod.config.WorldConfiguration}<p/>
+     * One should create and configue a {@link net.canarymod.config.WorldConfiguration} using {@link net.canarymod.config.WorldConfiguration#create(String, DimensionType)}
      *
-     * @param name
+     * @param configuration
+     * the configuration to use to create a world
      *
-     * @return
+     * @return doesn't matter...
+     *
+     * @see net.canarymod.config.WorldConfiguration#create(String, DimensionType)
      */
-    public boolean createWorld(String name, DimensionType type);
+    public boolean createWorld(WorldConfiguration configuration);
 
     /**
      * Destroys the world with the given name

@@ -165,4 +165,8 @@ public class Configuration {
             Configuration.plugin_cfg_cache.remove(plugin);
         }
     }
+
+    static boolean hasWorldConfig(String name) {
+        return worldConfigs.containsKey(name);
+    }
 }
