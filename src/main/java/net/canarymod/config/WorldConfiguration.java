@@ -2,6 +2,7 @@ package net.canarymod.config;
 
 import net.canarymod.MathHelp;
 import net.canarymod.api.GameMode;
+import net.canarymod.api.world.DimensionType;
 import net.canarymod.api.world.World;
 import net.canarymod.api.world.WorldType;
 import net.visualillusionsent.utils.PropertiesFile;
@@ -25,15 +26,15 @@ public class WorldConfiguration implements ConfigurationContainer {
 
     /* Arrays of default mobs, leave static */
     private final static String[]
-            animals = new String[]{ "Bat", "Chicken", "Cow", "Mooshroom", "Ocelot", "Pig", "Sheep", "Wolf", "Horse" },
-            wateranimals = new String[]{ "Squid" },
-            monsters = new String[]{ "Enderman", "PigZombie", "Blaze", "CaveSpider", "Creeper", "Ghast", "MagamaCube", "Silverfish", "Skeleton", "Slime", "Spider", "Witch", "Zombie", "Wither", "EnderDragon", "GiantZombie" },
-            golems = new String[]{ "IronGolem", "Snowman" };
+            animals = new String[]{"Bat", "Chicken", "Cow", "Mooshroom", "Ocelot", "Pig", "Sheep", "Wolf", "Horse"},
+            wateranimals = new String[]{"Squid"},
+            monsters = new String[]{"Enderman", "PigZombie", "Blaze", "CaveSpider", "Creeper", "Ghast", "MagamaCube", "Silverfish", "Skeleton", "Slime", "Spider", "Witch", "Zombie", "Wither", "EnderDragon", "GiantZombie"},
+            golems = new String[]{"IronGolem", "Snowman"};
 
     /* Arrays of default enderblocks and disallowed blocks, leave static */
     private final static int[]
-            enderblocks = new int[]{ 2, 3, 12, 13, 37, 38, 39, 40, 46, 81, 82, 86, 103, 110 },
-            disallowedblocks = new int[]{ 7, 8, 9, 10, 11, 46, 51, 52 };
+            enderblocks = new int[]{2, 3, 12, 13, 37, 38, 39, 40, 46, 81, 82, 86, 103, 110},
+            disallowedblocks = new int[]{7, 8, 9, 10, 11, 46, 51, 52};
 
     /* Only read this once. Major performance improvement here. */
     private HashSet<String> spawnableAnimals, spawnableGolems, spawnableMobs, spawnableWaterAnimals;
@@ -429,5 +430,63 @@ public class WorldConfiguration implements ConfigurationContainer {
      */
     public boolean allowWarpAutoLoad() {
         return cfg.getBoolean("warp-autoload", false);
+    }
+
+    /**
+     * Creates a new WorldConfig for use with {@link net.canarymod.api.world.WorldManager#createWorld(WorldConfiguration)}<p/>
+     * Before passing on to createWorld, these settings should be modified using {@link WorldConfiguration#getFile()}<br/>
+     * and then calling {@link net.visualillusionsent.utils.PropertiesFile#save()} followed with {@link WorldConfiguration#reload()} when finished
+     * <ul>
+     * <li>worldType (String)</li>
+     * <li>spawn-protection (Integer)</li>
+     * <li>max-build-height (Integer)</li>
+     * <li>generate-structures (Boolean)</li>
+     * <li>generator-settings (String)</li>
+     * <li>world-seed (String)</li>
+     * <li>startup-autoload (Boolean)</li>
+     * <li>warp-autoload (Boolean)</li>
+     * <li>allow-nether (Boolean)</li>
+     * <li>allow-end (Boolean)</li>
+     * <li>allow-flight (Boolean)</li>
+     * <li>pvp (Boolean)</li>
+     * <li>difficulty (Integer)</li>
+     * <li>gamemode (Integer)</li>
+     * <li>forceDefaultGameMode (Boolean)</li>
+     * <li>forceDefaultGameModeDimensional (Boolean)</li>
+     * <li>auto-heal (String)</li>
+     * <li>enable-experience (Boolean)</li>
+     * <li>enable-health (Boolean)</li>
+     * <li>spawn-villagers (Boolean)</li>
+     * <li>spawn-golems (Boolean)</li>
+     * <li>spawn-animals (Boolean)</li>
+     * <li>spawn-monsters (Boolean)</li>
+     * <li>natural-animals (String[])</li>
+     * <li>natural-monsters (String[])</li>
+     * <li>natural-golems (String[])</li>
+     * <li>natural-wateranimals (String[])</li>
+     * <li>natural-spawn-rate (Integer)</li>
+     * <li>ender-blocks (int[])</li>
+     * <li>disallowed-blocks (int[])</li>
+     * </ul> <br/>
+     * NOTE: Settings list may not be entirely up to date.
+     *
+     * @param name
+     *         name of the World
+     * @param dimensionType
+     *         {@link net.canarymod.api.world.DimensionType} of the world
+     *
+     * @return the new WorldConfiguraion or {@code null} if a configuration is already existant
+     *
+     * @see net.canarymod.api.world.WorldManager#createWorld(WorldConfiguration)
+     * @see WorldConfiguration#reload()
+     * @see WorldConfiguration#getFile()
+     */
+    public static WorldConfiguration create(String name, DimensionType dimensionType) {
+        String worldFqName = name.concat("_").concat(dimensionType.getName());
+        //Check that a world for this config isn't already exisitant
+        if (Configuration.hasWorldConfig(worldFqName)) {
+            return null;
+        }
+        return Configuration.getWorldConfig(worldFqName);
     }
 }
