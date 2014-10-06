@@ -1,6 +1,7 @@
 package net.canarymod.commandsys.commands.system;
 
 import net.canarymod.Canary;
+import net.canarymod.ToolBox;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.chat.TextFormat;
@@ -27,9 +28,11 @@ public final class Op implements NativeCommand {
                     return;
                 }
         }
-        if (!opPro.isOpped(args[0])) {
-            opPro.addPlayer(args[0]);
-            if (opPro.isOpped(args[0])) { // Double check that is worked
+
+        String opUUID = ToolBox.usernameToUUID(args[0]);
+        if (!opPro.isOpped(opUUID)) {
+            opPro.addPlayer(opUUID);
+            if (opPro.isOpped(opUUID)) { // Double check that is worked
                 Canary.getServer().broadcastMessageToOps(TextFormat.LIGHT_GRAY + "[SERVER] Opped " + args[0]);
             }
             else {
