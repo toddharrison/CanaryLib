@@ -2,7 +2,7 @@ package net.canarymod.api.entity.throwable;
 
 import net.canarymod.api.entity.Entity;
 import net.canarymod.api.entity.Projectile;
-import net.canarymod.api.entity.living.EntityLiving;
+import net.canarymod.api.entity.living.LivingBase;
 
 /**
  * Throwable interface
@@ -12,11 +12,11 @@ import net.canarymod.api.entity.living.EntityLiving;
 public interface EntityThrowable extends Entity, Projectile {
 
     /**
-     * Gets the EntityLiving that threw the Throwable
+     * Gets the LivingBase that threw the Throwable
      *
-     * @return the EntityLiving that threw the Throwable
+     * @return the LivingBase that threw the Throwable
      */
-    public EntityLiving getThrower();
+    public LivingBase getThrower();
 
     /**
      * Gets the amount of gravity to apply to the thrown entity with each tick.
