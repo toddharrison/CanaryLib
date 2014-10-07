@@ -1,17 +1,5 @@
 package net.canarymod.database.xml;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import net.canarymod.database.Column;
 import net.canarymod.database.Column.DataType;
 import net.canarymod.database.DataAccess;
@@ -27,6 +15,13 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.charset.Charset;
+import java.util.*;
 
 /**
  * Represent access to an XML database
@@ -63,7 +58,9 @@ public class XmlDatabase extends Database {
 
         if (!file.exists()) {
             try {
-                file.createNewFile();
+                if (!file.createNewFile()) {
+                    throw new DatabaseWriteException("Failed to create database XML file: " + data.getName());
+                }
                 initFile(file, data.getName());
             }
             catch (IOException e) {
@@ -73,9 +70,7 @@ public class XmlDatabase extends Database {
         Document dbTable;
 
         try {
-            FileInputStream in = new FileInputStream(file);
-            dbTable = fileBuilder.build(in);
-            in.close();
+            dbTable = verifyTable(file, data.getName());
             insertData(file, data, dbTable);
         }
         catch (JDOMException e) {
@@ -98,9 +93,7 @@ public class XmlDatabase extends Database {
         }
 
         try {
-            FileInputStream in = new FileInputStream(file);
-            Document table = fileBuilder.build(in);
-            in.close();
+            Document table = verifyTable(file, data.getName());
 
             loadData(data, table, filters);
         }
@@ -124,9 +117,7 @@ public class XmlDatabase extends Database {
         }
 
         try {
-            FileInputStream in = new FileInputStream(file);
-            Document table = fileBuilder.build(in);
-            in.close();
+            Document table = verifyTable(file, typeTemplate.getName());
 
             loadAllData(typeTemplate, datasets, table, filters);
         }
@@ -151,10 +142,7 @@ public class XmlDatabase extends Database {
         }
 
         try {
-            FileInputStream in = new FileInputStream(file);
-            Document table = fileBuilder.build(in);
-            in.close();
-
+            Document table = verifyTable(file, data.getName());
             updateData(file, table, data, filters);
         }
         catch (JDOMException e) {
@@ -177,10 +165,7 @@ public class XmlDatabase extends Database {
         }
 
         try {
-            FileInputStream in = new FileInputStream(file);
-            Document table = fileBuilder.build(in);
-            in.close();
-
+            Document table = verifyTable(file, data.getName());
             removeData(file, table, filters, false);
         }
         catch (JDOMException e) {
@@ -200,10 +185,7 @@ public class XmlDatabase extends Database {
         }
 
         try {
-            FileInputStream in = new FileInputStream(file);
-            Document table = fileBuilder.build(in);
-            in.close();
-
+            Document table = verifyTable(file, data.getName());
             removeData(file, table, filters, true);
         }
         catch (JDOMException e) {
@@ -220,7 +202,9 @@ public class XmlDatabase extends Database {
 
         if (!file.exists()) {
             try {
-                file.createNewFile();
+                if (!file.createNewFile()) {
+                    throw new DatabaseWriteException("Failed to create database XML file: " + data.getName());
+                }
                 initFile(file, data.getName());
             }
             catch (IOException e) {
@@ -228,9 +212,7 @@ public class XmlDatabase extends Database {
             }
         }
         try {
-            FileInputStream in = new FileInputStream(file);
-            Document table = fileBuilder.build(in);
-            in.close();
+            Document table = verifyTable(file, data.getName());
 
             HashSet<Column> tableLayout = data.getTableLayout();
 
@@ -768,4 +750,14 @@ public class XmlDatabase extends Database {
         }
     }
 
+    private Document verifyTable(File file, String root) throws IOException, JDOMException {
+        if (file.length() <= 0) {
+            initFile(file, root);
+        }
+
+        FileInputStream in = new FileInputStream(file);
+        Document document = fileBuilder.build(in);
+        in.close();
+        return document;
+    }
 }
