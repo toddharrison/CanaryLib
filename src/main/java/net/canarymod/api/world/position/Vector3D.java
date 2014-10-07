@@ -152,7 +152,7 @@ public class Vector3D extends Position {
     }
 
     @Override
-    public Vector3D clone() {
-        return new Vector3D(this);
+    public Vector3D clone() throws CloneNotSupportedException {
+        return (Vector3D)super.clone();
     }
 }

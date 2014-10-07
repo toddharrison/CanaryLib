@@ -219,8 +219,8 @@ public class Location extends Vector3D {
     }
 
     @Override
-    public Location clone() {
-        return new Location(this);
+    public Location clone() throws CloneNotSupportedException {
+        return (Location)super.clone();
     }
 
 }

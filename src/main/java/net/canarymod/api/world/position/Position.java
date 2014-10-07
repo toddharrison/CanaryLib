@@ -1,6 +1,7 @@
 package net.canarymod.api.world.position;
 
 import net.canarymod.ToolBox;
+import net.canarymod.api.world.blocks.BlockFace;
 
 /**
  * Position is a x, y, z triple
@@ -154,6 +155,37 @@ public class Position implements Cloneable {
     }
 
     /**
+     * Transforms this position 1 block in the given {@link BlockFace} direction
+     *
+     * @param face
+     * the {@link BlockFace} used to move the position
+     */
+    public void transform(BlockFace face) {
+        switch (face) {
+            case TOP:
+                ++this.y;
+                break;
+            case BOTTOM:
+                --this.y;
+                break;
+            case NORTH: // -Z
+                --this.z;
+                break;
+            case SOUTH: // +Z
+                ++this.z;
+                break;
+            case WEST: // -X
+                --this.x;
+                break;
+            case EAST: // +X
+                ++this.x;
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
      * Checks if another object equals this one
      *
      * @param obj
@@ -183,14 +215,12 @@ public class Position implements Cloneable {
     }
 
     public String toString() {
-        StringBuilder format = new StringBuilder();
-
-        format.append(this.x).append(":").append(this.y).append(":").append(this.z);
-        return format.toString();
+        return String.format("%.4f:%.4f:%.4f", this.x, this.y, this.z);
     }
 
     @Override
-    public Position clone() {
-        return new Position(this);
+    public Position clone() throws CloneNotSupportedException {
+        // Since we have only primitive/immutable fields, calling super.clone is fine
+        return (Position)super.clone();
     }
 }
