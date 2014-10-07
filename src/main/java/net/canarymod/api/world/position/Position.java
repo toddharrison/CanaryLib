@@ -223,4 +223,14 @@ public class Position implements Cloneable {
         // Since we have only primitive/immutable fields, calling super.clone is fine
         return (Position)super.clone();
     }
+
+    public Position safeClone() {
+        try {
+            return this.clone();
+        }
+        catch (CloneNotSupportedException e) {
+            // it is supported...
+        }
+        return new Position(this);
+    }
 }

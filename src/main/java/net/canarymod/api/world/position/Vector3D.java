@@ -155,4 +155,14 @@ public class Vector3D extends Position {
     public Vector3D clone() throws CloneNotSupportedException {
         return (Vector3D)super.clone();
     }
+
+    public Vector3D safeClone() {
+        try {
+            return this.clone();
+        }
+        catch (CloneNotSupportedException e) {
+            // it is supported...
+        }
+        return new Vector3D(this);
+    }
 }
