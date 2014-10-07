@@ -1,6 +1,5 @@
 package net.canarymod.user;
 
-import net.canarymod.Canary;
 import net.canarymod.ToolBox;
 import net.canarymod.api.PlayerReference;
 import net.canarymod.backbone.BackboneOperators;
@@ -25,7 +24,9 @@ public class OperatorsProvider {
         readOpsCfg();
     }
 
-    /** Reload the ops from database */
+    /**
+     * Reload the ops from database
+     */
     public void reload() {
         ops = backboneOps.loadOps();
         readOpsCfg();
@@ -85,12 +86,8 @@ public class OperatorsProvider {
         if (ToolBox.isUUID(nameOrUUID)) {
             return ops.contains(nameOrUUID);
         }
-        else if (Canary.getServer() != null) { // Like at start up...
-            // Try to get a UUID reference from a known player
-            return isOpped(Canary.getServer().matchKnownPlayer(nameOrUUID));
-        }
         else {
-            return false;
+            return ops.contains(ToolBox.usernameToUUID(nameOrUUID));
         }
     }
 
