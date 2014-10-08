@@ -6,7 +6,13 @@ package net.canarymod.api.world.blocks;
  * @author Chris (damagefilter)
  */
 public enum BlockFace {
-    BOTTOM((byte) 0), TOP((byte) 1), SOUTH((byte) 2), NORTH((byte) 3), EAST((byte) 4), WEST((byte) 5), UNKNOWN((byte) -1);
+    BOTTOM((byte)0),
+    TOP((byte)1),
+    NORTH((byte)2),
+    SOUTH((byte)3),
+    WEST((byte)4),
+    EAST((byte)5),
+    UNKNOWN((byte)-1);
 
     private byte normal;
 
