@@ -134,7 +134,7 @@ public class Vector3D extends Position {
     /**
      * Scalar multiply this vector with a given factor and return the result as new Vector3D
      *
-     * @param toRemove
+     * @param scalar
      *
      * @return scalar product as Vector3D
      */
@@ -156,7 +156,7 @@ public class Vector3D extends Position {
         return (Vector3D)super.clone();
     }
 
-    public Vector3D safeClone() {
+    public Vector3D copy() {
         try {
             return this.clone();
         }

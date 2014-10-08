@@ -223,7 +223,7 @@ public class Location extends Vector3D {
         return (Location)super.clone();
     }
 
-    public Location safeClone() {
+    public Location copy() {
         try {
             return this.clone();
         }

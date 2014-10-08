@@ -158,7 +158,7 @@ public class Position implements Cloneable {
      * Transforms this position 1 block in the given {@link BlockFace} direction
      *
      * @param face
-     * the {@link BlockFace} used to move the position
+     *         the {@link BlockFace} used to move the position
      */
     public void transform(BlockFace face) {
         switch (face) {
@@ -186,6 +186,98 @@ public class Position implements Cloneable {
     }
 
     /**
+     * Moves the position a specified amount in the X direction
+     *
+     * @param x
+     *         the amount to move X-wise
+     */
+    public void moveX(int x) {
+        this.x += x;
+    }
+
+    /**
+     * Moves the position a specified amount in the X direction
+     *
+     * @param x
+     *         the amount to move X-wise
+     */
+    public void moveX(double x) {
+        this.x += x;
+    }
+
+    /**
+     * Moves the position a specified amount in the Y direction
+     *
+     * @param y
+     *         the amount to move Y-wise
+     */
+    public void moveY(int y) {
+        this.y += y;
+    }
+
+    /**
+     * Moves the position a specified amount in the Y direction
+     *
+     * @param y
+     *         the amount to move Y-wise
+     */
+    public void moveY(double y) {
+        this.y += y;
+    }
+
+    /**
+     * Moves the position a specified amount in the Z direction
+     *
+     * @param z
+     *         the amount to move Z-wise
+     */
+    public void moveZ(int z) {
+        this.z += z;
+    }
+
+    /**
+     * Moves the position a specified amount in the Z direction
+     *
+     * @param z
+     *         the amount to move Z-wise
+     */
+    public void moveZ(double z) {
+        this.z += z;
+    }
+
+    /**
+     * Moves the position a specified amount in all directions
+     *
+     * @param x
+     *         the amount to move X-wise
+     * @param y
+     *         the amount to move Y-wise
+     * @param z
+     *         the amount to move Z-wise
+     */
+    public void move(int x, int y, int z) {
+        this.x += x;
+        this.y += y;
+        this.z += z;
+    }
+
+    /**
+     * Moves the position a specified amount in all directions
+     *
+     * @param x
+     *         the amount to move X-wise
+     * @param y
+     *         the amount to move Y-wise
+     * @param z
+     *         the amount to move Z-wise
+     */
+    public void move(double x, double y, double z) {
+        this.x += x;
+        this.y += y;
+        this.z += z;
+    }
+
+    /**
      * Checks if another object equals this one
      *
      * @param obj
@@ -197,20 +289,21 @@ public class Position implements Cloneable {
         if (!(obj instanceof Position)) {
             return false;
         }
-        Position other = (Position) obj;
+        Position other = (Position)obj;
 
         return other.getX() == this.x && other.getY() == this.y && other.getZ() == this.z;
-
     }
 
-    /** Return a hashcode for this object */
+    /**
+     * Return a hashcode for this object
+     */
     @Override
     public int hashCode() {
         int hash = 3;
 
-        hash = (int) (hash + x);
-        hash = (int) (hash + y);
-        hash = (int) (hash + z);
+        hash = (int)(hash + x);
+        hash = (int)(hash + y);
+        hash = (int)(hash + z);
         return hash;
     }
 
