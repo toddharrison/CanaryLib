@@ -1,12 +1,16 @@
 package net.canarymod.api.world.blocks;
 
+import com.google.common.collect.ImmutableMap;
 import net.canarymod.api.entity.EntityItem;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.inventory.Item;
 import net.canarymod.api.packet.BlockChangePacket;
 import net.canarymod.api.world.World;
+import net.canarymod.api.world.blocks.properties.BlockProperty;
 import net.canarymod.api.world.position.Location;
 import net.canarymod.api.world.position.Position;
+
+import java.util.Collection;
 
 /**
  * Interface representing a block in minecraft.
@@ -21,7 +25,7 @@ public interface Block {
      *
      * @return type id
      */
-    public short getTypeId();
+    short getTypeId();
 
     /**
      * Set this blocks type
@@ -29,14 +33,14 @@ public interface Block {
      * @param type
      *         the type id
      */
-    public void setTypeId(short type);
+    void setTypeId(short type);
 
     /**
      * Get this blocks data
      *
      * @return data
      */
-    public short getData();
+    short getData();
 
     /**
      * Sets the block's data
@@ -44,14 +48,14 @@ public interface Block {
      * @param data
      *         the data to set
      */
-    public void setData(short data);
+    void setData(short data);
 
     /**
      * Gets the block's BlockType
      *
      * @return {@link BlockType}
      */
-    public BlockType getType();
+    BlockType getType();
 
     /**
      * Set this blocks type
@@ -59,14 +63,14 @@ public interface Block {
      * @param type
      *         the {@link BlockType} to set
      */
-    public void setType(BlockType type);
+    void setType(BlockType type);
 
     /**
      * Get the current dimension for this block
      *
      * @return world
      */
-    public World getWorld();
+    World getWorld();
 
     /**
      * Set this block dimension
@@ -74,14 +78,14 @@ public interface Block {
      * @param world
      *         the {@link World} to set
      */
-    public void setWorld(World world);
+    void setWorld(World world);
 
     /**
      * Get the face that was clicked.
      *
      * @return {@link BlockFace}
      */
-    public BlockFace getFaceClicked();
+    BlockFace getFaceClicked();
 
     /**
      * Set the clicked BlockFace
@@ -89,7 +93,7 @@ public interface Block {
      * @param face
      *         the {@link BlockFace}
      */
-    public void setFaceClicked(BlockFace face);
+    void setFaceClicked(BlockFace face);
 
     /**
      * Get the block that is next to this block on the given face
@@ -100,7 +104,7 @@ public interface Block {
      *
      * @return the adjacent block
      */
-    public Block getFacingBlock(BlockFace face);
+    Block getFacingBlock(BlockFace face);
 
     /**
      * Get the block relative from this block
@@ -114,31 +118,31 @@ public interface Block {
      *
      * @return the relative block
      */
-    public Block getRelative(int x, int y, int z);
+    Block getRelative(int x, int y, int z);
 
     /** Send update packet for this block */
-    public void update();
+    void update();
 
     /**
      * Get this blocks position on the X axis
      *
      * @return x coordinate
      */
-    public int getX();
+    int getX();
 
     /**
      * Get this blocks position on the Y axis
      *
      * @return y coordinate
      */
-    public int getY();
+    int getY();
 
     /**
      * Get this blocks position on the Z axis
      *
      * @return z coordinate
      */
-    public int getZ();
+    int getZ();
 
     /**
      * Set this blocks position on the X axis
@@ -146,7 +150,7 @@ public interface Block {
      * @param x
      *         x coordinate
      */
-    public void setX(int x);
+    void setX(int x);
 
     /**
      * Set this blocks position on the Y axis
@@ -154,7 +158,7 @@ public interface Block {
      * @param y
      *         y coordinate
      */
-    public void setY(int y);
+    void setY(int y);
 
     /**
      * Set this blocks position on the Z axis
@@ -162,21 +166,21 @@ public interface Block {
      * @param z
      *         z coordinate
      */
-    public void setZ(int z);
+    void setZ(int z);
 
     /**
      * Gets this blocks location, with world info
      *
      * @return the {@link Location}
      */
-    public Location getLocation();
+    Location getLocation();
 
     /**
      * Gets this blocks position.
      *
      * @return the {@link Position}
      */
-    public Position getPosition();
+    Position getPosition();
 
     /**
      * Sets the status of this block.
@@ -186,7 +190,7 @@ public interface Block {
      * @param status
      *         the block status
      */
-    public void setStatus(byte status);
+    void setStatus(byte status);
 
     /**
      * Gets the status of this block.
@@ -195,35 +199,35 @@ public interface Block {
      *
      * @return status
      */
-    public byte getStatus();
+    byte getStatus();
 
     /**
      * Checks if the block is air
      *
      * @return {@code true} if air; {@code false} otherwise
      */
-    public boolean isAir();
+    boolean isAir();
 
     /**
      * Gets the {@link BlockMaterial} this Block is made of
      *
      * @return the {@link BlockMaterial}
      */
-    public BlockMaterial getBlockMaterial();
+    BlockMaterial getBlockMaterial();
 
     /**
      * Gets the Id of the Block as it would be dropped as an {@link Item}
      *
      * @return the id
      */
-    public int getIdDropped();
+    int getIdDropped();
 
     /**
      * Gets the damage of the Block as it would be dropped as an {@link Item}
      *
      * @return the damage
      */
-    public int getDamageDropped();
+    int getDamageDropped();
 
     /**
      * Gets the amount that would be dropped when the Block is harvested.<br>
@@ -231,7 +235,7 @@ public interface Block {
      *
      * @return the quantity that would be dropped
      */
-    public int getQuantityDropped();
+    int getQuantityDropped();
 
     /**
      * Drops the Block into the world as an {@link EntityItem}
@@ -239,14 +243,14 @@ public interface Block {
      * @param remove
      *         {@code true} to replace the block with air; {@code false} to leave the block as is
      */
-    public void dropBlockAsItem(boolean remove);
+    void dropBlockAsItem(boolean remove);
 
     /**
      * Gets a {@link TileEntity} at the same location as the Block
      *
      * @return {@link TileEntity} at the location or {@code null} if none
      */
-    public TileEntity getTileEntity();
+    TileEntity getTileEntity();
 
     /**
      * Simulates a right click on the block.<br>
@@ -257,7 +261,7 @@ public interface Block {
      *
      * @return {@code true} if the Block responded; {@code false} if not
      */
-    public boolean rightClick(Player player);
+    boolean rightClick(Player player);
 
     /**
      * Sends the update packet to the specified {@link Player}(s) without modifing the world.<br>
@@ -266,12 +270,20 @@ public interface Block {
      * @param players
      *         the {@link Player}(s) to send info to
      */
-    public void sendUpdateToPlayers(Player... players);
+    void sendUpdateToPlayers(Player... players);
 
     /**
      * Gets a {@link BlockChangePacket} of the Block that would be used in an update
      *
      * @return the {@link BlockChangePacket} of the Block
      */
-    public BlockChangePacket getBlockPacket();
+    BlockChangePacket getBlockPacket();
+
+    Collection<BlockProperty> getPropertyKeys();
+
+    ImmutableMap<BlockProperty, Comparable> getProperties();
+
+    Comparable getValue(BlockProperty property);
+
+    void setPropertyValue(BlockProperty property, Comparable value);
 }
