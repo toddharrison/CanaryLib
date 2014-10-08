@@ -5,5 +5,5 @@ package net.canarymod.api.world.blocks.properties;
  *
  * @author Jason Jones (darkdiplomat)
  */
-public interface BlockDirectionProperty extends BlockProperty {
+public interface BlockDirectionProperty extends BlockEnumProperty {
 }

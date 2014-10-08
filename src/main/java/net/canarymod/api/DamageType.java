@@ -32,6 +32,10 @@ public enum DamageType {
     GENERIC, //
     /** Damage caused from lava (4) */
     LAVA, //
+    /**
+     * Damage caused from a lightning bolt
+     */
+    LIGHTNINGBOLT,
     /** Damage dealt by a Mob */
     MOB, //
     /** Damage caused by a Player */
@@ -97,6 +101,9 @@ public enum DamageType {
         else if (source.getNativeName().equals("lava")) {
             return LAVA;
         }
+        else if (source.getNativeName().equals("lightningBolt")) {
+            return LIGHTNINGBOLT;
+        }
         else if (source.getNativeName().equals("mob")) {
             return MOB;
         }
@@ -112,7 +119,7 @@ public enum DamageType {
         else if (source.getNativeName().equals("thrown")) {
             return THROWN;
         }
-        else if (source.getNativeName().matches("player")) {
+        else if (source.getNativeName().equals("player")) {
             return PLAYER;
         }
         else if (source.getNativeName().equals("outOfWorld")) {
