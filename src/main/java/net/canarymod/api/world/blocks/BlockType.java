@@ -352,7 +352,7 @@ public final class BlockType {
     public static final BlockType RoseBush = new BlockType(175, 4, "minecraft:double_plant");
     public static final BlockType Peony = new BlockType(175, 5, "minecraft:double_plant");
     public static final BlockType StandingBanner = new BlockType(176, 0, "minecraft:standing_banner");
-    public static final BlockType WallBanner = new BlockType(177, 0, "minecraft:standing_banner");
+    public static final BlockType WallBanner = new BlockType(177, 0, "minecraft:wall_banner");
     public static final BlockType DaylightSensorInverted = new BlockType(178, 0, "minecraft:daylight_detector_inverted");
     public static final BlockType RedSandstone = new BlockType(179, 0, "minecraft:red_sandstone");
     public static final BlockType RedSandstoneOrnate = new BlockType(179, 1, "minecraft:red_sandstone");
