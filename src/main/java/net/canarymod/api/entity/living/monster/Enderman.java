@@ -1,5 +1,7 @@
 package net.canarymod.api.entity.living.monster;
 
+import net.canarymod.api.world.blocks.Block;
+
 /**
  * Enderman Wrapper
  *
@@ -8,25 +10,49 @@ package net.canarymod.api.entity.living.monster;
 public interface Enderman extends EntityMob {
 
     /**
+     * Gets the {@link Block} the Enderman carries
+     * NOTE: the World and Position data of the block may be based on the Enderman's current location at the time the method is called
+     *
+     * @return the block being carried
+     */
+    public Block getCarriedBlock();
+
+    /**
      * Get the block id for the block this Enderman carries
      *
      * @return block id
+     *
+     * @deprecated Use {@link #getCarriedBlock} instead
      */
+    @Deprecated
     public short getCarriedBlockID();
+
+    /**
+     * Sets the Block the Enderman carries
+     *
+     * @param block
+     * the block to set
+     */
+    public void setCarriedBlock(Block block);
 
     /**
      * Sets the Block ID for the block this Enderman carries
      *
      * @param blockId
      *         the block id
+     * @deprecated Use {@link #setCarriedBlock(net.canarymod.api.world.blocks.Block)} instead
      */
+    @Deprecated
     public void setCarriedBlockID(short blockId);
 
     /**
      * Gets the metadata of the Block the Enderman carries
      *
      * @return metadata
+     *
+     * @deprecated Block MetaData has gone away, use {@link #getCarriedBlock()} instead
      */
+    @Deprecated
     public short getCarriedBlockMetaData();
 
     /**
@@ -34,7 +60,9 @@ public interface Enderman extends EntityMob {
      *
      * @param metadata
      *         the data for the block being carried
+     * @deprecated Block MetaData has gone away, use {@link #setCarriedBlock(net.canarymod.api.world.blocks.Block)} instead
      */
+    @Deprecated
     public void setCarriedBlockMetaData(short metadata);
 
     /**

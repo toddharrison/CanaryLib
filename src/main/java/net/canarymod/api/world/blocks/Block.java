@@ -41,7 +41,9 @@ public interface Block {
      * Get this blocks data
      *
      * @return data
+     * @deprecated Block meta data is going away, look at BlockProperties instead
      */
+    @Deprecated
     short getData();
 
     /**
@@ -49,7 +51,10 @@ public interface Block {
      *
      * @param data
      *         the data to set
+     *
+     * @deprecated Block meta data is going away, look at BlockProperties instead
      */
+    @Deprecated
     void setData(short data);
 
     /**
