@@ -9,7 +9,7 @@ import net.canarymod.api.world.blocks.Block;
  *
  * @author Jason (darkdiplomat)
  */
-interface FallingBlock extends Entity {
+public interface FallingBlock extends Entity {
 
     /**
      * Gets the {@link Block} (state) of the FallingBlock
