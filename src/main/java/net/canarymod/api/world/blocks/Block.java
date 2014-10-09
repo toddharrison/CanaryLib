@@ -6,6 +6,8 @@ import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.inventory.Item;
 import net.canarymod.api.packet.BlockChangePacket;
 import net.canarymod.api.world.World;
+import net.canarymod.api.world.blocks.properties.BlockBooleanProperty;
+import net.canarymod.api.world.blocks.properties.BlockIntegerProperty;
 import net.canarymod.api.world.blocks.properties.BlockProperty;
 import net.canarymod.api.world.position.Location;
 import net.canarymod.api.world.position.Position;
@@ -120,7 +122,9 @@ public interface Block {
      */
     Block getRelative(int x, int y, int z);
 
-    /** Send update packet for this block */
+    /**
+     * Send update packet for this block
+     */
     void update();
 
     /**
@@ -264,7 +268,7 @@ public interface Block {
     boolean rightClick(Player player);
 
     /**
-     * Sends the update packet to the specified {@link Player}(s) without modifing the world.<br>
+     * Sends the update packet to the specified {@link Player}(s) without modifying the world.<br>
      * Useful for displaying things like borders to a specific player(s)
      *
      * @param players
@@ -279,11 +283,74 @@ public interface Block {
      */
     BlockChangePacket getBlockPacket();
 
+    /**
+     * Gets the collections of allowed {@link net.canarymod.api.world.blocks.properties.BlockProperty}
+     *
+     * @return allowed properties
+     */
     Collection<BlockProperty> getPropertyKeys();
 
+    /**
+     * Gets the map of properties and values
+     *
+     * @return map of properties and values
+     */
     ImmutableMap<BlockProperty, Comparable> getProperties();
 
+    /**
+     * Gets the value of a given {@link net.canarymod.api.world.blocks.properties.BlockProperty}
+     *
+     * @param property
+     *         the {@link net.canarymod.api.world.blocks.properties.BlockProperty} to get value for
+     *
+     * @return the value of the property
+     */
     Comparable getValue(BlockProperty property);
 
+    /**
+     * Sets a given property on a block. NOTE: New properties are not supported.
+     *
+     * @param property
+     *         the property to set
+     * @param value
+     *         the value to set
+     *
+     * @throws java.lang.IllegalArgumentException
+     *         should an invalid Property or value attempted to be set
+     */
     void setPropertyValue(BlockProperty property, Comparable value);
+
+    /**
+     * Sets a given property on a block. NOTE: New properties are not supported.
+     *
+     * @param property
+     *         the property to set
+     * @param value
+     *         the value to set
+     *
+     * @throws java.lang.IllegalArgumentException
+     *         should an invalid Property or value attempted to be set
+     */
+    void setIntegerPropertyValue(BlockIntegerProperty property, int value);
+
+    /**
+     * Sets a given property on a block. NOTE: New properties are not supported.
+     *
+     * @param property
+     *         the property to set
+     * @param value
+     *         the value to set
+     *
+     * @throws java.lang.IllegalArgumentException
+     *         should an invalid Property or value attempted to be set
+     */
+    void setBooleanPropertyValue(BlockBooleanProperty property, boolean value);
+
+    /**
+     * Checks if a given {@link net.canarymod.api.world.blocks.properties.BlockProperty} can be applied to the block
+     *
+     * @param property
+     *         the property to check
+     */
+    boolean canApply(BlockProperty property);
 }

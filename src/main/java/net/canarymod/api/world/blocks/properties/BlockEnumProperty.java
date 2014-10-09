@@ -6,6 +6,4 @@ package net.canarymod.api.world.blocks.properties;
  * @author Jason Jones (darkdiplomat)
  */
 public interface BlockEnumProperty extends BlockProperty {
-
-    String getName(Enum value);
 }

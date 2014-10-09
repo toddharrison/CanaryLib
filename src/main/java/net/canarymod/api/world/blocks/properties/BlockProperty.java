@@ -9,12 +9,34 @@ import java.util.Collection;
  */
 public interface BlockProperty {
 
+    /**
+     * Gets the Property's name
+     *
+     * @return property name
+     */
     String getName();
 
-    Collection<?> getAllowedValues();
+    /**
+     * Gets the collection of allowed values
+     *
+     * @return allowed values
+     */
+    Collection<Comparable> getAllowedValues();
 
+    /**
+     * Gets the Class type of the allowed values
+     *
+     * @return class type
+     */
     Class getValueClass();
 
-    String getName(Comparable value);
-
+    /**
+     * Tests if a given value can be applied to the Property
+     *
+     * @param value
+     *         the value to test
+     *
+     * @return {@code true} if can apply; {@code false} if not
+     */
+    boolean canApply(Comparable value);
 }
