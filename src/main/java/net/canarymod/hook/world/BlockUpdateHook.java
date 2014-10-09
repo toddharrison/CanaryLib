@@ -1,6 +1,7 @@
 package net.canarymod.hook.world;
 
 import net.canarymod.api.world.blocks.Block;
+import net.canarymod.api.world.blocks.BlockType;
 import net.canarymod.hook.CancelableHook;
 
 /**
@@ -12,10 +13,23 @@ public final class BlockUpdateHook extends CancelableHook {
 
     private Block block;
     private int newBlockId;
+    private BlockType newBlockType;
 
+    /**
+     *
+     * @deprecated Use the other constructor instead
+     */
+    @Deprecated
     public BlockUpdateHook(Block block, int newBlockId) {
         this.block = block;
         this.newBlockId = newBlockId;
+        this.newBlockType = BlockType.fromId(newBlockId);
+    }
+
+    public BlockUpdateHook(Block block, BlockType newBlockType) {
+        this.block = block;
+        this.newBlockType = newBlockType;
+        this.newBlockId = newBlockType.getId();
     }
 
     /**
@@ -34,6 +48,14 @@ public final class BlockUpdateHook extends CancelableHook {
      */
     public int getNewBlockId() {
         return newBlockId;
+    }
+
+    /**
+     * Gets the block type of the new {@link Block}
+     * @return {@link net.canarymod.api.world.blocks.BlockType} type
+     */
+    public BlockType getNewBlockType() {
+        return newBlockType;
     }
 
     @Override
