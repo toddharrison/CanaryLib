@@ -59,46 +59,6 @@ public interface PathFinder {
     public boolean setPathToBlock(Block block);
 
     /**
-     * Sets whether or not this entity will avoid water
-     *
-     * @param bool
-     *         {@code true} enables water routes, {@code false} disables water routes
-     */
-    public void setWaterPathing(boolean bool);
-
-    /**
-     * Sets whether or not this entity can swim. default is false
-     *
-     * @param bool
-     *         {@code true} it can swim, {@code false} it drowns.
-     */
-    public void setCanSwim(boolean bool);
-
-    /**
-     * can this entity pass through open doors? default is true.
-     *
-     * @param bool
-     *         {@code true}, it will path through doors, {@code false} to avoid doors.
-     */
-    public void setCanPassOpenDoors(boolean bool);
-
-    /**
-     * Set if this entity will break down doors. default is false.
-     *
-     * @param bool
-     *         {@code true}, it will bust through doors, {@code false} to not.
-     */
-    public void setCanPassClosedDoors(boolean bool);
-
-    /**
-     * Set whether or not this entity should avoid sunlight. default is false.
-     *
-     * @param bool
-     *         {@code true} to avoid, {@code false} to not.
-     */
-    public void setAvoidSun(boolean bool);
-
-    /**
      * Set the speed of this mob, it should be between 0.0F and 1.0F <br>
      * <b>NOTE:</b> 1.0F is really really fast.<br>
      *
