@@ -6,7 +6,6 @@ import net.canarymod.commandsys.commands.groupmod.*;
 import net.canarymod.commandsys.commands.player.Compass;
 import net.canarymod.commandsys.commands.player.GetPosition;
 import net.canarymod.commandsys.commands.player.GodCommand;
-import net.canarymod.commandsys.commands.player.Kill;
 import net.canarymod.commandsys.commands.playermod.*;
 import net.canarymod.commandsys.commands.system.*;
 import net.canarymod.commandsys.commands.vanilla.*;
@@ -52,7 +51,6 @@ public class CommandList implements CommandListener {
         temp.put("compass", new Compass());
         temp.put("pos", new GetPosition());
         temp.put("god", new GodCommand());
-        temp.put("kill", new Kill());
 
         /* playermod */
         temp.put("playermod", new PlayermodBase());
@@ -115,6 +113,7 @@ public class CommandList implements CommandListener {
         temp.put("gamemode", new GameMode());
         temp.put("gamerule", new GameRule());
         temp.put("give", new Give());
+        temp.put("kill", new Kill());
         temp.put("message", new Message());
         temp.put("messageraw", new MessageRaw());
         temp.put("particle", new Particle());
@@ -433,7 +432,7 @@ public class CommandList implements CommandListener {
             aliases = {"kill", "murder"},
             description = "kill info",
             permissions = {KILL, KILL$OTHER},
-            toolTip = "/kill [playername]",
+            toolTip = "/kill [player:entity]",
             version = 2
     )
     public void killCommand(MessageReceiver caller, String[] parameters) {
@@ -1722,7 +1721,7 @@ public class CommandList implements CommandListener {
         return args.length == 1 ? matchToKnownPlayer(args) : null;
     }
 
-    @TabComplete(commands = {"kick", "kill", "mute", "god"})
+    @TabComplete(commands = {"kick", "mute", "god"})
     public List<String> matchOnlinePlayer(MessageReceiver caller, String[] args) {
         return args.length == 1 ? matchToOnlinePlayer(args) : null;
     }
