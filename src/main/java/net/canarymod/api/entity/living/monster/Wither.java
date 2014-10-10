@@ -5,5 +5,5 @@ package net.canarymod.api.entity.living.monster;
  *
  * @author Jason (darkdiplomat)
  */
-public interface Wither extends EntityMob {
+public interface Wither extends EntityMob, RangedAttackMob {
 }
