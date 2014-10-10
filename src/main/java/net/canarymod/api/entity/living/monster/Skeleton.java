@@ -5,7 +5,7 @@ package net.canarymod.api.entity.living.monster;
  *
  * @author Jason (darkdiplomat)
  */
-public interface Skeleton extends RangedAttackMob {
+public interface Skeleton extends EntityMob, RangedAttackMob {
 
     /**
      * Gets whether this Skeleton is a WitherSkeleton

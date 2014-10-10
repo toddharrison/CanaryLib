@@ -6,6 +6,6 @@ package net.canarymod.api.entity.living.monster;
  * 
  * @author Aaron
  */
-public interface RangedAttackMob extends EntityMob {
+public interface RangedAttackMob {
     
 }
