@@ -30,7 +30,8 @@ public class MultiworldPermissionProvider implements PermissionProvider {
     /**
      * Constructs a new PermissionProvider that's valid for the given world
      *
-     * @param world the world
+     * @param world
+     *         the world
      */
     public MultiworldPermissionProvider(String world, boolean isPlayer, String owner) {
         this.world = world;
@@ -60,6 +61,17 @@ public class MultiworldPermissionProvider implements PermissionProvider {
         permissions = new ArrayList<PermissionNode>();
         this.isPlayerProvider = false;
         this.owner = "admins";
+    }
+
+    /**
+     * Testing constructor. Use only for testing changes to this provider
+     */
+    public MultiworldPermissionProvider(MultiworldPermissionProvider parent) {
+        this.world = null;
+        permissions = new ArrayList<PermissionNode>();
+        this.isPlayerProvider = false;
+        this.owner = "admins";
+        this.parent = parent;
     }
 
     /**
@@ -167,7 +179,7 @@ public class MultiworldPermissionProvider implements PermissionProvider {
         String[] paths = path.split("\\.");
 
         if (paths.length == 0) {
-            paths = new String[]{ path }; // we have only one node (root)
+            paths = new String[]{path}; // we have only one node (root)
         }
         PermissionNode node = addPath(paths, value);
 
@@ -189,6 +201,7 @@ public class MultiworldPermissionProvider implements PermissionProvider {
         }
         Boolean b = checkCached(permission);
         if (b != null) {
+            Canary.log.debug("Found... Returning as " + b);
             return b;
         }
         String[] path = permission.split("\\.");
