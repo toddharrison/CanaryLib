@@ -1,8 +1,7 @@
 package net.canarymod.api.entity.living.humanoid;
 
-import net.canarymod.api.NetServerHandler;
-import net.canarymod.api.PlayerListEntry;
-import net.canarymod.api.PlayerReference;
+import com.mojang.authlib.GameProfile;
+import net.canarymod.api.*;
 import net.canarymod.api.chat.ChatComponent;
 import net.canarymod.api.inventory.Inventory;
 import net.canarymod.api.packet.Packet;
@@ -21,7 +20,7 @@ import net.canarymod.hook.player.TeleportHook.TeleportCause;
 public interface Player extends Human, MessageReceiver, PlayerReference {
 
     /** Initializes or re-initializes the permissions, groups and prefix data for this player */
-    public void initPlayerData();
+    void initPlayerData();
 
     /**
      * Sends a message as the Player
@@ -29,14 +28,14 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      * @param message
      *         the message to send as the Player
      */
-    public void chat(String message);
+    void chat(String message);
 
     /**
      * Get the spawn position for the player
      *
      * @return spawn position
      */
-    public Location getSpawnPosition();
+    Location getSpawnPosition();
 
     /**
      * Sets the spawn position
@@ -44,7 +43,7 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      * @param spawn
      *         the {@link Location} to spawn at
      */
-    public void setSpawnPosition(Location spawn);
+    void setSpawnPosition(Location spawn);
 
     /**
      * Make this player execute the given command
@@ -54,7 +53,7 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      *
      * @return true if the command executed successfully, false otherwise
      */
-    public boolean executeCommand(String[] command);
+    boolean executeCommand(String[] command);
 
     /**
      * Send player a packet. This will throw exception if packet is invalid!
@@ -62,28 +61,28 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      * @param packet
      *         the {@link Packet} to send
      */
-    public void sendPacket(Packet packet);
+    void sendPacket(Packet packet);
 
     /**
      * Get the NetServerHandler for this player
      *
      * @return {@link NetServerHandler}
      */
-    public NetServerHandler getNetServerHandler();
+    NetServerHandler getNetServerHandler();
 
     /**
      * Check if a player has this permission.
      * This will not issue a PermissionCheck hook so the returned
      * result is reliable.
      */
-    public boolean safeHasPermission(String permission);
+    boolean safeHasPermission(String permission);
 
     /**
      * Get player enderchest inventory
      *
      * @return enderchest inventory
      */
-    public Inventory getEnderChestInventory();
+    Inventory getEnderChestInventory();
 
     /**
      * Teleport to this location with specified cause
@@ -95,7 +94,7 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      * @param cause
      *         the {@link TeleportCause}]
      */
-    public void teleportTo(Location location, TeleportCause cause);
+    void teleportTo(Location location, TeleportCause cause);
 
     /**
      * Kick this player
@@ -103,7 +102,7 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      * @param reason
      *         the string reasoning
      */
-    public void kick(String reason);
+    void kick(String reason);
 
     /**
      * Kick this player without a hook call
@@ -111,21 +110,21 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      * @param reason
      *         the string reasoning
      */
-    public void kickNoHook(String reason);
+    void kickNoHook(String reason);
 
     /**
      * Get the cardinal direction this player is looking at
      *
      * @return direction
      */
-    public Direction getCardinalDirection();
+    Direction getCardinalDirection();
 
     /**
      * Gets the Player's ping
      *
      * @return the ping
      */
-    public int getPing();
+    int getPing();
 
     /**
      * Gets a {@link PlayerListEntry} for the Player
@@ -138,8 +137,22 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      * @return {@link PlayerListEntry} for the Player
      *
      * @see PlayerListEntry
+     * @deprecated Use {@link #getPlayerListData()} instead
      */
-    public PlayerListEntry getPlayerListEntry(boolean shown);
+    @Deprecated
+    PlayerListEntry getPlayerListEntry(boolean shown);
+
+    /**
+     * Gets a {@link net.canarymod.api.PlayerListData} for the Player
+     * <p/>
+     * The initially set name is {@link Player#getDisplayName()}
+     *
+     * @return {@link net.canarymod.api.PlayerListData} for the Player
+     *
+     * @see net.canarymod.api.PlayerListData
+     * @see net.canarymod.api.PlayerListAction
+     */
+    PlayerListData getPlayerListData(PlayerListAction action);
 
     /**
      * Sends a {@link PlayerListEntry} to the Player
@@ -150,15 +163,28 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      *         the {@link PlayerListEntry} to send
      *
      * @see PlayerListEntry
+     * @deprecated use {@link #sendPlayerListData(PlayerListData)} instead
      */
-    public void sendPlayerListEntry(PlayerListEntry plentry);
+    void sendPlayerListEntry(PlayerListEntry plentry);
+
+    /**
+     * Sends a {@link net.canarymod.api.PlayerListData} to the Player
+     * <p/>
+     * NOTE: The server needs to have PlayerList enabled in the configuration
+     *
+     * @param data
+     *         the {@link net.canarymod.api.PlayerListData} to send
+     *
+     * @see net.canarymod.api.PlayerListData
+     */
+    void sendPlayerListData(PlayerListData data);
 
     /**
      * Checks if the player is asleep
      *
      * @return true if player is in bed, false otherwise
      */
-    public boolean isSleeping();
+    boolean isSleeping();
 
     /**
      * Check if this player is deeply sleeping,
@@ -166,13 +192,13 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      *
      * @return true if fully asleep, false otherwise
      */
-    public boolean isDeeplySleeping();
+    boolean isDeeplySleeping();
 
     /** Refreshes mode */
-    public void refreshCreativeMode();
+    void refreshCreativeMode();
 
     /** Sends update of PlayerCapabilities to player */
-    public void updateCapabilities();
+    void updateCapabilities();
 
     /**
      * Sends the WindowOpenPacket to the Player with the specified Inventory
@@ -182,13 +208,13 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      * @param inventory
      *         the {@link Inventory} to have opened
      */
-    public void openInventory(Inventory inventory);
+    void openInventory(Inventory inventory);
 
     /** Creates a fake Workbench and sends the WindowOpenPacket to the Player */
-    public void createAndOpenWorkbench();
+    void createAndOpenWorkbench();
 
     /** Creates a fake Anvil and sends the WindowOpenPacket to the Player */
-    public void createAndOpenAnvil();
+    void createAndOpenAnvil();
 
     /**
      * Creates a fake EnchantmentTable and then sends the WindowOpenPacket to the Player
@@ -196,7 +222,7 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      * @param bookshelves
      *         Sets the number of bookshelves to fake around the enchantment table
      */
-    public void createAndOpenEnchantmentTable(int bookshelves);
+    void createAndOpenEnchantmentTable(int bookshelves);
 
     /**
      * Opens the {@link Sign} edit window.
@@ -206,20 +232,20 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      * @param sign
      *         the {@link Sign} to edit
      */
-    public void openSignEditWindow(Sign sign);
+    void openSignEditWindow(Sign sign);
 
     /**
      * Closes an open Inventory GUI if one is presently open.<br/>
      * This should also call the close method for that inventory.
      */
-    public void closeWindow();
+    void closeWindow();
 
     /**
      * Gets the locale the player is using in their client. This is in the format of language_region e.g. en_US
      *
      * @return the player's locale
      */
-    public String getLocale();
+    String getLocale();
 
     /**
      * Sends a {@link net.canarymod.api.chat.ChatComponent} to the {@code Player}
@@ -227,54 +253,81 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      * @param chatComponent
      *         the {@link net.canarymod.api.chat.ChatComponent} to send
      */
-    public void sendChatComponent(ChatComponent chatComponent);
+    void sendChatComponent(ChatComponent chatComponent);
 
     /**
      * Gets the previously known IP of the {@code Player} if found
      *
      * @return previous IP if found
      */
-    public String getPreviousIP();
+    String getPreviousIP();
 
     /**
      * Make this {@link Player} hidden to the given {@link Player}.
-     * 
-     * @param player the {@link Player} to hide this {@link Player} from.
+     *
+     * @param player
+     *         the {@link Player} to hide this {@link Player} from.
      */
-    public void hidePlayer(Player player);
+    void hidePlayer(Player player);
 
     /**
      * Make this {@link Player} hidden to all {@link Player}s.
      */
-    public void hidePlayerGlobal();
+    void hidePlayerGlobal();
 
     /**
      * Make this {@link Player} shown to the given {@link Player}.
-     * 
-     * @param player The {@link Player} to show this {@link Player} to.
+     *
+     * @param player
+     *         The {@link Player} to show this {@link Player} to.
      */
-    public void showPlayer(Player player);
+    void showPlayer(Player player);
 
     /**
      * Make this {@link Player} shown to all {@link Player}s.
      */
-    public void showPlayerGlobal();
-    
+    void showPlayerGlobal();
+
     /**
      * Checks if a {@link Player} is hidden to another {@link Player}.
-     * 
-     * @param player Target Player
-     * @param isHidden Player to check if is hidden to Target Player.
+     *
+     * @param player
+     *         Target Player
+     * @param isHidden
+     *         Player to check if is hidden to Target Player.
+     *
      * @return true if isHidden is hidden to player; false otherwise.
      */
-    public boolean isPlayerHidden(Player player, Player isHidden);
-    
+    boolean isPlayerHidden(Player player, Player isHidden);
+
     /**
      * Set the compass target to a {@link Player}
-     * 
+     *
      * @param x
      * @param y
      * @param z
      */
-    public void setCompassTarget(int x, int y, int z);
+    void setCompassTarget(int x, int y, int z);
+
+    /**
+     * Gets the {@link Player} Mojang {@link com.mojang.authlib.GameProfile}
+     *
+     * @return game profile
+     */
+    GameProfile getGameProfile();
+
+    /**
+     * Gets the {@link net.canarymod.api.chat.ChatComponent} the makes up the DisplayName
+     *
+     * @return display name {@link net.canarymod.api.chat.ChatComponent} or {@code null} if one isn't set
+     */
+    ChatComponent getDisplayNameComponent();
+
+    /**
+     * Sets the {@link net.canarymod.api.chat.ChatComponent} that makes up the DisplayName
+     *
+     * @param component
+     *         display name {@link net.canarymod.api.chat.ChatComponent}; passing null will clear the display name
+     */
+    void setDisplayNameComponent(ChatComponent component);
 }

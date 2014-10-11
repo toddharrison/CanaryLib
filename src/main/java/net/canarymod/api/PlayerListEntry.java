@@ -12,7 +12,9 @@ import net.canarymod.config.Configuration;
  *
  * @author Jason (darkdiplomat)
  * @author Talmor
+ * @deprecated use {@link net.canarymod.api.PlayerListData} instead
  */
+@Deprecated
 public final class PlayerListEntry implements Cloneable {
 
     private Player player;
@@ -30,6 +32,7 @@ public final class PlayerListEntry implements Cloneable {
      * @param shown
      *         whether to actually show on the list or not
      */
+    @Deprecated
     public PlayerListEntry(String name, int ping, boolean shown) {
         this.setName(name);
         this.setPing(ping);
@@ -44,6 +47,7 @@ public final class PlayerListEntry implements Cloneable {
      * @param shown
      *         whether to actually show on the list or not
      */
+    @Deprecated
     public PlayerListEntry(Player player, boolean shown) {
         this.player = player;
         this.setName(player.getName());
@@ -52,6 +56,7 @@ public final class PlayerListEntry implements Cloneable {
     }
 
     /** Internal constructor for cloning */
+    @Deprecated
     private PlayerListEntry(Player player, String name, int ping, boolean shown) {
         this.player = player;
         this.name = name;
@@ -64,6 +69,7 @@ public final class PlayerListEntry implements Cloneable {
      *
      * @return {@code true} if shown; {@code false} otherwise
      */
+    @Deprecated
     public final boolean isShown() {
         return shown;
     }
@@ -74,6 +80,7 @@ public final class PlayerListEntry implements Cloneable {
      * @param shown
      *         {@code true} to show; {@code false} otherwise
      */
+    @Deprecated
     public final void setShown(boolean shown) {
         this.shown = shown;
     }
@@ -83,6 +90,7 @@ public final class PlayerListEntry implements Cloneable {
      *
      * @return the name to be displayed
      */
+    @Deprecated
     public final String getName() {
         return name;
     }
@@ -93,6 +101,7 @@ public final class PlayerListEntry implements Cloneable {
      * @param name
      *         the name to be set
      */
+    @Deprecated
     public final void setName(String name) {
         if (Configuration.getServerConfig().isPlayerlistColorsEnabled()) {
             // Adjust length to account for formatting
@@ -110,6 +119,7 @@ public final class PlayerListEntry implements Cloneable {
      *
      * @return the ping
      */
+    @Deprecated
     public final int getPing() {
         return ping;
     }
@@ -120,6 +130,7 @@ public final class PlayerListEntry implements Cloneable {
      * @param ping
      *         the ping to display
      */
+    @Deprecated
     public final void setPing(int ping) {
         this.ping = MathHelp.setInRange(ping, 0, 9999); // Adjust as needed
     }
@@ -129,6 +140,7 @@ public final class PlayerListEntry implements Cloneable {
      *
      * @return {@link Player} if player is set; {@code null} if player is not set
      */
+    @Deprecated
     public final Player getPlayer() {
         return player;
     }

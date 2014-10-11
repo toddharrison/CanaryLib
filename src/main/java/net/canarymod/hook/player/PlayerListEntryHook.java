@@ -10,7 +10,9 @@ import net.canarymod.hook.Hook;
  * Called when a {@link Player} information is sent to another {@link Player}
  *
  * @author Jason (darkdiplomat)
+ * @deprecated This is no longer used; Use {@link net.canarymod.hook.player.PlayerListHook} instead
  */
+@Deprecated
 public final class PlayerListEntryHook extends Hook {
     private final PlayerListEntry entry;
     private final Player receiver;
@@ -18,8 +20,10 @@ public final class PlayerListEntryHook extends Hook {
     /**
      * Constructs a new PlayerListEntryHook
      *
-     * @param entry    the {@link PlayerListEntry} being sent
-     * @param receiver the {@link Player} to receiver the {@link PlayerListEntry}
+     * @param entry
+     *         the {@link PlayerListEntry} being sent
+     * @param receiver
+     *         the {@link Player} to receiver the {@link PlayerListEntry}
      */
     public PlayerListEntryHook(PlayerListEntry entry, Player receiver) {
         this.entry = entry;

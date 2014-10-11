@@ -1,5 +1,6 @@
 package net.canarymod;
 
+import com.google.common.base.Charsets;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.DimensionType;
 import net.canarymod.api.world.UnknownWorldException;
@@ -451,10 +452,16 @@ public class ToolBox {
             }
             return null; // username isn't valid, so don't bother checking against the mojang API
         }
+
         // Make sure the server isn't null, this can happen when called early in server init
         if (Canary.getServer() != null) {
             Player p = Canary.getServer().getPlayer(username);
             if (p != null) return p.getUUIDString(); // player is online, so don't query the mojang API
+        }
+
+        // If offline mode and not doing BungeeCord, don't continue forward with the API checks
+        if (!Configuration.getServerConfig().isOnlineMode() && !Configuration.getServerConfig().getBungeecordSupport()) {
+            return UUID.nameUUIDFromBytes(("OfflinePlayer:" + username).getBytes(Charsets.UTF_8)).toString();
         }
 
         // Check the reverse lookup cache
@@ -502,9 +509,11 @@ public class ToolBox {
         }
 
         // Update the userLookup
-        userLookup.setString(uuid, username);
-        userLookup.setComments(uuid, ";Verified: " + System.currentTimeMillis());
-        userLookup.save();
+        if (uuid != null) {
+            userLookup.setString(uuid, username);
+            userLookup.setComments(uuid, ";Verified: " + System.currentTimeMillis());
+            userLookup.save();
+        }
         return uuid;
     }
 
