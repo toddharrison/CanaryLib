@@ -284,9 +284,10 @@ public class PermissionNode {
         boolean hasWildcardChild = hasChildNode("*");
 
         // We reached the end.
-        if (path.length >= index) {
-            return true;
+        if (index >= path.length) {
+            return isWildcard() || getName().equals(path[path.length - 1]);
         }
+
         // Check explicit permission
         if (hasChildNode(path[index])) {
             return getChildNode(path[index]).resolvePath(path, ++index);
@@ -295,8 +296,7 @@ public class PermissionNode {
         else if (hasWildcardChild) {
             return true;
         }
-        // Cannot resolve path to the end.
-        // If this is a wildcard, it's still okay
+
         return isWildcard();
     }
 }

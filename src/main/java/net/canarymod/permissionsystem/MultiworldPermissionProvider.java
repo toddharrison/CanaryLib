@@ -63,6 +63,17 @@ public class MultiworldPermissionProvider implements PermissionProvider {
     }
 
     /**
+     * Testing constructor. Use only for testing changes to this provider
+     */
+    public MultiworldPermissionProvider(MultiworldPermissionProvider parent) {
+        this.world = null;
+        permissions = new ArrayList<PermissionNode>();
+        this.isPlayerProvider = false;
+        this.owner = "admins";
+        this.parent = parent;
+    }
+
+    /**
      * Add a given permission to the permissions cache. The cache is limited and
      * will prune itself if it gets too big.
      *
@@ -189,6 +200,7 @@ public class MultiworldPermissionProvider implements PermissionProvider {
         }
         Boolean b = checkCached(permission);
         if (b != null) {
+            Canary.log.debug("Found... Returning as " + b);
             return b;
         }
         String[] path = permission.split("\\.");
