@@ -146,33 +146,94 @@ public interface AIFactory {
      */
     public AIFollowParent newAIFollowParent(EntityAnimal animal, double speed);
 
-    /*public AIHarvestFarmland newAIHarvestFarmland();
+    /**
+     * Returns A new {@link AIHarvestFarmland} Instance.
+     * @param villager The {@link VIllager} this AI belongs to
+     * @param speed speed the villager will walk at.
+     * @return A new {@link AIHarvestFarmland} Instance.
+     */
+    public AIHarvestFarmland newAIHarvestFarmland(Villager villager, double speed);
 
-    public AIHurtByTarget newAIHurtByTarget();
+    /**
+     * Returns A new {@link AIHurtByTarget} Instance.
+     * @param entity The {@link EntityMob} this AI belongs to.
+     * @param callForHelp whether or not this mob should rally allies.
+     * @param targets entity classy types to target wiht this logic.
+     * @return A new {@link AIHurtByTarget} Instance.
+     */
+    public AIHurtByTarget newAIHurtByTarget(EntityMob entity, boolean callForHelp, Class<? extends Entity>... targets);
 
-    public AILeapAtTarget newAILeapAtTarget();
+    /**
+     * Returns A new {@link AILeapAtTarget} Instance.
+     * @param entity The entity this AI belongs to.
+     * @param leapMotionY Y motion the leap will be.
+     * @return A new {@link AILeapAtTarget} Instance.
+     */
+    public AILeapAtTarget newAILeapAtTarget(EntityLiving entity, float leapMotionY);
 
-    public AILookAtTradePlayer newAILookAtTradePlayer();
+    /**
+     * Returns A new {@link AILookAtTradePlayer} Instance.
+     * @param villager The {@link Villager} This AI belongs to.
+     * @return A new {@link AILookAtTradePlayer} Instance.
+     */
+    public AILookAtTradePlayer newAILookAtTradePlayer(Villager villager);
 
-    public AILookAtVillager newAILookAtVillager();
+    /**
+     * Returns A new {@link AILookAtVillager} Instance.
+     * @param golem the {@link IronGolem} that owns this AI.
+     * @return A new {@link AILookAtVillager} Instance.
+     */
+    public AILookAtVillager newAILookAtVillager(IronGolem golem);
 
-    public AILookIdle newAILookIdle();
+    /**
+     * Returns A new {@link AILookIdle} Instance.
+     * @param entity The entity this AI belongs to.
+     * @return A new {@link AILookIdle} Instance.
+     */
+    public AILookIdle newAILookIdle(EntityLiving entity);
 
-    public AIManager newAIManager();
+    /**
+     * Returns A new {@link AIMate} Instance.
+     * @param animal the {@link EntityAnimal} this AI belongs to.
+     * @param speed the speed the animal will move at.
+     * @return A new {@link AIMate} Instance.
+     */
+    public AIMate newAIMate(EntityAnimal animal, double speed);
 
-    public AIMate newAIMate();
+    /**
+     * Returns A new {@link AIMoveIndoors} Instance.
+     * @param entity The {@link EntityMob} that owns this AI.
+     * @return A new {@link AIMoveIndoors} Instance.
+     */
+    public AIMoveIndoors newAIMoveIndoors(EntityMob entity);
 
-    public AIMoveIndoors newAIMoveIndoors();
+    /**
+     * Returns A new {@link AIMoveThroughVillage} Instance.
+     * @param entity The {@link EntityMob} that owns this AI.
+     * @param speed the speed the animal will move at.
+     * @param isNoctournal whether or not this creature is active at night time.
+     * @return A new {@link AIMoveThroughVillage} Instance.
+     */
+    public AIMoveThroughVillage newAIMoveThroughVillage(EntityMob entity, double speed, boolean isNoctournal);
 
-    public AIMoveThroughVillage newAIMoveThroughVillage();
+    /**
+     * Returns A new {@link AIMoveTowardsRestriction} Instance.
+     * @param entity The {@link EntityMob} that owns this AI.
+     * @param speed the speed the animal will move at.
+     * @return A new {@link AIMoveTowardsRestriction} Instance.
+     */
+    public AIMoveTowardsRestriction newAIMoveTowardsRestriction(EntityMob entity, double speed);
 
-    public AIMoveToBlock newAIMoveToBlock();
+    /**
+     * Returns A new {@link AIMoveTowardsRestriction} Instance.
+     * @param entity The {@link EntityMob} that owns this AI.
+     * @param speed the speed the animal will move at.
+     * @param maxDistance the max distance away targets can be
+     * @return A new {@link AIMoveTowardsRestriction} Instance.
+     */
+    public AIMoveTowardsTarget newAIMoveTowardsTarget(EntityMob entity, double speed, float maxDistance);
 
-    public AIMoveTowardsRestriction newAIMoveTowardsRestriction();
-
-    public AIMoveTowardsTarget newAIMoveTowardsTarget();
-
-    public AINearestAttackableTarget newAINearestAttackableTarget();
+    /*public AINearestAttackableTarget newAINearestAttackableTarget();
 
     public AIOcelotAttack newAIOcelotAttack();
 
@@ -215,5 +276,5 @@ public interface AIFactory {
     public AIWatchClosest newAIWatchClosest();
 
     public AIWatchClosest2 newAIWatchClosest2();
-    */
+    /**/
 }
