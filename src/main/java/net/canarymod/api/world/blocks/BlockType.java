@@ -41,6 +41,7 @@ public final class BlockType {
     public static final BlockType LavaFlowing = new BlockType(10, 0, "minecraft:flowing_lava");
     public static final BlockType Lava = new BlockType(11, 0, "minecraft:lava");
     public static final BlockType Sand = new BlockType(12, 0, "minecraft:sand");
+    public static final BlockType RedSand = new BlockType(12, 1, "minecraft:sand");
     public static final BlockType Gravel = new BlockType(13, 0, "minecraft:gravel");
     public static final BlockType GoldOre = new BlockType(14, 0, "minecraft:gold_ore");
     public static final BlockType IronOre = new BlockType(15, 0, "minecraft:iron_ore");
