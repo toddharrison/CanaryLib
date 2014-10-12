@@ -2,8 +2,10 @@ package net.canarymod.api.factory;
 
 import com.google.common.base.Predicate;
 import net.canarymod.api.ai.*;
+import net.canarymod.api.entity.*;
 import net.canarymod.api.entity.living.*;
 import net.canarymod.api.entity.living.animal.*;
+import net.canarymod.api.entity.living.humanoid.Villager;
 import net.canarymod.api.entity.living.monster.*;
 
 /**
@@ -75,27 +77,76 @@ public interface AIFactory {
      */
     public AIControlledByPlayer newAIControlledByPlayer(EntityLiving entity, float speed);
 
-    /*public AICreeperSwell newAICreeperSwell();
+    /**
+     * Returns A new {@link AICreeperSwell} Instance.
+     * @param creeper The {@link Creeper} that owns this AI.
+     * @return A new {@link AICreeperSwell} Instance.
+     */
+    public AICreeperSwell newAICreeperSwell(Creeper creeper);
 
-    public AIDefendVillage newAIDefendVillage();
+    /**
+     * Returns A new {@link AIDefendVillage} Instance.
+     * @param ironGolem The {@link IronGolem} this AI belongs to.
+     * @return A new {@link AIDefendVillage} Instance.
+     */
+    public AIDefendVillage newAIDefendVillage(IronGolem ironGolem);
 
-    public AIDoorInteract newAIDoorInteract();
+    /**
+     * Returns A new {@link AIEatGrass} Instance.
+     * @param entity The entity that owns this ai.
+     * @return A new {@link AIEatGrass} Instance.
+     */
+    public AIEatGrass newAIEatGrass(EntityLiving entity);
 
-    public AIEatGrass newAIEatGrass();
+    /**
+     * Returns A new {@link AIEntityNearest} Instance.
+     * @param entityLiving THe Entity that owns this ai.
+     * @param entityClass The class type this entity should target.
+     * @return A new {@link AIEntityNearest} Instance.
+     */
+    public AIFindEntityNearest newAIFindEntityNearest(EntityLiving entityLiving, Class<? extends Entity> entityClass);
 
-    public AIFindEntityNearest newAIFindEntityNearest();
+    /**
+     * Returns A new {@link AIEntityNearestPlayer} Instance.
+     * @param entityLiving THe Entity that owns this ai.
+     * @return A new {@link AIEntityNearestPlayer} Instance.
+     */
+    public AIFindEntityNearestPlayer newAIFindEntityNearestPlayer(EntityLiving entityLiving);
 
-    public AIFindEntityNearestPlayer newAIFindEntityNearestPlayer();
+    /**
+     * Returns A new {@link AIFleeSun} Instance.
+     * @param mob the entity that owns this AI.
+     * @param speed the speed at which the mob will move.
+     * @return A new {@link AIFleeSun} Instance.
+     */
+    public AIFleeSun newAIFleeSun(EntityMob mob, double speed);
 
-    public AIFleeSun newAIFleeSun();
+    /**
+     * Returns A new {@link AIFollowGolem} Instance.
+     * @param villager The {@link Villager} that owns this AI.
+     * @return A new {@link AIFollowGolem} Instance.
+     */
+    public AIFollowGolem newAIFollowGolem(Villager villager);
 
-    public AIFollowGolem newAIFollowGolem();
+    /**
+     * Returns A new {@link AIFollowOwner} Instance.
+     * @param entity the {@link Tameable} entity this AI belongs to.
+     * @param speed Speed at which the entity will move
+     * @param minDistance how close the entity will try to get to its owner.
+     * @param maxDistance distance from owner the entity will try to stay in.
+     * @return A new {@link AIFollowOwner} Instance.
+     */
+    public AIFollowOwner newAIFollowOwner(Tameable entity, double speed, float minDistance, float maxDistance);
 
-    public AIFollowOwner newAIFollowOwner();
+    /**
+     * Returns A new {@link AIFollowParent} Instance.
+     * @param animal the {@link EntityAnimal} this AI belongs to.
+     * @param speed the speed the animal will move at.
+     * @return A new {@link AIFollowParent} Instance.
+     */
+    public AIFollowParent newAIFollowParent(EntityAnimal animal, double speed);
 
-    public AIFollowParent newAIFollowParent();
-
-    public AIHarvestFarmland newAIHarvestFarmland();
+    /*public AIHarvestFarmland newAIHarvestFarmland();
 
     public AIHurtByTarget newAIHurtByTarget();
 
