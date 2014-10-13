@@ -487,6 +487,10 @@ public class WorldConfiguration implements ConfigurationContainer {
         if (Configuration.hasWorldConfig(worldFqName)) {
             return null;
         }
+        else if (new File("config" + File.separatorChar + "worlds" + File.separatorChar + name.split("_")[0]).exists()) {
+            Configuration.getWorldConfig(worldFqName); // There is a configuration already but wasn't loaded yet, it is now.
+            return null;
+        }
         return Configuration.getWorldConfig(worldFqName);
     }
 }
