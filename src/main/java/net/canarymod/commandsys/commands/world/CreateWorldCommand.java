@@ -57,6 +57,7 @@ public final class CreateWorldCommand implements NativeCommand {
         }
         catch (Exception ex) {
             caller.notice("Failed to create world. Check console for errors.");
+            Canary.log.error("Exception thrown while creating a world", ex);
         }
     }
 }

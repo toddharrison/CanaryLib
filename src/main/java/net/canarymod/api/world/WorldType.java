@@ -6,13 +6,16 @@ import java.util.HashMap;
  * Static class of WorldTypes
  *
  * @author Chris (damagefilter)
+ * @author Jason (darkdiplomat)
  */
 public class WorldType {
-    public static WorldType DEFAULT = new WorldType("DEFAULT");
-    public static WorldType SUPERFLAT = new WorldType("FLAT");
-    public static WorldType DEFAULT_1_1 = new WorldType("DEFAULT_1_1");
-    public static WorldType LARGEBIOMES = new WorldType("LARGEBIOMES");
-    public static WorldType AMPLIFIED = new WorldType("AMPLIFIED");
+    public static final WorldType DEFAULT = new WorldType("DEFAULT");
+    public static final WorldType SUPERFLAT = new WorldType("FLAT");
+    public static final WorldType DEFAULT_1_1 = new WorldType("DEFAULT_1_1");
+    public static final WorldType LARGEBIOMES = new WorldType("LARGEBIOMES");
+    public static final WorldType AMPLIFIED = new WorldType("AMPLIFIED");
+    public static final WorldType CUSTOMIZED = new WorldType("CUSTOMIZED");
+    public static final WorldType DEBUG = new WorldType("debug_all_block_states");
 
     private String string;
     private static HashMap<String, WorldType> types;
@@ -55,9 +58,12 @@ public class WorldType {
      */
     public static WorldType fromString(String string) {
         for (String n : types.keySet()) {
-            if (n.equals(string)) {
+            if (n.equals(string.toUpperCase())) {
                 return types.get(n);
             }
+        }
+        if (string.toUpperCase().equals("DEBUG")) { // That one weird one...
+            return DEBUG;
         }
         return null;
     }
