@@ -183,11 +183,22 @@ public interface EntityLiving extends LivingBase {
 
     /**
      * Returns the AIManager for this entity. <br>
-     * <b>NOTE:</b> This really does nothing for Players. It won't get used.
+     * <b>NOTE:</b> This manager is for AI that is reaction based. i.e. attacking 
+     * enemy entities when they are close or picking up an item that is nearby 
+     * when walking
      *
      * @return AI Manager
      */
     public AIManager getAITaskManager();
+
+    /**
+     * Returns the AIManager for this entity. <br>
+     * <b>NOTE:</b> This manager is for AI that is target based. Like moving to 
+     * a Location or finding an entity to attack.
+     *
+     * @return AI Manager
+     */
+    public AIManager getAITargetTaskManager();
 
     /**
      * Gets if the EntityLiving has a custom name

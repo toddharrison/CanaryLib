@@ -233,9 +233,22 @@ public interface AIFactory {
      */
     public AIMoveTowardsTarget newAIMoveTowardsTarget(EntityMob entity, double speed, float maxDistance);
 
-    /*public AINearestAttackableTarget newAINearestAttackableTarget();
+    /**
+     * Returns A new {@link AINearestAttackableTarget} Instance.
+     * @param entity The {@link EntityMob} 
+     * @param target the class type of entities this mob should target.
+     * @param targetChanve Change to target.
+     * Must be a positive number.  Chanve that AI is targeted will be random 
+     * integer from this number. If the random Integer is equal to 0 then the 
+     * target will fail, there for 1 will provide a 50% change of target, 10 
+     * will have a 90% chance of target, and 100 will have a 99% chance of target.
+     * @param shouldCheckSight whether or not the entity must be visible
+     * @param nearbyOnly if the entity should only target nearby entities.
+     * @return A new {@link AINearestAttackableTarget} Instance.
+     */
+    public AINearestAttackableTarget newAINearestAttackableTarget(EntityMob entity, Class<? extends Entity> target, int targetChanve, boolean shouldCheckSight, boolean nearbyOnly);
 
-    public AIOcelotAttack newAIOcelotAttack();
+    /*public AIOcelotAttack newAIOcelotAttack();
 
     public AIOcelotSit newAIOcelotSit();
 
