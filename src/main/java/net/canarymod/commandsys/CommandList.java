@@ -730,7 +730,7 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"help"},
+            aliases = {"help", "?"},
             description = "help info",
             permissions = {HELP},
             toolTip = "/help [search terms] [page]"
