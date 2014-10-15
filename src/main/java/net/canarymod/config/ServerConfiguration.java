@@ -103,6 +103,8 @@ public class ServerConfiguration implements ConfigurationContainer {
         cfg.getBoolean("playerlist-usecolors", false);
         cfg.setComments("playerlist-usecolors", "Sets whether the Player List should include colors and player prefixes");
         cfg.getInt("playerlist-ticks", 500);
+        cfg.getBoolean("plugin-dev-mode", false);
+        cfg.setComments("plugin-dev-mode", "Setting this to true will enable loading plugins from folders; intended for Lua plugin developers");
         // RESERVED SPACE
         cfg.getBoolean("query-enabled", false);
         cfg.setComments("query-enabled", "Enables GameSpy4 protocol server listener. Used to get information about server.");
@@ -577,5 +579,14 @@ public class ServerConfiguration implements ConfigurationContainer {
      */
     public boolean getBungeecordSupport() {
         return cfg.getBoolean("bungeecord", false);
+    }
+
+    /**
+     * Gets the plugin dev mode state
+     *
+     * @return {@code true} if enabled; {@code false} if not
+     */
+    public boolean getPluginDevModeEnabled() {
+        return cfg.getBoolean("plugin-dev-mode", false);
     }
 }
