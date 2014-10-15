@@ -1,6 +1,7 @@
 package net.canarymod.plugin;
 
 import net.canarymod.Canary;
+import net.canarymod.config.Configuration;
 import net.canarymod.exceptions.InvalidPluginException;
 import net.canarymod.exceptions.PluginLoadFailedException;
 import net.canarymod.hook.system.PluginDisableHook;
@@ -336,8 +337,8 @@ public final class PluginManager implements IPluginManager {
 
         @Override
         public boolean accept(File pathname) {
-            /*     Directory? ACCEPTED                                   Jar/Zip? ACCEPTED */
-            return pathname.isDirectory() || pathname.getName().matches(".+\\.(jar|zip)");
+            /*     Directory and Plugin Dev Mode Enabled? ACCEPTED                                             Jar/Zip? ACCEPTED */
+            return (pathname.isDirectory() && Configuration.getServerConfig().getPluginDevModeEnabled()) || pathname.getName().matches(".+\\.(jar|zip)");
             // All others REJECTED (It's like getting into haven here)
         }
     }
