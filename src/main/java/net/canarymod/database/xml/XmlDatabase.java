@@ -1,5 +1,6 @@
 package net.canarymod.database.xml;
 
+import com.google.common.io.Files;
 import net.canarymod.database.Column;
 import net.canarymod.database.Column.DataType;
 import net.canarymod.database.DataAccess;
@@ -12,6 +13,7 @@ import org.jdom2.Content;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
+import org.jdom2.input.JDOMParseException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
@@ -61,7 +63,6 @@ public class XmlDatabase extends Database {
                 if (!file.createNewFile()) {
                     throw new DatabaseWriteException("Failed to create database XML file: " + data.getName());
                 }
-                initFile(file, data.getName());
             }
             catch (IOException e) {
                 throw new DatabaseWriteException(e.getMessage());
@@ -205,7 +206,6 @@ public class XmlDatabase extends Database {
                 if (!file.createNewFile()) {
                     throw new DatabaseWriteException("Failed to create database XML file: " + data.getName());
                 }
-                initFile(file, data.getName());
             }
             catch (IOException e) {
                 throw new DatabaseWriteException(e.getMessage(), e);
@@ -213,14 +213,13 @@ public class XmlDatabase extends Database {
         }
         try {
             Document table = verifyTable(file, data.getName());
-
             HashSet<Column> tableLayout = data.getTableLayout();
 
             for (Element element : table.getRootElement().getChildren()) {
                 addFields(element, tableLayout);
                 removeFields(element, tableLayout);
             }
-            write(file.getPath(), table);
+            write(file, table);
         }
         catch (JDOMException e) {
             throw new DatabaseWriteException(e.getMessage(), e);
@@ -233,11 +232,10 @@ public class XmlDatabase extends Database {
         }
     }
 
-    private void initFile(File file, String rootName) throws IOException {
-        Document doc = new Document();
-
-        doc.setRootElement(new Element(rootName));
-        write(file.getPath(), doc);
+    private Document initFile(File file, String rootName) throws IOException {
+        Document doc = new Document(new Element(rootName));
+        write(file, doc);
+        return doc;
     }
 
     /**
@@ -331,7 +329,7 @@ public class XmlDatabase extends Database {
             }
         }
         dbTable.getRootElement().addContent(set);
-        write(file.getPath(), dbTable);
+        write(file, dbTable);
     }
 
     /**
@@ -389,7 +387,7 @@ public class XmlDatabase extends Database {
             }
         }
         if (hasUpdated) {
-            write(file.getPath(), table);
+            write(file, table);
         }
         else {
             // No fields found, that means it is a new entry
@@ -426,7 +424,7 @@ public class XmlDatabase extends Database {
         for (Element e : toremove) {
             e.detach();
         }
-        write(file.getPath(), table);
+        write(file, table);
     }
 
     private void loadData(DataAccess data, Document table, Map<String, Object> filters) throws DatabaseAccessException {
@@ -729,9 +727,8 @@ public class XmlDatabase extends Database {
         }
     }
 
-    private void write(String path, Document doc) throws IOException {
+    private void write(File file, Document doc) throws IOException {
         sortElements(doc);
-        File file = new File(path);
         RandomAccessFile f = new RandomAccessFile(file.getPath(), "rw");
         f.getChannel().lock();
         f.setLength(0);
@@ -751,13 +748,23 @@ public class XmlDatabase extends Database {
     }
 
     private Document verifyTable(File file, String root) throws IOException, JDOMException {
+        Document document;
         if (file.length() <= 0) {
-            initFile(file, root);
+            // Don't even try reading this file
+            return initFile(file, root);
         }
 
         FileInputStream in = new FileInputStream(file);
-        Document document = fileBuilder.build(in);
-        in.close();
-        return document;
+        try {
+            return fileBuilder.build(in);
+        }
+        catch (JDOMParseException e) {
+            // Assume the file is damaged. Make a backup, and do it again.
+            Files.move(file, new File("db/damaged_db/"+file.getName()));
+            return initFile(file, root);
+        }
+        finally {
+            in.close();
+        }
     }
 }
