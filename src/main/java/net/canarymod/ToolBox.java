@@ -496,15 +496,19 @@ public class ToolBox {
         catch (Exception ex) {
             Canary.log.warn("Failed to translate Username into a UUID");
         }
-        if (uuid != null && !uuid.contains("-")) {
-            // Add the hyphens back in
-            uuid = uuid.substring(0, 8) + "-" + uuid.substring(8, 12) + "-" + uuid.substring(12, 16) + "-" + uuid.substring(16, 20) + "-" + uuid.substring(20, 32);
+        if (uuid != null) {
+            if (!uuid.contains("-")) {
+                // Add the hyphens back in
+                uuid = uuid.substring(0, 8) + "-" + uuid.substring(8, 12) + "-" + uuid.substring(12, 16) + "-" + uuid.substring(16, 20) + "-" + uuid.substring(20, 32);
+            }
+
+            // Update the userLookup
+            userLookup.setString(uuid, username);
+            userLookup.setComments(uuid, ";Verified: " + System.currentTimeMillis());
+            userLookup.save();
         }
 
-        // Update the userLookup
-        userLookup.setString(uuid, username);
-        userLookup.setComments(uuid, ";Verified: " + System.currentTimeMillis());
-        userLookup.save();
+        // Return either the UUID string or null if none could be found
         return uuid;
     }
 
