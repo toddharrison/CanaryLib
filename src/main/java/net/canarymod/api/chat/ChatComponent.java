@@ -27,6 +27,16 @@ public interface ChatComponent extends Cloneable {
     ChatStyle getChatStyle();
 
     /**
+     * Overrides the original text and sets the new text
+     *
+     * @param text
+     * the text to be set
+     *
+     * @return {@code this} with the new text set
+     */
+    ChatComponent setText(String text);
+
+    /**
      * Appends text to this {@code ChatComponent}
      *
      * @param text

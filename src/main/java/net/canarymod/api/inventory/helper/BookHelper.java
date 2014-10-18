@@ -158,10 +158,11 @@ public class BookHelper extends ItemHelper {
         String[] pages = new String[size];
         for (int index = 0; index < size; index++) {
             try {
-                pages[index] = CHAT_FACTO.decompileChatComponent(CHAT_FACTO.deserialize(pages_tags.get(index).getValue()));
+                pages[index] = pages_tags.get(index).getValue();
             }
             catch (Exception ex) {
                 // Older book format
+                Canary.log.debug("Error decompiling ChatComponent on Book Page", ex);
                 pages[index] = pages_tags.get(index).getValue();
             }
         }
@@ -595,21 +596,21 @@ public class BookHelper extends ItemHelper {
         return true;
     }
 
-    private final static boolean isValidPage(int page, int page_count) {
+    private static boolean isValidPage(int page, int page_count) {
         return page > 0 && page < page_count;
     }
 
-    private final static String correctPage(String page) {
+    private static String correctPage(String page) {
         page = page.length() > MAX_PAGE_LENGTH ? page.substring(0, MAX_PAGE_LENGTH) : page;
-        ChatComponent chatComponent = Canary.factory().getChatComponentFactory().newChatComponent(page);
+        ChatComponent chatComponent = Canary.factory().getChatComponentFactory().compileChatComponent(page);
         return chatComponent.serialize();
     }
 
-    private final static String correctAuthor(String author) {
+    private static String correctAuthor(String author) {
         return author.length() > MAX_AUTHOR_LENGTH ? author.substring(0, MAX_AUTHOR_LENGTH) : author;
     }
 
-    private final static String correctTitle(String title) {
+    private static String correctTitle(String title) {
         return title.length() > MAX_TITLE_LENGTH ? title.substring(0, MAX_TITLE_LENGTH) : title;
     }
 }
