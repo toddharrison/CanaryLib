@@ -353,9 +353,8 @@ public interface Entity {
     public void setSneaking(boolean sneaking);
 
     /**
-     * Set how many ticks are left until entity catches fire. Note that there's
-     * a base amount of ticks that is always there and if the current fire ticks
-     * are smaller than 20% of the base ticks, the entity will catch fire.
+     * Sets the number of ticks the entity will be on fire.<br/>
+     * Setting to 0 or less will extinguish the entity.
      *
      * @param ticks
      *         the fire ticks to set
@@ -363,7 +362,7 @@ public interface Entity {
     public void setFireTicks(int ticks);
 
     /**
-     * Get how many ticks are left until entity catches fire.
+     * Gets the number of ticks the entity will be on fire.
      *
      * @return fire ticks
      */
