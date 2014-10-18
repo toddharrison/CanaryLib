@@ -496,7 +496,7 @@ public class BookHelper extends ItemHelper {
      *
      * @return true if successful; false if not
      */
-    public static boolean addEncahntments(Item book, Enchantment... enchantments) {
+    public static boolean addEnchantments(Item book, Enchantment... enchantments) {
         if (book == null || enchantments == null || enchantments.length == 0) {
             return false;
         }
