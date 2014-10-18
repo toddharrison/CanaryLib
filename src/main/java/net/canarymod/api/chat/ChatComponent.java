@@ -17,14 +17,14 @@ public interface ChatComponent extends Cloneable {
      *
      * @return {@code this} with the {@linke ChatStyle} applied
      */
-    public ChatComponent setChatStyle(ChatStyle style);
+    ChatComponent setChatStyle(ChatStyle style);
 
     /**
      * Gets the {@link net.canarymod.api.chat.ChatStyle} of this {@code ChatComponent}
      *
      * @return {@link net.canarymod.api.chat.ChatStyle}
      */
-    public ChatStyle getChatStyle();
+    ChatStyle getChatStyle();
 
     /**
      * Appends text to this {@code ChatComponent}
@@ -34,7 +34,7 @@ public interface ChatComponent extends Cloneable {
      *
      * @return {@code this} with text appened
      */
-    public ChatComponent appendText(String text);
+    ChatComponent appendText(String text);
 
     /**
      * Appends a sibling {@code ChatComponent} to this {@code ChatComponent}
@@ -44,28 +44,35 @@ public interface ChatComponent extends Cloneable {
      *
      * @return {@code this} with the {@code ChatComponent} appended
      */
-    public ChatComponent appendSibling(ChatComponent sibling);
+    ChatComponent appendSibling(ChatComponent sibling);
 
     /**
      * Gets the unformatted text value of this {@code ChatComponent}
      *
      * @return unformatted text value
      */
-    public String getText();
+    String getText();
 
     /**
      * Get the full unformatted text value of this {@code ChatComponent} and all siblings
      *
      * @return full unformatted text value
      */
-    public String getFullText();
+    String getFullText();
 
     /**
      * Gets a {@link List} of all sibling {@code ChatComponent}s
      *
      * @return list of siblings
      */
-    public List<ChatComponent> getSiblings();
+    List<ChatComponent> getSiblings();
+
+    /**
+     * Serializes the ChatComponent as a Json String
+     *
+     * @return json string
+     */
+    String serialize();
 
     /**
      * Clones this {@code ChatComponent}

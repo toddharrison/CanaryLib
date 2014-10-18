@@ -1,6 +1,8 @@
 package net.canarymod.api.inventory.helper;
 
 import net.canarymod.Canary;
+import net.canarymod.api.chat.ChatComponent;
+import net.canarymod.api.factory.ChatComponentFactory;
 import net.canarymod.api.inventory.Enchantment;
 import net.canarymod.api.inventory.Item;
 import net.canarymod.api.inventory.ItemType;
@@ -22,7 +24,8 @@ public class BookHelper extends ItemHelper {
 
     private final static short MAX_PAGE_LENGTH = 255; // Roughly the most characters visible on the page
     private final static byte MAX_AUTHOR_LENGTH = 16; // The max length of a player's name
-    private final static byte MAX_TITLE_LENGTH = 40; // The max length of an anvil input
+    private final static byte MAX_TITLE_LENGTH = 32; // The max allowed title
+    private final static ChatComponentFactory CHAT_FACTO = Canary.factory().getChatComponentFactory();
     private final static ListTag<StringTag> PAGES_TAG = NBT_FACTO.newListTag();
     private final static ListTag<CompoundTag> STORED_ENCH_TAG = NBT_FACTO.newListTag();
     private final static StringTag PAGE_TITLE_AUTHOR = NBT_FACTO.newStringTag("null");
@@ -154,7 +157,13 @@ public class BookHelper extends ItemHelper {
         int size = pages_tags.size();
         String[] pages = new String[size];
         for (int index = 0; index < size; index++) {
-            pages[index] = pages_tags.get(index).getValue();
+            try {
+                pages[index] = CHAT_FACTO.decompileChatComponent(CHAT_FACTO.deserialize(pages_tags.get(index).getValue()));
+            }
+            catch (Exception ex) {
+                // Older book format
+                pages[index] = pages_tags.get(index).getValue();
+            }
         }
         return pages;
     }
@@ -176,6 +185,7 @@ public class BookHelper extends ItemHelper {
         if (!verifyTags(book, "pages", LIST, true)) {
             return false;
         }
+        book.getDataTag().put("resolved", true);
         boolean success = true;
         for (String page : pages) {
             if (page == null) {
@@ -590,7 +600,9 @@ public class BookHelper extends ItemHelper {
     }
 
     private final static String correctPage(String page) {
-        return page.length() > MAX_PAGE_LENGTH ? page.substring(0, MAX_PAGE_LENGTH) : page;
+        page = page.length() > MAX_PAGE_LENGTH ? page.substring(0, MAX_PAGE_LENGTH) : page;
+        ChatComponent chatComponent = Canary.factory().getChatComponentFactory().newChatComponent(page);
+        return chatComponent.serialize();
     }
 
     private final static String correctAuthor(String author) {

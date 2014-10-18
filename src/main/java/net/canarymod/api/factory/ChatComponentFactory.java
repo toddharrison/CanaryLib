@@ -1,11 +1,6 @@
 package net.canarymod.api.factory;
 
-import net.canarymod.api.chat.ChatComponent;
-import net.canarymod.api.chat.ChatFormatting;
-import net.canarymod.api.chat.ClickEvent;
-import net.canarymod.api.chat.ClickEventAction;
-import net.canarymod.api.chat.HoverEvent;
-import net.canarymod.api.chat.HoverEventAction;
+import net.canarymod.api.chat.*;
 
 /**
  * Interface to creating the ChatComponent components
@@ -22,7 +17,38 @@ public interface ChatComponentFactory {
      *
      * @return new {@link net.canarymod.api.chat.ChatComponent}
      */
-    public ChatComponent newChatComponent(String text);
+    ChatComponent newChatComponent(String text);
+
+    /**
+     * Creates a new {@link net.canarymod.api.chat.ChatComponent}
+     * and applies formatting and events where possible
+     *
+     * @param text
+     *         the text value for the component
+     *
+     * @return new {@link net.canarymod.api.chat.ChatComponent}
+     */
+    ChatComponent compileChatComponent(String text);
+
+    /**
+     * Reverses the process of {@link #compileChatComponent(String)}
+     *
+     * @param chatComponent
+     *         the {@link net.canarymod.api.chat.ChatComponent} you want to decompile
+     *
+     * @return string version of the ChatComponent
+     */
+    String decompileChatComponent(ChatComponent chatComponent);
+
+    /**
+     * Deserializes a ChatComponent from a Json String
+     *
+     * @param json
+     *         the json string
+     *
+     * @return new {@link net.canarymod.api.chat.ChatComponent}
+     */
+    ChatComponent deserialize(String json);
     
     /* Formatting */
 
@@ -34,161 +60,161 @@ public interface ChatComponentFactory {
      *
      * @return the matching {@link net.canarymod.api.chat.ChatFormatting}
      */
-    public ChatFormatting getFormattingByName(String name);
+    ChatFormatting getFormattingByName(String name);
 
     /**
      * Gets the {@code BLACK} {@link net.canarymod.api.chat.ChatFormatting}
      *
      * @return {@code BLACK} {@link net.canarymod.api.chat.ChatFormatting}
      */
-    public ChatFormatting colorBlack();
+    ChatFormatting colorBlack();
 
     /**
      * Gets the {@code DARK_BLUE} {@link net.canarymod.api.chat.ChatFormatting}
      *
      * @return {@code DARK_BLUE} {@link net.canarymod.api.chat.ChatFormatting}
      */
-    public ChatFormatting colorDarkBlue();
+    ChatFormatting colorDarkBlue();
 
     /**
      * Gets the {@code DARK_GREEN} {@link net.canarymod.api.chat.ChatFormatting}
      *
      * @return {@code DARK_GREEN} {@link net.canarymod.api.chat.ChatFormatting}
      */
-    public ChatFormatting colorDarkGreen();
+    ChatFormatting colorDarkGreen();
 
     /**
      * Gets the {@code DARK_AQUA} {@link net.canarymod.api.chat.ChatFormatting}
      *
      * @return {@code DARK_AQUA} {@link net.canarymod.api.chat.ChatFormatting}
      */
-    public ChatFormatting colorDarkAqua();
+    ChatFormatting colorDarkAqua();
 
     /**
      * Gets the {@code DARK_RED} {@link net.canarymod.api.chat.ChatFormatting}
      *
      * @return {@code DARK_RED} {@link net.canarymod.api.chat.ChatFormatting}
      */
-    public ChatFormatting colorDarkRed();
+    ChatFormatting colorDarkRed();
 
     /**
      * Gets the {@code DARK_PURPLE} {@link net.canarymod.api.chat.ChatFormatting}
      *
      * @return {@code DARK_PURPLE} {@link net.canarymod.api.chat.ChatFormatting}
      */
-    public ChatFormatting colorDarkPurple();
+    ChatFormatting colorDarkPurple();
 
     /**
      * Gets the {@code GOLD} {@link net.canarymod.api.chat.ChatFormatting}
      *
      * @return {@code GOLD} {@link net.canarymod.api.chat.ChatFormatting}
      */
-    public ChatFormatting colorGold();
+    ChatFormatting colorGold();
 
     /**
      * Gets the {@code GRAY} {@link net.canarymod.api.chat.ChatFormatting}
      *
      * @return {@code GRAY} {@link net.canarymod.api.chat.ChatFormatting}
      */
-    public ChatFormatting colorGray();
+    ChatFormatting colorGray();
 
     /**
      * Gets the {@code DARK_GRAY} {@link net.canarymod.api.chat.ChatFormatting}
      *
      * @return {@code DARK_GRAY} {@link net.canarymod.api.chat.ChatFormatting}
      */
-    public ChatFormatting colorDarkGray();
+    ChatFormatting colorDarkGray();
 
     /**
      * Gets the {@code BLUE} {@link net.canarymod.api.chat.ChatFormatting}
      *
      * @return {@code BLUE} {@link net.canarymod.api.chat.ChatFormatting}
      */
-    public ChatFormatting colorBlue();
+    ChatFormatting colorBlue();
 
     /**
      * Gets the {@code GREEN} {@link net.canarymod.api.chat.ChatFormatting}
      *
      * @return {@code GREEN} {@link net.canarymod.api.chat.ChatFormatting}
      */
-    public ChatFormatting colorGreen();
+    ChatFormatting colorGreen();
 
     /**
      * Gets the {@code AQUA} {@link net.canarymod.api.chat.ChatFormatting}
      *
      * @return {@code AQUA} {@link net.canarymod.api.chat.ChatFormatting}
      */
-    public ChatFormatting colorAqua();
+    ChatFormatting colorAqua();
 
     /**
      * Gets the {@code RED} {@link net.canarymod.api.chat.ChatFormatting}
      *
      * @return {@code RED} {@link net.canarymod.api.chat.ChatFormatting}
      */
-    public ChatFormatting colorRed();
+    ChatFormatting colorRed();
 
     /**
      * Gets the {@code LIGHT_PURPLE} {@link net.canarymod.api.chat.ChatFormatting}
      *
      * @return {@code LIGHT_PURPLE} {@link net.canarymod.api.chat.ChatFormatting}
      */
-    public ChatFormatting colorLightPurple();
+    ChatFormatting colorLightPurple();
 
     /**
      * Gets the {@code YELLOW} {@link net.canarymod.api.chat.ChatFormatting}
      *
      * @return {@code YELLOW} {@link net.canarymod.api.chat.ChatFormatting}
      */
-    public ChatFormatting colorYellow();
+    ChatFormatting colorYellow();
 
     /**
      * Gets the {@code WHITE} {@link net.canarymod.api.chat.ChatFormatting}
      *
      * @return {@code WHITE} {@link net.canarymod.api.chat.ChatFormatting}
      */
-    public ChatFormatting colorWhite();
+    ChatFormatting colorWhite();
 
     /**
      * Gets the {@code OBFUSCATED} {@link net.canarymod.api.chat.ChatFormatting}
      *
      * @return {@code OBFUSCATED} {@link net.canarymod.api.chat.ChatFormatting}
      */
-    public ChatFormatting styleObfuscated();
+    ChatFormatting styleObfuscated();
 
     /**
      * Gets the {@code BOLD} {@link net.canarymod.api.chat.ChatFormatting}
      *
      * @return {@code BOLD} {@link net.canarymod.api.chat.ChatFormatting}
      */
-    public ChatFormatting styleBold();
+    ChatFormatting styleBold();
 
     /**
      * Gets the {@code STRIKETHROUGH} {@link net.canarymod.api.chat.ChatFormatting}
      *
      * @return {@code STRIKETHROUGH} {@link net.canarymod.api.chat.ChatFormatting}
      */
-    public ChatFormatting styleStrikethrough();
+    ChatFormatting styleStrikethrough();
 
     /**
      * Gets the {@code UNDERLINE} {@link net.canarymod.api.chat.ChatFormatting}
      *
      * @return {@code UNDERLINE} {@link net.canarymod.api.chat.ChatFormatting}
      */
-    public ChatFormatting styleUnderline();
+    ChatFormatting styleUnderline();
 
     /**
      * Gets the {@code ITALIC} {@link net.canarymod.api.chat.ChatFormatting}
      *
      * @return {@code ITALIC} {@link net.canarymod.api.chat.ChatFormatting}
      */
-    public ChatFormatting styleItalic();
+    ChatFormatting styleItalic();
 
     /**
      * Gets the {@code RESET} {@link net.canarymod.api.chat.ChatFormatting}
      *
      * @return {@code RESET} {@link net.canarymod.api.chat.ChatFormatting}
      */
-    public ChatFormatting styleReset();
+    ChatFormatting styleReset();
     //
     
     /* ClickEvent Action */
@@ -203,7 +229,7 @@ public interface ChatComponentFactory {
      *
      * @return new {@link net.canarymod.api.chat.ClickEvent}
      */
-    public ClickEvent newClickEvent(ClickEventAction action, String value);
+    ClickEvent newClickEvent(ClickEventAction action, String value);
 
     /**
      * Gets a {@link net.canarymod.api.chat.ClickEventAction} by name
@@ -213,35 +239,35 @@ public interface ChatComponentFactory {
      *
      * @return the {@link net.canarymod.api.chat.ClickEventAction}
      */
-    public ClickEventAction getClickEventActionByName(String name);
+    ClickEventAction getClickEventActionByName(String name);
 
     /**
      * Gets the {@code OPEN_URL} {@link net.canarymod.api.chat.ClickEventAction}
      *
      * @return the {@code OPEN_URL} {@link net.canarymod.api.chat.ClickEventAction}
      */
-    public ClickEventAction getOpenURL();
+    ClickEventAction getOpenURL();
 
     /**
      * Gets the {@code OPEN_FILE} {@link net.canarymod.api.chat.ClickEventAction}
      *
      * @return the {@code OPEN_FILE} {@link net.canarymod.api.chat.ClickEventAction}
      */
-    public ClickEventAction getOpenFile();
+    ClickEventAction getOpenFile();
 
     /**
      * Gets the {@code RUN_COMMAND} {@link net.canarymod.api.chat.ClickEventAction}
      *
      * @return the {@code RUN_COMMAND} {@link net.canarymod.api.chat.ClickEventAction}
      */
-    public ClickEventAction getRunCommand();
+    ClickEventAction getRunCommand();
 
     /**
      * Gets the {@code SUGGEST_COMMAND} {@link net.canarymod.api.chat.ClickEventAction}
      *
      * @return the {@code SUGGEST_COMMAND} {@link net.canarymod.api.chat.ClickEventAction}
      */
-    public ClickEventAction getSuggestCommand();
+    ClickEventAction getSuggestCommand();
     //
 
     /* HoverEvent Action */
@@ -256,7 +282,7 @@ public interface ChatComponentFactory {
      *
      * @return new {@link net.canarymod.api.chat.HoverEvent}
      */
-    public HoverEvent newHoverEvent(HoverEventAction action, ChatComponent value);
+    HoverEvent newHoverEvent(HoverEventAction action, ChatComponent value);
 
     /**
      * Gets a {@link net.canarymod.api.chat.HoverEventAction} by name
@@ -266,27 +292,27 @@ public interface ChatComponentFactory {
      *
      * @return the {@link net.canarymod.api.chat.HoverEventAction}
      */
-    public HoverEventAction getHoverEventActionByName(String name);
+    HoverEventAction getHoverEventActionByName(String name);
 
     /**
      * Gets the {@code SHOW_TEXT} {@link net.canarymod.api.chat.HoverEventAction}
      *
      * @return the {@code SHOW_TEXT} {@link net.canarymod.api.chat.HoverEventAction}
      */
-    public HoverEventAction getShowText();
+    HoverEventAction getShowText();
 
     /**
      * Gets the {@code SHOW_ACHIEVEMENT} {@link net.canarymod.api.chat.HoverEventAction}
      *
      * @return the {@code SHOW_ACHIEVEMENT} {@link net.canarymod.api.chat.HoverEventAction}
      */
-    public HoverEventAction getShowAchievement();
+    HoverEventAction getShowAchievement();
 
     /**
      * Gets the {@code SHOW_ITEM} {@link net.canarymod.api.chat.HoverEventAction}
      *
      * @return the {@code SHOW_ITEM} {@link net.canarymod.api.chat.HoverEventAction}
      */
-    public HoverEventAction getShowItem();
+    HoverEventAction getShowItem();
     //
 }
