@@ -487,7 +487,7 @@ public class BookHelper extends ItemHelper {
     }
 
     /**
-    * @deprecated  As of release 1.8, replaced by {@link #addEnchantments(Item, Enchantment...)}
+    * @deprecated  As of release CanaryLib 1.2.0, replaced by {@link #addEnchantments(Item, Enchantment...)}
     */
     @Deprecated
     public static boolean addEncahntments(Item book, Enchantment... enchantments) {
