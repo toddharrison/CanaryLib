@@ -201,7 +201,7 @@ public class MultiworldPermissionProvider implements PermissionProvider {
         }
         Boolean b = checkCached(permission);
         if (b != null) {
-            Canary.log.debug("Found... Returning as " + b);
+            Canary.log.trace("Found... Returning as " + b);
             return b;
         }
         String[] path = permission.split("\\.");

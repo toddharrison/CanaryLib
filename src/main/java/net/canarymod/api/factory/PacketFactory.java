@@ -666,17 +666,22 @@ public interface PacketFactory {
      * Creates a GameStateChange {@link Packet}
      *
      * @param state
-     *         0: Invalid Bed <br/>
-     *         1: Begin raining <br/>
-     *         2: End raining <br/>
-     *         3: Change game mode <br/>
-     *         4: Enter credits <br/>
+     *         0: Invalid Bed<br/>
+     *         1: Begin raining<br/>
+     *         2: End raining<br/>
+     *         3: Change game mode, argument: game mode (0 for survival, 1 for creative, 2 for adventure)<br/>
+     *         4: Enter credits<br/>
+     *         5: Demo messages, argument: message (0: welcome to demo screen, 101: tell movement controls,
+     *            102: Tell jump control, 103: Tell inventory control)<br/>
+     *         6: Arrow hitting player<br/>
+     *         7: Fade value, argument: actual value (between 0 and 1, inclusive. 0 is bright, 1 is dark)<br/>
+     *         8: Fade time, argument: time in ticks for the sky to fade<br/>
      * @param mode
-     *         Used only when state = 3; GameMode 0 1 2
+     *         See @{code state}
      *
      * @return new ChangeGameState {@link Packet} or {@code null} if an error occurred
      */
-    Packet changeGameState(int state, int mode); // 43
+    Packet changeGameState(int state, float mode); // 43
 
     /**
      * Creates a SpawnGlobalEntity {@link Packet}
