@@ -21,11 +21,11 @@ public final class SlotClickHook extends CancelableHook {
     private Player player;
     private Inventory inventory;
     private Item item;
-    private SlotType slot_type;
-    private SecondarySlotType secondary_slot_type;
-    private GrabMode grab_mode;
+    private SlotType slotType;
+    private SecondarySlotType secondarySlotType;
+    private GrabMode grabMode;
     private ButtonPress button;
-    private short slot_id, trans_num;
+    private short slotId, transNum;
     private boolean update = true;
 
     /**
@@ -34,23 +34,23 @@ public final class SlotClickHook extends CancelableHook {
      * @param player              the {@link Player} clicking
      * @param inventory           the {@link Inventory} thats open
      * @param item                the {@link Item} in the slot clicked
-     * @param slot_type           the {@link SlotType} being clicked
-     * @param secondary_slot_type the {@link SecondarySlotType} being clicked
-     * @param grab_mode           the {@link GrabMode} of the link
+     * @param slotType           the {@link SlotType} being clicked
+     * @param secondarySlotType the {@link SecondarySlotType} being clicked
+     * @param grabMode           the {@link GrabMode} of the link
      * @param button              the {@link ButtonPress}
-     * @param slot_id             the slot id
-     * @param trans_num           the transaction number
+     * @param slotId             the slot id
+     * @param transNum           the transaction number
      */
-    public SlotClickHook(Player player, Inventory inventory, Item item, SlotType slot_type, SecondarySlotType secondary_slot_type, GrabMode grab_mode, ButtonPress button, short slot_id, short trans_num) {
+    public SlotClickHook(Player player, Inventory inventory, Item item, SlotType slotType, SecondarySlotType secondarySlotType, GrabMode grabMode, ButtonPress button, short slotId, short transNum) {
         this.player = player;
         this.inventory = inventory;
         this.item = item;
-        this.slot_type = slot_type;
-        this.secondary_slot_type = secondary_slot_type;
-        this.grab_mode = grab_mode;
+        this.slotType = slotType;
+        this.secondarySlotType = secondarySlotType;
+        this.grabMode = grabMode;
         this.button = button;
-        this.slot_id = slot_id;
-        this.trans_num = trans_num;
+        this.slotId = slotId;
+        this.transNum = transNum;
     }
 
     /**
@@ -86,7 +86,7 @@ public final class SlotClickHook extends CancelableHook {
      * @return the {@link SlotType} clicked
      */
     public SlotType getSlotType() {
-        return slot_type;
+        return slotType;
     }
 
     /**
@@ -95,7 +95,7 @@ public final class SlotClickHook extends CancelableHook {
      * @return the {@link SecondarySlotType} clicked
      */
     public SecondarySlotType getSecondarySlotType() {
-        return secondary_slot_type;
+        return secondarySlotType;
     }
 
     /**
@@ -104,7 +104,7 @@ public final class SlotClickHook extends CancelableHook {
      * @return the {@link GrabMode}
      */
     public GrabMode getGrabMode() {
-        return grab_mode;
+        return grabMode;
     }
 
     /**
@@ -122,7 +122,7 @@ public final class SlotClickHook extends CancelableHook {
      * @return the slot id
      */
     public short getSlotId() {
-        return slot_id;
+        return slotId;
     }
 
     /**
@@ -131,7 +131,7 @@ public final class SlotClickHook extends CancelableHook {
      * @return the transaction number
      */
     public short getTransactionNumber() {
-        return trans_num;
+        return transNum;
     }
 
     /**
@@ -157,6 +157,6 @@ public final class SlotClickHook extends CancelableHook {
      */
     @Override
     public final String toString() {
-        return String.format("%s[Player=%s Inventory=%s Item=%s SlotType=%s SecondarySlotType=%s GrabMode=%s Button=%s SlotId=%d Update=%b]", getHookName(), player, inventory, item, slot_type, secondary_slot_type, grab_mode, button, slot_id, update);
+        return String.format("%s[Player=%s Inventory=%s Item=%s SlotType=%s SecondarySlotType=%s GrabMode=%s Button=%s SlotId=%d Update=%b]", getHookName(), player, inventory, item, slotType, secondarySlotType, grabMode, button, slotId, update);
     }
 }
