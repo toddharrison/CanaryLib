@@ -1,5 +1,6 @@
 package net.canarymod.api.statistics;
 
+import com.google.common.collect.Maps;
 import net.canarymod.Canary;
 
 import java.util.HashMap;
@@ -47,11 +48,10 @@ public enum Achievements {
     OVERPOWERED("overpowered"),;
 
     private final String nmsName;
-    private final HashMap<String, Achievements> achievementsMap = new HashMap<String, Achievements>();
+    private final static HashMap<String, Achievements> achievementsMap = Maps.newHashMap();
 
     private Achievements(String nmsName) {
         this.nmsName = "achievement.".concat(nmsName);
-        achievementsMap.put(nmsName, this);
     }
 
     /**
@@ -80,8 +80,17 @@ public enum Achievements {
      *
      * @return {@code Achievements} matching the name or {@code null} if not match found
      */
-    public static Achievements forNMSName(String nmsName) {
-        return OPENINVENTORY.achievementsMap.get(nmsName);
+    public static Achievements forNMSName(final String nmsName) {
+        String temp = nmsName;
+        if (!nmsName.startsWith("achievement.")) {
+            temp = "achievement.".concat(nmsName);
+        }
+        return achievementsMap.get(temp);
     }
 
+    static {
+        for (Achievements achievment : Achievements.values()) {
+            achievementsMap.put(achievment.nmsName, achievment);
+        }
+    }
 }

@@ -1,7 +1,9 @@
 package net.canarymod.api;
 
 import net.canarymod.api.statistics.Achievement;
+import net.canarymod.api.statistics.Achievements;
 import net.canarymod.api.statistics.Stat;
+import net.canarymod.api.statistics.Statistics;
 import net.canarymod.api.world.World;
 import net.canarymod.api.world.position.Location;
 import net.canarymod.api.world.position.Position;
@@ -448,6 +450,16 @@ public interface PlayerReference {
     public void setStat(Stat stat, int value);
 
     /**
+     * Sets the value of a given {@link net.canarymod.api.statistics.Stat}
+     *
+     * @param stat
+     *         the {@link net.canarymod.api.statistics.Statistics} to set value of
+     * @param value
+     *         the value to be set
+     */
+    public void setStat(Statistics stat, int value);
+
+    /**
      * Increases the value of a given {@link net.canarymod.api.statistics.Stat}
      *
      * @param stat
@@ -456,6 +468,16 @@ public interface PlayerReference {
      *         the amount to increase
      */
     public void increaseStat(Stat stat, int value);
+
+    /**
+     * Increases the value of a given {@link net.canarymod.api.statistics.Stat}
+     *
+     * @param stat
+     *         the {@link net.canarymod.api.statistics.Statistics} to increase value of
+     * @param value
+     *         the amount to increase
+     */
+    public void increaseStat(Statistics stat, int value);
 
     /**
      * Decrease the value of a given {@link net.canarymod.api.statistics.Stat}
@@ -468,6 +490,16 @@ public interface PlayerReference {
     public void decreaseStat(Stat stat, int value);
 
     /**
+     * Decrease the value of a given {@link net.canarymod.api.statistics.Stat}
+     *
+     * @param stat
+     *         the {@link net.canarymod.api.statistics.Statistics} to decrease value of
+     * @param value
+     *         the amount to decrease
+     */
+    public void decreaseStat(Statistics stat, int value);
+
+    /**
      * Gets the value of a {@link net.canarymod.api.statistics.Stat}
      *
      * @param stat
@@ -476,6 +508,16 @@ public interface PlayerReference {
      * @return stat value
      */
     public int getStat(Stat stat);
+
+    /**
+     * Gets the value of a {@link net.canarymod.api.statistics.Stat}
+     *
+     * @param stat
+     *         the {@link net.canarymod.api.statistics.Statistics} to get value of
+     *
+     * @return stat value
+     */
+    public int getStat(Statistics stat);
 
     /**
      * Checks if the {@link net.canarymod.api.statistics.Achievement} has been awarded
@@ -488,6 +530,16 @@ public interface PlayerReference {
     public boolean hasAchievement(Achievement achievement);
 
     /**
+     * Checks if the {@link net.canarymod.api.statistics.Achievement} has been awarded
+     *
+     * @param achievement
+     *         the {@link net.canarymod.api.statistics.Achievements} to check
+     *
+     * @return {@code true} if has achievement; {@code false} if not
+     */
+    public boolean hasAchievement(Achievements achievement);
+
+    /**
      * Removes an awarded {@link net.canarymod.api.statistics.Achievement} and any child achievements
      *
      * @param achievement
@@ -496,10 +548,26 @@ public interface PlayerReference {
     public void removeAchievement(Achievement achievement);
 
     /**
+     * Removes an awarded {@link net.canarymod.api.statistics.Achievement} and any child achievements
+     *
+     * @param achievement
+     *         the {@link net.canarymod.api.statistics.Achievements} to be removed
+     */
+    public void removeAchievement(Achievements achievement);
+
+    /**
      * Awards an {@link net.canarymod.api.statistics.Achievement} and any parent achievements requried
      *
      * @param achievement
      *         the {@link net.canarymod.api.statistics.Achievement} to be awarded
      */
     public void awardAchievement(Achievement achievement);
+
+    /**
+     * Awards an {@link net.canarymod.api.statistics.Achievement} and any parent achievements requried
+     *
+     * @param achievement
+     *         the {@link net.canarymod.api.statistics.Achievements} to be awarded
+     */
+    public void awardAchievement(Achievements achievement);
 }
