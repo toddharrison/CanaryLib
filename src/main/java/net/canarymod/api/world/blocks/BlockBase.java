@@ -25,7 +25,7 @@ public interface BlockBase {
 
     BlockMaterial getMaterial();
 
-    MapColor getMapColor();
+    MapColor getMapColor(Block block);
 
     boolean isSolidFullCube();
 
