@@ -15,7 +15,7 @@ import net.canarymod.api.world.position.Position;
 import java.util.Collection;
 
 /**
- * Interface representing a block in minecraft.
+ * IBlockAccess wrapper with added position and world information.
  *
  * @author Chris (damagefitler)
  * @author Jason (darkdiplomat)
@@ -228,14 +228,20 @@ public interface Block {
      * Gets the Id of the Block as it would be dropped as an {@link Item}
      *
      * @return the id
+     *
+     * @deprecated moving to {@link net.canarymod.api.world.blocks.BlockBase}
      */
+    @Deprecated
     int getIdDropped();
 
     /**
      * Gets the damage of the Block as it would be dropped as an {@link Item}
      *
      * @return the damage
+     *
+     * @deprecated moving to {@link net.canarymod.api.world.blocks.BlockBase}
      */
+    @Deprecated
     int getDamageDropped();
 
     /**
@@ -243,7 +249,10 @@ public interface Block {
      * NOTE: Some blocks are random on the amount so returns may differ for those each call
      *
      * @return the quantity that would be dropped
+     *
+     * @deprecated moving to {@link net.canarymod.api.world.blocks.BlockBase}
      */
+    @Deprecated
     int getQuantityDropped();
 
     /**
@@ -358,4 +367,11 @@ public interface Block {
      *         the property to check
      */
     boolean canApply(BlockProperty property);
+
+    /**
+     * Gets the {@link net.canarymod.api.world.blocks.BlockBase} of the block
+     *
+     * @return {@link net.canarymod.api.world.blocks.BlockBase}
+     */
+    BlockBase getBlockBase();
 }
