@@ -1,5 +1,6 @@
 package net.canarymod.api.statistics;
 
+import com.google.common.collect.Maps;
 import net.canarymod.Canary;
 
 import java.util.HashMap;
@@ -12,10 +13,10 @@ import java.util.HashMap;
 public enum Statistics {
     LEAVEGAME("leaveGame"),
     PLAYONEMINUTE("playOneMinute"),
-    TIMESINCEDEATH("timeSinceDeath"),
+    // TIMESINCEDEATH("timeSinceDeath"), 1.8
     WALKONECM("walkOneCm"),
-    CROUCHONECM("crouchOneCm"),
-    SPRINTONECM("sprintOneCm"),
+    // CROUCHONECM("crouchOneCm"), 1.8
+    // SPRINTONECM("sprintOneCm"), 1.8
     SWIMONECM("swimOneCm"),
     FALLONECM("fallOneCm"),
     CLIMBONECM("climbOneCm"),
@@ -36,15 +37,15 @@ public enum Statistics {
     FISHCAUGHT("fishCaught"),
     JUNKFISHED("junkFished"),
     TREASUREFISHED("treasureFished"),
-    TALKEDTOVILLAGER("talkedToVillager"),
-    TRADEDWITHVILLAGER("tradedWithVillager"),;
+    // TALKEDTOVILLAGER("talkedToVillager"), 1.8
+    // TRADEDWITHVILLAGER("tradedWithVillager"), 1.8
+    ;
 
     private final String nmsName;
-    private final HashMap<String, Statistics> statisticsHashMap = new HashMap<String, Statistics>();
+    private final static HashMap<String, Statistics> statisticsHashMap = Maps.newHashMap();
 
     private Statistics(String nmsName) {
         this.nmsName = "stat.".concat(nmsName);
-        statisticsHashMap.put(nmsName, this);
     }
 
     /**
@@ -73,7 +74,17 @@ public enum Statistics {
      *
      * @return {@code Statistics} matching the name or {@code null} if not match found
      */
-    public static Statistics forNMSName(String nmsName) {
-        return LEAVEGAME.statisticsHashMap.get(nmsName);
+    public static Statistics forNMSName(final String nmsName) {
+        String temp = nmsName;
+        if (!nmsName.startsWith("stat.")) {
+            temp = "stat.".concat(nmsName);
+        }
+        return statisticsHashMap.get(temp);
+    }
+
+    static {
+        for (Statistics statistic : Statistics.values()) {
+            statisticsHashMap.put(statistic.nmsName, statistic);
+        }
     }
 }
