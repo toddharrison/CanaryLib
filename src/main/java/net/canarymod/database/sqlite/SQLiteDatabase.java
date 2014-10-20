@@ -24,6 +24,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import net.canarymod.Canary;
 
 import org.apache.logging.log4j.LogManager;
@@ -103,6 +105,13 @@ public class SQLiteDatabase extends Database {
                     }
                     ps.setObject(i, convert(columns.get(c)));
                     i++;
+                }
+                else {
+                    try {
+                        ps.setObject(i, this.getNextAutoIncrement(JdbcConnectionManager.getConnection(), data, c));
+                    } catch (DatabaseReadException ex) {
+                        throw new DatabaseWriteException("Error determining AutoIncrement for " + c.columnName() + " in " + data.getName());
+                    }
                 }
             }
 
@@ -872,7 +881,7 @@ public class SQLiteDatabase extends Database {
         try {
 
                 StringBuilder sb = new StringBuilder();
-                ps = conn.prepareStatement("SELECT " + col.columnName() + " FROM `" + da.getName() + "` ORDER BY ASC");
+                ps = conn.prepareStatement("SELECT " + col.columnName() + " FROM `" + da.getName() + "` ORDER BY " + col.columnName() + " DESC");
 
             rs = ps.executeQuery();
             if (rs.next()) {
