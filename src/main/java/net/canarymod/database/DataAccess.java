@@ -28,7 +28,7 @@ public abstract class DataAccess {
     private boolean hasData = false;
     private static final Set<Class<? extends DataAccess>> schemaUpdated = new HashSet<Class<? extends DataAccess>>();
 
-    @Column(columnName = "id", dataType = Column.DataType.INTEGER, autoIncrement = true, columnType = Column.ColumnType.PRIMARY)
+    @Column(columnName = "id", dataType = Column.DataType.INTEGER, autoIncrement = true, columnType = Column.ColumnType.UNIQUE)
     public Integer id;
 
     /**
