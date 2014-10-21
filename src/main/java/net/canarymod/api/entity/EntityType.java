@@ -55,7 +55,7 @@ public enum EntityType {
     PIG(90, 4), //
     PIGZOMBIE(57, 5), //
     PLAYER(48, 3), //
-    POTION(16, 0), //
+    POTION(16, 1), //
     PRIEST(120, 3), //
     SHEEP(91, 4), //
     SILVERFISH(60, 5), //
@@ -63,7 +63,7 @@ public enum EntityType {
     SKELETONHORSE(100, 4), //
     SLIME(55, 5), //
     SMALLFIREBALL(13, 0), //
-    SNOWBALL(11, 0), //
+    SNOWBALL(11, 1), //
     SNOWMAN(97, 3), //
     SPIDER(52, 5), //
     SQUID(94, 4), //
