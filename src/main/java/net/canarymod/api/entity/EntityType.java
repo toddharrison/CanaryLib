@@ -104,7 +104,7 @@ public enum EntityType {
     //
     PLAYER(48, 3),
     //
-    POTION(16, 0),
+    POTION(16, 1),
     //
     PRIEST(120, 3),
     //
@@ -120,7 +120,7 @@ public enum EntityType {
     //
     SMALLFIREBALL(13, 0),
     //
-    SNOWBALL(11, 0),
+    SNOWBALL(11, 1),
     //
     SNOWMAN(97, 3),
     //
