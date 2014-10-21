@@ -100,7 +100,7 @@ public class SQLiteDatabase extends Database {
                     if (c.isList()) {
                         ps.setString(i, getString((List<?>) columns.get(c)));
                     }
-                    ps.setObject(i, convert(columns.get(c)));
+                    ps.setObject(i, columns.get(c));
                     i++;
                 }
             }
@@ -177,14 +177,14 @@ public class SQLiteDatabase extends Database {
     public void remove(DataAccess dataAccess, Map<String, Object> filters) throws DatabaseWriteException {
         Connection conn = JdbcConnectionManager.getConnection();
 
-        this.deleteRows(conn, dataAccess, filters, true);
+        this.deleteRows(conn, dataAccess, filters);
     }
 
     @Override
     public void removeAll(DataAccess dataAccess, Map<String, Object> filters) throws DatabaseWriteException {
         Connection conn = JdbcConnectionManager.getConnection();
 
-        this.deleteRows(conn, dataAccess, filters, false);
+        this.deleteRows(conn, dataAccess, filters);
     }
 
     @Override
@@ -494,7 +494,7 @@ public class SQLiteDatabase extends Database {
             while (it.hasNext()) {
                 column = it.next();
                 if (!column.autoIncrement()) {
-                    ps.setObject(index, convert(columns.get(column)));
+                    ps.setObject(index, columns.get(column));
                     index++;
                 }
             }
@@ -593,14 +593,17 @@ public class SQLiteDatabase extends Database {
         catch (SQLException ex) {
             throw new DatabaseReadException("Error fetching SQLite ResultSet in " + data.getName(), ex);
         }
-        catch (Exception ex) {
+        catch (DatabaseReadException ex) {
+            throw new DatabaseReadException("Error fetching SQLite ResultSet in " + data.getName(), ex);
+        }
+        catch (DatabaseWriteException ex) {
             throw new DatabaseReadException("Error fetching SQLite ResultSet in " + data.getName(), ex);
         }
 
         return toRet;
     }
 
-    public void deleteRows(Connection conn, DataAccess data, Map<String, Object> filters, boolean limitOne) throws DatabaseWriteException {
+    public void deleteRows(Connection conn, DataAccess data, Map<String, Object> filters) throws DatabaseWriteException {
         PreparedStatement ps;
         try {
             if (filters.size() > 0) {
@@ -615,9 +618,6 @@ public class SQLiteDatabase extends Database {
                         sb.append("`=?");
                     }
                 }
-                if (limitOne) {
-                    sb.append(" LIMIT 1");
-                }
                 ps = conn.prepareStatement("DELETE FROM `" + data.getName() + "` WHERE " + sb.toString());
                 for (int i = 0; i < fieldNames.length && i < fieldNames.length; i++) {
                     String fieldName = String.valueOf(fieldNames[i]);
@@ -630,21 +630,17 @@ public class SQLiteDatabase extends Database {
 
             }
             else {
-                if (limitOne) {
-                    ps = conn.prepareStatement("DELETE FROM `" + data.getName() + "` LIMIT 1");
-                }
-                else {
-                    // TODO: This will not work because sqlite sucks.
-                    // What needs to be done is each row must be deleted, then sqlite knows a "VACUUM" command which clears the table.
-                    ps = conn.prepareStatement("TRUNCATE `" + data.getName() + "`");
-                }
+                ps = conn.prepareStatement("DELETE FROM `" + data.getName() + "`");
             }
             ps.execute();
         }
         catch (SQLException ex) {
             throw new DatabaseWriteException("Error deleting from SQLite table " + data.getName(), ex);
         }
-        catch (Exception ex) {
+        catch (DatabaseReadException ex) {
+            throw new DatabaseWriteException("Error deleting from SQLite table " + data.getName(), ex);
+        }
+        catch (DatabaseWriteException ex) {
             throw new DatabaseWriteException("Error deleting from SQLite table " + data.getName(), ex);
         }
     }
@@ -732,20 +728,6 @@ public class SQLiteDatabase extends Database {
                 return "TEXT";
         }
         return "";
-    }
-
-    /**
-     * Replaces '*' character with '\\*' if the Object is a String.
-     *
-     * @param o
-     *
-     * @return
-     */
-    private Object convert(Object o) {
-        if (o instanceof String && ((String) o).contains("*")) {
-            o = ((String) o).replace("*", "\\*");
-        }
-        return o;
     }
 
     /**
