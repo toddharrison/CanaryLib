@@ -61,6 +61,16 @@ public interface ChatComponentFactory {
      * @return the matching {@link net.canarymod.api.chat.ChatFormatting}
      */
     ChatFormatting getFormattingByName(String name);
+    
+    /**
+     * Gets the {@link net.canarymod.api.chat.ChatFormatting} by it's matching character
+     *
+     * @param charcode
+     *         the charcode matching the {@link net.canarymod.api.chat.ChatFormatting}
+     *
+     * @return the matching {@link net.canarymod.api.chat.ChatFormatting}
+     */
+    ChatFormatting getStyleByChar(char charcode);
 
     /**
      * Gets the {@code BLACK} {@link net.canarymod.api.chat.ChatFormatting}
