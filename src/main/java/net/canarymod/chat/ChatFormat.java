@@ -17,41 +17,41 @@ public enum ChatFormat {
     /** <font color="000066"><b>DARK_BLUE</b></font> */
     DARK_BLUE('1'),
 
-    /** <font color="006600"><b>GREEN</b></font> */
-    GREEN('2'),
+    /** <font color="006600"><b>DARK_GREEN</b></font> */
+    DARK_GREEN('2'),
 
-    /** <font color="006666"><b>TURQUOISE</b></font> */
-    TURQUOISE('3'),
+    /** <font color="006666"><b>DARK_AQUA</b></font> */
+    DARK_AQUA('3'),
 
-    /** <font color="990000"><b>RED</b></font> */
-    RED('4'),
+    /** <font color="990000"><b>DARK_RED</b></font> */
+    DARK_RED('4'),
 
-    /** <font color="540054"><b>PURPLE</b></font> */
-    PURPLE('5'),
+    /** <font color="540054"><b>DARK_PURPLE</b></font> */
+    DARK_PURPLE('5'),
 
-    /** <font color="FF9933"><b>ORANGE</b></font> */
-    ORANGE('6'),
+    /** <font color="FF9933"><b>GOLD</b></font> */
+    GOLD('6'),
 
-    /** <font color="CCCCCC"><b>LIGHT_GRAY</b></font> */
-    LIGHT_GRAY('7'),
+    /** <font color="CCCCCC"><b>GRAY</b></font> */
+    GRAY('7'),
 
-    /** <font color="333333"><b>GRAY</b></font> */
-    GRAY('8'),
+    /** <font color="333333"><b>DARK_GRAY</b></font> */
+    DARK_GRAY('8'),
 
     /** <font color="2A2A7F"><b>BLUE</b></font> */
     BLUE('9'),
 
-    /** <font color="33FF33"><b>LIGHT_GREEN</b></font> */
-    LIGHT_GREEN('A'),
+    /** <font color="33FF33"><b>GREEN</b></font> */
+    GREEN('A'),
 
-    /** <font color="00FFFF"><b>CYAN</b></font> */
-    CYAN('B'),
+    /** <font color="00FFFF"><b>AQUA</b></font> */
+    AQUA('B'),
 
-    /** <font color="FF0022"><b>LIGHT_RED</b></font> */
-    LIGHT_RED('C'),
+    /** <font color="FF0022"><b>RED</b></font> */
+    RED('C'),
 
-    /** <font color="FF00FF"><b>PINK</b></font> */
-    PINK('D'),
+    /** <font color="FF00FF"><b>LIGHT_PURPLE</b></font> */
+    LIGHT_PURPLE('D'),
 
     /** <font color="FFFF00"><b>YELLOW</b></font> */
     YELLOW('E'),
