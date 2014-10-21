@@ -2,11 +2,12 @@ package net.canarymod.chat;
 
 /**
  * Class containing all possible chat colors. This is kind of legacy support!
- * Use {@link TextFormat} instead
- *
+ * 
+ * @deprecated use {@link ChatFormat} instead
  * @author Jason (darkdiplomat)
  * @author James
  */
+@Deprecated
 public class Colors {
 
     /** <FONT COLOR=000000><b>BLACK</b></FONT> */
