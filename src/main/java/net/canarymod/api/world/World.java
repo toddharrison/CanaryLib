@@ -565,6 +565,26 @@ public interface World {
      */
     public long getTotalTime();
 
+    /**
+     * Get the difficulty setting for this world.
+     * @return the difficulty enum property
+     */
+    public Difficulty getDifficulty();
+
+    /**
+     * Set the difficulty for this world.
+     *
+     * @param difficulty the new difficulty value to set
+     */
+    public void setDifficulty(Difficulty difficulty);
+
+    /**
+     * Get the WorldType for this world.
+     *
+     * @return the world type
+     */
+    public WorldType getWorldType();
+
     /** Spawns the given particle in the world */
     public void spawnParticle(Particle particle);
 
