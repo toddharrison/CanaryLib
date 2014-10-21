@@ -177,14 +177,14 @@ public class SQLiteDatabase extends Database {
     public void remove(DataAccess dataAccess, Map<String, Object> filters) throws DatabaseWriteException {
         Connection conn = JdbcConnectionManager.getConnection();
 
-        this.deleteRows(conn, dataAccess, filters, false);
+        this.deleteRows(conn, dataAccess, filters, true);
     }
 
     @Override
     public void removeAll(DataAccess dataAccess, Map<String, Object> filters) throws DatabaseWriteException {
         Connection conn = JdbcConnectionManager.getConnection();
 
-        this.deleteRows(conn, dataAccess, filters, true);
+        this.deleteRows(conn, dataAccess, filters, false);
     }
 
     @Override

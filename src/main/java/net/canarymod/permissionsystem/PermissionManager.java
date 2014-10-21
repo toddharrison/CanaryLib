@@ -56,7 +56,6 @@ public class PermissionManager {
     }
 
     public void removePlayerPermission(String path, PlayerReference player) {
-        backbone.removePermission(path, player.getName(), player.getWorld().getFqName(), true);
         removePlayerPermission(path, player.getName(), player.getWorld().getFqName());
         player.getPermissionProvider().reload();
     }
