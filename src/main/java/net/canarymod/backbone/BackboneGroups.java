@@ -225,7 +225,6 @@ public class BackboneGroups extends Backbone {
         try {
             Database.get().loadAll(schema, dataList, new HashMap<String, Object>());
             for (DataAccess da : dataList) {
-                if (da == null) continue;
                 GroupDataAccess data = (GroupDataAccess) da;
                 if (alreadyInList(data.name, groups)) {
                     continue;

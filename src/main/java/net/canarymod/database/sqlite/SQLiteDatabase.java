@@ -24,7 +24,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import net.canarymod.Canary;
 
 import org.apache.logging.log4j.LogManager;
 
@@ -381,6 +380,9 @@ public class SQLiteDatabase extends Database {
 
                 if (column.columnType() == Column.ColumnType.PRIMARY) {
                     fields.append(" PRIMARY KEY");
+                    if (column.autoIncrement()) {
+                        fields.append(" AUTOINCREMENT");
+                    }
                 } else if (column.columnType() == Column.ColumnType.UNIQUE) {
                     fields.append(" UNIQUE");
                 }
@@ -594,7 +596,7 @@ public class SQLiteDatabase extends Database {
         catch (Exception ex) {
             throw new DatabaseReadException("Error fetching SQLite ResultSet in " + data.getName(), ex);
         }
-        
+
         return toRet;
     }
 
@@ -741,7 +743,7 @@ public class SQLiteDatabase extends Database {
      */
     private Object convert(Object o) {
         if (o instanceof String && ((String) o).contains("*")) {
-            //o = ((String) o).replace("*", "\\*");
+            o = ((String) o).replace("*", "\\*");
         }
         return o;
     }
@@ -862,30 +864,5 @@ public class SQLiteDatabase extends Database {
             }
         }
         return sb.toString();
-    }
-    
-    public int getNextAutoIncrement(Connection conn, DataAccess da, Column col) throws DatabaseReadException {
-        PreparedStatement ps;
-        ResultSet rs;
-        int toRet = -1;
-
-        try {
-
-                StringBuilder sb = new StringBuilder();
-                ps = conn.prepareStatement("SELECT " + col.columnName() + " FROM `" + da.getName() + "` ORDER BY ASC");
-
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                toRet = rs.getInt(col.columnName());
-            }
-        }
-        catch (SQLException ex) {
-            throw new DatabaseReadException("Error fetching SQLite ResultSet in " + da.getName(), ex);
-        }
-        catch (Exception ex) {
-            throw new DatabaseReadException("Error fetching SQLite ResultSet in " + da.getName(), ex);
-        }
-        
-        return toRet + 1;
     }
 }

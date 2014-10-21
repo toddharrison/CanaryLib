@@ -647,6 +647,20 @@ public class MySQLDatabase extends Database {
     }
 
     /**
+     * Replaces '*' character with '\\*' if the Object is a String.
+     *
+     * @param o
+     *
+     * @return string representation of the given object
+     */
+    private String convert(Object o) {
+        if (o instanceof String && ((String) o).contains("*")) {
+            ((String) o).replace("*", "\\*");
+        }
+        return String.valueOf(o);
+    }
+
+    /**
      * Sets the given object as the given type to the given index
      * of the given PreparedStatement.
      *

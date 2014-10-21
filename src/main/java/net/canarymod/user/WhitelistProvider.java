@@ -3,7 +3,6 @@ package net.canarymod.user;
 import net.canarymod.backbone.BackboneWhitelist;
 
 import java.util.List;
-import net.canarymod.Canary;
 import net.canarymod.ToolBox;
 
 /**

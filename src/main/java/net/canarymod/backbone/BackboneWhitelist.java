@@ -8,7 +8,6 @@ import net.canarymod.database.exceptions.DatabaseWriteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import net.canarymod.Canary;
 
 import static net.canarymod.Canary.log;
 import net.canarymod.ToolBox;
@@ -25,7 +24,7 @@ public class BackboneWhitelist extends Backbone {
 
     public BackboneWhitelist() {
         super(Backbone.System.WHITELIST);
-        this.validateWhiteList();
+        this.validateReserveList();
         try {
             Database.get().updateSchema(new WhitelistDataAccess());
         }
@@ -44,7 +43,7 @@ public class BackboneWhitelist extends Backbone {
      */
     public boolean isWhitelisted(String player) {
         WhitelistDataAccess data = new WhitelistDataAccess();
-        
+
         try {
             HashMap<String, Object> filter = new HashMap<String, Object>();
             if (ToolBox.isUUID(player)) {
@@ -139,7 +138,7 @@ public class BackboneWhitelist extends Backbone {
      * At this time it merely checks that all entries have a valid UUID.  If an
      * entry does not, it attempts to retrieve it from Mojang's web service and
      */
-    public void validateWhiteList() {
+    public void validateReserveList() {
         List<DataAccess> daos = new ArrayList<DataAccess>();
 
         try {
