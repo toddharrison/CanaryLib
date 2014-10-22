@@ -210,38 +210,11 @@ public class CommandManager {
      */
     public void registerCommand(CanaryCommand com, CommandOwner owner, boolean force) throws CommandDependencyException {
         // Check for dependencies
-        if (!com.meta.parent().isEmpty()) {
-            CanaryCommand temp = null;
-            boolean depMissing = true;
-            String[] parentchain = com.meta.parent().split("\\.");
-            for (int i = 0; i < parentchain.length; i++) {
-                if (i == 0) {
-                    temp = commands.get(parentchain[i]);
-                }
-                else {
-                    if (temp == null) {
-                        break;
-                    }
-                    if (temp.hasSubCommand(parentchain[i])) {
-                        temp = temp.getSubCommand(parentchain[i]);
-                    }
-                    else {
-                        temp = null;
-                        break;
-                    }
-                }
-            }
-            if (temp != null) {
-                com.setParent(temp);
-                depMissing = false;
-            }
-            if (depMissing) {
-                throw new CommandDependencyException(com.meta.aliases()[0] + " has an unsatisfied dependency, " +
-                        "( " + com.meta.parent() + " )" +
-                        "please adjust registration order of your listeners or fix your plugins dependencies");
-            }
-        }
-        // KDone. Lets update commands list
+        sortDependencies(com, commands.values());
+        updateCommandList(com, owner, force);
+    }
+
+    private void updateCommandList(CanaryCommand com, CommandOwner owner, boolean force) {
         boolean hasDuplicate = false;
         StringBuilder dupes = new StringBuilder();
         for (String alias : com.meta.aliases()) {
@@ -251,7 +224,7 @@ public class CommandManager {
                 currentIsDupe = true;
                 dupes.append(alias).append(" ");
             }
-            if (!currentIsDupe || (currentIsDupe && force)) {
+            if (!currentIsDupe || force) {
                 if (com.meta.parent().isEmpty()) { // Only add root commands
                     commands.put(alias.toLowerCase(), com);
                 }
@@ -265,6 +238,29 @@ public class CommandManager {
         }
         if (hasDuplicate && !force) {
             throw new DuplicateCommandException(dupes.toString());
+        }
+    }
+
+    private void sortDependencies(CanaryCommand cmd, Collection<CanaryCommand> possibles) throws CommandDependencyException {
+        if (cmd.meta.parent().isEmpty()) {
+            return;
+        }
+        String[] cmdp = cmd.meta.parent().split("\\.");
+        boolean depMissing = true;
+        // Check for local dependencies
+        // Needs looping one more time because the list isn't keyed (and shouldn't be anyway)
+        for (CanaryCommand parent : possibles) {
+            if (parent.hasAlias(cmdp[0])) {
+                // addSubCommand returns true on success.
+                depMissing = !parent.addSubCommand(cmdp, 1, cmd);
+                break;
+            }
+        }
+
+        if (depMissing) {
+            throw new CommandDependencyException(cmd.meta.aliases()[0] + " has an unsatisfied dependency, " +
+                    "( " + cmd.meta.parent() + " )" +
+                    "please adjust registration order of your listeners or fix your plugins dependencies");
         }
     }
 
@@ -322,60 +318,18 @@ public class CommandManager {
         // Sort load order so dependencies can be resolved properly
         Collections.sort(newCommands);
 
-        // Take care of parenting
         for (CanaryCommand cmd : newCommands) {
-            if (cmd.meta.parent().isEmpty()) {
-                continue;
+            try {
+                // First try local dependency
+                sortDependencies(cmd, newCommands);
+                this.updateCommandList(cmd, owner, force);
             }
-            String[] cmdp = cmd.meta.parent().split("\\.");
-            boolean depMissing = true;
-            // Check for local dependencies
-            // Needs looping one more time because the list isn't keyed (and shouldn't be anyway)
-            for (CanaryCommand parent : newCommands) {
-                if (parent.hasAlias(cmdp[0])) {
-                    // addSubCommand returns true on success.
-                    depMissing = !parent.addSubCommand(cmdp, 1, cmd);;
-                    break;
-                }
+            catch (CommandDependencyException e) {
+                // Now try existing commands.
+                // If this throws, dependency is definitely unresolved
+                sortDependencies(cmd, commands.values());
+                this.updateCommandList(cmd, owner, force);
             }
-
-            // Check for remote dependencies, what we wanted does not exist in the local ones
-            if (depMissing) {
-                CanaryCommand parent = commands.get(cmdp[0]);
-                if (parent == null || !parent.addSubCommand(cmdp, 1, cmd)) {
-                    // FIXME: It seems that this exception is suppressed during the loading of native methods. Bad!
-                    throw new CommandDependencyException(cmd.meta.aliases()[0] + " has an unsatisfied dependency, " +
-                            "( " + cmd.meta.parent() + " )" +
-                            "please adjust registration order of your listeners or fix your plugins dependencies");
-                }
-            }
-        }
-        // KDone. Lets update commands list
-        boolean hasDuplicate = false;
-        StringBuilder dupes = new StringBuilder();
-        for (CanaryCommand cmd : newCommands) {
-            for (String alias : cmd.meta.aliases()) {
-                boolean currentIsDupe = false;
-                if (commands.containsKey(alias.toLowerCase()) && cmd.meta.parent().isEmpty() && !force) {
-                    hasDuplicate = true;
-                    currentIsDupe = true;
-                    dupes.append(alias).append(" ");
-                }
-                if (!currentIsDupe || force) {
-                    if (cmd.meta.parent().isEmpty()) { // Only add root commands
-                        commands.put(alias.toLowerCase(), cmd);
-                    }
-                    if (!cmd.meta.helpLookup().isEmpty() && !Canary.help().hasHelp(cmd.meta.helpLookup())) {
-                        Canary.help().registerCommand(owner, cmd, cmd.meta.helpLookup());
-                    }
-                    else {
-                        Canary.help().registerCommand(owner, cmd);
-                    }
-                }
-            }
-        }
-        if (hasDuplicate && !force) {
-            throw new DuplicateCommandException(dupes.toString());
         }
     }
 
