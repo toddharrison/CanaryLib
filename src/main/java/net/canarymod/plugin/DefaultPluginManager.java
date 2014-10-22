@@ -75,7 +75,8 @@ public final class DefaultPluginManager implements PluginManager {
         }
         boolean enabled = descriptor.getPluginLifecycle().enable();
         if (!enabled) {
-            log.warn("Unable to enable plugin " + descriptor.getName());
+            disablePlugin(name);
+            log.warn("Unable to enable plugin " + descriptor.getName() + ". Will disable it.");
             return false;
         }
         Canary.hooks().callHook(new PluginEnableHook(descriptor.getPlugin()));
