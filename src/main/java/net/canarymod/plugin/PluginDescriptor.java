@@ -1,15 +1,11 @@
 package net.canarymod.plugin;
 
-import net.canarymod.Canary;
 import net.canarymod.exceptions.InvalidPluginException;
-import net.canarymod.exceptions.PluginLoadFailedException;
 import net.canarymod.plugin.lifecycle.PluginLifecycleFactory;
 import net.visualillusionsent.utils.PropertiesFile;
 import net.visualillusionsent.utils.UtilityException;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Describes information about a plugin, including meta information and start/stop/load information.
@@ -25,7 +21,7 @@ public class PluginDescriptor {
     private String author;
     private String language;
     private Plugin plugin;
-    private IPluginLifecycle pluginLifecycle;
+    private PluginLifecycle pluginLifecycle;
     private String[] dependencies;
     private PluginState currentState;
     private int priority;
@@ -34,7 +30,8 @@ public class PluginDescriptor {
         this.path = path;
         try {
             reloadInf();
-        } catch (UtilityException e) {
+        }
+        catch (UtilityException e) {
             throw new InvalidPluginException("Unable to load INF file", e);
         }
         currentState = PluginState.KNOWN;
@@ -54,7 +51,8 @@ public class PluginDescriptor {
         language = canaryInf.getString("language", "java");
         if (canaryInf.containsKey("dependencies")) {
             dependencies = canaryInf.getStringArray("dependencies", ",");
-        } else {
+        }
+        else {
             dependencies = new String[0];
         }
         pluginLifecycle = PluginLifecycleFactory.createLifecycle(this);
@@ -64,14 +62,15 @@ public class PluginDescriptor {
         File pluginFile = new File(path);
         if (pluginFile.isFile() && pluginFile.getName().matches(".+\\.(jar|zip)$")) {
             canaryInf = new PropertiesFile(pluginFile.getAbsolutePath(), "Canary.inf");
-        } else if (pluginFile.isDirectory()) {
+        }
+        else if (pluginFile.isDirectory()) {
             File confFile = new File(pluginFile, "Canary.inf");
             canaryInf = new PropertiesFile(confFile.getAbsolutePath());
-        } else {
+        }
+        else {
             throw new InvalidPluginException("I don't know where to find a Canary.inf in " + path);
         }
     }
-
 
 
     public PropertiesFile getCanaryInf() {
@@ -98,7 +97,7 @@ public class PluginDescriptor {
         return language;
     }
 
-    public IPluginLifecycle getPluginLifecycle() {
+    public PluginLifecycle getPluginLifecycle() {
         return pluginLifecycle;
     }
 
@@ -132,11 +131,11 @@ public class PluginDescriptor {
         return dependencies;
     }
 
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
-
     public int getPriority() {
         return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
     }
 }

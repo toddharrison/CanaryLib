@@ -16,7 +16,7 @@ import net.canarymod.kit.KitProvider;
 import net.canarymod.logger.Logman;
 import net.canarymod.motd.MessageOfTheDay;
 import net.canarymod.permissionsystem.PermissionManager;
-import net.canarymod.plugin.IPluginManager;
+import net.canarymod.plugin.PluginManager;
 import net.canarymod.serialize.Serializer;
 import net.canarymod.tasks.TaskOwner;
 import net.canarymod.user.OperatorsProvider;
@@ -55,7 +55,7 @@ public abstract class Canary implements TaskOwner {
     protected ReservelistProvider reservelist;
     protected HookExecutor hookExecutor;
     protected Database database;
-    protected IPluginManager pluginManager;
+    protected PluginManager pluginManager;
     protected HelpManager helpManager;
     protected CommandManager commandManager;
     protected Factory factory;
@@ -157,21 +157,18 @@ public abstract class Canary implements TaskOwner {
     }
 
     /**
-     * @return {@link net.canarymod.plugin.PluginManager}
-     *
-     * @deprecated Use {@link Canary#manager()}
-     */
-    public static IPluginManager loader() {
-        return instance.pluginManager;
-    }
-
-    /**
      * Get the Plugin Manager to load, enable or disable plugins and manage
      * plugin dependencies
      *
-     * @return {@link net.canarymod.plugin.PluginManager}
+     * @return {@link net.canarymod.plugin.DefaultPluginManager}
+     * @deprecated use pluginManager() instead
      */
-    public static IPluginManager manager() {
+    @Deprecated
+    public static PluginManager manager() {
+        return pluginManager();
+    }
+
+    public static PluginManager pluginManager() {
         return instance.pluginManager;
     }
 
@@ -281,7 +278,7 @@ public abstract class Canary implements TaskOwner {
     public static void enablePlugins() {
         if (!pluginsUp && instance.server != null) {
             log.info("Enabling Plugins...");
-            manager().enableAllPlugins();
+            pluginManager().enableAllPlugins();
             pluginsUp = true;
         }
     }

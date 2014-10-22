@@ -134,12 +134,7 @@ public class HookExecutor implements HookExecutorInterface {
             if (o1 == o2) {
                 return 0;
             }
-            int diff = o2.getMethodPriority().getPriorityValue() - o1.getMethodPriority().getPriorityValue();
-
-            if (diff == 0) {
-                diff = o2.getPluginPriority() - o1.getPluginPriority();
-            }
-            return (int) Math.signum(diff);
+            return (int) Math.signum((o2.getMethodPriority().getPriorityValue() + o2.getPluginPriority()) - (o1.getMethodPriority().getPriorityValue() + o1.getPluginPriority()));
         }
     }
 }

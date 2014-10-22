@@ -52,7 +52,7 @@ public class ListPlugins implements NativeCommand {
     }
 
     private String getReadablePluginList() {
-        Collection<PluginDescriptor> descriptors = Canary.manager().getPluginDescriptors();
+        Collection<PluginDescriptor> descriptors = Canary.pluginManager().getPluginDescriptors();
         StringBuilder sb = new StringBuilder();
         for (PluginDescriptor plugin : descriptors) {
             if (plugin.getCurrentState() == PluginState.ENABLED) {

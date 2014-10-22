@@ -41,7 +41,7 @@ public class PluginCommand implements NativeCommand {
 
     private void reload(MessageReceiver caller, String plugin) {
         try {
-            if (Canary.manager().reloadPlugin(plugin)) {
+            if (Canary.pluginManager().reloadPlugin(plugin)) {
                 caller.notice(Translator.translateAndFormat("plugin reloaded", plugin));
             }
             else {
@@ -60,7 +60,7 @@ public class PluginCommand implements NativeCommand {
 
     private void enable(MessageReceiver caller, String plugin) {
         try {
-            if (Canary.manager().enablePlugin(plugin)) {
+            if (Canary.pluginManager().enablePlugin(plugin)) {
                 caller.notice(Translator.translateAndFormat("plugin enabled", plugin));
             }
             else {
@@ -74,7 +74,7 @@ public class PluginCommand implements NativeCommand {
     }
 
     private void disable(MessageReceiver caller, String plugin, boolean permanent) {
-        if (Canary.manager().disablePlugin(plugin)) {
+        if (Canary.pluginManager().disablePlugin(plugin)) {
             //TODO: Permanent flag in canary
             if (permanent) {
 //                Canary.manager().moveToDisabled(plugin);

@@ -903,7 +903,7 @@ public class CommandList implements CommandListener {
 
     @TabComplete(commands = {"disableplugin", "reloadplugin"})
     public List<String> matchPluginName(MessageReceiver caller, String[] args) {
-        return args.length == 1 ? matchTo(args, Canary.manager().getPluginNames().toArray(new String[0])) : null;
+        return args.length == 1 ? matchTo(args, Canary.pluginManager().getPluginNames().toArray(new String[0])) : null;
     }
 
     @Command(

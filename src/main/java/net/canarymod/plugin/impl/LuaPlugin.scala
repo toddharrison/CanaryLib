@@ -7,8 +7,8 @@ import net.canarymod.exceptions.InvalidPluginException
 import net.canarymod.lua.LuaAPI
 import net.canarymod.plugin.PluginDescriptor
 import net.canarymod.scala.ScalaPlugin
-import org.luaj.vm2.{Globals, LuaValue}
 import org.luaj.vm2.lib.jse.JsePlatform
+import org.luaj.vm2.{Globals, LuaValue}
 
 import scala.collection.mutable
 

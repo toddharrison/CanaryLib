@@ -1,7 +1,10 @@
 package net.canarymod.plugin.dependencies;
 
-import java.util.*;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Basic plugin dependency graph. Can look up forward and reverse dependencies.
@@ -9,9 +12,9 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author Pwootage
  */
 public class DependencyGraph {
+    private final Object lock = new Object();
     private Map<String, Set<String>> forwardDependencies;
     private Map<String, Set<String>> reverseDependencies;
-    private final Object lock = new Object();
 
     public DependencyGraph() {
         forwardDependencies = new LinkedHashMap<String, Set<String>>();
@@ -65,7 +68,8 @@ public class DependencyGraph {
             Set<String> fwd = forwardDependencies.get(node);
             if (fwd == null) {
                 return Collections.unmodifiableSet(new HashSet<String>());
-            } else {
+            }
+            else {
                 return Collections.unmodifiableSet(new HashSet<String>(fwd));
             }
         }
@@ -76,7 +80,8 @@ public class DependencyGraph {
             Set<String> rev = reverseDependencies.get(node);
             if (rev == null) {
                 return Collections.unmodifiableSet(new HashSet<String>());
-            } else {
+            }
+            else {
                 return Collections.unmodifiableSet(new HashSet<String>(rev));
             }
         }

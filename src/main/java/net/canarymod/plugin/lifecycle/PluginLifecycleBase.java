@@ -1,18 +1,18 @@
 package net.canarymod.plugin.lifecycle;
 
 import net.canarymod.Canary;
-import net.canarymod.CanaryClassLoader;
 import net.canarymod.exceptions.PluginLoadFailedException;
-import net.canarymod.plugin.*;
-
-import java.io.File;
+import net.canarymod.plugin.Plugin;
+import net.canarymod.plugin.PluginDescriptor;
+import net.canarymod.plugin.PluginLifecycle;
+import net.canarymod.plugin.PluginState;
 
 /**
  * Base class for plugin lifecycles
  *
  * @author Pwootage
  */
-abstract class PluginLifecycleBase implements IPluginLifecycle {
+abstract class PluginLifecycleBase implements PluginLifecycle {
     protected PluginDescriptor desc;
 
     public PluginLifecycleBase(PluginDescriptor desc) {
@@ -22,7 +22,7 @@ abstract class PluginLifecycleBase implements IPluginLifecycle {
     /**
      * {@inheritDoc}
      */
-    public boolean enable(IPluginManager manager) {
+    public boolean enable() {
         if (desc.getCurrentState() == PluginState.ENABLED) {
             return true;
         }
@@ -39,7 +39,7 @@ abstract class PluginLifecycleBase implements IPluginLifecycle {
     /**
      * {@inheritDoc}
      */
-    public boolean disable(IPluginManager manager) {
+    public boolean disable() {
         if (desc.getCurrentState() == PluginState.DISABLED) {
             return true;
         }
@@ -58,17 +58,15 @@ abstract class PluginLifecycleBase implements IPluginLifecycle {
     /**
      * Implement this method in order to do actual loading. Be sure to set the plugin object in
      * {@link net.canarymod.plugin.lifecycle.PluginLifecycleBase#desc}
-     *
-     * @param manager
      */
-    protected abstract void _load(IPluginManager manager) throws PluginLoadFailedException;
+    protected abstract void _load() throws PluginLoadFailedException;
 
     /**
      * {@inheritDoc}
      */
-    public Plugin load(IPluginManager manager) throws PluginLoadFailedException {
-        unload(manager);
-        _load(manager);
+    public Plugin load() throws PluginLoadFailedException {
+        unload();
+        _load();
         desc.setCurrentState(PluginState.DISABLED);
         return desc.getPlugin();
 
@@ -76,17 +74,15 @@ abstract class PluginLifecycleBase implements IPluginLifecycle {
 
     /**
      * Implement this method in order to do specific unloading code
-     *
-     * @param manager Manager passed to unload
      */
-    protected abstract void _unload(IPluginManager manager);
+    protected abstract void _unload();
 
     /**
      * {@inheritDoc}
      */
-    public void unload(IPluginManager manager) {
-        disable(manager);
-        _unload(manager);
+    public void unload() {
+        disable();
+        _unload();
         desc.setPlugin(null);
         desc.setCurrentState(PluginState.KNOWN);
     }

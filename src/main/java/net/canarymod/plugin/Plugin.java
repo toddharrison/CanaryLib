@@ -22,16 +22,16 @@ import java.util.ArrayList;
  * @author Jason (darkdiplomat)
  */
 public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
-    private int priority = 0;
-    private boolean isClosed = false;
-    private boolean disabled = true;
-    private final ArrayList<String> dependents = new ArrayList<String>();
-    private String name;
     /**
      * This is used to get the correct name during load process, before it is set in the field above.
      */
     public static ThreadLocal<String> threadLocalName = new ThreadLocal<String>() {
     };
+    private final ArrayList<String> dependents = new ArrayList<String>();
+    private int priority = 0;
+    private boolean isClosed = false;
+    private boolean disabled = true;
+    private String name;
 
     /**
      * CanaryMod will call this upon enabling this plugin
@@ -61,7 +61,7 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
 
     /**
      * Sets the Plugin's name. Used internally since plugins are stored by name.
-     * Calling this outside of {@link net.canarymod.plugin.IPluginLifecycle#load(IPluginManager)}
+     * Calling this outside of {@link PluginLifecycle#load()}
      * may end disastrously
      */
     final public void setName(String name) {
@@ -80,8 +80,7 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
     /**
      * Set this Plugin's priority level. This will affect the order of hook execution.
      *
-     * @param priority
-     *         the Priority level
+     * @param priority the Priority level
      */
     final public void setPriority(int priority) {
         this.priority = priority;
@@ -111,7 +110,6 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
      * Gets the name of the Plugin's Jar File
      *
      * @return the Jar File name
-     *
      * @deprecated Plugins may or may not be in a jar file. This method will return null if there is no jar.
      */
     public String getJarName() {
@@ -128,7 +126,6 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
      * Gets the path of the Plugin's Jar file as {@literal "plugins/<jar>"}
      *
      * @return the Plugin's Jar path
-     *
      * @deprecated Plugins may or may not be in a jar file. This method will return null if there is no jar.
      */
     public String getJarPath() {
@@ -165,7 +162,7 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
      * @return The plugin's descriptor
      */
     public final PluginDescriptor getDescriptor() {
-        return Canary.manager().getPluginDescriptor(this);
+        return Canary.pluginManager().getPluginDescriptor(this);
     }
 
     /**
@@ -179,14 +176,13 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
      * @return the Plugin's Canary.inf
      */
     public final PropertiesFile getCanaryInf() {
-        return Canary.manager().getPluginDescriptor(this).getCanaryInf();
+        return Canary.pluginManager().getPluginDescriptor(this).getCanaryInf();
     }
 
     /**
      * Gets the server-wide configuration of the Plugin
      *
      * @return configuration of the Plugin
-     *
      * @see Configuration#getPluginConfig(Plugin)
      */
     public final PropertiesFile getConfig() {
@@ -196,11 +192,8 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
     /**
      * Gets the server-wide configuration of the Plugin
      *
-     * @param module
-     *         Used to create multiple configurations for the Plugin.
-     *
+     * @param module Used to create multiple configurations for the Plugin.
      * @return configuration of the Plugin
-     *
      * @see Configuration#getPluginConfig(Plugin, String)
      */
     public final PropertiesFile getModuleConfig(String module) {
@@ -211,11 +204,8 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
      * Gets the world-specific configuration of the Plugin.
      * If there is no world-specific configuration, it will take the server-wide configuration.
      *
-     * @param world
-     *         the {@link World} to get configuration for
-     *
+     * @param world the {@link World} to get configuration for
      * @return configuration of the Plugin for the specified {@link World}
-     *
      * @see Configuration#getPluginConfig(Plugin, World)
      */
     public final PropertiesFile getWorldConfig(World world) {
@@ -226,13 +216,9 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
      * Gets the world-specific configuration of the Plugin.
      * If there is no world-specific configuration, it will take the server-wide configuration.
      *
-     * @param module
-     *         Used to create multiple configurations for the Plugin.
-     * @param world
-     *         the {@link World} to get configuration for
-     *
+     * @param module Used to create multiple configurations for the Plugin.
+     * @param world  the {@link World} to get configuration for
      * @return configuration of the Plugin for the specified {@link World}
-     *
      * @see Configuration#getPluginConfig(Plugin, String, World)
      */
     public final PropertiesFile getWorldModuleConfig(String module, World world) {
@@ -273,11 +259,8 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
      * that is not registered yet, it will fail.
      * So make sure you add commands in the correct order.
      *
-     * @param listener
-     *         the {@link CommandListener}
-     * @param force
-     *         {@code true} to override existing commands; {@code false} for not
-     *
+     * @param listener the {@link CommandListener}
+     * @param force    {@code true} to override existing commands; {@code false} for not
      * @throws CommandDependencyException
      */
     public final void registerCommands(CommandListener listener, boolean force) throws CommandDependencyException {
@@ -292,13 +275,9 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
      * that is not registered yet, it will fail.
      * So make sure you add commands in the correct order.
      *
-     * @param listener
-     *         the {@link CommandListener}
-     * @param translator
-     *         the {@link LocaleHelper} instance used in Translations
-     * @param force
-     *         {@code true} to override existing commands; {@code false} for not
-     *
+     * @param listener   the {@link CommandListener}
+     * @param translator the {@link LocaleHelper} instance used in Translations
+     * @param force      {@code true} to override existing commands; {@code false} for not
      * @throws CommandDependencyException
      */
     public final void registerCommands(CommandListener listener, LocaleHelper translator, boolean force) throws CommandDependencyException {

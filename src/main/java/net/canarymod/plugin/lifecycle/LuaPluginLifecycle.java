@@ -1,9 +1,7 @@
 package net.canarymod.plugin.lifecycle;
 
 import net.canarymod.CanaryClassLoader;
-import net.canarymod.exceptions.InvalidPluginException;
 import net.canarymod.exceptions.PluginLoadFailedException;
-import net.canarymod.plugin.IPluginManager;
 import net.canarymod.plugin.Plugin;
 import net.canarymod.plugin.PluginDescriptor;
 import net.canarymod.plugin.impl.LuaPlugin;
@@ -23,7 +21,7 @@ public class LuaPluginLifecycle extends PluginLifecycleBase {
     }
 
     @Override
-    protected void _load(IPluginManager manager) throws PluginLoadFailedException {
+    protected void _load() throws PluginLoadFailedException {
         try {
             cl = new CanaryClassLoader(new File(desc.getPath()).toURI().toURL(), getClass().getClassLoader());
             //A hacky way of getting the name in during the constructor/initializer
@@ -33,13 +31,14 @@ public class LuaPluginLifecycle extends PluginLifecycleBase {
             p.setName(desc.getName());
             p.setPriority(desc.getPriority());
             desc.setPlugin(p);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new PluginLoadFailedException("Failed to load plugin", e);
         }
     }
 
     @Override
-    protected void _unload(IPluginManager manager) {
+    protected void _unload() {
         if (cl != null) {
             cl.close();
         }
