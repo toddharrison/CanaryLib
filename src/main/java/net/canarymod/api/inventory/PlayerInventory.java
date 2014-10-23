@@ -80,4 +80,19 @@ public interface PlayerInventory extends Inventory {
      * @return the {@link Item} in hand
      */
     public Item getItemInHand();
+    
+    /**
+     * Gets the current {@link Item} on the cursor
+     *
+     * @return the {@link Item} in hand
+     */
+    public Item getItemOnCursor();
+    
+    /**
+     * Sets the Item on cursor
+     *
+     * @param item
+     *         the {@link Item} to set
+     */
+    public void setItemOnCursor(Item item);
 }
