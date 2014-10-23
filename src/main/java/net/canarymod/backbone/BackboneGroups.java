@@ -157,7 +157,7 @@ public class BackboneGroups extends Backbone {
     }
 
     private Group loadParents(String parent, List<Group> existingGroups) {
-        if (parent == null || parent.isEmpty()) {
+        if (ToolBox.stringToNull(parent) == null || parent.isEmpty()) {
             return null;
         }
         for (Group g : existingGroups) {
