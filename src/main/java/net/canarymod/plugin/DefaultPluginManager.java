@@ -299,14 +299,13 @@ public final class DefaultPluginManager implements PluginManager {
             return;
         }
         File[] pluginFiles = pluginDir.listFiles(new PluginFilter());
-        List<PluginDescriptor> loadedDescriptors = new ArrayList<PluginDescriptor>();
+        int loadedDescriptors = 0;
         for (File pluginFile : pluginFiles) {
             try {
-                PluginDescriptor desc = loadPluginDescriptorAndInsertInGraph(pluginFile);
-                if (desc == null) {
+                if (!loadPluginDescriptorAndInsertInGraph(pluginFile)) {
                     continue;
                 }
-                loadedDescriptors.add(desc);
+                ++loadedDescriptors;
             }
             catch (InvalidPluginException e) {
                 log.warn("Found invalid plugin at " + pluginFile.getName() + ", moving on.", e);
@@ -314,26 +313,26 @@ public final class DefaultPluginManager implements PluginManager {
         }
         pluginPriorities.save();
         synchronized (lock) {
-            log.info("Found " + loadedDescriptors.size() + " plugins; total: " + plugins.size());
+            log.info("Found " + loadedDescriptors + " plugins; total: " + plugins.size());
         }
     }
 
-    private PluginDescriptor loadPluginDescriptorAndInsertInGraph(File pluginFile) throws InvalidPluginException {
+    private boolean loadPluginDescriptorAndInsertInGraph(File pluginFile) throws InvalidPluginException {
         PluginDescriptor desc = new PluginDescriptor(pluginFile.getAbsolutePath());
         if (plugins.containsKey(desc.getName())) {
-            return null;
+            return false;
         }
         int priority = pluginPriorities.getInt(desc.getName(), 10);
         if (priority < 0) {
             // Negative priorities should not load at all
-            return null;
+            return false;
         }
         desc.setPriority(priority);
         synchronized (lock) {
             plugins.put(desc.getName(), desc);
         }
         updateDependencies(desc);
-        return desc;
+        return true;
     }
 
     private void updateDependencies(PluginDescriptor desc) {
