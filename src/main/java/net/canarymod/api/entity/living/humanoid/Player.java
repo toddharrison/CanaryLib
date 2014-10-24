@@ -330,4 +330,11 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      *         display name {@link net.canarymod.api.chat.ChatComponent}; passing null will clear the display name
      */
     void setDisplayNameComponent(ChatComponent component);
+    
+    /**
+     * Gets the second {@link Inventory} the player is watching currently
+     *
+     * @return the top {@link Inventory} on the player's window. {@code null} will be returned if there isn't one.
+     */
+    public Inventory getSecondInventory(); 
 }
