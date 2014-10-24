@@ -4,7 +4,8 @@ import net.canarymod.Canary;
 import net.canarymod.Translator;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.World;
-import net.canarymod.chat.Colors;
+import net.canarymod.api.world.position.Location;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 
@@ -33,7 +34,7 @@ public class SpawnCommand implements NativeCommand {
             World w = Canary.getServer().getWorld(args[1]);
 
             if (player != null && w != null) {
-                player.teleportTo(w.getSpawnLocation());
+                player.teleportTo(getSpawnLocation(w));
                 caller.notice(Translator.translateAndFormat("spawn success other", player.getName()));
             }
             else {
@@ -45,8 +46,9 @@ public class SpawnCommand implements NativeCommand {
 
     private void player(Player player, String[] args) {
         if (args.length == 1) {
-            player.teleportTo(player.getWorld().getSpawnLocation());
-            player.message(Colors.YELLOW + Translator.translate("spawn success"));
+            World world = player.getWorld();
+            player.teleportTo(getSpawnLocation(world));
+            player.message(ChatFormat.YELLOW + Translator.translate("spawn success"));
         }
         else if (args.length == 2) {
             World w = Canary.getServer().getWorld(args[1]);
@@ -55,8 +57,8 @@ public class SpawnCommand implements NativeCommand {
                 player.notice(Translator.translate("spawn failed"));
             }
             else {
-                player.teleportTo(w.getSpawnLocation());
-                player.message(Colors.YELLOW + Translator.translate("spawn success"));
+                player.teleportTo(getSpawnLocation(w));
+                player.message(ChatFormat.YELLOW + Translator.translate("spawn success"));
             }
         }
         else {
@@ -65,9 +67,16 @@ public class SpawnCommand implements NativeCommand {
 
             if (target != null && w != null) {
                 target.teleportTo(w.getSpawnLocation());
-                player.message(Colors.YELLOW + Translator.translateAndFormat("spawn success other", player.getName()));
+                player.message(ChatFormat.YELLOW + Translator.translateAndFormat("spawn success other", player.getName()));
             }
         }
+    }
+
+    private Location getSpawnLocation(World world)
+    {
+        double y = world.getHighestBlockAt(world.getSpawnLocation().getBlockX(), world.getSpawnLocation().getBlockZ());
+        Location loc = new Location(world, world.getSpawnLocation().getX()+0.5, y, world.getSpawnLocation().getZ()+0.5, world.getSpawnLocation().getPitch(), world.getSpawnLocation().getRotation());
+        return loc;
     }
 
 }
