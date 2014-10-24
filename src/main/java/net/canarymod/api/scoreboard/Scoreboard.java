@@ -202,4 +202,22 @@ public interface Scoreboard {
      * @return the name used for saving.
      */
     public String getSaveName();
+    
+    /**
+     * Removes all scores associated with this name
+     *
+     * @param name
+     *         the score's name
+     */
+    public void removeScore(String name);
+    
+    /**
+     * Removes the score associated with this name from the target objective
+     *
+     * @param name
+     *         the score's name
+     * @param objective
+     *         the target objective
+     */
+    public void removeScore(String name, ScoreObjective objective);
 }
