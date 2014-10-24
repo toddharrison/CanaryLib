@@ -456,7 +456,9 @@ public class ToolBox {
         // Make sure the server isn't null, this can happen when called early in server init
         if (Canary.getServer() != null) {
             Player p = Canary.getServer().getPlayer(username);
-            if (p != null) return p.getUUIDString(); // player is online, so don't query the mojang API
+            if (p != null) {
+                return p.getUUIDString(); // player is online, so don't query the mojang API
+            }
         }
 
         // If offline mode and not doing BungeeCord, don't continue forward with the API checks
