@@ -75,6 +75,9 @@ public class SpawnCommand implements NativeCommand {
     private Location getFirsetAirLocation(World world) {
         Location loc = world.getSpawnLocation();
         Block block = world.getBlockAt(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+        if (block.isAir()) {
+            block = world.getBlockAt(loc.getBlockX(), loc.getBlockY() + 1, loc.getBlockZ());
+        }
         while (!block.isAir())
         {
             for (int y = block.getY() + 1; y < world.getHeight(); y++) {
@@ -83,8 +86,9 @@ public class SpawnCommand implements NativeCommand {
                     break;
                 }
             }
-            block = world.getBlockAt(block.getX(), block.getY(), block.getZ());
+            block = world.getBlockAt(block.getX(), block.getY() + 1, block.getZ());
         }
+        block.getLocation().setY(block.getLocation().getY() - 1);
         return block.getLocation();
     }
 }
