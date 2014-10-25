@@ -4,6 +4,7 @@ import net.canarymod.Canary;
 import net.canarymod.Translator;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.World;
+import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.position.Location;
 import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
@@ -34,7 +35,7 @@ public class SpawnCommand implements NativeCommand {
             World w = Canary.getServer().getWorld(args[1]);
 
             if (player != null && w != null) {
-                player.teleportTo(getSpawnLocation(w));
+                player.teleportTo(getFirsetAirLocation(w));
                 caller.notice(Translator.translateAndFormat("spawn success other", player.getName()));
             }
             else {
@@ -46,8 +47,7 @@ public class SpawnCommand implements NativeCommand {
 
     private void player(Player player, String[] args) {
         if (args.length == 1) {
-            World world = player.getWorld();
-            player.teleportTo(getSpawnLocation(world));
+            player.teleportTo(getFirsetAirLocation(player.getWorld()));
             player.message(ChatFormat.YELLOW + Translator.translate("spawn success"));
         }
         else if (args.length == 2) {
@@ -57,7 +57,7 @@ public class SpawnCommand implements NativeCommand {
                 player.notice(Translator.translate("spawn failed"));
             }
             else {
-                player.teleportTo(getSpawnLocation(w));
+                player.teleportTo(getFirsetAirLocation(w));
                 player.message(ChatFormat.YELLOW + Translator.translate("spawn success"));
             }
         }
@@ -66,17 +66,25 @@ public class SpawnCommand implements NativeCommand {
             Player target = Canary.getServer().matchPlayer(args[2]);
 
             if (target != null && w != null) {
-                target.teleportTo(w.getSpawnLocation());
+                target.teleportTo(getFirsetAirLocation(w));
                 player.message(ChatFormat.YELLOW + Translator.translateAndFormat("spawn success other", player.getName()));
             }
         }
     }
 
-    private Location getSpawnLocation(World world)
-    {
-        double y = world.getHighestBlockAt(world.getSpawnLocation().getBlockX(), world.getSpawnLocation().getBlockZ());
-        Location loc = new Location(world, world.getSpawnLocation().getX()+0.5, y, world.getSpawnLocation().getZ()+0.5, world.getSpawnLocation().getPitch(), world.getSpawnLocation().getRotation());
-        return loc;
+    private Location getFirsetAirLocation(World world) {
+        Location loc = world.getSpawnLocation();
+        Block block = world.getBlockAt(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+        while (!block.isAir())
+        {
+            for (int y = block.getY() + 1; y < world.getHeight(); y++) {
+                block = world.getBlockAt(loc.getBlockX(), y, loc.getBlockZ());
+                if (block.isAir()) {
+                    break;
+                }
+            }
+            block = world.getBlockAt(block.getX(), block.getY(), block.getZ());
+        }
+        return block.getLocation();
     }
-
 }
