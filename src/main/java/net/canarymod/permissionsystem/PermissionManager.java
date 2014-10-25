@@ -56,7 +56,7 @@ public class PermissionManager {
     }
 
     public void removePlayerPermission(String path, PlayerReference player) {
-        removePlayerPermission(path, player.getName(), player.getWorld().getFqName());
+        removePlayerPermission(path, player.getUUIDString(), player.getWorld().getFqName());
         player.getPermissionProvider().reload();
     }
 
