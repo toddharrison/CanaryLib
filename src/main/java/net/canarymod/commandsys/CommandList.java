@@ -1611,6 +1611,7 @@ public class CommandList implements CommandListener {
             permissions = {WORLD$CREATE},
             toolTip = "/createworld <name> [seed] [dimensionType] [worldType]",
             max = 5,
+            min = 1,
             version = 2
     )
     public void createWorld(MessageReceiver caller, String[] args) {
