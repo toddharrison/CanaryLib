@@ -4,6 +4,11 @@ import net.canarymod.api.VillagerTrade;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.entity.living.humanoid.Villager;
 
+/**
+ * Villager inventory interface
+ *
+ * @author Almog (Swift)
+ */
 public interface VillagerInventory extends Inventory {
     
     /**

@@ -133,7 +133,7 @@ public class CommandList implements CommandListener {
         temp.put("testforblock", new TestForBlock());
         temp.put("testforblocks", new TestForBlocks());
         temp.put("time", new Time());
-        temp.put("Title", new Title());
+        temp.put("title", new Title());
         temp.put("toggledownfall", new ToggleDownfall());
         temp.put("trigger", new Trigger());
         temp.put("weather", new Weather());
