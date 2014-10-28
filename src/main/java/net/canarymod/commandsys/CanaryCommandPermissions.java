@@ -96,7 +96,7 @@ public enum CanaryCommandPermissions {
             GIVE = "canary.command.give",
             GIVE$OTHER = "canary.command.give.other",
             MESSAGE = "canary.command.message",
-            MESSAGERAW = "canary.command.message",
+            MESSAGERAW = "canary.command.message.raw",
             PARTICLE = "canary.command.particle",
             PLAYSOUND = "canary.command.playsound",
             PLAYSOUND$OTHER = "canary.command.playsound.other",
