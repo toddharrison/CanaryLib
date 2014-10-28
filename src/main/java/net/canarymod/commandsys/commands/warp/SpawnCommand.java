@@ -35,7 +35,9 @@ public class SpawnCommand implements NativeCommand {
             World w = Canary.getServer().getWorld(args[1]);
 
             if (player != null && w != null) {
-                player.teleportTo(getFirsetAirLocation(w));
+                Location loc = w.getSpawnLocation();
+                loc.setY(w.getHighestBlockAt(loc.getBlockX(), loc.getBlockZ()));
+                player.teleportTo(loc);
                 caller.notice(Translator.translateAndFormat("spawn success other", player.getName()));
             }
             else {
@@ -47,7 +49,9 @@ public class SpawnCommand implements NativeCommand {
 
     private void player(Player player, String[] args) {
         if (args.length == 1) {
-            player.teleportTo(getFirsetAirLocation(player.getWorld()));
+            Location loc = player.getWorld().getSpawnLocation();
+            loc.setY(player.getWorld().getHighestBlockAt(loc.getBlockX(), loc.getBlockZ()));
+            player.teleportTo(loc);
             player.message(ChatFormat.YELLOW + Translator.translate("spawn success"));
         }
         else if (args.length == 2) {
@@ -57,7 +61,9 @@ public class SpawnCommand implements NativeCommand {
                 player.notice(Translator.translate("spawn failed"));
             }
             else {
-                player.teleportTo(getFirsetAirLocation(w));
+                Location loc = w.getSpawnLocation();
+                loc.setY(w.getHighestBlockAt(loc.getBlockX(), loc.getBlockZ()));
+                player.teleportTo(loc);
                 player.message(ChatFormat.YELLOW + Translator.translate("spawn success"));
             }
         }
@@ -66,7 +72,9 @@ public class SpawnCommand implements NativeCommand {
             Player target = Canary.getServer().matchPlayer(args[2]);
 
             if (target != null && w != null) {
-                target.teleportTo(getFirsetAirLocation(w));
+                Location loc = w.getSpawnLocation();
+                loc.setY(w.getHighestBlockAt(loc.getBlockX(), loc.getBlockZ()));
+                target.teleportTo(loc);
                 player.message(ChatFormat.YELLOW + Translator.translateAndFormat("spawn success other", player.getName()));
             }
         }
