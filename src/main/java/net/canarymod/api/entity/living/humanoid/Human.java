@@ -91,6 +91,13 @@ public interface Human extends LivingBase {
     public boolean isBlocking();
 
     /**
+     * If this player is shooting (with a bow)
+     *
+     * @return {@code true} if shooting; {@code false} otherwise
+     */
+    public boolean isShooting();
+
+    /**
      * Gets the Capabilities of the Human entity (such as flying and invulnerability)
      *
      * @return the {@link HumanCapabilities}
