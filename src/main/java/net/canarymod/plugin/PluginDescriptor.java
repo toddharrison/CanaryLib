@@ -37,6 +37,10 @@ public class PluginDescriptor {
         currentState = PluginState.KNOWN;
     }
 
+    PluginDescriptor() {
+        // Used for the PluginLangLoader initializing a Plugin Lang
+    }
+
     protected void reloadInf() throws InvalidPluginException {
         findAndLoadCanaryInf();
         name = canaryInf.getString("name", "");

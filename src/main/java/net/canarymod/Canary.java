@@ -17,6 +17,9 @@ import net.canarymod.logger.Logman;
 import net.canarymod.motd.MessageOfTheDay;
 import net.canarymod.permissionsystem.PermissionManager;
 import net.canarymod.plugin.PluginManager;
+import net.canarymod.plugin.lifecycle.InvalidPluginLifecycleException;
+import net.canarymod.plugin.lifecycle.JavaPluginLifecycle;
+import net.canarymod.plugin.lifecycle.PluginLifecycleFactory;
 import net.canarymod.serialize.Serializer;
 import net.canarymod.tasks.TaskOwner;
 import net.canarymod.user.OperatorsProvider;
@@ -73,6 +76,13 @@ public abstract class Canary implements TaskOwner {
     static {
         System.out.println("Please wait while the libraries initialize...");
         log = Logman.getLogman("CanaryMod");
+
+        try {
+            PluginLifecycleFactory.registerLifecycle("java", JavaPluginLifecycle.class);
+        }
+        catch (InvalidPluginLifecycleException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -161,6 +171,7 @@ public abstract class Canary implements TaskOwner {
      * plugin dependencies
      *
      * @return {@link net.canarymod.plugin.DefaultPluginManager}
+     *
      * @deprecated use pluginManager() instead
      */
     @Deprecated

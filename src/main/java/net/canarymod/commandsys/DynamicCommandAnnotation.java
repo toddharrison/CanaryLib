@@ -1,15 +1,13 @@
-package net.canarymod.scala.commands;
-
-import net.canarymod.commandsys.Command;
+package net.canarymod.commandsys;
 
 import java.lang.annotation.Annotation;
 
 /**
- * A fake Command annotation, used by the scala command system
+ * A fake Command annotation, used by the non-java based command system
  *
  * @author Pwootage
  */
-public class FakeCommandAnnotation implements Command {
+public class DynamicCommandAnnotation implements Command {
     private final String[] aliases;
     private final String[] permissions;
     private final String description;
@@ -19,10 +17,9 @@ public class FakeCommandAnnotation implements Command {
     private final String[] searchTerms;
     private final int min;
     private final int max;
-    private final String tabCompleteMethod;
     private final int version;
 
-    public FakeCommandAnnotation(String[] aliases, String[] permissions, String description, String toolTip, String parent, String helpLookup, String[] searchTerms, int min, int max, String tabCompleteMethod, int version) {
+    public DynamicCommandAnnotation(String[] aliases, String[] permissions, String description, String toolTip, String parent, String helpLookup, String[] searchTerms, int min, int max, String tabCompleteMethod, int version) {
         this.aliases = aliases;
         this.permissions = permissions;
         this.description = description;
@@ -32,7 +29,6 @@ public class FakeCommandAnnotation implements Command {
         this.searchTerms = searchTerms;
         this.min = min;
         this.max = max;
-        this.tabCompleteMethod = tabCompleteMethod;
         this.version = version;
     }
 

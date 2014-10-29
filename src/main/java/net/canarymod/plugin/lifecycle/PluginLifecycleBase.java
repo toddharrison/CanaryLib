@@ -12,7 +12,7 @@ import net.canarymod.plugin.PluginState;
  *
  * @author Pwootage
  */
-abstract class PluginLifecycleBase implements PluginLifecycle {
+public abstract class PluginLifecycleBase implements PluginLifecycle {
     protected PluginDescriptor desc;
 
     public PluginLifecycleBase(PluginDescriptor desc) {
