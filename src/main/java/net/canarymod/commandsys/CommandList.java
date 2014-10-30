@@ -783,6 +783,7 @@ public class CommandList implements CommandListener {
     @Command(
                     aliases = { "create" },
                     description = "kit create",
+                    helpLookup = "kit create",
                     permissions = { KIT$CREATE },
                     toolTip = "/kit create <name> <use delay> [G|P Groups|Players]",
                     min = 2,
@@ -794,7 +795,8 @@ public class CommandList implements CommandListener {
 
     @Command(
                     aliases = { "give" },
-                    description = "kit create",
+                    description = "kit give",
+                    helpLookup = "kit give",
                     permissions = { KIT },
                     toolTip = "/kit give <name> [player]",
                     min = 1,
@@ -807,6 +809,7 @@ public class CommandList implements CommandListener {
     @Command(
                     aliases = { "list" },
                     description = "kit list",
+                    helpLookup = "kit list",
                     permissions = { KIT },
                     toolTip = "/kit list",
                     min = 0,

@@ -32,8 +32,8 @@ public final class KitGive implements NativeCommand {
 
     protected void asPlayer(Player player, String[] args) {
         // Give kit to player
-        if (args.length == 2) {
-            Kit kit = kits.getKit(args[1]);
+        if (args.length == 1) {
+            Kit kit = kits.getKit(args[0]);
 
             if (kit != null) {
                 if (kit.giveKit(player, false)) {
@@ -48,14 +48,14 @@ public final class KitGive implements NativeCommand {
             }
         }
         // Give kit to a subject
-        else if (args.length > 2) {
+        else if (args.length > 1) {
             if (!player.hasPermission(KIT$OTHER)) {
                 return;
             }
-            Player recipient = Canary.getServer().matchPlayer(args[2]);
+            Player recipient = Canary.getServer().matchPlayer(args[1]);
 
             if (recipient != null) {
-                Kit kit = kits.getKit(args[1]);
+                Kit kit = kits.getKit(args[0]);
 
                 if (kit != null) {
                     if (kit.giveKit(recipient, false)) {
@@ -66,7 +66,7 @@ public final class KitGive implements NativeCommand {
                     }
                 }
                 else {
-                    player.notice(Translator.translateAndFormat("kit invalid", args[1]));
+                    player.notice(Translator.translateAndFormat("kit invalid", args[0]));
                 }
             }
             else {
@@ -77,12 +77,12 @@ public final class KitGive implements NativeCommand {
 
     protected void asServer(MessageReceiver caller, String[] args) {
         // Give kit to a subject
-        if (args.length >= 3) {
-            boolean override = args.length > 3 && args[3].toLowerCase().equals("override");
-            Player recipient = Canary.getServer().matchPlayer(args[2]);
+        if (args.length >= 2) {
+            boolean override = args.length > 2 && args[2].toLowerCase().equals("override");
+            Player recipient = Canary.getServer().matchPlayer(args[1]);
 
             if (recipient != null) {
-                Kit kit = kits.getKit(args[1]);
+                Kit kit = kits.getKit(args[0]);
 
                 if (kit != null) {
                     if (kit.giveKit(recipient, override)) {
@@ -93,16 +93,15 @@ public final class KitGive implements NativeCommand {
                     }
                 }
                 else {
-                    caller.notice(Translator.translateAndFormat("kit invalid", args[1]));
+                    caller.notice(Translator.translateAndFormat("kit invalid", args[0]));
                 }
             }
             else {
-                caller.notice(Translator.translateAndFormat("unknown player", args[2]));
+                caller.notice(Translator.translateAndFormat("unknown player", args[1]));
             }
         }
         else {
             caller.notice(Translator.translateAndFormat("usage", "/kit give <name> <player> [override]"));
-            //caller.notice(Translator.translateAndFormat("usage", "/kit list"));
         }
     }
 }

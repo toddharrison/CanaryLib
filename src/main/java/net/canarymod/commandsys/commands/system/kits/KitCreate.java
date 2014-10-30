@@ -27,30 +27,30 @@ public class KitCreate implements NativeCommand {
     @Override
     public void execute(MessageReceiver caller, String[] args) {
         if (caller.getReceiverType().equals(ReceiverType.PLAYER)) {
-            if (args.length < 3) {
+            if (args.length < 2) {
                 caller.notice(Translator.translateAndFormat("usage", "/kit create <name> <use delay> [G|P Groups|Players]") + " - " + Translator.translate("kit from inventory"));
                 return;
             }
             Player player = (Player)caller;
             // Default public kit
-            if (args.length == 3) {
+            if (args.length == 2) {
                 Kit newKit = new Kit();
 
                 newKit.setContent(new ArrayList<Item>(Arrays.asList(player.getInventory().getContents())));
-                newKit.setDelay(Integer.parseInt(args[2]));
-                newKit.setName(args[1]);
+                newKit.setDelay(Integer.parseInt(args[1]));
+                newKit.setName(args[0]);
                 Canary.kits().addKit(newKit);
-                player.message(ChatFormat.YELLOW + Translator.translateAndFormat("kit created", args[1]));
+                player.message(ChatFormat.YELLOW + Translator.translateAndFormat("kit created", args[0]));
                 return;
             }
 
-            if (args.length >= 5) {
+            if (args.length >= 4) {
                 // ADD GROUPS KIT
-                if (args[3].equalsIgnoreCase("G") && player.hasPermission(KIT$GROUP)) {
-                    String[] groups = new String[args.length - 4];
+                if (args[2].equalsIgnoreCase("G") && player.hasPermission(KIT$GROUP)) {
+                    String[] groups = new String[args.length - 3];
 
                     for (int i = 0; i < groups.length; i++) {
-                        Group g = Canary.usersAndGroups().getGroup(args[i + 4]);
+                        Group g = Canary.usersAndGroups().getGroup(args[i + 3]);
 
                         if (g != null) {
                             groups[i] = g.getName();
@@ -62,26 +62,26 @@ public class KitCreate implements NativeCommand {
                     Kit newKit = new Kit();
 
                     newKit.setContent(new ArrayList<Item>(Arrays.asList(player.getInventory().getContents())));
-                    newKit.setDelay(Integer.parseInt(args[2]));
-                    newKit.setName(args[1]);
+                    newKit.setDelay(Integer.parseInt(args[1]));
+                    newKit.setName(args[0]);
                     newKit.setGroups(groups);
                     Canary.kits().addKit(newKit);
-                    player.message(ChatFormat.YELLOW + Translator.translateAndFormat("kit created group", args[1]));
+                    player.message(ChatFormat.YELLOW + Translator.translateAndFormat("kit created group", args[0]));
                     return;
                 }
                 // ADD PLAYER PRIVATE KIT
-                else if (args[3].equalsIgnoreCase("P") && player.hasPermission(KIT$PRIVATE)) {
-                    String[] players = new String[args.length - 4];
+                else if (args[2].equalsIgnoreCase("P") && player.hasPermission(KIT$PRIVATE)) {
+                    String[] players = new String[args.length - 3];
 
-                    System.arraycopy(args, 4, players, 0, players.length);
+                    System.arraycopy(args, 3, players, 0, players.length);
                     Kit newKit = new Kit();
 
                     newKit.setContent(new ArrayList<Item>(Arrays.asList(player.getInventory().getContents())));
-                    newKit.setDelay(Integer.parseInt(args[2]));
-                    newKit.setName(args[1]);
+                    newKit.setDelay(Integer.parseInt(args[1]));
+                    newKit.setName(args[0]);
                     newKit.setOwner(players);
                     Canary.kits().addKit(newKit);
-                    player.message(ChatFormat.YELLOW + Translator.translateAndFormat("kit created private", args[1]));
+                    player.message(ChatFormat.YELLOW + Translator.translateAndFormat("kit created private", args[0]));
                     return;
                 }
                 else {
