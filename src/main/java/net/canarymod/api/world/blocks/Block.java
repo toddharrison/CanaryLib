@@ -158,7 +158,10 @@ public interface Block {
      *
      * @param x
      *         x coordinate
+     *
+     * @deprecated Position is read-only as of mc 1.8. Feed the world with coordinates and data instead
      */
+    @Deprecated
     void setX(int x);
 
     /**
@@ -166,7 +169,10 @@ public interface Block {
      *
      * @param y
      *         y coordinate
+     *
+     * @deprecated Position is read-only as of mc 1.8. Feed the world with coordinates and data instead
      */
+    @Deprecated
     void setY(int y);
 
     /**
@@ -174,7 +180,10 @@ public interface Block {
      *
      * @param z
      *         z coordinate
+     *
+     * @deprecated Position is read-only as of mc 1.8. Feed the world with coordinates and data instead
      */
+    @Deprecated
     void setZ(int z);
 
     /**
