@@ -10,8 +10,18 @@ import net.canarymod.database.exceptions.DatabaseTableInconsistencyException;
 import net.canarymod.database.exceptions.DatabaseWriteException;
 import org.apache.logging.log4j.LogManager;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import static net.canarymod.Canary.log;
 
@@ -356,6 +366,7 @@ public class MySQLDatabase extends Database {
                 HashMap<String, Column> toAdd = new HashMap<String, Column>();
                 Iterator<Column> it = schemaTemplate.getTableLayout().iterator();
 
+                // TODO: Should update primary keys ...
                 Column column;
                 while (it.hasNext()) {
                     column = it.next();
@@ -398,7 +409,7 @@ public class MySQLDatabase extends Database {
             StringBuilder fields = new StringBuilder();
             HashMap<Column, Object> columns = data.toDatabaseEntryList();
             Iterator<Column> it = columns.keySet().iterator();
-            String primary = null;
+            List<String> primary = new ArrayList<String>(2);
 
             Column column;
             while (it.hasNext()) {
@@ -409,14 +420,16 @@ public class MySQLDatabase extends Database {
                     fields.append(" AUTO_INCREMENT");
                 }
                 if (column.columnType().equals(Column.ColumnType.PRIMARY)) {
-                    primary = column.columnName();
+                    primary.add(column.columnName());
                 }
                 if (it.hasNext()) {
                     fields.append(", ");
                 }
             }
-            if (primary != null) {
-                fields.append(", PRIMARY KEY(`").append(primary).append("`)");
+            if (primary.size() > 0) {
+                fields.append(", PRIMARY KEY(`").append(
+                        net.visualillusionsent.utils.StringUtils.joinString(primary.toArray(new String[primary.size()]), ",", 0))
+                        .append("`)");
             }
             ps = conn.prepareStatement("CREATE TABLE IF NOT EXISTS `" + data.getName() + "` (" + fields.toString() + ") CHARACTER SET utf8 ");
             ps.execute();
