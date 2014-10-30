@@ -3,6 +3,7 @@ package net.canarymod.api.world.blocks;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Static class of BlockTypes
@@ -381,7 +382,7 @@ public final class BlockType {
     private final short data;
     private final String machineName;
 
-    private static HashMap<String, List<BlockType>> blockTypes;
+    private static HashMap<String, Map<Integer, BlockType>> blockTypes;
 
     public BlockType(int id, String machineName) {
         this(id, 0, "canarymod:" + machineName);
@@ -406,7 +407,7 @@ public final class BlockType {
      */
     public BlockType(int id, int data, String machineName) {
         if (blockTypes == null) {
-            blockTypes = new HashMap<String, List<BlockType>>();
+            blockTypes = new HashMap<String, Map<Integer, BlockType>>();
         }
         if (machineName == null) {
             throw new CustomBlockTypeException("BlockType name cannot be null!");
@@ -415,12 +416,12 @@ public final class BlockType {
         this.data = (short)data;
         this.machineName = machineName;
         if (!blockTypes.containsKey(machineName)) {
-            blockTypes.put(machineName, new ArrayList<BlockType>(3));
+            blockTypes.put(machineName, new HashMap<Integer, BlockType>(3));
         }
-        if (blockTypes.get(machineName).contains(this)) {
+        if (blockTypes.get(machineName).values().contains(this)) {
             throw new CustomBlockTypeException("BlockType '" + machineName + ":" + data + "' already exists!");
         }
-        blockTypes.get(machineName).add(this);
+        blockTypes.get(machineName).put(data, this);
     }
 
     /**
@@ -503,12 +504,7 @@ public final class BlockType {
         if (!blockTypes.containsKey(name)) {
             return null;
         }
-        for (BlockType t : blockTypes.get(name)) {
-            if (t.data == data) {
-                return t;
-            }
-        }
-        return null;
+        return blockTypes.get(name).get(data);
     }
 
     /**
@@ -524,8 +520,8 @@ public final class BlockType {
      * @return the associated {@link BlockType} or {@code null}
      */
     public static BlockType fromId(int id) {
-        for (List<BlockType> list : blockTypes.values()) {
-            for (BlockType t : list) {
+        for (Map<Integer, BlockType> list : blockTypes.values()) {
+            for (BlockType t : list.values()) {
                 if (t.getId() == id) {
                     return t;
                 }
@@ -548,11 +544,9 @@ public final class BlockType {
      * @return the associated {@link BlockType} or {@code null}
      */
     public static BlockType fromIdAndData(int id, int data) {
-        for (List<BlockType> list : blockTypes.values()) {
-            for (BlockType t : list) {
-                if (t.getId() == id && t.getData() == data) {
-                    return t;
-                }
+        for (Map<Integer, BlockType> list : blockTypes.values()) {
+            if(list.get(data).getId() == id) {
+                return list.get(data);
             }
         }
         return fromId(id); // if data has bit's set, it won't perfectly equal
@@ -589,12 +583,8 @@ public final class BlockType {
         if (!blockTypes.containsKey(machineName)) {
             return null;
         }
-        for (BlockType t : blockTypes.get(machineName)) {
-            if (t.getData() == data) {
-                return t;
-            }
-        }
-        return fromString(machineName); // Some blocks have data values that aren't reflected in the typing (like positioning meta)
+        BlockType t = blockTypes.get(machineName).get(data);
+        return t == null ? fromString(machineName) : t;
     }
 
     /**
@@ -603,6 +593,10 @@ public final class BlockType {
      * @return all BlockTypes
      */
     public static BlockType[] values() {
-        return blockTypes.values().toArray(new BlockType[blockTypes.size()]);
+        List<BlockType> list = new ArrayList<BlockType>();
+        for (Map<Integer, BlockType> blocks : blockTypes.values()) {
+            list.addAll(blocks.values());
+        }
+        return list.toArray(new BlockType[list.size()]);
     }
 }
