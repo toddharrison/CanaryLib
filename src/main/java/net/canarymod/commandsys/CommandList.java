@@ -8,6 +8,9 @@ import net.canarymod.commandsys.commands.player.GetPosition;
 import net.canarymod.commandsys.commands.player.GodCommand;
 import net.canarymod.commandsys.commands.playermod.*;
 import net.canarymod.commandsys.commands.system.*;
+import net.canarymod.commandsys.commands.system.kits.KitCreate;
+import net.canarymod.commandsys.commands.system.kits.KitGive;
+import net.canarymod.commandsys.commands.system.kits.KitList;
 import net.canarymod.commandsys.commands.vanilla.*;
 import net.canarymod.commandsys.commands.warp.*;
 import net.canarymod.commandsys.commands.world.*;
@@ -34,18 +37,18 @@ public class CommandList implements CommandListener {
         HashMap<String, NativeCommand> temp = new HashMap<String, NativeCommand>();
 
         /* groupmod */
-        temp.put("groupmod_add", new GroupCreate());
-        temp.put("groupmod_perms_add", new GroupPermissionAdd());
-        temp.put("groupmod_perms_remove", new GroupPermissionRemove());
-        temp.put("groupmod_perms_check", new GroupPermissionCheck());
-        temp.put("groupmod_perms_list", new GroupPermissionList());
-        temp.put("groupmod_perms_flush", new GroupPermissionFlush());
-        temp.put("groupmod_list", new GroupList());
-        temp.put("groupmod_remove", new GroupRemove());
-        temp.put("groupmod_check", new GroupCheck());
-        temp.put("groupmod_rename", new GroupRename());
-        temp.put("groupmod_prefix", new GroupPrefix());
-        temp.put("groupmod_parent", new GroupParent());
+        temp.put("groupmod.add", new GroupCreate());
+        temp.put("groupmod.perms.add", new GroupPermissionAdd());
+        temp.put("groupmod.perms.remove", new GroupPermissionRemove());
+        temp.put("groupmod.perms.check", new GroupPermissionCheck());
+        temp.put("groupmod.perms.list", new GroupPermissionList());
+        temp.put("groupmod.perms.flush", new GroupPermissionFlush());
+        temp.put("groupmod.list", new GroupList());
+        temp.put("groupmod.remove", new GroupRemove());
+        temp.put("groupmod.check", new GroupCheck());
+        temp.put("groupmod.rename", new GroupRename());
+        temp.put("groupmod.prefix", new GroupPrefix());
+        temp.put("groupmod.parent", new GroupParent());
 
         /* player */
         temp.put("compass", new Compass());
@@ -54,18 +57,18 @@ public class CommandList implements CommandListener {
 
         /* playermod */
         temp.put("playermod", new PlayermodBase());
-        temp.put("playermod_add", new PlayerCreate());
-        temp.put("playermod_perms_add", new PlayerPermissionAdd());
-        temp.put("playermod_perms_remove", new PlayerPermissionRemove());
-        temp.put("playermod_perms_check", new PlayerPermissionCheck());
-        temp.put("playermod_perms_list", new PlayerPermissionList());
-        temp.put("playermod_prefix", new PlayerPrefix());
-        temp.put("playermod_remove", new PlayerRemove());
-        temp.put("playermod_group_set", new PlayerGroupSet());
-        temp.put("playermod_group_add", new PlayerGroupAdd());
-        temp.put("playermod_group_list", new PlayerGroupList());
-        temp.put("playermod_group_check", new PlayerGroupCheck());
-        temp.put("playermod_group_remove", new PlayerGroupRemove());
+        temp.put("playermod.add", new PlayerCreate());
+        temp.put("playermod.perms.add", new PlayerPermissionAdd());
+        temp.put("playermod.perms.remove", new PlayerPermissionRemove());
+        temp.put("playermod.perms.check", new PlayerPermissionCheck());
+        temp.put("playermod.perms.list", new PlayerPermissionList());
+        temp.put("playermod.prefix", new PlayerPrefix());
+        temp.put("playermod.remove", new PlayerRemove());
+        temp.put("playermod.group.set", new PlayerGroupSet());
+        temp.put("playermod.group.add", new PlayerGroupAdd());
+        temp.put("playermod.group.list", new PlayerGroupList());
+        temp.put("playermod.group.check", new PlayerGroupCheck());
+        temp.put("playermod.group.remove", new PlayerGroupRemove());
 
         /* system */
         temp.put("ban", new BanCommand());
@@ -75,7 +78,9 @@ public class CommandList implements CommandListener {
         temp.put("help", new HelpCommand());
         temp.put("ipban", new IpBanCommand());
         temp.put("kick", new Kick());
-        temp.put("kit", new KitCommand());
+        temp.put("kit.create", new KitCreate());
+        temp.put("kit.give", new KitGive());
+        temp.put("kit.list", new KitList());
         temp.put("listplugins", new ListPlugins());
         temp.put("motd", new Motd());
         temp.put("mute", new Mute());
@@ -193,7 +198,7 @@ public class CommandList implements CommandListener {
                     version = 2
     )
     public void groupAdd(MessageReceiver caller, String[] parameters) {
-        natives.get("groupmod_add").execute(caller, parameters);
+        natives.get("groupmod.add").execute(caller, parameters);
     }
 
     @TabComplete(commands = { "groupmod add", "groupmod create" })
@@ -237,7 +242,7 @@ public class CommandList implements CommandListener {
                     min = 2
     )
     public void groupPermissionsAdd(MessageReceiver caller, String[] parameters) {
-        natives.get("groupmod_perms_add").execute(caller, parameters);
+        natives.get("groupmod.perms.add").execute(caller, parameters);
     }
 
     @Command(
@@ -251,7 +256,7 @@ public class CommandList implements CommandListener {
                     version = 2
     )
     public void groupPermissionsRemove(MessageReceiver caller, String[] parameters) {
-        natives.get("groupmod_perms_remove").execute(caller, parameters);
+        natives.get("groupmod.perms.remove").execute(caller, parameters);
     }
 
     @Command(
@@ -265,7 +270,7 @@ public class CommandList implements CommandListener {
                     version = 2
     )
     public void groupPermissionsCheck(MessageReceiver caller, String[] parameters) {
-        natives.get("groupmod_perms_check").execute(caller, parameters);
+        natives.get("groupmod.perms.check").execute(caller, parameters);
     }
 
     @TabComplete(commands = { "groupmod permission add", "groupmod permission remove", "groupmod permission check" })
@@ -286,7 +291,7 @@ public class CommandList implements CommandListener {
                     version = 2
     )
     public void groupPermissionsList(MessageReceiver caller, String[] parameters) {
-        natives.get("groupmod_perms_list").execute(caller, parameters);
+        natives.get("groupmod.perms.list").execute(caller, parameters);
     }
 
     @Command(
@@ -300,7 +305,7 @@ public class CommandList implements CommandListener {
                     version = 2
     )
     public void groupFlush(MessageReceiver caller, String[] parameters) {
-        natives.get("groupmod_perms_flush").execute(caller, parameters);
+        natives.get("groupmod.perms.flush").execute(caller, parameters);
     }
 
     @Command(
@@ -312,7 +317,7 @@ public class CommandList implements CommandListener {
                     toolTip = "/groupmod list"
     )
     public void groupList(MessageReceiver caller, String[] parameters) {
-        natives.get("groupmod_list").execute(caller, parameters);
+        natives.get("groupmod.list").execute(caller, parameters);
     }
 
     @Command(
@@ -326,7 +331,7 @@ public class CommandList implements CommandListener {
                     version = 2
     )
     public void groupRemove(MessageReceiver caller, String[] parameters) {
-        natives.get("groupmod_remove").execute(caller, parameters);
+        natives.get("groupmod.remove").execute(caller, parameters);
     }
 
     @Command(
@@ -340,7 +345,7 @@ public class CommandList implements CommandListener {
                     version = 2
     )
     public void groupCheck(MessageReceiver caller, String[] parameters) {
-        natives.get("groupmod_check").execute(caller, parameters);
+        natives.get("groupmod.check").execute(caller, parameters);
     }
 
     @Command(
@@ -354,7 +359,7 @@ public class CommandList implements CommandListener {
                     version = 2
     )
     public void groupRename(MessageReceiver caller, String[] parameters) {
-        natives.get("groupmod_rename").execute(caller, parameters);
+        natives.get("groupmod.rename").execute(caller, parameters);
     }
 
     @Command(
@@ -368,7 +373,7 @@ public class CommandList implements CommandListener {
                     version = 2
     )
     public void groupPrefix(MessageReceiver caller, String[] parameters) {
-        natives.get("groupmod_prefix").execute(caller, parameters);
+        natives.get("groupmod.prefix").execute(caller, parameters);
     }
 
     @Command(
@@ -382,7 +387,7 @@ public class CommandList implements CommandListener {
                     version = 2
     )
     public void groupParent(MessageReceiver caller, String[] parameters) {
-        natives.get("groupmod_parent").execute(caller, parameters);
+        natives.get("groupmod.parent").execute(caller, parameters);
     }
 
     @TabComplete(commands = { "groupmod parent" })
@@ -468,7 +473,7 @@ public class CommandList implements CommandListener {
                     version = 2
     )
     public void playerAdd(MessageReceiver caller, String[] parameters) {
-        natives.get("playermod_add").execute(caller, parameters);
+        natives.get("playermod.add").execute(caller, parameters);
     }
 
     @TabComplete(commands = { "playermod add" })
@@ -501,7 +506,7 @@ public class CommandList implements CommandListener {
                     version = 2
     )
     public void playerPermissionsAdd(MessageReceiver caller, String[] parameters) {
-        natives.get("playermod_perms_add").execute(caller, parameters);
+        natives.get("playermod.perms.add").execute(caller, parameters);
     }
 
     @Command(
@@ -515,7 +520,7 @@ public class CommandList implements CommandListener {
                     version = 2
     )
     public void playerPermissionsRemove(MessageReceiver caller, String[] parameters) {
-        natives.get("playermod_perms_remove").execute(caller, parameters);
+        natives.get("playermod.perms.remove").execute(caller, parameters);
     }
 
     @TabComplete(commands = { "playermod permission remove" })
@@ -536,7 +541,7 @@ public class CommandList implements CommandListener {
                     version = 2
     )
     public void playerPermissionsCheck(MessageReceiver caller, String[] parameters) {
-        natives.get("playermod_perms_check").execute(caller, parameters);
+        natives.get("playermod.perms.check").execute(caller, parameters);
     }
 
     @Command(
@@ -549,7 +554,7 @@ public class CommandList implements CommandListener {
                     version = 2
     )
     public void playerPermissionsList(MessageReceiver caller, String[] parameters) {
-        natives.get("playermod_perms_list").execute(caller, parameters);
+        natives.get("playermod.perms.list").execute(caller, parameters);
     }
 
     @Command(
@@ -562,7 +567,7 @@ public class CommandList implements CommandListener {
                     version = 2
     )
     public void playerPrefix(MessageReceiver caller, String[] parameters) {
-        natives.get("playermod_prefix").execute(caller, parameters);
+        natives.get("playermod.prefix").execute(caller, parameters);
     }
 
     @Command(
@@ -575,7 +580,7 @@ public class CommandList implements CommandListener {
                     version = 2
     )
     public void playerRemove(MessageReceiver caller, String[] parameters) {
-        natives.get("playermod_remove").execute(caller, parameters);
+        natives.get("playermod.remove").execute(caller, parameters);
     }
 
     @Command(
@@ -605,7 +610,7 @@ public class CommandList implements CommandListener {
                     version = 2
     )
     public void playerGroupSet(MessageReceiver caller, String[] parameters) {
-        natives.get("playermod_group_set").execute(caller, parameters);
+        natives.get("playermod.group.set").execute(caller, parameters);
     }
 
     @Command(
@@ -618,7 +623,7 @@ public class CommandList implements CommandListener {
                     version = 2
     )
     public void playerGroupAdd(MessageReceiver caller, String[] parameters) {
-        natives.get("playermod_group_add").execute(caller, parameters);
+        natives.get("playermod.group.add").execute(caller, parameters);
     }
 
     @Command(
@@ -631,7 +636,7 @@ public class CommandList implements CommandListener {
                     version = 2
     )
     public void playerGroupList(MessageReceiver caller, String[] parameters) {
-        natives.get("playermod_group_list").execute(caller, parameters);
+        natives.get("playermod.group.list").execute(caller, parameters);
     }
 
     @Command(
@@ -645,7 +650,7 @@ public class CommandList implements CommandListener {
                     version = 2
     )
     public void playerGroupCheck(MessageReceiver caller, String[] parameters) {
-        natives.get("playermod_group_check").execute(caller, parameters);
+        natives.get("playermod.group.check").execute(caller, parameters);
     }
 
     @Command(
@@ -659,7 +664,7 @@ public class CommandList implements CommandListener {
                     version = 2
     )
     public void playerGroupRemove(MessageReceiver caller, String[] parameters) {
-        natives.get("playermod_group_remove").execute(caller, parameters);
+        natives.get("playermod.group.remove").execute(caller, parameters);
     }
 
     @TabComplete(commands = { "playermod group add", "playermod group remove", "playermod group set" })
@@ -767,12 +772,48 @@ public class CommandList implements CommandListener {
                     aliases = { "kit" },
                     description = "kit info",
                     permissions = { KIT },
-                    toolTip = "/kit <give|create|list> <name> <use delay> [G|P Groups|Players]",
-                    min = 1,
+                    toolTip = "/kit <give <name> [player] | create <name> <use delay> [G|P Groups|Players] | list> ",
+                    min = 0,
                     version = 2
     )
     public void kitCommand(MessageReceiver caller, String[] parameters) {
+        Canary.help().getHelp(caller, "kit");
+    }
+
+    @Command(
+                    aliases = { "kit create" },
+                    description = "kit create",
+                    permissions = { KIT$CREATE },
+                    toolTip = "/kit create <name> <use delay> [G|P Groups|Players]",
+                    min = 2,
+                    parent = "kit"
+    )
+    public void kitCreateCommand(MessageReceiver caller, String[] parameters) {
         natives.get("kit").execute(caller, parameters);
+    }
+
+    @Command(
+                    aliases = { "kit give" },
+                    description = "kit create",
+                    permissions = { KIT },
+                    toolTip = "/kit give <name> [player]",
+                    min = 2,
+                    parent = "kit"
+    )
+    public void kitGiveCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("kit.give").execute(caller, parameters);
+    }
+
+    @Command(
+                    aliases = { "kit list" },
+                    description = "kit list",
+                    permissions = { KIT },
+                    toolTip = "/kit list",
+                    min = 0,
+                    parent = "kit"
+    )
+    public void kitListCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("kit.list").execute(caller, parameters);
     }
 
     @TabComplete(commands = { "kit" })
