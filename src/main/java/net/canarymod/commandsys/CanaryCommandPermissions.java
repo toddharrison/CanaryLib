@@ -54,6 +54,7 @@ public enum CanaryCommandPermissions {
             KICK = "canary.command.kick",
             KIT = "canary.command.kit",
             KIT$CREATE = "canary.command.kit.create",
+            KIT$DELETE = "canary.command.kit.delete",
             KIT$GROUP = "canary.command.kit.group",
             KIT$PRIVATE = "canary.command.kit.private",
             KIT$OTHER = "canary.command.kit.other",

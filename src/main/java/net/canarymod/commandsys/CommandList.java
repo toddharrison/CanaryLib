@@ -9,6 +9,7 @@ import net.canarymod.commandsys.commands.player.GodCommand;
 import net.canarymod.commandsys.commands.playermod.*;
 import net.canarymod.commandsys.commands.system.*;
 import net.canarymod.commandsys.commands.system.kits.KitCreate;
+import net.canarymod.commandsys.commands.system.kits.KitDelete;
 import net.canarymod.commandsys.commands.system.kits.KitGive;
 import net.canarymod.commandsys.commands.system.kits.KitList;
 import net.canarymod.commandsys.commands.vanilla.*;
@@ -79,6 +80,7 @@ public class CommandList implements CommandListener {
         temp.put("ipban", new IpBanCommand());
         temp.put("kick", new Kick());
         temp.put("kit.create", new KitCreate());
+        temp.put("kit.delete", new KitDelete());
         temp.put("kit.give", new KitGive());
         temp.put("kit.list", new KitList());
         temp.put("listplugins", new ListPlugins());
@@ -772,7 +774,7 @@ public class CommandList implements CommandListener {
                     aliases = { "kit" },
                     description = "kit info",
                     permissions = { KIT },
-                    toolTip = "/kit <give <name> [player] | create <name> <use delay> [G|P Groups|Players] | list> ",
+                    toolTip = "/kit < give <name> [player] | create <name> <use delay> [G <groups> | P <players>] | delete <name> | list > ",
                     min = 0,
                     version = 2
     )
@@ -819,14 +821,31 @@ public class CommandList implements CommandListener {
         natives.get("kit.list").execute(caller, parameters);
     }
 
+    @Command(
+                    aliases = { "delete" },
+                    description = "kit delete",
+                    helpLookup = "kit delete",
+                    permissions = { KIT$DELETE },
+                    toolTip = "/kit delete",
+                    min = 0,
+                    parent = "kit"
+    )
+    public void kitDeleteCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("kit.delete").execute(caller, parameters);
+    }
+
     @TabComplete(commands = { "kit" })
     public List<String> kitTabComplete(MessageReceiver caller, String[] parameters) {
         switch (parameters.length) {
             case 1:
-                return matchTo(parameters, new String[]{ "give", "create", "list" });
+                return matchTo(parameters, new String[]{ "create", "delete", "give", "list" });
             case 2:
-                if (parameters[1].equals("give")) {
+                if (parameters[0].matches("(?i)(give|delete)")) {
                     return matchToKitNames(parameters, caller);
+                }
+            case 3:
+                if (parameters[0].equals("give") && caller.hasPermission(KIT$OTHER)) {
+                    return matchToOnlinePlayer(parameters);
                 }
             default:
                 return null;
