@@ -9,7 +9,6 @@ import net.canarymod.commandsys.NativeCommand;
 
 import static net.canarymod.commandsys.CanaryCommandPermissions.HOME$OTHER;
 
-
 /**
  * Command to teleport you to your own or another player home
  *
@@ -22,7 +21,7 @@ public class Home implements NativeCommand {
             console(caller);
         }
         else if (caller instanceof Player) {
-            player((Player) caller, parameters);
+            player((Player)caller, parameters);
         }
         else {
             others(caller, parameters);
@@ -48,7 +47,7 @@ public class Home implements NativeCommand {
                             other.teleportTo(other.getHome());
                         }
                         else {
-                            player.notice(Translator.translateAndFormat("no home set other", new Object[]{other.getName()}));
+                            player.notice(Translator.translateAndFormat("no home set other", new Object[]{ other.getName() }));
                         }
                     }
                 }
@@ -60,7 +59,7 @@ public class Home implements NativeCommand {
                     target.teleportTo(target.getHome());
                 }
                 else {
-                    player.notice(Translator.translateAndFormat("no home set other", new Object[]{target.getName()}));
+                    player.notice(Translator.translateAndFormat("no home set other", new Object[]{ target.getName() }));
                 }
             }
         }
@@ -77,8 +76,7 @@ public class Home implements NativeCommand {
             }
         }
         else {
-            others((MessageReceiver) player, args);
+            others((MessageReceiver)player, args);
         }
     }
-
 }

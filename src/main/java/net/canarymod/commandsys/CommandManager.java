@@ -75,7 +75,6 @@ public class CommandManager {
                 return true;
             }
         }
-
     }
 
     /**
@@ -186,9 +185,7 @@ public class CommandManager {
             else {
                 return subCommand.parseCommand(caller, Arrays.copyOfRange(args, argumentIndex + 1, args.length));
             }
-            
         }
-        
     }
 
     public void registerCommands(final CommandListener listener, CommandOwner owner, boolean force) throws CommandDependencyException {
@@ -259,8 +256,9 @@ public class CommandManager {
 
         if (depMissing) {
             throw new CommandDependencyException(cmd.meta.aliases()[0] + " has an unsatisfied dependency, " +
-                    "( " + cmd.meta.parent() + " )" +
-                    "please adjust registration order of your listeners or fix your plugins dependencies");
+                                                         "( " + cmd.meta.parent() + " )" +
+                                                         "please adjust registration order of your listeners or fix your plugins dependencies"
+            );
         }
     }
 

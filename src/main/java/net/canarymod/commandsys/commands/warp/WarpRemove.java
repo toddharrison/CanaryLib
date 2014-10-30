@@ -2,7 +2,7 @@ package net.canarymod.commandsys.commands.warp;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.warp.Warp;
@@ -17,7 +17,7 @@ public class WarpRemove implements NativeCommand {
         if (Canary.warps().warpExists(args[0])) {
             Warp target = Canary.warps().getWarp(args[0]);
             Canary.warps().removeWarp(target);
-            caller.message(Colors.YELLOW + Translator.translateAndFormat("warp removed", target.getName()));
+            caller.message(ChatFormat.YELLOW + Translator.translateAndFormat("warp removed", target.getName()));
         }
         else {
             caller.notice(Translator.translateAndFormat("warp unknown", args[0]));

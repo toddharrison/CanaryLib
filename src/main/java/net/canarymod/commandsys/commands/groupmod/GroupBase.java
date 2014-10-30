@@ -19,5 +19,4 @@ public class GroupBase implements NativeCommand {
             Canary.help().getHelp(caller, "groupmod");
         }
     }
-
 }

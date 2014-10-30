@@ -20,7 +20,7 @@ public class PluginCommand implements NativeCommand {
 
     public PluginCommand(boolean disable, boolean reload) {
         this.reload = reload;
-        this.disable = reload ? false : disable;
+        this.disable = !reload && disable;
     }
 
     public void execute(MessageReceiver caller, String[] parameters) {
@@ -96,5 +96,4 @@ public class PluginCommand implements NativeCommand {
     private boolean getPermanentParameter(String[] params) {
         return params[params.length - 2].equalsIgnoreCase("-p");
     }
-
 }

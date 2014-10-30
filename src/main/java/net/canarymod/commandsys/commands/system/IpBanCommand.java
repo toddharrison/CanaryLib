@@ -62,7 +62,7 @@ public class IpBanCommand implements NativeCommand {
         Canary.hooks().callHook(new BanHook(ref != null ? ref : null, ref != null ? ref.getIP() : parameters[0], caller, reason, timestamp));
         caller.notice(Translator.translateAndFormat("ipban banned", parameters[0]));
         if (ref != null && ref.isOnline() && ref instanceof Player) {
-            ((Player) ref).kick(reason);
+            ((Player)ref).kick(reason);
         }
     }
 }

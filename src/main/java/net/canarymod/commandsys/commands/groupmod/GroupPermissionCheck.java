@@ -2,7 +2,7 @@ package net.canarymod.commandsys.commands.groupmod;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.permissionsystem.PermissionNode;
@@ -24,18 +24,18 @@ public class GroupPermissionCheck implements NativeCommand {
         PermissionNode node = PermissionNode.fromString(args[1]);
         if (group.getPermissionProvider().pathExists(node.getName())) {
             if (group.hasPermission(node.getName())) {
-                caller.message(Colors.LIGHT_GREEN + node.getName() + ": true");
+                caller.message(ChatFormat.GREEN + node.getName() + ": true");
             }
             else {
-                caller.message(Colors.LIGHT_RED + node.getName() + ": false");
+                caller.message(ChatFormat.RED + node.getName() + ": false");
             }
         }
         else {
             if (group.hasPermission(node.getName())) {
-                caller.message(Colors.LIGHT_GREEN + node.getName() + ": true");
+                caller.message(ChatFormat.GREEN + node.getName() + ": true");
             }
             else {
-                caller.message(Colors.YELLOW + node.getName() + ": " + Translator.translate("no"));
+                caller.message(ChatFormat.YELLOW + node.getName() + ": " + Translator.translate("no"));
             }
         }
     }

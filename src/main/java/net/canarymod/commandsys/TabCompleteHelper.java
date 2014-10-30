@@ -314,7 +314,7 @@ public final class TabCompleteHelper {
      * @return list of matching {@link net.canarymod.kit.Kit} names found
      */
     public static List<String> matchToKitNames(String arg, MessageReceiver caller) {
-        Player subject = caller instanceof Player ? (Player) caller : null;
+        Player subject = caller instanceof Player ? (Player)caller : null;
         ArrayList<String> kitNames = new ArrayList<String>();
         for (Kit kit : Canary.kits().getAllKits()) {
             if (subject != null && !kit.canBeGiven(subject)) {
@@ -336,7 +336,7 @@ public final class TabCompleteHelper {
      * @return a list of matching {@link net.canarymod.kit.Kit} names found
      */
     public static List<String> matchToKitNames(String[] args, MessageReceiver caller) {
-        Player subject = caller instanceof Player ? (Player) caller : null;
+        Player subject = caller instanceof Player ? (Player)caller : null;
         ArrayList<String> kitNames = new ArrayList<String>();
         for (Kit kit : Canary.kits().getAllKits()) {
             if (subject != null && !kit.canBeGiven(subject)) {
@@ -358,7 +358,7 @@ public final class TabCompleteHelper {
      * @return list of matching {@link net.canarymod.warp.Warp} names found
      */
     public static List<String> matchToWarpNames(String arg, MessageReceiver caller) {
-        Player subject = caller instanceof Player ? (Player) caller : null;
+        Player subject = caller instanceof Player ? (Player)caller : null;
         ArrayList<String> warpNames = new ArrayList<String>();
         for (Warp warp : Canary.warps().getAllWarps()) {
             if (warp.isPlayerHome()) {
@@ -383,7 +383,7 @@ public final class TabCompleteHelper {
      * @return a list of matching {@link net.canarymod.warp.Warp} names found
      */
     public static List<String> matchToWarpNames(String[] args, MessageReceiver caller) {
-        Player subject = caller instanceof Player ? (Player) caller : null;
+        Player subject = caller instanceof Player ? (Player)caller : null;
         ArrayList<String> warpNames = new ArrayList<String>();
         for (Warp warp : Canary.warps().getAllWarps()) {
             if (warp.isPlayerHome()) {
@@ -523,7 +523,7 @@ public final class TabCompleteHelper {
                         @Override
                         public List<String> complete(MessageReceiver msgrec, String[] args) throws TabCompleteException {
                             try {
-                                return (List<String>) method.invoke(listener, msgrec, args);
+                                return (List<String>)method.invoke(listener, msgrec, args);
                             }
                             catch (Exception e) {
                                 throw new TabCompleteException("Failed to execute tab completion ...", e);

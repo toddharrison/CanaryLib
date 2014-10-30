@@ -3,7 +3,7 @@ package net.canarymod.commandsys.commands.playermod;
 import net.canarymod.Canary;
 import net.canarymod.Translator;
 import net.canarymod.api.PlayerReference;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.Group;
@@ -28,10 +28,10 @@ public class PlayerGroupCheck implements NativeCommand {
         }
         for (Group g : target.getPlayerGroups()) {
             if (g.getName().equals(args[2])) {
-                caller.message(Colors.LIGHT_GREEN + args[1] + ": " + Translator.translate("yes"));
+                caller.message(ChatFormat.GREEN + args[1] + ": " + Translator.translate("yes"));
                 return;
             }
         }
-        caller.message(Colors.LIGHT_RED + args[1] + ": " + Translator.translate("no"));
+        caller.message(ChatFormat.RED + args[1] + ": " + Translator.translate("no"));
     }
 }

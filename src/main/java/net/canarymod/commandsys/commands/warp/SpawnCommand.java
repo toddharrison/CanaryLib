@@ -19,7 +19,7 @@ public class SpawnCommand implements NativeCommand {
 
     public void execute(MessageReceiver caller, String[] parameters) {
         if (caller instanceof Player) {
-            player((Player) caller, parameters);
+            player((Player)caller, parameters);
         }
         else {
             console(caller, parameters);
@@ -44,7 +44,6 @@ public class SpawnCommand implements NativeCommand {
                 caller.notice(Translator.translate("spawn failed console"));
             }
         }
-
     }
 
     private void player(Player player, String[] args) {
@@ -86,8 +85,7 @@ public class SpawnCommand implements NativeCommand {
         if (block.isAir()) {
             block = world.getBlockAt(loc.getBlockX(), loc.getBlockY() + 1, loc.getBlockZ());
         }
-        while (!block.isAir())
-        {
+        while (!block.isAir()) {
             for (int y = block.getY() + 1; y < world.getHeight(); y++) {
                 block = world.getBlockAt(loc.getBlockX(), y, loc.getBlockZ());
                 if (block.isAir()) {

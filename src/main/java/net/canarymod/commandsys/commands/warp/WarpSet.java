@@ -5,7 +5,7 @@ import net.canarymod.Translator;
 import net.canarymod.api.Server;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.blocks.CommandBlock;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.Group;
@@ -34,7 +34,7 @@ public class WarpSet implements NativeCommand {
                 Warp newWarp = new Warp(player.getLocation(), args[0]);
 
                 Canary.warps().addWarp(newWarp);
-                player.message(Colors.YELLOW + Translator.translateAndFormat("setwarp success", args[0]));
+                player.message(ChatFormat.YELLOW + Translator.translateAndFormat("setwarp success", args[0]));
             }
             else if (args.length > 2) {
                 // SET GROUP SPECIFIC WARP
@@ -47,7 +47,7 @@ public class WarpSet implements NativeCommand {
                     Warp newWarp = new Warp(player.getLocation(), groups, args[0]);
 
                     Canary.warps().addWarp(newWarp);
-                    player.message(Colors.YELLOW + Translator.translateAndFormat("setwarp success group", args[0]));
+                    player.message(ChatFormat.YELLOW + Translator.translateAndFormat("setwarp success group", args[0]));
                     return;
                 }
                 // SET PRIVATE WARP
@@ -55,7 +55,7 @@ public class WarpSet implements NativeCommand {
                     Warp newWarp = new Warp(player.getLocation(), args[0], args[2], false);
 
                     Canary.warps().addWarp(newWarp);
-                    player.message(Colors.YELLOW + Translator.translateAndFormat("setwarp success private", args[0]));
+                    player.message(ChatFormat.YELLOW + Translator.translateAndFormat("setwarp success private", args[0]));
                 }
                 else {
                     Canary.help().getHelp(player, "setwarp");

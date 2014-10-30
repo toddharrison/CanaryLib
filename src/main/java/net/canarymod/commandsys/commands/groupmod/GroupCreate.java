@@ -4,7 +4,7 @@ import net.canarymod.Canary;
 import net.canarymod.ToolBox;
 import net.canarymod.Translator;
 import net.canarymod.api.world.World;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.Group;
@@ -72,6 +72,6 @@ public class GroupCreate implements NativeCommand {
         group.setParent(parent);
         group.setWorldName(worldName);
         Canary.usersAndGroups().addGroup(group);
-        caller.message(Colors.YELLOW + Translator.translateAndFormat("group created", group.getName()));
+        caller.message(ChatFormat.YELLOW + Translator.translateAndFormat("group created", group.getName()));
     }
 }

@@ -4,7 +4,7 @@ import net.canarymod.Canary;
 import net.canarymod.Translator;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.inventory.Item;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.kit.Kit;
@@ -26,7 +26,7 @@ public class KitCommand implements NativeCommand {
 
     public void execute(MessageReceiver caller, String[] parameters) {
         if (caller instanceof Player) {
-            player((Player) caller, parameters);
+            player((Player)caller, parameters);
         }
         else {
             server(caller, parameters);
@@ -52,7 +52,7 @@ public class KitCommand implements NativeCommand {
 
                     if (kit != null) {
                         if (kit.giveKit(recipient, override)) {
-                            recipient.message(Colors.YELLOW + Translator.translateAndFormat("kit given other", caller.getName()));
+                            recipient.message(ChatFormat.YELLOW + Translator.translateAndFormat("kit given other", caller.getName()));
                             return;
                         }
                         else {
@@ -72,7 +72,7 @@ public class KitCommand implements NativeCommand {
             }
         }
         else if (args[0].equalsIgnoreCase("list")) {
-            caller.message(Colors.YELLOW + "Available Kits: ");
+            caller.message(ChatFormat.YELLOW + "Available Kits: ");
             List<Kit> kits = Canary.kits().getAllKits();
             StringBuilder kitList = new StringBuilder();
 
@@ -91,7 +91,7 @@ public class KitCommand implements NativeCommand {
         // LIST KITS
         //
         if (args[0].equalsIgnoreCase("list")) {
-            player.message(Colors.YELLOW + "Available Kits: ");
+            player.message(ChatFormat.YELLOW + "Available Kits: ");
             List<Kit> kits = Canary.kits().getAllKits();
             StringBuilder kitList = new StringBuilder();
 
@@ -118,8 +118,9 @@ public class KitCommand implements NativeCommand {
 
                 if (kit != null) {
                     if (kit.giveKit(player, false)) {
-                        player.message(Colors.YELLOW
-                                + Translator.translate("kit given"));
+                        player.message(ChatFormat.YELLOW
+                                               + Translator.translate("kit given")
+                                      );
                         return;
                     }
                     else {
@@ -146,28 +147,36 @@ public class KitCommand implements NativeCommand {
                     if (kit != null) {
                         if (kit.giveKit(recipient, false)) {
                             recipient
-                                    .message(Colors.YELLOW
-                                            + Translator.translateAndFormat(
-                                            "kit given other",
-                                            player.getName()));
+                                    .message(ChatFormat.YELLOW
+                                                     + Translator.translateAndFormat(
+                                                                                            "kit given other",
+                                                                                            player.getName()
+                                                                                    )
+                                            );
                             return;
                         }
                         else {
                             player.notice(Translator.translateAndFormat(
-                                    "kit unavailable other",
-                                    recipient.getName()));
+                                                                               "kit unavailable other",
+                                                                               recipient.getName()
+                                                                       )
+                                         );
                             return;
                         }
                     }
                     else {
                         player.notice(Translator.translateAndFormat(
-                                "kit invalid", args[1]));
+                                                                           "kit invalid", args[1]
+                                                                   )
+                                     );
                         return;
                     }
                 }
                 else {
                     player.notice(Translator.translateAndFormat(
-                            "unknown player", args[1]));
+                                                                       "unknown player", args[1]
+                                                               )
+                                 );
                     return;
                 }
             }
@@ -179,8 +188,10 @@ public class KitCommand implements NativeCommand {
         if (args[0].equalsIgnoreCase("create")) {
             if (args.length < 3) {
                 player.notice(Translator.translateAndFormat("usage",
-                        "/kit create <name> <use delay> [G|P Groups|Players]")
-                        + " - " + Translator.translate("kit from inventory"));
+                                                            "/kit create <name> <use delay> [G|P Groups|Players]"
+                                                           )
+                                      + " - " + Translator.translate("kit from inventory")
+                             );
                 return;
             }
             // Default public kit
@@ -188,20 +199,24 @@ public class KitCommand implements NativeCommand {
                 Kit newKit = new Kit();
 
                 newKit.setContent(new ArrayList<Item>(Arrays.asList(player
-                        .getInventory().getContents())));
+                                                                            .getInventory().getContents()
+                                                                   )
+                                  )
+                                 );
                 newKit.setDelay(Integer.parseInt(args[2]));
                 newKit.setName(args[1]);
                 Canary.kits().addKit(newKit);
-                player.message(Colors.YELLOW
-                        + Translator.translateAndFormat("kit created", args[1]));
+                player.message(ChatFormat.YELLOW
+                                       + Translator.translateAndFormat("kit created", args[1])
+                              );
                 return;
             }
 
             if (args.length >= 5) {
                 // ADD GROUPS KIT
                 if (args[3].equalsIgnoreCase("G")
-                        && player
-                        .hasPermission(KIT$GROUP)) {
+                            && player
+                                       .hasPermission(KIT$GROUP)) {
                     String[] groups = new String[args.length - 4];
 
                     for (int i = 0; i < groups.length; i++) {
@@ -212,56 +227,70 @@ public class KitCommand implements NativeCommand {
                         }
                         else {
                             groups[i] = Canary.usersAndGroups()
-                                    .getDefaultGroup().getName();
+                                                .getDefaultGroup().getName();
                         }
                     }
                     Kit newKit = new Kit();
 
                     newKit.setContent(new ArrayList<Item>(Arrays.asList(player
-                            .getInventory().getContents())));
+                                                                                .getInventory().getContents()
+                                                                       )
+                                      )
+                                     );
                     newKit.setDelay(Integer.parseInt(args[2]));
                     newKit.setName(args[1]);
                     newKit.setGroups(groups);
                     Canary.kits().addKit(newKit);
-                    player.message(Colors.YELLOW
-                            + Translator.translateAndFormat(
-                            "kit created group", args[1]));
+                    player.message(ChatFormat.YELLOW
+                                           + Translator.translateAndFormat(
+                                                                                  "kit created group", args[1]
+                                                                          )
+                                  );
                     return;
                 } // ADD PLAYER PRIVATE KIT
                 else if (args[3].equalsIgnoreCase("G")
-                        && player
-                        .hasPermission(KIT$PRIVATE)) {
+                                 && player
+                                            .hasPermission(KIT$PRIVATE)) {
                     String[] players = new String[args.length - 4];
 
                     System.arraycopy(args, 4, players, 0, players.length);
                     Kit newKit = new Kit();
 
                     newKit.setContent(new ArrayList<Item>(Arrays.asList(player
-                            .getInventory().getContents())));
+                                                                                .getInventory().getContents()
+                                                                       )
+                                      )
+                                     );
                     newKit.setDelay(Integer.parseInt(args[2]));
                     newKit.setName(args[1]);
                     newKit.setOwner(players);
                     Canary.kits().addKit(newKit);
-                    player.message(Colors.YELLOW + Translator.translateAndFormat("kit created private", args[1]));
+                    player.message(ChatFormat.YELLOW + Translator.translateAndFormat("kit created private", args[1]));
                     return;
                 }
                 else {
                     player.notice(Translator.translateAndFormat("usage", "/kit create <name> <use delay> [G|P Groups|Players]")
-                            + " - " + Translator.translate("kit from inventory"));
+                                          + " - " + Translator.translate("kit from inventory")
+                                 );
                     return;
                 }
             }
             player.notice(Translator.translateAndFormat("usage",
-                    "/kit create <name> <use delay> [G|P Groups|Players]")
-                    + " - " + Translator.translate("kit from inventory"));
+                                                        "/kit create <name> <use delay> [G|P Groups|Players]"
+                                                       )
+                                  + " - " + Translator.translate("kit from inventory")
+                         );
             return;
-
         }
         player.notice(Translator.translateAndFormat("usage",
-                "/kit give <name> [player]"));
+                                                    "/kit give <name> [player]"
+                                                   )
+                     );
         player.notice(Translator.translateAndFormat("usage",
-                "/kit create <name> <use delay> [G|P Groups|Players]")
-                + " - "
-                + Translator.translate("kit from inventory"));
+                                                    "/kit create <name> <use delay> [G|P Groups|Players]"
+                                                   )
+                              + " - "
+                              + Translator.translate("kit from inventory")
+                     );
     }
 }

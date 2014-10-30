@@ -83,7 +83,9 @@ public final class MobClear extends MobCommand {
 
         int mobCount = 0, passivesCount = 0, utilityCount = 0, tameCount = 0;
         for (Entity entity : world.getTrackedEntities()) {
-            if (entity.isPlayer()) continue;
+            if (entity.isPlayer()) {
+                continue;
+            }
             if (radius == -1 || entity.getLocation().getDistance(location(caller)) <= radius) {
                 if (entity.isMob() && (hostiles || all)) {
                     entity.destroy();

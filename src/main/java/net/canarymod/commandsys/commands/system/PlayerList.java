@@ -2,9 +2,8 @@ package net.canarymod.commandsys.commands.system;
 
 import net.canarymod.Canary;
 import net.canarymod.api.entity.living.humanoid.Player;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
-import net.canarymod.chat.TextFormat;
 import net.canarymod.commandsys.NativeCommand;
 
 import java.util.List;
@@ -18,7 +17,7 @@ public class PlayerList implements NativeCommand {
 
     public void execute(MessageReceiver caller, String[] parameters) {
         if (caller instanceof Player) {
-            player((Player) caller);
+            player((Player)caller);
         }
         else {
             console(caller);
@@ -27,7 +26,7 @@ public class PlayerList implements NativeCommand {
 
     private void console(MessageReceiver caller) {
         caller.notice("**** PLAYERS ****");
-        caller.notice(TextFormat.removeFormatting(createList()));
+        caller.notice(ChatFormat.removeFormatting(createList()));
     }
 
     private void player(Player player) {
@@ -39,12 +38,11 @@ public class PlayerList implements NativeCommand {
         StringBuilder sb = new StringBuilder();
 
         for (Player p : players) {
-            sb.append(p.getPrefix()).append(p.getName()).append(Colors.WHITE).append(", ");
+            sb.append(p.getPrefix()).append(p.getName()).append(ChatFormat.WHITE).append(", ");
         }
         if (sb.length() > 0) {
             sb.delete(sb.length() - 2, sb.length() - 1);
         }
         return sb.toString();
     }
-
 }

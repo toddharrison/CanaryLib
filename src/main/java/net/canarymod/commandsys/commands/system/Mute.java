@@ -16,7 +16,7 @@ public class Mute implements NativeCommand {
 
     public void execute(MessageReceiver caller, String[] parameters) {
         if (caller.getReceiverType() == ReceiverType.PLAYER) {
-            player((Player) caller, parameters);
+            player((Player)caller, parameters);
         }
         else {
             console(caller, parameters);
@@ -58,5 +58,4 @@ public class Mute implements NativeCommand {
             player.notice(Translator.translateAndFormat("unknown player", args[0]));
         }
     }
-
 }

@@ -2,9 +2,8 @@ package net.canarymod.commandsys.commands.player;
 
 import net.canarymod.Translator;
 import net.canarymod.api.entity.living.humanoid.Player;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
-import net.canarymod.chat.TextFormat;
 import net.canarymod.commandsys.NativeCommand;
 
 /**
@@ -16,7 +15,7 @@ public class GetPosition implements NativeCommand {
 
     public void execute(MessageReceiver caller, String[] parameters) {
         if (caller instanceof Player) {
-            player((Player) caller);
+            player((Player)caller);
         }
         else {
             console(caller);
@@ -24,14 +23,14 @@ public class GetPosition implements NativeCommand {
     }
 
     private void console(MessageReceiver caller) {
-        caller.notice(Translator.translate("getpos console") + "(" + TextFormat.RANDOM + String.format("Altitude: %dkm ", Long.MAX_VALUE) + TextFormat.RESET + ")");
+        caller.notice(Translator.translate("getpos console") + "(" + ChatFormat.OBFUSCATED + String.format("Altitude: %dkm ", Long.MAX_VALUE) + ChatFormat.RESET + ")");
     }
 
     private void player(Player player) {
-        player.message(Colors.ORANGE + " X: " + Colors.LIGHT_GRAY + player.getX());
-        player.message(Colors.ORANGE + " Y: " + Colors.LIGHT_GRAY + player.getY());
-        player.message(Colors.ORANGE + " Z: " + Colors.LIGHT_GRAY + player.getZ());
-        player.message(Colors.ORANGE + "Rotation: " + Colors.LIGHT_GRAY + player.getRotation() + Colors.ORANGE + " Pitch: " + Colors.LIGHT_GRAY + player.getPitch());
+        player.message(ChatFormat.GOLD + " X: " + ChatFormat.GRAY + player.getX());
+        player.message(ChatFormat.GOLD + " Y: " + ChatFormat.GRAY + player.getY());
+        player.message(ChatFormat.GOLD + " Z: " + ChatFormat.GRAY + player.getZ());
+        player.message(ChatFormat.GOLD + "Rotation: " + ChatFormat.GRAY + player.getRotation() + ChatFormat.GOLD + " Pitch: " + ChatFormat.GRAY + player.getPitch());
 
         double degrees = ((player.getRotation() - 90) % 360);
 
@@ -41,5 +40,4 @@ public class GetPosition implements NativeCommand {
 
         player.notice(Translator.translate("compass") + " " + Translator.translate(player.getCardinalDirection().toString()) + " (" + (Math.round(degrees * 10) / 10.0) + ")");
     }
-
 }

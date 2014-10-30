@@ -3,7 +3,7 @@ package net.canarymod.commandsys.commands.system;
 import net.canarymod.Canary;
 import net.canarymod.Translator;
 import net.canarymod.api.entity.living.humanoid.Player;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.plugin.PluginDescriptor;
@@ -20,7 +20,7 @@ public class ListPlugins implements NativeCommand {
 
     public void execute(MessageReceiver caller, String[] parameters) {
         if (caller instanceof Player) {
-            player((Player) caller);
+            player((Player)caller);
         }
         else {
             console(caller);
@@ -42,7 +42,7 @@ public class ListPlugins implements NativeCommand {
     private void player(Player player) {
         String list = getReadablePluginList();
 
-        player.message(Colors.YELLOW + "Plugins: ");
+        player.message(ChatFormat.YELLOW + "Plugins: ");
         if (list != null) {
             player.message(list);
         }
@@ -56,10 +56,10 @@ public class ListPlugins implements NativeCommand {
         StringBuilder sb = new StringBuilder();
         for (PluginDescriptor plugin : descriptors) {
             if (plugin.getCurrentState() == PluginState.ENABLED) {
-                sb.append(Colors.LIGHT_GREEN).append(plugin.getName()).append(Colors.WHITE).append(", ");
+                sb.append(ChatFormat.GREEN).append(plugin.getName()).append(ChatFormat.WHITE).append(", ");
             }
             else {
-                sb.append(Colors.LIGHT_RED).append(plugin.getName()).append(Colors.WHITE).append(", ");
+                sb.append(ChatFormat.RED).append(plugin.getName()).append(ChatFormat.WHITE).append(", ");
             }
         }
         String str = sb.toString();

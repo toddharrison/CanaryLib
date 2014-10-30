@@ -1,8 +1,8 @@
 package net.canarymod.commandsys.commands.system;
 
 import net.canarymod.Canary;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
-import net.canarymod.chat.TextFormat;
 import net.canarymod.commandsys.NativeCommand;
 
 import java.util.ArrayList;
@@ -20,27 +20,27 @@ public class CanaryModCommand implements NativeCommand {
     static {
         ArrayList<String> temp = new ArrayList<String>();
         StringBuilder builder = new StringBuilder();
-        temp.add(builder.append(TextFormat.LIGHT_RED).append("---- ").append(TextFormat.ORANGE).append(Canary.getImplementationTitle()).append(" ").append(Canary.getImplementationVersion()).append(TextFormat.LIGHT_RED).append(" ----").toString());
+        temp.add(builder.append(ChatFormat.RED).append("---- ").append(ChatFormat.GOLD).append(Canary.getImplementationTitle()).append(" ").append(Canary.getImplementationVersion()).append(ChatFormat.RED).append(" ----").toString());
         builder.delete(0, builder.length());
-        temp.add(builder.append(TextFormat.ORANGE).append("Project Leaders: ").append(TextFormat.WHITE).append("damagefilter, darkdiplomat").toString());
+        temp.add(builder.append(ChatFormat.GOLD).append("Project Leaders: ").append(ChatFormat.WHITE).append("damagefilter, darkdiplomat").toString());
         builder.delete(0, builder.length());
-        temp.add(builder.append(TextFormat.ORANGE).append("Lead Programmer: ").append(TextFormat.WHITE).append("darkdiplomat").toString());
+        temp.add(builder.append(ChatFormat.GOLD).append("Lead Programmer: ").append(ChatFormat.WHITE).append("darkdiplomat").toString());
         builder.delete(0, builder.length());
-        temp.add(builder.append(TextFormat.ORANGE).append("Programmers: ").append(TextFormat.WHITE).append("14mRh4X0r, EHudB, Larry1123, MossyBlog, Pwootage, somners").toString());
+        temp.add(builder.append(ChatFormat.GOLD).append("Programmers: ").append(ChatFormat.WHITE).append("14mRh4X0r, EHudB, Larry1123, MossyBlog, Pwootage, somners").toString());
         builder.delete(0, builder.length());
-        temp.add(builder.append(TextFormat.ORANGE).append("With Contributions by: ").append(TextFormat.WHITE).append("ickyacky, Shadow386, gregthegeek, WWOL, joskuijpers, greatman, nosefish, YLivay, BluXDragon, Hidendra, Tux2, and NiccosSystem").toString());
+        temp.add(builder.append(ChatFormat.GOLD).append("With Contributions by: ").append(ChatFormat.WHITE).append("ickyacky, Shadow386, gregthegeek, WWOL, joskuijpers, greatman, nosefish, YLivay, BluXDragon, Hidendra, Tux2, and NiccosSystem").toString());
         builder.delete(0, builder.length());
-        temp.add(builder.append(TextFormat.ORANGE).append("WebSite: ").append(TextFormat.WHITE).append("http://canarymod.net").toString());
+        temp.add(builder.append(ChatFormat.GOLD).append("WebSite: ").append(ChatFormat.WHITE).append("http://canarymod.net").toString());
         builder.delete(0, builder.length());
-        temp.add(builder.append(TextFormat.ORANGE).append("GitHub: ").append(TextFormat.WHITE).append("http://git.io/tuPNQw").toString());
+        temp.add(builder.append(ChatFormat.GOLD).append("GitHub: ").append(ChatFormat.WHITE).append("http://git.io/tuPNQw").toString());
         builder.delete(0, builder.length());
-        temp.add(builder.append(TextFormat.LIGHT_RED).append("  Copyright (c) 2012-2014 ").append(TextFormat.ORANGE).append("CanaryMod Team").toString());
+        temp.add(builder.append(ChatFormat.RED).append("  Copyright (c) 2012-2014 ").append(ChatFormat.GOLD).append("CanaryMod Team").toString());
         builder.delete(0, builder.length());
-        temp.add(builder.append(TextFormat.LIGHT_RED).append("  Under the management of ").append(TextFormat.ORANGE).append("PlayBlack and Visual Illusions Ent.").toString());
+        temp.add(builder.append(ChatFormat.RED).append("  Under the management of ").append(ChatFormat.GOLD).append("PlayBlack and Visual Illusions Ent.").toString());
         builder.delete(0, builder.length());
-        temp.add(builder.append(TextFormat.LIGHT_RED).append("  Licensed under the BSD 3-Clause License  ").toString());
+        temp.add(builder.append(ChatFormat.RED).append("  Licensed under the BSD 3-Clause License  ").toString());
         builder.delete(0, builder.length());
-        temp.add(builder.append(TextFormat.BLUE).append("  CanaryMod is NOT affiliated with, endorsed, or sponsored by Mojang AB ").toString());
+        temp.add(builder.append(ChatFormat.BLUE).append("  CanaryMod is NOT affiliated with, endorsed, or sponsored by Mojang AB ").toString());
         information = Collections.unmodifiableList(temp);
     }
 
@@ -49,5 +49,4 @@ public class CanaryModCommand implements NativeCommand {
             caller.message(msg);
         }
     }
-
 }

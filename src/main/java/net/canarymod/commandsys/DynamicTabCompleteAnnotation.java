@@ -3,8 +3,7 @@ package net.canarymod.commandsys;
 import java.lang.annotation.Annotation;
 
 /**
- * Copyright (C) 2014 Visual Illusions Entertainment
- * All Rights Reserved.
+ * A dynamic TabComplete annotation, used by the non-java based command system
  *
  * @author Jason Jones (darkdiplomat)
  */

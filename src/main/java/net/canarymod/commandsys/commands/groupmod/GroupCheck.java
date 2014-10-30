@@ -2,7 +2,7 @@ package net.canarymod.commandsys.commands.groupmod;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.Group;
@@ -26,7 +26,7 @@ public class GroupCheck implements NativeCommand {
         }
         caller.message("Name: " + g.getName());
         caller.message("ID: " + g.getId());
-        caller.message("Prefix: " + Colors.MARKER + g.getPrefix() + g.getPrefix());
+        caller.message("Prefix: " + ChatFormat.MARKER + g.getPrefix() + g.getPrefix());
         caller.message("Parent: " + (g.hasParent() ? g.getParent().getName() : Translator.translate("no")));
     }
 }

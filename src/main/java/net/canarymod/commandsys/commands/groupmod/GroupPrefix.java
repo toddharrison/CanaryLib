@@ -2,7 +2,7 @@ package net.canarymod.commandsys.commands.groupmod;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.Group;
@@ -31,6 +31,6 @@ public class GroupPrefix implements NativeCommand {
         }
         group.setPrefix(prefix);
         Canary.usersAndGroups().updateGroup(group, false);
-        caller.message(Colors.YELLOW + Translator.translate("modify prefix set"));
+        caller.message(ChatFormat.YELLOW + Translator.translate("modify prefix set"));
     }
 }

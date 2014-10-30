@@ -14,5 +14,4 @@ public interface CommandOwner {
      * @return The name
      */
     public String getName();
-
 }

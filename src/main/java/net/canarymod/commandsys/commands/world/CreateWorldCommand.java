@@ -53,7 +53,6 @@ public final class CreateWorldCommand implements NativeCommand {
             caller.notice("Please wait while the world is generated...");
             manage.createWorld(name, seed, dType, wType);
             caller.notice("World Created!");
-
         }
         catch (Exception ex) {
             caller.notice("Failed to create world. Check console for errors.");

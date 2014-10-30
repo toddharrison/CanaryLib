@@ -5,9 +5,9 @@ import net.canarymod.ToolBox;
 import net.canarymod.api.PlayerReference;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.position.Position;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.chat.ReceiverType;
-import net.canarymod.chat.TextFormat;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.Group;
 import net.canarymod.warp.Warp;
@@ -34,11 +34,11 @@ public class PlayerInformation implements NativeCommand {
             }
         }
         else if (caller instanceof Player) {
-            subject = (Player) caller;
+            subject = (Player)caller;
         }
 
         if (subject != null) {
-            caller.message(TextFormat.GREEN + subject.getName() + "'s info:");
+            caller.message(ChatFormat.DARK_GREEN + subject.getName() + "'s info:");
             sendData(caller, "First Joined: ", subject.getFirstJoined());
             sendData(caller, "Last Joined: ", subject.getLastJoined());
             sendData(caller, "Time Played: ", ToolBox.getTimeUntil(subject.getTimePlayed()));
@@ -77,11 +77,10 @@ public class PlayerInformation implements NativeCommand {
         for (int index = 1; index < data.length; index++) {
             gnames.append(data[index].getName());
         }
-        caller.message(TextFormat.LIGHT_GREEN + caption + TextFormat.ORANGE + gnames.toString());
+        caller.message(ChatFormat.GREEN + caption + ChatFormat.GOLD + gnames.toString());
     }
 
     private void sendData(MessageReceiver caller, String caption, Object data) {
-        caller.message(TextFormat.LIGHT_GREEN + caption + TextFormat.ORANGE + String.valueOf(data));
+        caller.message(ChatFormat.GREEN + caption + ChatFormat.GOLD + String.valueOf(data));
     }
-
 }

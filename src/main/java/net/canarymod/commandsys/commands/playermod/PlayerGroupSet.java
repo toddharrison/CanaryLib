@@ -3,7 +3,7 @@ package net.canarymod.commandsys.commands.playermod;
 import net.canarymod.Canary;
 import net.canarymod.Translator;
 import net.canarymod.api.PlayerReference;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.Group;
@@ -31,6 +31,6 @@ public class PlayerGroupSet implements NativeCommand {
             return;
         }
         target.setGroup(group);
-        caller.message(Colors.YELLOW + Translator.translate("modify group set"));
+        caller.message(ChatFormat.YELLOW + Translator.translate("modify group set"));
     }
 }
