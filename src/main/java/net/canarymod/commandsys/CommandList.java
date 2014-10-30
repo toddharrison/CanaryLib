@@ -781,7 +781,7 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-                    aliases = { "kit create" },
+                    aliases = { "create" },
                     description = "kit create",
                     permissions = { KIT$CREATE },
                     toolTip = "/kit create <name> <use delay> [G|P Groups|Players]",
@@ -793,11 +793,11 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-                    aliases = { "kit give" },
+                    aliases = { "give" },
                     description = "kit create",
                     permissions = { KIT },
                     toolTip = "/kit give <name> [player]",
-                    min = 2,
+                    min = 1,
                     parent = "kit"
     )
     public void kitGiveCommand(MessageReceiver caller, String[] parameters) {
@@ -805,7 +805,7 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-                    aliases = { "kit list" },
+                    aliases = { "list" },
                     description = "kit list",
                     permissions = { KIT },
                     toolTip = "/kit list",
