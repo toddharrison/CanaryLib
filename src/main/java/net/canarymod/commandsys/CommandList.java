@@ -789,7 +789,7 @@ public class CommandList implements CommandListener {
                     parent = "kit"
     )
     public void kitCreateCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("kit").execute(caller, parameters);
+        natives.get("kit.create").execute(caller, parameters);
     }
 
     @Command(
