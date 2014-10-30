@@ -1,8 +1,8 @@
 package net.canarymod.api.world.blocks;
 
-import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map.Entry;
+import java.util.List;
 
 /**
  * Static class of BlockTypes
@@ -381,7 +381,7 @@ public final class BlockType {
     private final short data;
     private final String machineName;
 
-    private static HashMap<Entry<String, Integer>, BlockType> blockTypes;
+    private static HashMap<String, List<BlockType>> blockTypes;
 
     public BlockType(int id, String machineName) {
         this(id, 0, "canarymod:" + machineName);
@@ -406,7 +406,7 @@ public final class BlockType {
      */
     public BlockType(int id, int data, String machineName) {
         if (blockTypes == null) {
-            blockTypes = new HashMap<Entry<String, Integer>, BlockType>();
+            blockTypes = new HashMap<String, List<BlockType>>();
         }
         if (machineName == null) {
             throw new CustomBlockTypeException("BlockType name cannot be null!");
@@ -414,14 +414,13 @@ public final class BlockType {
         this.id = (short)id;
         this.data = (short)data;
         this.machineName = machineName;
-        Entry<String, Integer> uniqueType = new SimpleImmutableEntry<String, Integer>(machineName, data);
-        if (!blockTypes.containsKey(uniqueType)) {
-            @SuppressWarnings("LeakingThisInConstructor")
-            BlockType ignored = blockTypes.put(uniqueType, this);
+        if (!blockTypes.containsKey(machineName)) {
+            blockTypes.put(machineName, new ArrayList<BlockType>(3));
         }
-        else {
+        if (blockTypes.get(machineName).contains(this)) {
             throw new CustomBlockTypeException("BlockType '" + machineName + ":" + data + "' already exists!");
         }
+        blockTypes.get(machineName).add(this);
     }
 
     /**
@@ -453,6 +452,29 @@ public final class BlockType {
         return machineName;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        BlockType blockType = (BlockType) o;
+
+        return data == blockType.data && id == blockType.id && machineName.equals(blockType.machineName);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) id;
+        result = 31 * result + (int) data;
+        result = 31 * result + machineName.hashCode();
+        return result;
+    }
+
     /**
      * Get a custom block type.
      * Returns null if the requested BlockType does not exist.
@@ -478,21 +500,23 @@ public final class BlockType {
      * @return the custom {@link BlockType}
      */
     public static BlockType getCustomBlockType(String name, int data) {
-        Entry<String, Integer> custom = new SimpleImmutableEntry<String, Integer>(name, data);
-        if (!blockTypes.containsKey(custom)) {
-            for (BlockType t : blockTypes.values()) {
-                if (t.data == data && t.machineName.equalsIgnoreCase(name)) {
-                    return t;
-                }
-            }
+        if (!blockTypes.containsKey(name)) {
             return null;
         }
-        return blockTypes.get(custom);
+        for (BlockType t : blockTypes.get(name)) {
+            if (t.data == data) {
+                return t;
+            }
+        }
+        return null;
     }
 
     /**
      * Get the BlockType according to the given ID.
      * This will return null if there is no BlockType with this id.
+     *
+     * Warning: This operation, as of Minecraft 1.8 is very expensive and exists for
+     * backwards compatibility only!
      *
      * @param id
      *         the id
@@ -500,9 +524,11 @@ public final class BlockType {
      * @return the associated {@link BlockType} or {@code null}
      */
     public static BlockType fromId(int id) {
-        for (BlockType t : blockTypes.values()) {
-            if (t.id == id) {
-                return t;
+        for (List<BlockType> list : blockTypes.values()) {
+            for (BlockType t : list) {
+                if (t.getId() == id) {
+                    return t;
+                }
             }
         }
         return null;
@@ -512,6 +538,8 @@ public final class BlockType {
      * Get the BlockType according to the given ID and Data.
      * This will return null if there is no BlockType with this id and data.
      *
+     * Warning: This operation, as of Minecraft 1.8 is very expensive and exists for
+     * backwards compatibility only!
      * @param id
      *         the id
      * @param data
@@ -520,9 +548,11 @@ public final class BlockType {
      * @return the associated {@link BlockType} or {@code null}
      */
     public static BlockType fromIdAndData(int id, int data) {
-        for (BlockType t : blockTypes.values()) {
-            if (t.id == id && t.data == data) {
-                return t;
+        for (List<BlockType> list : blockTypes.values()) {
+            for (BlockType t : list) {
+                if (t.getId() == id && t.getData() == data) {
+                    return t;
+                }
             }
         }
         return fromId(id); // if data has bit's set, it won't perfectly equal
@@ -538,12 +568,10 @@ public final class BlockType {
      * @return the associated {@link BlockType} or {@code null}
      */
     public static BlockType fromString(String name) {
-        for (BlockType t : blockTypes.values()) {
-            if (t.machineName.equalsIgnoreCase(name)) {
-                return t;
-            }
+        if (!blockTypes.containsKey(name)) {
+            return null;
         }
-        return null;
+        return blockTypes.get(name).get(0);
     }
 
     /**
@@ -558,16 +586,15 @@ public final class BlockType {
      * @return the associated {@link BlockType} or {@code null}
      */
     public static BlockType fromStringAndData(String machineName, int data) {
-        Entry<String, Integer> needle = new SimpleImmutableEntry<String, Integer>(machineName, data);
-        if (!blockTypes.containsKey(needle)) {
-            for (BlockType t : blockTypes.values()) {
-                if (t.data == data && t.machineName.equalsIgnoreCase(machineName)) {
-                    return t;
-                }
-            }
-            return fromString(machineName); // Some blocks have data values that aren't reflected in the typing (like positioning meta)
+        if (!blockTypes.containsKey(machineName)) {
+            return null;
         }
-        return blockTypes.get(needle);
+        for (BlockType t : blockTypes.get(machineName)) {
+            if (t.getData() == data) {
+                return t;
+            }
+        }
+        return fromString(machineName); // Some blocks have data values that aren't reflected in the typing (like positioning meta)
     }
 
     /**
