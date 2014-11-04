@@ -153,6 +153,15 @@ public final class SlotClickHook extends CancelableHook {
     }
 
     /**
+     * Gets the {@link Item} on the player's cursor
+     *
+     * @return the {@link Item} on the cursor; {@code null} if there isn't an item on the cursor
+     */
+    public Item getItemOnCursor() {
+        return this.player.getInventory().getItemOnCursor();
+    }
+    
+    /**
      * {@inheritDoc}
      */
     @Override
