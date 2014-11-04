@@ -198,6 +198,36 @@ public class BookHelper extends ItemHelper {
         }
         return success;
     }
+    
+    /**
+     * Adds pages to a writable/written book
+     *
+     * @param book
+     *         the Book to add pages too
+     * @param pages
+     *         the pages to be added
+     *
+     * @return {@code true} if all pages successfully added; {@code false} if all or some pages could not be added
+     */
+    public static boolean addPages(Item book, ChatComponent... pages) {
+        if (book == null || (book.getType() != ItemType.BookAndQuill && book.getType() != ItemType.WrittenBook)) {
+            return false;
+        }
+        if (!verifyTags(book, "pages", LIST, true)) {
+            return false;
+        }
+        book.getDataTag().put("resolved", true);
+        boolean success = true;
+        for (ChatComponent page : pages) {
+            if (page == null) {
+                continue;
+            }
+            StringTag toAdd = PAGE_TITLE_AUTHOR.copy();
+            toAdd.setValue(page.serialize());
+            success &= book.getDataTag().getListTag("pages").add(toAdd);
+        }
+        return success;
+    }
 
     /**
      * Sets a page at the specified index
@@ -223,6 +253,34 @@ public class BookHelper extends ItemHelper {
         }
         StringTag toSet = PAGE_TITLE_AUTHOR.copy();
         toSet.setValue(correctPage(page));
+        book.getDataTag().getListTag("pages").set(page_index, toSet);
+        return true;
+    }
+    
+    /**
+     * Sets a page at the specified index
+     *
+     * @param book
+     *         the book to set a page for
+     * @param page_index
+     *         the index to add the page at
+     * @param page
+     *         the page to be added
+     *
+     * @return {@code true} if success; {@code false} if not
+     */
+    public static boolean setPage(Item book, int page_index, ChatComponent page) {
+        if (book == null || (book.getType() != ItemType.BookAndQuill && book.getType() != ItemType.WrittenBook)) {
+            return false;
+        }
+        if (!verifyTags(book, "pages", LIST, true)) {
+            return false;
+        }
+        if (!isValidPage(page_index, getPageCount(book))) {
+            return false;
+        }
+        StringTag toSet = PAGE_TITLE_AUTHOR.copy();
+        toSet.setValue(page.serialize());
         book.getDataTag().getListTag("pages").set(page_index, toSet);
         return true;
     }
@@ -252,6 +310,37 @@ public class BookHelper extends ItemHelper {
             }
             StringTag toAdd = PAGE_TITLE_AUTHOR.copy();
             toAdd.setValue(correctPage(page));
+            success &= pages_to_set.add(toAdd);
+        }
+        book.getDataTag().put("pages", pages_to_set);
+        return success;
+    }
+    
+    /**
+     * Sets the pages of the book
+     *
+     * @param book
+     *         the book to set pages for
+     * @param pages
+     *         the pages to be set
+     *
+     * @return {@code true} if successful; {@code false} if all or some of the pages couldn't be added
+     */
+    public static boolean setPages(Item book, ChatComponent... pages) {
+        if (book == null || pages == null || pages.length == 0 || (book.getType() != ItemType.BookAndQuill && book.getType() != ItemType.WrittenBook)) {
+            return false;
+        }
+        if (!verifyTags(book, "pages", LIST, true)) {
+            return false;
+        }
+        ListTag<StringTag> pages_to_set = PAGES_TAG.copy(); // Don't bother checking, we are overriding anyways
+        boolean success = true;
+        for (ChatComponent page : pages) {
+            if (page == null) {
+                continue;
+            }
+            StringTag toAdd = PAGE_TITLE_AUTHOR.copy();
+            toAdd.setValue(page.serialize());
             success &= pages_to_set.add(toAdd);
         }
         book.getDataTag().put("pages", pages_to_set);
