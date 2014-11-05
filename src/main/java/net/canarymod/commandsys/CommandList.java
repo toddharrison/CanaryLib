@@ -277,9 +277,16 @@ public class CommandList implements CommandListener {
 
     @TabComplete(commands = { "groupmod permission add", "groupmod permission remove", "groupmod permission check" })
     public List<String> groupmodPermissionAddRemoveCheckTabComplete(MessageReceiver caller, String[] parameters) {
-        return parameters.length == 1 ? matchToGroup(parameters)
-                       : parameters.length == 2 && parameters[2].contains(":") ? matchTo(parameters, new String[]{ parameters[2].split(":")[0].concat(":true"), parameters[2].split(":")[0].concat(":false") })
-                                 : null;
+        switch (parameters.length) {
+            case 1:
+                return matchToGroup(parameters);
+            case 2:
+                if (parameters[1].contains(":")) {
+                    String pre = parameters[1].split(":")[0];
+                    return matchTo(parameters, new String[]{ pre.concat(":true"), pre.concat(":false") });
+                }
+        }
+        return null;
     }
 
     @Command(
