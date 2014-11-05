@@ -82,7 +82,10 @@ public final class PlayerInformation implements NativeCommand {
                         itr.remove(); // Clear out dead information
                     }
                     else {
-                        caller.message(data.applyData(caller, subject));
+                        String msg = data.applyData(caller, subject);
+                        if (msg != null && !msg.trim().isEmpty()) {
+                            caller.message(data.applyData(caller, subject));
+                        }
                     }
                 }
                 while (itr.hasNext());
