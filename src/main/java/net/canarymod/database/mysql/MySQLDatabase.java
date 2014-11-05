@@ -10,18 +10,8 @@ import net.canarymod.database.exceptions.DatabaseTableInconsistencyException;
 import net.canarymod.database.exceptions.DatabaseWriteException;
 import org.apache.logging.log4j.LogManager;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.sql.*;
+import java.util.*;
 
 import static net.canarymod.Canary.log;
 
@@ -431,7 +421,7 @@ public class MySQLDatabase extends Database {
                         net.visualillusionsent.utils.StringUtils.joinString(primary.toArray(new String[primary.size()]), ",", 0))
                         .append("`)");
             }
-            ps = conn.prepareStatement("CREATE TABLE IF NOT EXISTS `" + data.getName() + "` (" + fields.toString() + ") CHARACTER SET utf8 ");
+            ps = conn.prepareStatement("CREATE TABLE IF NOT EXISTS `" + data.getName() + "` (" + fields.toString() + ") CHARACTER SET utf8 COLLATE utf8_general_ci");
             ps.execute();
         }
         catch (SQLException ex) {
