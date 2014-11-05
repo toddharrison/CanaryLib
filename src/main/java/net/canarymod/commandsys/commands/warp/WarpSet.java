@@ -27,10 +27,9 @@ public class WarpSet implements NativeCommand {
             Player player = (Player)caller;
             if (Canary.warps().warpExists(args[0]) && !player.hasPermission(WARP$SET$ADMIN)) {
                 player.notice(Translator.translate("setwarp failed"));
-                return;
             }
             // SET PUBLIC WARP
-            if (args.length == 1) {
+            else if (args.length == 1) {
                 Warp newWarp = new Warp(player.getLocation(), args[0]);
 
                 Canary.warps().addWarp(newWarp);
@@ -38,7 +37,7 @@ public class WarpSet implements NativeCommand {
             }
             else if (args.length > 2) {
                 // SET GROUP SPECIFIC WARP
-                if (args[2].equalsIgnoreCase("G") && player.hasPermission(WARP$SET$GROUP)) {
+                if (args[1].equalsIgnoreCase("G") && player.hasPermission(WARP$SET$GROUP)) {
                     Group[] groups = new Group[args.length - 2];
 
                     for (int i = 0; i < groups.length; i++) {
@@ -48,10 +47,9 @@ public class WarpSet implements NativeCommand {
 
                     Canary.warps().addWarp(newWarp);
                     player.message(Colors.YELLOW + Translator.translateAndFormat("setwarp success group", args[0]));
-                    return;
                 }
                 // SET PRIVATE WARP
-                if (args[0].equalsIgnoreCase("P") && player.hasPermission(WARP$SET$PRIVATE)) {
+                else if (args[1].equalsIgnoreCase("P") && player.hasPermission(WARP$SET$PRIVATE)) {
                     Warp newWarp = new Warp(player.getLocation(), args[0], args[2], false);
 
                     Canary.warps().addWarp(newWarp);
