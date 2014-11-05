@@ -106,9 +106,7 @@ public class Warp {
      */
     public boolean canWarp(Player player) {
         if (owner != null) {
-            if (player.getName().equals(owner) || (player.isAdmin() || player.hasPermission("canary.command.warp.admin"))) {
-                return true;
-            }
+            return player.getName().equals(owner) || (player.isAdmin() || player.hasPermission("canary.command.warp.admin"));
         }
         else if (allowedGroups != null) {
             for (Group gr : allowedGroups) {
@@ -116,7 +114,10 @@ public class Warp {
                     return true;
                 }
             }
+            // Not in allowed group
+            return false;
         }
+        // No restrictions, all allowed
         return true;
     }
 
