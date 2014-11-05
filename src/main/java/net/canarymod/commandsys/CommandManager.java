@@ -489,7 +489,7 @@ public class CommandManager {
                 CanaryCommand subTest = cmd.getSubCommand(argsClone[0]);
                 if (subTest.hasTabComplete()) { // Check for a tab complete method
                     cmd = subTest; // reset command
-                    argsClone = Arrays.copyOfRange(argsClone, 1, args.length);
+                    argsClone = Arrays.copyOfRange(argsClone, 1, argsClone.length);
                     continue;
                 }
             }
