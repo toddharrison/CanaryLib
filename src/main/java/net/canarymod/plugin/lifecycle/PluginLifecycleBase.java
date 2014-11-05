@@ -1,6 +1,7 @@
 package net.canarymod.plugin.lifecycle;
 
 import net.canarymod.Canary;
+import net.canarymod.commandsys.commands.system.PlayerInformation;
 import net.canarymod.exceptions.PluginLoadFailedException;
 import net.canarymod.plugin.Plugin;
 import net.canarymod.plugin.PluginDescriptor;
@@ -50,6 +51,7 @@ public abstract class PluginLifecycleBase implements PluginLifecycle {
             Canary.hooks().unregisterPluginListeners(p);
             Canary.commands().unregisterCommands(p);
             Canary.motd().unregisterMOTDListener(p);
+            PlayerInformation.removeInfoAdditions(p);
             return true;
         }
         return false;

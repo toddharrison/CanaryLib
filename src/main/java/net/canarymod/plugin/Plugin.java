@@ -327,6 +327,6 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
      */
     @Override
     public final String toString() {
-        return String.format("Plugin[Name: '%s' Version: '%s' Author: '%s' JarPath: '%s']", getName(), getVersion(), getAuthor(), getJarPath());
+        return String.format("Plugin[Name: '%s' Version: '%s' Author: '%s' Path: '%s']", getName(), getVersion(), getAuthor(), getPath());
     }
 }
