@@ -79,7 +79,6 @@ public class MySQLDatabase extends Database {
             if (ps.executeUpdate() == 0) {
                 throw new DatabaseWriteException("Error inserting MySQL: no rows updated!");
             }
-
         }
         catch (SQLException ex) {
             log.error(ex.getMessage(), ex);
@@ -90,7 +89,6 @@ public class MySQLDatabase extends Database {
         finally {
             close(conn, ps, null);
         }
-
     }
 
     @Override
@@ -111,7 +109,7 @@ public class MySQLDatabase extends Database {
                     while (it.hasNext()) {
                         column = it.next();
                         if (column.isList()) {
-                            rs.updateObject(column.columnName(), this.getString((List<?>) columns.get(column)));
+                            rs.updateObject(column.columnName(), this.getString((List<?>)columns.get(column)));
                         }
                         else {
                             rs.updateObject(column.columnName(), columns.get(column));
@@ -136,7 +134,7 @@ public class MySQLDatabase extends Database {
         finally {
             PreparedStatement st = null;
             try {
-                st = rs != null && rs.getStatement() instanceof PreparedStatement ? (PreparedStatement) rs.getStatement() : null;
+                st = rs != null && rs.getStatement() instanceof PreparedStatement ? (PreparedStatement)rs.getStatement() : null;
             }
             catch (SQLException e) {
                 log.error(e.getMessage(), e);
@@ -144,7 +142,6 @@ public class MySQLDatabase extends Database {
             close(conn, st, rs);
         }
     }
-
 
     @Override
     public void remove(DataAccess dataAccess, Map<String, Object> filters) throws DatabaseWriteException {
@@ -174,9 +171,7 @@ public class MySQLDatabase extends Database {
                     }
                     setToStatement(i + 1, filters.get(fieldName), ps, col);
                 }
-
             }
-
         }
         catch (DatabaseReadException dre) {
             log.error(dre.getMessage(), dre);
@@ -217,9 +212,7 @@ public class MySQLDatabase extends Database {
                     }
                     setToStatement(i + 1, filters.get(fieldName), ps, col);
                 }
-
             }
-
         }
         catch (DatabaseReadException dre) {
             log.error(dre.getMessage(), dre);
@@ -270,7 +263,7 @@ public class MySQLDatabase extends Database {
         }
         finally {
             try {
-                PreparedStatement st = rs != null && rs.getStatement() instanceof PreparedStatement ? (PreparedStatement) rs.getStatement() : null;
+                PreparedStatement st = rs != null && rs.getStatement() instanceof PreparedStatement ? (PreparedStatement)rs.getStatement() : null;
                 close(conn, st, rs);
             }
             catch (SQLException ex) {
@@ -303,7 +296,6 @@ public class MySQLDatabase extends Database {
                     stuff.add(dataSet);
                 }
             }
-
         }
         catch (DatabaseReadException dre) {
             log.error(dre.getMessage(), dre);
@@ -316,7 +308,7 @@ public class MySQLDatabase extends Database {
         }
         finally {
             try {
-                PreparedStatement st = rs != null && rs.getStatement() instanceof PreparedStatement ? (PreparedStatement) rs.getStatement() : null;
+                PreparedStatement st = rs != null && rs.getStatement() instanceof PreparedStatement ? (PreparedStatement)rs.getStatement() : null;
                 close(conn, st, rs);
             }
             catch (SQLException ex) {
@@ -329,7 +321,6 @@ public class MySQLDatabase extends Database {
                 newData.load(temp);
                 datasets.add(newData);
             }
-
         }
         catch (DatabaseAccessException dae) {
             log.error(dae.getMessage(), dae);
@@ -356,6 +347,7 @@ public class MySQLDatabase extends Database {
                 HashMap<String, Column> toAdd = new HashMap<String, Column>();
                 Iterator<Column> it = schemaTemplate.getTableLayout().iterator();
 
+                // TODO: Should update primary keys ...
                 Column column;
                 while (it.hasNext()) {
                     column = it.next();
@@ -398,7 +390,7 @@ public class MySQLDatabase extends Database {
             StringBuilder fields = new StringBuilder();
             HashMap<Column, Object> columns = data.toDatabaseEntryList();
             Iterator<Column> it = columns.keySet().iterator();
-            String primary = null;
+            List<String> primary = new ArrayList<String>(2);
 
             Column column;
             while (it.hasNext()) {
@@ -409,16 +401,19 @@ public class MySQLDatabase extends Database {
                     fields.append(" AUTO_INCREMENT");
                 }
                 if (column.columnType().equals(Column.ColumnType.PRIMARY)) {
-                    primary = column.columnName();
+                    primary.add(column.columnName());
                 }
                 if (it.hasNext()) {
                     fields.append(", ");
                 }
             }
-            if (primary != null) {
-                fields.append(", PRIMARY KEY(`").append(primary).append("`)");
+            if (primary.size() > 0) {
+                fields.append(", PRIMARY KEY(`").append(
+                                                               net.visualillusionsent.utils.StringUtils.joinString(primary.toArray(new String[primary.size()]), ",", 0)
+                                                       )
+                        .append("`)");
             }
-            ps = conn.prepareStatement("CREATE TABLE IF NOT EXISTS `" + data.getName() + "` (" + fields.toString() + ") CHARACTER SET utf8 ");
+            ps = conn.prepareStatement("CREATE TABLE IF NOT EXISTS `" + data.getName() + "` (" + fields.toString() + ") CHARACTER SET utf8 COLLATE utf8_general_ci");
             ps.execute();
         }
         catch (SQLException ex) {
@@ -448,7 +443,6 @@ public class MySQLDatabase extends Database {
         finally {
             close(conn, ps, null);
         }
-
     }
 
     public void deleteColumn(String tableName, String columnName) throws DatabaseWriteException {
@@ -523,7 +517,6 @@ public class MySQLDatabase extends Database {
             if (rs != null) {
                 toRet = rs.next();
             }
-
         }
         catch (SQLException ex) {
             throw new DatabaseWriteException(ex.getMessage() + " Error checking MySQL Entry Key in "
@@ -569,7 +562,6 @@ public class MySQLDatabase extends Database {
                     }
                     setToStatement(i + 1, filters.get(fieldName), ps, col);
                 }
-
             }
             else {
                 if (limitOne) {
@@ -654,8 +646,8 @@ public class MySQLDatabase extends Database {
      * @return string representation of the given object
      */
     private String convert(Object o) {
-        if (o instanceof String && ((String) o).contains("*")) {
-            ((String) o).replace("*", "\\*");
+        if (o instanceof String && ((String)o).contains("*")) {
+            ((String)o).replace("*", "\\*");
         }
         return String.valueOf(o);
     }
@@ -679,33 +671,33 @@ public class MySQLDatabase extends Database {
     private void setToStatement(int index, Object o, PreparedStatement ps, Column t) throws DatabaseWriteException {
         try {
             if (t.isList()) {
-                ps.setString(index, getString((List<?>) o));
+                ps.setString(index, getString((List<?>)o));
             }
             else {
                 switch (t.dataType()) {
                     case BYTE:
-                        ps.setByte(index, (Byte) o);
+                        ps.setByte(index, (Byte)o);
                         break;
                     case INTEGER:
-                        ps.setInt(index, (Integer) o);
+                        ps.setInt(index, (Integer)o);
                         break;
                     case FLOAT:
-                        ps.setFloat(index, (Float) o);
+                        ps.setFloat(index, (Float)o);
                         break;
                     case DOUBLE:
-                        ps.setDouble(index, (Double) o);
+                        ps.setDouble(index, (Double)o);
                         break;
                     case LONG:
-                        ps.setLong(index, (Long) o);
+                        ps.setLong(index, (Long)o);
                         break;
                     case SHORT:
-                        ps.setShort(index, (Short) o);
+                        ps.setShort(index, (Short)o);
                         break;
                     case STRING:
-                        ps.setString(index, (String) o);
+                        ps.setString(index, (String)o);
                         break;
                     case BOOLEAN:
-                        ps.setBoolean(index, (Boolean) o);
+                        ps.setBoolean(index, (Boolean)o);
                         break;
                 }
             }
@@ -716,7 +708,6 @@ public class MySQLDatabase extends Database {
         catch (ClassCastException e) {
             throw new DatabaseWriteException("Failed to set property to prepared statement!", e);
         }
-
     }
 
     /**
@@ -863,6 +854,5 @@ public class MySQLDatabase extends Database {
         catch (SQLException e) {
             log.error(e.getMessage(), e);
         }
-
     }
 }
