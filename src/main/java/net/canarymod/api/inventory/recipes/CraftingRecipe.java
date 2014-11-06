@@ -41,6 +41,30 @@ public final class CraftingRecipe {
     }
 
     /**
+     * Constructs a new SHAPED CraftingRecipe. Provided for use by non-Java languages.
+     *
+     * @param result
+     *         the {@link Item} result of the recipe
+     * @param rows
+     *         the {@link RecipeRow}s that make up the recipe
+     */
+    public static CraftingRecipe createShapedRecipe(Item result, RecipeRow... rows) {
+        return new CraftingRecipe(result, rows);
+    }
+
+    /**
+     * Constructs a new SHAPELESS CraftingRecipe. Provided for use by non-Java languages.
+     *
+     * @param result
+     *         the {@link Item} result of the recipe
+     * @param items
+     *         the {@link Item}s that are needed to make the result
+     */
+    public static CraftingRecipe createShapelessRecipe(Item result, Item... items) {
+        return new CraftingRecipe(result, items);
+    }
+
+    /**
      * Checks if this recipe has a shape
      *
      * @return {@code true} if shaped; {@code false} if not
@@ -83,7 +107,7 @@ public final class CraftingRecipe {
         else if (obj == this) {
             return true;
         }
-        CraftingRecipe theRecipe = (CraftingRecipe) obj;
+        CraftingRecipe theRecipe = (CraftingRecipe)obj;
         if (result.getType() != theRecipe.getResult().getType()) {
             return false;
         }
