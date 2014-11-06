@@ -54,6 +54,8 @@ public enum DamageType {
     WATER, //
     /** Damage caused from a Wither */
     WITHER, //
+    /** Damage caused from thorns magic*/
+    THORNS, //
     ;
 
     /**
@@ -77,7 +79,8 @@ public enum DamageType {
         else if (source.getNativeName().equals("indirectMagic")) {
             return ENCHANTMENT; // Assuming thats what it means
         }
-        else if (source.getNativeName().equals("explosion")) {
+        // NOTE: There's explosion and explosion.player which is now creeper damage
+        else if (source.getNativeName().startsWith("explosion")) {
             return EXPLOSION; // Can also be a creeper.
         }
         else if (source.getNativeName().equals("fall")) {
@@ -130,6 +133,9 @@ public enum DamageType {
         }
         else if (source.getNativeName().equals("wither")) {
             return WITHER;
+        }
+        else if (source.getNativeName().equals("thorns")) {
+            return THORNS;
         }
         else {
             return null; // Not a valid DamageSource
