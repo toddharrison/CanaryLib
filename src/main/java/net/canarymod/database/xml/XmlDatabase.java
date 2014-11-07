@@ -72,7 +72,43 @@ public class XmlDatabase extends Database {
 
         try {
             dbTable = verifyTable(file, data.getName());
-            insertData(file, data, dbTable);
+            insertData(file, data, dbTable, true);
+        }
+        catch (JDOMException e) {
+            throw new DatabaseWriteException(e.getMessage(), e);
+        }
+        catch (IOException e) {
+            throw new DatabaseWriteException(e.getMessage(), e);
+        }
+        catch (DatabaseTableInconsistencyException e) {
+            throw new DatabaseWriteException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void insertAll(List<DataAccess> data) throws DatabaseWriteException {
+        DataAccess first = data.get(0);
+        File file = new File("db/" + first.getName() + ".xml");
+
+        if (!file.exists()) {
+            try {
+                if (!file.createNewFile()) {
+                    throw new DatabaseWriteException("Failed to create database XML file: " + first.getName());
+                }
+            }
+            catch (IOException e) {
+                throw new DatabaseWriteException(e.getMessage());
+            }
+        }
+        Document dbTable;
+
+        try {
+            dbTable = verifyTable(file, first.getName());
+            for (DataAccess da : data) {
+                insertData(file, da, dbTable, false);
+            }
+            write(file, dbTable);
+
         }
         catch (JDOMException e) {
             throw new DatabaseWriteException(e.getMessage(), e);
@@ -298,7 +334,7 @@ public class XmlDatabase extends Database {
      * @throws DatabaseTableInconsistencyException
      *
      */
-    private void insertData(File file, DataAccess data, Document dbTable) throws IOException, DatabaseTableInconsistencyException {
+    private void insertData(File file, DataAccess data, Document dbTable, boolean write) throws IOException, DatabaseTableInconsistencyException {
         HashMap<Column, Object> entry = data.toDatabaseEntryList();
 
         if (data.isInconsistent()) {
@@ -329,7 +365,9 @@ public class XmlDatabase extends Database {
             }
         }
         dbTable.getRootElement().addContent(set);
-        write(file, dbTable);
+        if (write) {
+            write(file, dbTable);
+        }
     }
 
     /**

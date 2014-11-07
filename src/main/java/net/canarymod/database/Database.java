@@ -83,6 +83,16 @@ public abstract class Database {
     public abstract void insert(DataAccess data) throws DatabaseWriteException;
 
     /**
+     * Insert a range of DataAccess objects at once.
+     *
+     * @param data
+     *          the list of data to insert
+     * @throws DatabaseWriteException
+     *          when something went wrong during the write operation
+     */
+    public abstract void insertAll(List<DataAccess> data) throws DatabaseWriteException;
+
+    /**
      * Updates the record in the database that fits to your fields and values given.
      * Those are NOT the values and fields to update. Those are values and fields to identify
      * the correct entry in the database to update. The updated data must be provided in the DataAccess

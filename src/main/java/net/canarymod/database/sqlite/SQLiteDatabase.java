@@ -72,27 +72,8 @@ public class SQLiteDatabase extends Database {
         PreparedStatement ps = null;
 
         try {
-            StringBuilder fields = new StringBuilder();
-            StringBuilder values = new StringBuilder();
             HashMap<Column, Object> columns = data.toDatabaseEntryList();
-            Iterator<Column> it = columns.keySet().iterator();
-
-            Column column;
-            while (it.hasNext()) {
-                column = it.next();
-                if (!column.autoIncrement()) {
-                    fields.append("`").append(column.columnName()).append("`").append(",");
-                    values.append("?").append(",");
-                }
-            }
-            if (fields.length() > 0) {
-                fields.deleteCharAt(fields.length() - 1);
-            }
-            if (values.length() > 0) {
-                values.deleteCharAt(values.length() - 1);
-            }
-            String state = "INSERT INTO `" + data.getName() + "` (" + fields.toString() + ") VALUES(" + values.toString() + ")";
-            ps = JdbcConnectionManager.getConnection().prepareStatement(state);
+            ps = JdbcConnectionManager.getConnection().prepareStatement(generateQuery(data));
 
             int i = 1;
             for (Column c : columns.keySet()) {
@@ -119,6 +100,13 @@ public class SQLiteDatabase extends Database {
             close(null, ps, null);
         }
 
+    }
+
+    @Override
+    public void insertAll(List<DataAccess> data) throws DatabaseWriteException {
+        for (DataAccess da : data) {
+            insert(da);
+        }
     }
 
     @Override
@@ -821,6 +809,29 @@ public class SQLiteDatabase extends Database {
                 break;
         }
         return list;
+    }
+
+    private String generateQuery(DataAccess data) throws DatabaseTableInconsistencyException {
+        StringBuilder fields = new StringBuilder();
+        StringBuilder values = new StringBuilder();
+        HashMap<Column, Object> columns = data.toDatabaseEntryList();
+        Iterator<Column> it = columns.keySet().iterator();
+
+        Column column;
+        while (it.hasNext()) {
+            column = it.next();
+            if (!column.autoIncrement()) {
+                fields.append("`").append(column.columnName()).append("`").append(",");
+                values.append("?").append(",");
+            }
+        }
+        if (fields.length() > 0) {
+            fields.deleteCharAt(fields.length() - 1);
+        }
+        if (values.length() > 0) {
+            values.deleteCharAt(values.length() - 1);
+        }
+        return "INSERT INTO `" + data.getName() + "` (" + fields.toString() + ") VALUES(" + values.toString() + ")";
     }
 
     /**

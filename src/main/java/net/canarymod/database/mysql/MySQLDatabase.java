@@ -94,6 +94,13 @@ public class MySQLDatabase extends Database {
     }
 
     @Override
+    public void insertAll(List<DataAccess> data) throws DatabaseWriteException {
+        for (DataAccess da : data) {
+            insert(da);
+        }
+    }
+
+    @Override
     public void update(DataAccess data, Map<String, Object> filters) throws DatabaseWriteException {
         if (!this.doesEntryExist(data)) {
             return;
