@@ -316,5 +316,15 @@ public interface Item extends Cloneable {
      *         the attribute map to be set
      */
     public void updateAttributes(Multimap<String, AttributeModifier> attributeMap);
+    
+    /**
+     * Checks if this item is equal to another item, ignoring stack size
+     *
+     * @param item
+     *         the {@link Item} to compare to.
+     * 
+     * @return {@code true} if both items have the same type, damage and data. {@code false} otherwise
+     */
+    public boolean equalsIgnoreSize(Item item);
 
 }
