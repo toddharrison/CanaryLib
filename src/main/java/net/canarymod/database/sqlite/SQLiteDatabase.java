@@ -162,6 +162,15 @@ public class SQLiteDatabase extends Database {
     }
 
     @Override
+    public void updateAll(List<DataAccess> data, Map<String, Object> filters) throws DatabaseWriteException {
+        // FIXME: Might be worthwhile collecting all queries into one statement?
+        // But then if something errors out it's hard to find what it was
+        for (DataAccess da : data) {
+            update(da, filters);
+        }
+    }
+
+    @Override
     public void remove(DataAccess dataAccess, Map<String, Object> filters) throws DatabaseWriteException {
         Connection conn = JdbcConnectionManager.getConnection();
 

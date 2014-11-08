@@ -287,7 +287,10 @@ public interface World {
      * @param y
      * @param z
      * @param type
+     *
+     * @deprecated Use setBlockAt(Position position, BlockType type)
      */
+    @Deprecated
     public void setBlockAt(int x, int y, int z, short type);
 
     /**
@@ -303,7 +306,10 @@ public interface World {
      *
      * @param lastPosition
      * @param type
+     *
+     * @deprecated Use setBlockAt(Position position, BlockType type)
      */
+    @Deprecated
     public void setBlockAt(Position position, short type);
 
     /**
@@ -312,7 +318,10 @@ public interface World {
      * @param position
      * @param type
      * @param data
+     *
+     * @deprecated Use setBlockAt(Position position, BlockType type)
      */
+    @Deprecated
     public void setBlockAt(Position position, short type, short data);
 
     /**

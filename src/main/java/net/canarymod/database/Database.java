@@ -107,6 +107,19 @@ public abstract class Database {
     public abstract void update(DataAccess data, Map<String, Object> filters) throws DatabaseWriteException;
 
     /**
+     * Updates the records in the database that fits to your fields and values given.
+     * Those are NOT the values and fields to update. Those are values and fields to identify
+     * the correct entry in the database to update. The updated data must be provided in the DataAccess
+     *
+     * @param data
+     *          the data to be updated. Additionally this acts as information about the table schema
+     * @param filters
+     *          FieldName->Value map to filter which rows should be updated
+     * @throws DatabaseWriteException
+     */
+    public abstract void updateAll(List<DataAccess> data, Map<String, Object> filters) throws DatabaseWriteException;
+
+    /**
      * Removes the data set from the given table that suits the given field names and values.
      *
      * @param da

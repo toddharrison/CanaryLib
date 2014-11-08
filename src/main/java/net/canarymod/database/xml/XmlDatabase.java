@@ -180,7 +180,35 @@ public class XmlDatabase extends Database {
 
         try {
             Document table = verifyTable(file, data.getName());
-            updateData(file, table, data, filters);
+            updateData(file, table, data, filters, true);
+        }
+        catch (JDOMException e) {
+            throw new DatabaseWriteException(e.getMessage(), e);
+        }
+        catch (IOException e) {
+            throw new DatabaseWriteException(e.getMessage(), e);
+        }
+        catch (DatabaseTableInconsistencyException e) {
+            throw new DatabaseWriteException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void updateAll(List<DataAccess> list, Map<String, Object> filters) throws DatabaseWriteException {
+        DataAccess data = list.get(0);
+
+        File file = new File("db/" + data.getName() + ".xml");
+
+        if (!file.exists()) {
+            throw new DatabaseWriteException("Table " + data.getName() + " does not exist!");
+        }
+
+        try {
+            Document table = verifyTable(file, data.getName());
+            for (DataAccess da : list) {
+                updateData(file, table, data, filters, false);
+            }
+            write(file, table);
         }
         catch (JDOMException e) {
             throw new DatabaseWriteException(e.getMessage(), e);
@@ -361,8 +389,8 @@ public class XmlDatabase extends Database {
                     foundDupe = true;
                 }
             }
-            if (!foundDupe) {
-            }
+//            if (!foundDupe) {
+//            }
         }
         dbTable.getRootElement().addContent(set);
         if (write) {
@@ -382,13 +410,11 @@ public class XmlDatabase extends Database {
      *
      * @throws DatabaseWriteException
      */
-    private void updateData(File file, Document table, DataAccess data, Map<String, Object> filters) throws IOException, DatabaseTableInconsistencyException, DatabaseWriteException {
+    private void updateData(File file, Document table, DataAccess data, Map<String, Object> filters, boolean write) throws IOException, DatabaseTableInconsistencyException, DatabaseWriteException {
         boolean hasUpdated = false;
         String[] fields = new String[filters.size()];
         filters.keySet().toArray(fields); // We know those are strings
-        Iterator<Element> elementIterator = table.getRootElement().getChildren().iterator();
-        while (elementIterator.hasNext()) {
-            Element element = elementIterator.next();
+        for (Element element : table.getRootElement().getChildren()) {
             int equalFields = 0;
 
             for (String field : fields) {
@@ -424,7 +450,7 @@ public class XmlDatabase extends Database {
                 hasUpdated = true;
             }
         }
-        if (hasUpdated) {
+        if (hasUpdated && write) {
             write(file, table);
         }
         else {
