@@ -112,12 +112,12 @@ public abstract class Database {
      * the correct entry in the database to update. The updated data must be provided in the DataAccess
      *
      * @param data
-     *          the data to be updated. Additionally this acts as information about the table schema
-     * @param filters
-     *          FieldName->Value map to filter which rows should be updated
+     *          a map of data access objects to insert and the filters to apply them with
+     * @param template
+     *          the template data access used for verification.
      * @throws DatabaseWriteException
      */
-    public abstract void updateAll(List<DataAccess> data, Map<String, Object> filters) throws DatabaseWriteException;
+    public abstract void updateAll(DataAccess template, Map<DataAccess, Map<String, Object>> list) throws DatabaseWriteException;
 
     /**
      * Removes the data set from the given table that suits the given field names and values.

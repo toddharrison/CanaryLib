@@ -194,8 +194,7 @@ public class XmlDatabase extends Database {
     }
 
     @Override
-    public void updateAll(List<DataAccess> list, Map<String, Object> filters) throws DatabaseWriteException {
-        DataAccess data = list.get(0);
+    public void updateAll(DataAccess data, Map<DataAccess, Map<String, Object>> list) throws DatabaseWriteException {
 
         File file = new File("db/" + data.getName() + ".xml");
 
@@ -205,8 +204,8 @@ public class XmlDatabase extends Database {
 
         try {
             Document table = verifyTable(file, data.getName());
-            for (DataAccess da : list) {
-                updateData(file, table, data, filters, false);
+            for (DataAccess da : list.keySet()) {
+                updateData(file, table, da, list.get(da), false);
             }
             write(file, table);
         }
@@ -455,7 +454,7 @@ public class XmlDatabase extends Database {
         }
         else {
             // No fields found, that means it is a new entry
-            insert(data);
+            insertData(file, data, table, write);
         }
     }
 

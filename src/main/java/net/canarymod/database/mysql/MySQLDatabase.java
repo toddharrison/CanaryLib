@@ -153,11 +153,11 @@ public class MySQLDatabase extends Database {
     }
 
     @Override
-    public void updateAll(List<DataAccess> data, Map<String, Object> filters) throws DatabaseWriteException {
+    public void updateAll(DataAccess template, Map<DataAccess, Map<String, Object>> list) throws DatabaseWriteException {
         // FIXME: Might be worthwhile collecting all queries into one statement?
         // But then if something errors out it's hard to find what it was
-        for (DataAccess da : data) {
-            update(da, filters);
+        for (DataAccess da : list.keySet()) {
+            update(da, list.get(da));
         }
     }
 
