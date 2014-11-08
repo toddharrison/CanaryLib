@@ -121,6 +121,7 @@ public enum CanaryCommandPermissions {
             WARP$LIST = "canary.command.warp.list",
             WARP$REMOVE = "canary.command.warp.remove",
             WARP$SET = "canary.command.warp.set",
+            WARP$SET$PUBLIC = "canary.command.warp.set.public",
             WARP$SET$ADMIN = "canary.command.warp.set.admin",
             WARP$SET$PRIVATE = "canary.command.warp.set.private",
             WARP$SET$GROUP = "canary.command.warp.set.group",
