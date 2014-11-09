@@ -220,4 +220,27 @@ public interface Scoreboard {
      *         the target objective
      */
     public void removeScore(String name, ScoreObjective objective);
+    
+    /**
+     * Get a team by it's name
+     *
+     * @param name
+     *         The name of the team to get.
+     *
+     * @return The team or null if it does not exist.
+     */
+    public Team getTeam(String name);
+    
+    /**
+     * Create and add a new team to the scoreboard
+     *
+     * @param name
+     *         The name of the team to create.
+     *
+     * @return The new {@link Team}
+     * 
+     * @throws IllegalArgumentException
+     *         if the team already exists.
+     */
+    public Team addTeam(String name) throws IllegalArgumentException;
 }
