@@ -34,7 +34,7 @@ public final class PlayerInformation implements NativeCommand {
 
         PlayerReference subject;
         if (args.length == 1) {
-            subject = Canary.getServer().matchKnownPlayer(args[1]);
+            subject = Canary.getServer().matchKnownPlayer(args[0]);
         }
         else {
             subject = (Player)caller;
