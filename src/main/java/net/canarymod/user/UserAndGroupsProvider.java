@@ -43,16 +43,10 @@ public class UserAndGroupsProvider {
             // Load again
             groups = backboneGroups.loadGroups();
         }
-        // Add permission sets to groups
-        ArrayList<Group> groups = new ArrayList<Group>();
 
         for (Group g : this.groups) {
-            // g.setPermissionProvider(new PermissionManager().getGroupsProvider(g.getName(), g.getWorldName())); // Need to do this here because Canary isn't ready at this time
             g.setPermissionProvider(Canary.permissionManager().getGroupsProvider(g.getName(), g.getWorldName()));
-            groups.add(g);
         }
-        this.groups = groups;
-
         // find default group
         for (Group g : groups) {
             if (g.isDefaultGroup()) {
@@ -310,7 +304,7 @@ public class UserAndGroupsProvider {
     public void updateGroup(Group g, boolean reload) {
         backboneGroups.updateGroup(g);
         if (reload) {
-            reloadGroups();
+            reloadGroupsData();
         }
     }
 
@@ -325,23 +319,24 @@ public class UserAndGroupsProvider {
         this.refreshPlayerInstance(uuid);
     }
 
-    public void reloadUsers() {
+    public void reloadUserData() {
         playerData.clear();
         playerData = backboneUsers.loadUsers();
     }
 
-    public void reloadGroups() {
+    public void reloadGroupsData() {
         groups.clear();
         initGroups();
-        // Update players with new group data
-        for (Player player : Canary.getServer().getPlayerList()) {
-            addOrUpdatePlayerData(player);
-        }
     }
 
     public void reloadAll() {
-        reloadUsers();
-        reloadGroups();
+        reloadUserData();
+        reloadGroupsData();
+        // Update players with new group data
+        for (Player player : Canary.getServer().getPlayerList()) {
+            // Fetch fresh data from the backbones
+            player.initPlayerData();
+        }
     }
 
     /**
