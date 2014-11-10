@@ -304,7 +304,7 @@ public interface World {
     /**
      * Set the block type given at the position specified
      *
-     * @param lastPosition
+     * @param position
      * @param type
      *
      * @deprecated Use setBlockAt(Position position, BlockType type)
@@ -740,6 +740,21 @@ public interface World {
     public void setThundering(boolean thundering);
 
     /**
+     * Set the strength of the thundering.
+     * This is a value from 0 to X. Setting it will have an effect on the world weather
+     *
+     * @param strength the new thunder strength
+     */
+    public void setThunderStrength(float strength);
+
+    /**
+     * Get the current thunder strength value.
+     *
+     * @return the thunder strength
+     */
+    public float getThunderStrength();
+
+    /**
      * Set the time in ticks (~20/sec) for how long it should thunder
      *
      * @param ticks
@@ -752,6 +767,21 @@ public interface World {
      * @param downfall
      */
     public void setRaining(boolean downfall);
+
+    /**
+     * Set the strength of the rain.
+     * This is a value from 0 to X. Setting it will have an effect on the world weather
+     *
+     * @param strength the new rain strength
+     */
+    public void setRainStrength(float strength);
+
+    /**
+     * Get the current rain strength value.
+     *
+     * @return the rain strength
+     */
+    public float getRainStrength();
 
     /**
      * Set the time in ticks (~20/sec) for how long it should rain/snow

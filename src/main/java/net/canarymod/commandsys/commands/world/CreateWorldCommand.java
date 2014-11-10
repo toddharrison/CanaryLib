@@ -24,14 +24,14 @@ public final class CreateWorldCommand implements NativeCommand {
 
             if (parameters.length > 1) {
                 if (parameters[1].matches("\\d+")) {
-                    seed = Long.parseLong(parameters[2]);
+                    seed = Long.parseLong(parameters[1]);
                 }
                 else {
                     seed = parameters[1].hashCode();
                 }
             }
             if (parameters.length > 2) {
-                if (parameters[2].matches("\\d")) {
+                if (parameters[2].matches("\\d+")) {
                     dType = DimensionType.fromId(Integer.parseInt(parameters[2]));
                 }
                 else {
