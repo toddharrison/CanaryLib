@@ -42,7 +42,7 @@ public class UnbanCommand implements NativeCommand {
             caller.message(Colors.YELLOW + Translator.translateAndFormat("unban success", cmd[0]));
         }
         else {
-            caller.message(ChatFormat.YELLOW + Translator.translateAndFormat("unban failed invalid user", cmd[0]));
+            caller.message(Colors.YELLOW + Translator.translateAndFormat("unban failed invalid user", cmd[0]));
         }
     }
 }
