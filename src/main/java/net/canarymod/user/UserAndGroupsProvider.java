@@ -153,6 +153,16 @@ public class UserAndGroupsProvider {
     }
 
     /**
+     * Check if there is a set of data present for the given player UUID
+     *
+     * @param uuid the players UUID
+     * @return true if there is a set of data present, false otherwise
+     */
+    public boolean playerExists(String uuid) {
+        return playerData.containsKey(uuid);
+    }
+
+    /**
      * Return array of all existent groups
      *
      * @return
@@ -221,7 +231,9 @@ public class UserAndGroupsProvider {
             data[0] = null;
             data[1] = defaultGroup.getName();
             data[2] = null;
+            playerData.put(uuid, data);
         }
+
         return data;
     }
 
