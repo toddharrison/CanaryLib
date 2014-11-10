@@ -16,7 +16,7 @@ import net.canarymod.user.Group;
 public class PlayerGroupSet implements NativeCommand {
     // player) group set <player> <newgroup>
     public void execute(MessageReceiver caller, String[] args) {
-        if (args[args.length - 1].equals("--help")) {
+        if (args.length == 0 || args[args.length - 1].equals("--help")) {
             Canary.help().getHelp(caller, "playermod group set");
             return;
         }
