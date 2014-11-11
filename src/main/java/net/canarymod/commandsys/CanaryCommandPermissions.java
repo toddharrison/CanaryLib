@@ -15,7 +15,7 @@ public enum CanaryCommandPermissions {
             GROUPMOD$ADD = "canary.command.groupmod.add",
             GROUPMOD$PERMISSIONS = "canary.command.groupmod.permissions",
             GROUPMOD$PERMISSIONS$ADD = "canary.command.groupmod.permissions.add",
-            GROUPMOD$PERMISSIONS$REMOVE = "canary.command.groupemod.permissions.remove",
+            GROUPMOD$PERMISSIONS$REMOVE = "canary.command.groupmod.permissions.remove",
             GROUPMOD$PERMISSIONS$CHECK = "canary.command.groupmod.permissions.check",
             GROUPMOD$PERMISSIONS$LIST = "canary.command.groupmod.permissions.list",
             GROUPMOD$PERMISSIONS$FLUSH = "canary.command.groupmod.permission.flush",
