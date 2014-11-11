@@ -39,14 +39,14 @@ public final class CreateWorldCommand implements NativeCommand {
                 }
             }
             if (dType == null) {
-                caller.notice("Dimension Type is non-existant");
+                caller.notice("Dimension Type is non-existent");
                 return;
             }
             if (parameters.length > 3) {
                 wType = WorldType.fromString(parameters[3]);
             }
             if (wType == null) {
-                caller.notice("World Type is non-existant");
+                caller.notice("World Type is non-existent");
                 return;
             }
 
