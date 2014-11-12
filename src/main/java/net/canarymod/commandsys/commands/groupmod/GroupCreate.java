@@ -67,11 +67,20 @@ public class GroupCreate implements NativeCommand {
             }
         }
 
+        if (Canary.usersAndGroups().groupExists(args[0])) {
+            caller.notice(Translator.translateAndFormat("group failed dupe", args[0]));
+            return;
+        }
         group.setName(args[0]);
         group.setPermissionProvider(Canary.permissionManager().getGroupsProvider(args[0], worldName));
         group.setParent(parent);
         group.setWorldName(worldName);
         Canary.usersAndGroups().addGroup(group);
-        caller.message(ChatFormat.YELLOW + Translator.translateAndFormat("group created", group.getName()));
+        if (parent == null) {
+            caller.message(ChatFormat.YELLOW + Translator.translateAndFormat("group created", group.getName()));
+        }
+        else {
+            caller.message(ChatFormat.YELLOW + Translator.translateAndFormat("group created parent", group.getName(), parent.getName()));
+        }
     }
 }
