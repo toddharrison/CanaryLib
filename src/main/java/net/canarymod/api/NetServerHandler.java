@@ -1,5 +1,6 @@
 package net.canarymod.api;
 
+import java.net.SocketAddress;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.packet.Packet;
 
@@ -57,4 +58,11 @@ public interface NetServerHandler {
      *         the message to be sent
      */
     public void sendMessage(String messgage);
+    
+    /**
+     * Get the {@link SocketAdress} that is attached to this NetServerHandler
+     *
+     * @return the attached {@link SocketAdress}
+     */
+    public SocketAddress getSocketAdress();
 }
