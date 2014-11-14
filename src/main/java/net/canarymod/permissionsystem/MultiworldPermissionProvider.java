@@ -5,7 +5,6 @@ import net.canarymod.ToolBox;
 import net.canarymod.Translator;
 import net.canarymod.backbone.PermissionDataAccess;
 import net.canarymod.chat.ChatFormat;
-import net.canarymod.chat.Colors;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.database.DataAccess;
 import net.canarymod.database.Database;
