@@ -5,7 +5,7 @@ package net.canarymod.api.nbt;
  *
  * @author gregthegeek
  */
-public interface DoubleTag extends PrimativeTag {
+public interface DoubleTag extends PrimitiveTag<DoubleTag> {
 
     /**
      * Returns the value associated with this tag.
@@ -21,9 +21,5 @@ public interface DoubleTag extends PrimativeTag {
      *         the double value
      */
     public void setValue(double value);
-
-    /** {@inheritDoc} */
-    @Override
-    public DoubleTag copy();
 
 }

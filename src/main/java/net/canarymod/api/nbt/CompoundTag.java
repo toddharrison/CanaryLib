@@ -8,7 +8,7 @@ import java.util.Set;
  *
  * @author gregthegeek
  */
-public interface CompoundTag extends BaseTag {
+public interface CompoundTag extends BaseTag<CompoundTag> {
 
     /**
      * Gets the values inside the CompoundTag
@@ -272,7 +272,7 @@ public interface CompoundTag extends BaseTag {
      *
      * @return the {@link ListTag} value
      */
-    public <T extends BaseTag> ListTag<T> getListTag(String key);
+    public <E extends BaseTag> ListTag<E> getListTag(String key);
 
     /**
      * Gets a boolean value from the CompoundTag
@@ -299,7 +299,4 @@ public interface CompoundTag extends BaseTag {
      */
     public boolean isEmpty();
 
-    /** {@inheritDoc} */
-    @Override
-    public CompoundTag copy();
 }

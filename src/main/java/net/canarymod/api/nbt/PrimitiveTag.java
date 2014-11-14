@@ -3,7 +3,7 @@ package net.canarymod.api.nbt;
 /**
  * @author Jason (darkdiplomat)
  */
-public interface PrimativeTag extends BaseTag {
+public interface PrimitiveTag<T> extends BaseTag<T> {
 
     public abstract long getLongValue();
 

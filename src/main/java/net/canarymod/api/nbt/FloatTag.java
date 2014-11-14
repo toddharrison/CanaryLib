@@ -5,7 +5,7 @@ package net.canarymod.api.nbt;
  *
  * @author gregthegeek
  */
-public interface FloatTag extends PrimativeTag {
+public interface FloatTag extends PrimitiveTag<FloatTag> {
 
     /**
      * Returns the value associated with this tag.
@@ -21,9 +21,5 @@ public interface FloatTag extends PrimativeTag {
      *         the float value
      */
     public void setValue(float value);
-
-    /** {@inheritDoc} */
-    @Override
-    public FloatTag copy();
 
 }

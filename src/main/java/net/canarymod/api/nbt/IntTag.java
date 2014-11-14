@@ -5,7 +5,7 @@ package net.canarymod.api.nbt;
  *
  * @author gregthegeek
  */
-public interface IntTag extends PrimativeTag {
+public interface IntTag extends PrimitiveTag<IntTag> {
 
     /**
      * Returns the value associated with this tag.
@@ -21,9 +21,5 @@ public interface IntTag extends PrimativeTag {
      *         the integer value
      */
     public void setValue(int value);
-
-    /** {@inheritDoc} */
-    @Override
-    public IntTag copy();
 
 }
