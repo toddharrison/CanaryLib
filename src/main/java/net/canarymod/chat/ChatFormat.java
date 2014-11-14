@@ -149,4 +149,16 @@ public enum ChatFormat {
         marker = marker.replaceAll("(\\$|\\^|\\.|\\*|\\?|\\+)", "\\\\$1");// Clean the string of anything that could disrupt the regex
         return str.replaceAll("(?i)" + marker + "([a-fk-nr0-9])", MARKER.concat("$1"));
     }
+    
+    /**
+     * Replaces all Color formatting with an & symbol
+     *
+     * @param text
+     *         the text to be formatted
+     *
+     * @return the formatted text
+     */
+    public static final String consoleFormat(String text) {
+        return text.replaceAll("\u00A7([A-FK-NRa-fk-nr0-9])", "&$1");
+    }
 }

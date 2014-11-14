@@ -1,6 +1,6 @@
 package net.canarymod.help;
 
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.CanaryCommand;
 import net.canarymod.commandsys.CommandOwner;
@@ -58,7 +58,7 @@ public class HelpNode {
         // Removes the last space and comma
         str.deleteCharAt(str.length() - 1);
         str.deleteCharAt(str.length() - 1);
-        str.append("]").append(Colors.WHITE);
+        str.append("]").append(ChatFormat.WHITE);
         return str.toString();
     }
 

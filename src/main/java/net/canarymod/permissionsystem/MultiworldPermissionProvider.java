@@ -4,12 +4,12 @@ import net.canarymod.Canary;
 import net.canarymod.ToolBox;
 import net.canarymod.Translator;
 import net.canarymod.backbone.PermissionDataAccess;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.Colors;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.database.DataAccess;
 import net.canarymod.database.Database;
 import net.canarymod.database.exceptions.DatabaseReadException;
-
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -281,10 +281,10 @@ public class MultiworldPermissionProvider implements PermissionProvider {
             for (DataAccess da : list) {
                 PermissionDataAccess perm = (PermissionDataAccess) da;
                 if (perm.value) {
-                    caller.message(Colors.LIGHT_GREEN + perm.path + ": true");
+                    caller.message(ChatFormat.GREEN + perm.path + ": true");
                 }
                 else {
-                    caller.message(Colors.LIGHT_RED + perm.path + ": false");
+                    caller.message(ChatFormat.RED + perm.path + ": false");
                 }
             }
         }

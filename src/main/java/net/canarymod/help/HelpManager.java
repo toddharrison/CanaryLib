@@ -3,11 +3,10 @@ package net.canarymod.help;
 import net.canarymod.Translator;
 import net.canarymod.api.Server;
 import net.canarymod.api.entity.living.humanoid.Player;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.CanaryCommand;
 import net.canarymod.commandsys.CommandOwner;
-
 import java.util.*;
 
 /**
@@ -142,7 +141,7 @@ public class HelpManager {
         int amount = (page - 1) * pageSize;
         // Header
         ArrayList<String> out = new ArrayList<String>(2);
-        out.add(Colors.CYAN + Translator.translateAndFormat("help title", page, pageNum));
+        out.add(ChatFormat.AQUA + Translator.translateAndFormat("help title", page, pageNum));
         for (int i = amount; i < (amount + pageSize); i++) {
             if (lines.size() <= i) {
                 break;
@@ -195,7 +194,7 @@ public class HelpManager {
         }
         int amount = (page - 1) * pageSize;
         // Header
-        lines.add(Colors.CYAN + Translator.translateAndFormat("help title", page, pageNum));
+        lines.add(ChatFormat.AQUA + Translator.translateAndFormat("help title", page, pageNum));
         for (int i = amount; i < (amount + pageSize); i++) {
             if (hits.size() <= i) {
                 break;
@@ -321,9 +320,9 @@ public class HelpManager {
         if (node.isSubCommand() && ignoreSubCommands) {
             return;
         }
-        list.add(Colors.LIGHT_RED + node.getPrintableAliases(Colors.TURQUIOSE) + " - " + Colors.YELLOW + node.getDescription());
+        list.add(ChatFormat.RED + node.getPrintableAliases(ChatFormat.DARK_AQUA.toString()) + " - " + ChatFormat.YELLOW + node.getDescription());
         if (printToolTip) {
-            list.add(Colors.LIGHT_GRAY + node.getTooltip());
+            list.add(ChatFormat.GRAY + node.getTooltip());
         }
         ArrayList<HelpNode> subadded = new ArrayList<HelpNode>();
         for (String sub : node.subCommands) {
@@ -331,9 +330,9 @@ public class HelpManager {
             if (subNode != null && subNode.canUse(caller)) {
                 if (subNode.isSubCommand() && subNode.getParent().equals(node.getCommand()) && !subadded.contains(subNode)) {
                     subadded.add(subNode);
-                    list.add("    " + subNode.getPrintableAliases(Colors.ORANGE) + " - " + Colors.YELLOW + subNode.getDescription());
+                    list.add("    " + subNode.getPrintableAliases(ChatFormat.GOLD.toString()) + " - " + ChatFormat.YELLOW + subNode.getDescription());
                     if (printToolTip) {
-                        list.add("    " + Colors.LIGHT_GRAY + subNode.getTooltip());
+                        list.add("    " + ChatFormat.GRAY + subNode.getTooltip());
                     }
                 }
             }

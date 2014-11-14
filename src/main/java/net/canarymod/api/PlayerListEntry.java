@@ -2,7 +2,7 @@ package net.canarymod.api;
 
 import net.canarymod.MathHelp;
 import net.canarymod.api.entity.living.humanoid.Player;
-import net.canarymod.chat.TextFormat;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.config.Configuration;
 
 /**
@@ -105,11 +105,11 @@ public final class PlayerListEntry implements Cloneable {
     public final void setName(String name) {
         if (Configuration.getServerConfig().isPlayerlistColorsEnabled()) {
             // Adjust length to account for formatting
-            this.name = name.substring(0, Math.min(name.length(), 14)) + TextFormat.RESET;
+            this.name = name.substring(0, Math.min(name.length(), 14)) + ChatFormat.RESET;
         }
         else {
             // Formatting is disabled, remove it.
-            name = TextFormat.removeFormatting(name);
+            name = ChatFormat.removeFormatting(name);
             this.name = name.substring(0, Math.min(name.length(), 16));
         }
     }
