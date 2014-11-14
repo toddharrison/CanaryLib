@@ -12,6 +12,8 @@ tmp/
 local.properties
 .settings/
 .loadpath
+.classpath
+.porject
 
 # External tool builders
 .externalToolBuilders/
@@ -132,5 +134,3 @@ Temporary Items
 *.un~
 Session.vim
 .netrwhist
-
-
