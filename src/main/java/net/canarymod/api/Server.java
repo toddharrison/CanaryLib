@@ -304,12 +304,6 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      * {@inheritDoc}
      */
     @Override
-    public void notice(String message);
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public boolean hasPermission(String node);
 
     /**

@@ -20,7 +20,23 @@ public interface MessageReceiver {
      * @param message
      *         The message to send.
      */
-    public void notice(String message);
+    public void notice(CharSequence message);
+
+    /**
+     * Sends a message(s) to this <tt>MessageReceiver</tt>.
+     *
+     * @param messages
+     *         The message(s) to send.
+     */
+    public void notice(CharSequence... messages);
+
+    /**
+     * Sends a message(s) to this <tt>MessageReceiver</tt>.
+     *
+     * @param messages
+     *         The message(s) to send.
+     */
+    public void notice(Iterable<? extends CharSequence> messages);
 
     /**
      * Sends a message to this <tt>MessageReceiver</tt>.
@@ -28,7 +44,23 @@ public interface MessageReceiver {
      * @param message
      *         The message to send.
      */
-    public void message(String message);
+    public void message(CharSequence message);
+
+    /**
+     * Sends a message(s) to this <tt>MessageReceiver</tt>.
+     *
+     * @param messages
+     *         The message(s) to send.
+     */
+    public void message(CharSequence... messages);
+
+    /**
+     * Sends a message(s) to this <tt>MessageReceiver</tt>.
+     *
+     * @param messages
+     *         The message(s) to send.
+     */
+    public void message(Iterable<? extends CharSequence> messages);
 
     /**
      * Check if the {@link MessageReceiver} has this permission.
