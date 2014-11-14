@@ -71,13 +71,6 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
     NetServerHandler getNetServerHandler();
 
     /**
-     * Check if a player has this permission.
-     * This will not issue a PermissionCheck hook so the returned
-     * result is reliable.
-     */
-    boolean safeHasPermission(String permission);
-
-    /**
      * Get player enderchest inventory
      *
      * @return enderchest inventory

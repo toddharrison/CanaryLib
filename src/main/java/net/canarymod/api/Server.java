@@ -295,18 +295,6 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
     public World getDefaultWorld();
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getName();
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean hasPermission(String node);
-
-    /**
      * Get the servers configuration manager.
      *
      * @return the {@link ConfigurationManager}

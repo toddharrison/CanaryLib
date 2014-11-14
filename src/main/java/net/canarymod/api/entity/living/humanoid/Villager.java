@@ -89,8 +89,7 @@ public interface Villager extends EntityLiving, Ageable {
      * Set the entity that shall be the target of this villagers revenge.
      * Reduces Reputation of a {@link Player} or causes the Villager to hide. (Verification Needed)
      *
-     * @param targetEntity
-     *         the {@link LivingBase} target
+     * {@inheritDoc}
      */
     public void setRevengeTarget(LivingBase targetEntity);
 
