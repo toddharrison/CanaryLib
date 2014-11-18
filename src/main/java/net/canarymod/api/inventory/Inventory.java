@@ -577,8 +577,16 @@ public interface Inventory {
      * Checks if the inventory has enough space to insert
      *
      * @param item       The {@link Item} to insert
-     * @param itemAmount The amount you wish to insert
      * @return {@code true} if there is room to insert, else {@code false}
      */
-    public boolean canInsertItems(Item item, int itemAmount);
+    public boolean canInsertItems(Item item);
+
+    /**
+     * Checks if the inventory has enough space to insert
+     *
+     * @param item       The {@link Item} to insert
+     * @param matchData  {@code true} check match the data on both items, {@code false} not to match data
+     * @return {@code true} if there is room to insert, else {@code false}
+     */
+    public boolean canInsertItems(Item item, boolean matchData);
 }
