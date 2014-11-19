@@ -165,6 +165,16 @@ public interface CompoundTag extends BaseTag<CompoundTag> {
     public boolean containsKey(String key);
 
     /**
+     * Checks if the CompoundTag contains the given key with a given value type
+     * @param key
+     * the key to check for
+     * @param type
+     * the {@link net.canarymod.api.nbt.NBTTagType} to check for
+     * @return {@code true} if the key is of the given type; {@code false} if not
+     */
+    public boolean containsKey(String key, NBTTagType type);
+
+    /**
      * Gets a byte value from the CompoundTag
      *
      * @param key

@@ -1,6 +1,8 @@
 package net.canarymod.util;
 
+import com.mojang.authlib.GameProfile;
 import net.canarymod.api.nbt.BaseTag;
+import net.canarymod.api.nbt.CompoundTag;
 
 /**
  * Json to/from NBT Utility
@@ -11,7 +13,11 @@ import net.canarymod.api.nbt.BaseTag;
  */
 public interface JsonNBTUtility {
 
-    public BaseTag jsonToNBT(String rawJson);
+    BaseTag jsonToNBT(String rawJson);
 
-    public String baseTagToJSON(BaseTag baseTag);
+    String baseTagToJSON(BaseTag baseTag);
+
+    GameProfile gameProfileFromNBT(CompoundTag tag);
+
+    CompoundTag gameProfileToNBT(GameProfile profile);
 }

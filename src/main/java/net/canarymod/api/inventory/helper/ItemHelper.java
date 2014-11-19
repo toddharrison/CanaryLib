@@ -26,14 +26,14 @@ abstract class ItemHelper {
      *         the {@link Item} to verify tags for
      * @param tag
      *         the name given to the tag
-     * @param nbt_type
+     * @param nbtType
      *         the expected {@link NBTTagType}
      * @param setTags
      *         whether to automatically generate missing tags
      *
      * @return {@code true} if good; {@code false} if not
      */
-    protected static boolean verifyTags(Item item, String tag, NBTTagType nbt_type, boolean setTags) {
+    protected static boolean verifyTags(Item item, String tag, NBTTagType nbtType, boolean setTags) {
         if (item == null) {
             return false;
         }
@@ -47,8 +47,9 @@ abstract class ItemHelper {
             if (!setTags) {
                 return false;
             }
-            item.getDataTag().put(tag, NBT_FACTO.newTagFromType(nbt_type, null));
+            item.getDataTag().put(tag, NBT_FACTO.newTagFromType(nbtType, null));
+            return true;
         }
-        return nbt_type == NBTTagType.getTypeFromId(item.getDataTag().get(tag).getTypeId());
+        return item.getDataTag().containsKey(tag, nbtType);
     }
 }
