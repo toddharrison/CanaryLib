@@ -945,5 +945,45 @@ public interface World {
      *         the message to broadcast
      */
     public void broadcastMessage(String msg);
+    
+    /**
+     * Gets all the villages in this world
+     * 
+     * @return a list containing all the loaded villages in the world
+     */
+    public List<Village> getVillages();
+    
+    /**
+     * Gets the nearest villages to the specified position
+     * 
+     * @param position
+     * @param radius
+     * 
+     * @return the nearest village to that position in range; {@code null} if no village in range
+     */
+    public Village getNearestVillage(Position position, int radius);
+    
+    
+    /**
+     * Gets the nearest villages to the specified location
+     * 
+     * @param location
+     * @param radius
+     * 
+     * @return the nearest village to that location in range; {@code null} if no village in range
+     */
+    public Village getNearestVillage(Location location, int radius);
+    
+    /**
+     * Gets the nearest villages to the specified coordinates
+     * 
+     * @param x
+     * @param y
+     * @param z
+     * @param radius
+     * 
+     * @return the nearest village in range of the given coordinates; {@code null} if no village in range
+     */
+    public Village getNearestVillage(int x, int y, int z, int radius);
 
 }
