@@ -1,7 +1,11 @@
 package net.canarymod.api.entity.living.humanoid;
 
 import com.mojang.authlib.GameProfile;
-import net.canarymod.api.*;
+import net.canarymod.api.NetServerHandler;
+import net.canarymod.api.PlayerListAction;
+import net.canarymod.api.PlayerListData;
+import net.canarymod.api.PlayerListEntry;
+import net.canarymod.api.PlayerReference;
 import net.canarymod.api.chat.ChatComponent;
 import net.canarymod.api.inventory.Inventory;
 import net.canarymod.api.packet.Packet;
@@ -19,7 +23,9 @@ import net.canarymod.hook.player.TeleportHook.TeleportCause;
  */
 public interface Player extends Human, MessageReceiver, PlayerReference {
 
-    /** Initializes or re-initializes the permissions, groups and prefix data for this player */
+    /**
+     * Initializes or re-initializes the permissions, groups and prefix data for this player
+     */
     void initPlayerData();
 
     /**
@@ -187,10 +193,14 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      */
     boolean isDeeplySleeping();
 
-    /** Refreshes mode */
+    /**
+     * Refreshes mode
+     */
     void refreshCreativeMode();
 
-    /** Sends update of PlayerCapabilities to player */
+    /**
+     * Sends update of PlayerCapabilities to player
+     */
     void updateCapabilities();
 
     /**
@@ -203,10 +213,14 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      */
     void openInventory(Inventory inventory);
 
-    /** Creates a fake Workbench and sends the WindowOpenPacket to the Player */
+    /**
+     * Creates a fake Workbench and sends the WindowOpenPacket to the Player
+     */
     void createAndOpenWorkbench();
 
-    /** Creates a fake Anvil and sends the WindowOpenPacket to the Player */
+    /**
+     * Creates a fake Anvil and sends the WindowOpenPacket to the Player
+     */
     void createAndOpenAnvil();
 
     /**
@@ -232,13 +246,6 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      * This should also call the close method for that inventory.
      */
     void closeWindow();
-
-    /**
-     * Gets the locale the player is using in their client. This is in the format of language_region e.g. en_US
-     *
-     * @return the player's locale
-     */
-    String getLocale();
 
     /**
      * Sends a {@link net.canarymod.api.chat.ChatComponent} to the {@code Player}
@@ -323,11 +330,11 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      *         display name {@link net.canarymod.api.chat.ChatComponent}; passing null will clear the display name
      */
     void setDisplayNameComponent(ChatComponent component);
-    
+
     /**
      * Gets the second {@link Inventory} the player is watching currently
      *
      * @return the top {@link Inventory} on the player's window. {@code null} will be returned if there isn't one.
      */
-    public Inventory getSecondInventory(); 
+    public Inventory getSecondInventory();
 }

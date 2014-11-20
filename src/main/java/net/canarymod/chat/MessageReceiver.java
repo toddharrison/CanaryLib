@@ -4,6 +4,8 @@ package net.canarymod.chat;
  * Callback interface for commands.
  *
  * @author Willem (l4mRh4X0r)
+ * @author Larry1123
+ * @author Jason (darkdiplomat)
  */
 public interface MessageReceiver {
 
@@ -12,7 +14,7 @@ public interface MessageReceiver {
      *
      * @return the <tt>MessageReceiver</tt>'s name.
      */
-    public String getName();
+    String getName();
 
     /**
      * Sends a message to this <tt>MessageReceiver</tt>.
@@ -20,7 +22,7 @@ public interface MessageReceiver {
      * @param message
      *         The message to send.
      */
-    public void notice(CharSequence message);
+    void notice(CharSequence message);
 
     /**
      * Sends a message(s) to this <tt>MessageReceiver</tt>.
@@ -28,7 +30,7 @@ public interface MessageReceiver {
      * @param messages
      *         The message(s) to send.
      */
-    public void notice(CharSequence... messages);
+    void notice(CharSequence... messages);
 
     /**
      * Sends a message(s) to this <tt>MessageReceiver</tt>.
@@ -36,7 +38,7 @@ public interface MessageReceiver {
      * @param messages
      *         The message(s) to send.
      */
-    public void notice(Iterable<? extends CharSequence> messages);
+    void notice(Iterable<? extends CharSequence> messages);
 
     /**
      * Sends a message to this <tt>MessageReceiver</tt>.
@@ -44,7 +46,7 @@ public interface MessageReceiver {
      * @param message
      *         The message to send.
      */
-    public void message(CharSequence message);
+    void message(CharSequence message);
 
     /**
      * Sends a message(s) to this <tt>MessageReceiver</tt>.
@@ -52,7 +54,7 @@ public interface MessageReceiver {
      * @param messages
      *         The message(s) to send.
      */
-    public void message(CharSequence... messages);
+    void message(CharSequence... messages);
 
     /**
      * Sends a message(s) to this <tt>MessageReceiver</tt>.
@@ -60,7 +62,7 @@ public interface MessageReceiver {
      * @param messages
      *         The message(s) to send.
      */
-    public void message(Iterable<? extends CharSequence> messages);
+    void message(Iterable<? extends CharSequence> messages);
 
     /**
      * Check if the {@link MessageReceiver} has this permission.
@@ -72,9 +74,9 @@ public interface MessageReceiver {
      *         The node to check for.
      *
      * @return <tt>true</tt> if this <tt>MessageReceiver</tt> has the given
-     *         permission, <tt>false</tt> otherwise.
+     * permission, <tt>false</tt> otherwise.
      */
-    public boolean hasPermission(String node);
+    boolean hasPermission(String node);
 
     /**
      * Check if a {@link MessageReceiver} has this permission.
@@ -85,14 +87,21 @@ public interface MessageReceiver {
      *         ther permission node to check for
      *
      * @return <tt>true</tt> if this <tt>MessageReceiver</tt> has the given
-     *         permission, <tt>false</tt> otherwise.
+     * permission, <tt>false</tt> otherwise.
      */
-    public boolean safeHasPermission(String permission);
+    boolean safeHasPermission(String permission);
 
     /**
      * Gets the type of MessageReceiver the instance is
      *
      * @return receiver type
      */
-    public ReceiverType getReceiverType();
+    ReceiverType getReceiverType();
+
+    /**
+     * Gets the locale the MessageReceiver is using in their client. This is in the format of language_region e.g. en_US
+     *
+     * @return the MessageReceiver's locale
+     */
+    String getLocale();
 }

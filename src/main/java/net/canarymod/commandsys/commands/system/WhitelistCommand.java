@@ -14,13 +14,13 @@ import net.canarymod.commandsys.NativeCommand;
 public class WhitelistCommand implements NativeCommand {
 
     public void execute(MessageReceiver caller, String[] args) {
-        if (args[1].equalsIgnoreCase("add")) {
-            Canary.whitelist().addPlayer(args[2]);
-            caller.message(ChatFormat.YELLOW + Translator.translate("whitelist player added"));
+        if (args[0].equalsIgnoreCase("add")) {
+            Canary.whitelist().addPlayer(args[1]);
+            caller.message(ChatFormat.YELLOW + Translator.localTranslate("whitelist player added", caller.getLocale(), args[1]));
         }
-        if (args[1].equalsIgnoreCase("remove")) {
-            Canary.whitelist().removePlayer(args[2]);
-            caller.message(ChatFormat.YELLOW + Translator.translate("whitelist player removed"));
+        else if (args[0].equalsIgnoreCase("remove")) {
+            Canary.whitelist().removePlayer(args[1]);
+            caller.message(ChatFormat.YELLOW + Translator.localTranslate("whitelist player removed", caller.getLocale(), args[1]));
         }
     }
 }
