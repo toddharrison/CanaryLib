@@ -158,7 +158,7 @@ public class ServerConfiguration implements ConfigurationContainer {
         cfg.getBoolean("world-cache-timer-enabled", true);
         cfg.setComments("world-cache-timer-enabled", "Enable automatic unloading of unused worlds.");
         cfg.getLong("world-cache-timeout", 60);
-        cfg.setComments("world-cache-timeout", "For how long should a world be empty before it will be unloaded (if use-world-cache is enabled)");
+        cfg.setComments("world-cache-timeout", "The number of minutes a world should be empty before it will be unloaded (if use-world-cache is enabled)");
         cfg.getBoolean("bungeecord", false);
         cfg.setComments("bungeecord", "If you want to enable Bungeecord support. REQUIRES THAT ONLINE MODE IS DISABLED (false)");
 
