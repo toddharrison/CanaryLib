@@ -1,17 +1,18 @@
 package net.canarymod.commandsys.commands.warp;
 
 import net.canarymod.Canary;
+import net.canarymod.ToolBox;
 import net.canarymod.Translator;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.UnknownWorldException;
 import net.canarymod.api.world.World;
-import net.canarymod.api.world.WorldManager;
 import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.position.Location;
 import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.config.Configuration;
+import net.canarymod.hook.player.TeleportHook;
 
 /**
  * Command to teleport yourself or someoneelse to spawn
@@ -35,18 +36,14 @@ public class SpawnCommand implements NativeCommand {
                 caller.notice(Translator.translate("spawn failed console"));
             }
             else {
-                WorldManager worldManager = Canary.getServer().getWorldManager();
-                if (!worldManager.worldExists(args[1])) {
-                    caller.notice(Translator.translate("spawn failed"));
-                    return;
-                }
-                World w = worldManager.getWorld(args[1], Configuration.getWorldConfig(args[1]).allowWarpAutoLoad());
+                String fqName = ToolBox.parseWorldName(args[1]);
+                World w = ToolBox.parseWorld(fqName, Configuration.getWorldConfig(fqName).allowWarpAutoLoad());
 
                 Player player = Canary.getServer().matchPlayer(args[2]);
                 if (player != null && w != null) {
                     Location loc = w.getSpawnLocation();
                     loc.setY(w.getHighestBlockAt(loc.getBlockX(), loc.getBlockZ()));
-                    player.teleportTo(loc);
+                    player.teleportTo(loc, TeleportHook.TeleportCause.COMMAND);
                     caller.notice(Translator.translateAndFormat("spawn success other", player.getName()));
                 }
                 else {
@@ -64,16 +61,12 @@ public class SpawnCommand implements NativeCommand {
             if (args.length == 1) {
                 Location loc = player.getWorld().getSpawnLocation();
                 loc.setY(player.getWorld().getHighestBlockAt(loc.getBlockX(), loc.getBlockZ()));
-                player.teleportTo(loc);
+                player.teleportTo(loc, TeleportHook.TeleportCause.COMMAND);
                 player.message(ChatFormat.YELLOW + Translator.translate("spawn success"));
             }
             else if (args.length == 2) {
-                WorldManager worldManager = Canary.getServer().getWorldManager();
-                if (!worldManager.worldExists(args[1])) {
-                    player.notice(Translator.translate("spawn failed"));
-                    return;
-                }
-                World w = worldManager.getWorld(args[1], Configuration.getWorldConfig(args[1]).allowWarpAutoLoad());
+                String fqName = ToolBox.parseWorldName(args[1]);
+                World w = ToolBox.parseWorld(fqName, Configuration.getWorldConfig(fqName).allowWarpAutoLoad());
 
                 if (w == null) {
                     player.notice(Translator.translate("spawn failed"));
@@ -81,23 +74,19 @@ public class SpawnCommand implements NativeCommand {
                 else {
                     Location loc = w.getSpawnLocation();
                     loc.setY(w.getHighestBlockAt(loc.getBlockX(), loc.getBlockZ()));
-                    player.teleportTo(loc);
+                    player.teleportTo(loc, TeleportHook.TeleportCause.COMMAND);
                     player.message(ChatFormat.YELLOW + Translator.translate("spawn success"));
                 }
             }
             else {
-                WorldManager worldManager = Canary.getServer().getWorldManager();
-                if (!worldManager.worldExists(args[1])) {
-                    player.notice(Translator.translate("spawn failed"));
-                    return;
-                }
-                World w = worldManager.getWorld(args[1], Configuration.getWorldConfig(args[1]).allowWarpAutoLoad());
+                String fqName = ToolBox.parseWorldName(args[1]);
+                World w = ToolBox.parseWorld(fqName, Configuration.getWorldConfig(fqName).allowWarpAutoLoad());
                 Player target = Canary.getServer().matchPlayer(args[2]);
 
                 if (target != null && w != null) {
                     Location loc = w.getSpawnLocation();
                     loc.setY(w.getHighestBlockAt(loc.getBlockX(), loc.getBlockZ()));
-                    target.teleportTo(loc);
+                    target.teleportTo(loc, TeleportHook.TeleportCause.COMMAND);
                     player.message(ChatFormat.YELLOW + Translator.translateAndFormat("spawn success other", player.getName()));
                 }
                 else {
