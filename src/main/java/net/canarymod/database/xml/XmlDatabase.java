@@ -23,7 +23,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Represent access to an XML database
@@ -822,8 +827,10 @@ public class XmlDatabase extends Database {
             return fileBuilder.build(in);
         }
         catch (JDOMParseException e) {
+            File dir = new File("db/damaged_db/");
+            dir.mkdirs();
             // Assume the file is damaged. Make a backup, and do it again.
-            Files.move(file, new File("db/damaged_db/"+file.getName()));
+            Files.move(file, new File(dir, file.getName()));
             return initFile(file, root);
         }
         finally {
