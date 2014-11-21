@@ -1682,7 +1682,7 @@ public class CommandList implements CommandListener {
                     aliases = { "teleport", "tp" },
                     description = "Teleports a player",
                     permissions = { TELEPORT, TELEPORT$OTHER },
-                    toolTip = "/tp [target] <player | <<x> <y> <z>>> | /tp <target> <x> <y> <z> <world_fqname> [load]",
+                    toolTip = "/tp [target] <player | <<x> <y> <z> <rotX> <rotY>> | /tp <target> <x> <y> <z> <rotX> <rotY> <world_fqname> [load]",
                     min = 1,
                     version = 2
     )
