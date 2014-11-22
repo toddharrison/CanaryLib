@@ -133,7 +133,7 @@ public class SkullHelper extends ItemHelper {
         if (skull == null || !validSkull(skull.getType()) || getSkullType(skull) != SkullType.PLAYER) {
             return;
         }
-        if (!verifyTags(skull, "SkullOwner", COMPOUND, false) && owner == null) {
+        if (!verifyTags(skull, "SkullOwner", COMPOUND, owner != null)) {
             return;
         }
         if (owner == null || (owner.getId() == null && (owner.getName() == null || owner.getName().trim().isEmpty()))) {
@@ -173,7 +173,7 @@ public class SkullHelper extends ItemHelper {
     }
 
     private static boolean validSkull(ItemType type) {
-        if (type == ItemType.SkeletonHead) {
+        if (type.getMachineName().equals(ItemType.SkeletonHead.getMachineName())) {
             switch (type.getData()) {
                 case 0:
                 case 1:
