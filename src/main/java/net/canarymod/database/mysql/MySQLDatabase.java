@@ -171,7 +171,12 @@ public class MySQLDatabase extends Database {
                     }
                     setToStatement(i + 1, filters.get(fieldName), ps, col);
                 }
+
+                if (ps.executeUpdate() == 0) {
+                    throw new DatabaseWriteException("Error removing from MySQL: no rows updated!");
+                }
             }
+
         }
         catch (DatabaseReadException dre) {
             log.error(dre.getMessage(), dre);
@@ -212,7 +217,12 @@ public class MySQLDatabase extends Database {
                     }
                     setToStatement(i + 1, filters.get(fieldName), ps, col);
                 }
+
+                if (ps.executeUpdate() == 0) {
+                    throw new DatabaseWriteException("Error removing from MySQL: no rows updated!");
+                }
             }
+
         }
         catch (DatabaseReadException dre) {
             log.error(dre.getMessage(), dre);
