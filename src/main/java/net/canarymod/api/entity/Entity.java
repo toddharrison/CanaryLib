@@ -619,4 +619,40 @@ public interface Entity {
      */
     public boolean isInLava();
 
+    /**
+     * Gets if the EntityLiving has a custom name
+     *
+     * @return {@code true} if custom; {@code false} if not
+     */
+    public boolean hasDisplayName();
+
+    /**
+     * Gets the EntityLiving's name displayed to others
+     *
+     * @return EntityLiving's display name
+     */
+    public String getDisplayName();
+
+    /**
+     * Sets the EntityLiving's name display name
+     *
+     * @param display
+     *         the name to have the EntityLiving display
+     */
+    public void setDisplayName(String display);
+
+    /**
+     * Gets if the Custom Display name should show
+     *
+     * @return {@code true} if show; {@code false} if not
+     */
+    public boolean showingDisplayName();
+
+    /**
+     * Sets if the Custom Display name should show
+     *
+     * @param show
+     *         {@code true} if show; {@code false} if not
+     */
+    public void setShowDisplayName(boolean show);
 }
