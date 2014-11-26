@@ -29,9 +29,9 @@ public class ServerListPingHook extends CancelableHook {
     private String favicon;
     private int maxPlayers, currentPlayers;
 
-    public ServerListPingHook(InetAddress requester, String motd, int currentPlayers, int maxPlayers, String favicon, List<GameProfile> profiles) {
+    public ServerListPingHook(InetAddress requester, ChatComponent motd, int currentPlayers, int maxPlayers, String favicon, List<GameProfile> profiles) {
         this.requester = requester;
-        this.motd = Canary.factory().getChatComponentFactory().compileChatComponent(motd);
+        this.motd = motd;
         this.maxPlayers = maxPlayers;
         this.currentPlayers = currentPlayers;
         this.favicon = favicon;
@@ -91,8 +91,9 @@ public class ServerListPingHook extends CancelableHook {
      *         The new MOTD
      */
     public void setMotd(ChatComponent motd) {
-        if(motd == null)
+        if (motd == null) {
             motd = Canary.factory().getChatComponentFactory().newChatComponent("");
+        }
         this.motd = motd;
     }
 
