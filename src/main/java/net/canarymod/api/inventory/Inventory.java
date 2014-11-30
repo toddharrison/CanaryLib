@@ -572,4 +572,13 @@ public interface Inventory {
     public void update();
 
     public InventoryType getInventoryType();
+
+    /**
+     * Checks if the inventory has enough space to insert
+     *
+     * @param item       The {@link Item} to insert
+     * @return {@code true} if there is room to insert, else {@code false}
+     */
+    public boolean canInsertItems(Item item);
+
 }
