@@ -6,7 +6,14 @@ import net.canarymod.chat.MessageReceiver;
 import net.visualillusionsent.utils.LocaleHelper;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import static net.canarymod.Canary.log;
 
@@ -171,7 +178,11 @@ public class CommandManager {
         }
 
         if (subCommand == null) {
-            if (baseCommand.meta.version() == 1) {
+            if (args[args.length - 1].toLowerCase().equals("--help")) {
+                Canary.help().getHelp(caller, baseCommand.meta.helpLookup().isEmpty() ? baseCommand.meta.aliases()[0] : baseCommand.meta.helpLookup());
+                return true;
+            }
+            else if (baseCommand.meta.version() == 1) {
                 return baseCommand.parseCommand(caller, args);
             }
             else {
@@ -179,7 +190,11 @@ public class CommandManager {
             }
         }
         else {
-            if (baseCommand.meta.version() == 1) {
+            if (args[args.length - 1].toLowerCase().equals("--help")) {
+                Canary.help().getHelp(caller, subCommand.meta.helpLookup().isEmpty() ? subCommand.meta.aliases()[0] : subCommand.meta.helpLookup());
+                return true;
+            }
+            else if (baseCommand.meta.version() == 1) {
                 return subCommand.parseCommand(caller, Arrays.copyOfRange(args, argumentIndex, args.length));
             }
             else {

@@ -390,10 +390,6 @@ public class CommandList implements CommandListener {
         natives = Collections.unmodifiableMap(temp);
     }
 
-    private static String perm(CanaryCommandPermissions perm) {
-        return perm.toString();
-    }
-
     /* groupmod start */
     @Command(
                     aliases = { "groupmod", "group" },
