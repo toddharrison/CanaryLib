@@ -17,10 +17,7 @@ public class GroupRemove implements NativeCommand {
 
     // group remove <name>
     public void execute(MessageReceiver caller, String[] args) {
-        if (args[args.length - 1].equals("--help")) {
-            Canary.help().getHelp(caller, "group remove");
-            return;
-        }
+
         Group group = Canary.usersAndGroups().getGroup(args[0]);
         if (group == null || !group.getName().equals(args[0])) {
             caller.notice(Translator.translateAndFormat("unknown group", args[0]));

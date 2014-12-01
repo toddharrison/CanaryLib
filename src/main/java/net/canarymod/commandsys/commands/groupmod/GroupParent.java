@@ -15,10 +15,7 @@ import net.canarymod.user.Group;
 public class GroupParent implements NativeCommand {
     // group) rename <foo> <bar>
     public void execute(MessageReceiver caller, String[] args) {
-        if (args[args.length - 1].equals("--help")) {
-            Canary.help().getHelp(caller, "group parent");
-            return;
-        }
+
         Group group = Canary.usersAndGroups().getGroup(args[0]);
         Group parent = Canary.usersAndGroups().getGroup(args[1]); // Must exist
         if (group == null || !group.getName().equals(args[0])) {
