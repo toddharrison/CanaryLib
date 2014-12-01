@@ -22,6 +22,14 @@ public interface MessageReceiver {
      * @param message
      *         The message to send.
      */
+    void notice(String message);
+
+    /**
+     * Sends a message to this <tt>MessageReceiver</tt>.
+     *
+     * @param message
+     *         The message to send.
+     */
     void notice(CharSequence message);
 
     /**
@@ -39,6 +47,14 @@ public interface MessageReceiver {
      *         The message(s) to send.
      */
     void notice(Iterable<? extends CharSequence> messages);
+
+    /**
+     * Sends a message to this <tt>MessageReceiver</tt>.
+     *
+     * @param message
+     *         The message to send.
+     */
+    void message(String message);
 
     /**
      * Sends a message to this <tt>MessageReceiver</tt>.
