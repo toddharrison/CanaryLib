@@ -416,6 +416,7 @@ public class CommandList implements CommandListener {
                     description = "group add info",
                     permissions = { GROUPMOD$ADD },
                     toolTip = "/groupmod add <name> [[parent] [world[:dimension]]]",
+                    min = 1,
                     max = 3,
                     version = 2
     )
