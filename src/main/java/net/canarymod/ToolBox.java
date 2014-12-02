@@ -15,7 +15,15 @@ import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.TimeZone;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
@@ -186,7 +194,19 @@ public class ToolBox {
             t = DimensionType.fromName(worldData[1]);
         }
         String nameOnly = worldData[0];
-        return t != null ? nameOnly + "_" + t.getName() : nameOnly + "_" + DimensionType.NORMAL.getName();
+        return parseWorldName(nameOnly, t);
+    }
+
+    /**
+     * Gets the FQ world name for the base world and {@link DimensionType}
+     * Takes <code>World</code> and turns it into <code>World_Normal</code>
+     *
+     * @param world     main world's name
+     * @param dimension The dimension, can be {@code null}
+     * @return The right FQ name
+     */
+    public static String parseWorldName(String world, DimensionType dimension) {
+        return dimension != null ? world + "_" + dimension.getName() : world + "_" + DimensionType.NORMAL.getName();
     }
 
     /**

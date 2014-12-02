@@ -2,6 +2,7 @@ package net.canarymod.api.world.position;
 
 import net.canarymod.Canary;
 import net.canarymod.CanaryDeserializeException;
+import net.canarymod.ToolBox;
 import net.canarymod.api.world.DimensionType;
 import net.canarymod.api.world.World;
 import net.canarymod.config.Configuration;
@@ -168,10 +169,31 @@ public class Location extends Vector3D {
     /**
      * Returns the actual world this location belongs to
      *
+     * @param autoload    {@code true} to auto load the world; {@code false} otherwise.
+     * @return the location's world
+     */
+    public World getWorld(boolean autoload) {
+        return Canary.getServer().getWorldManager().getWorld(world, dimension, autoload);
+    }
+
+    /**
+     * Returns the actual world this location belongs to
+     *
      * @return the location's world
      */
     public World getWorld() {
-        return Canary.getServer().getWorldManager().getWorld(world, dimension, false);
+        return getWorld(false);
+    }
+
+    /**
+     * Returns the actual world this location belongs to
+     * Will auto load the world if the world's config has allow warp auto load set to {@code true}
+     *
+     * @return the location's world
+     */
+    public World getWorldChecked() {
+        String fqName = ToolBox.parseWorldName(world, dimension);
+        return getWorld(Configuration.getWorldConfig(fqName).allowWarpAutoLoad());
     }
 
     /**
