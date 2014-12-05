@@ -1280,7 +1280,7 @@ public class CommandList implements CommandListener {
             aliases = { "whitelist", "wlist", "wl" },
             description = "whitelist info",
             permissions = { WHITELIST },
-            toolTip = "/whitelist <add|remove> <playername>",
+            toolTip = "/whitelist <add|remove|show> <playername>",
             min = 2,
             version = 2
     )
