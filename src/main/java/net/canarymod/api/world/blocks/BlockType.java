@@ -562,10 +562,21 @@ public final class BlockType {
      * @return the associated {@link BlockType} or {@code null}
      */
     public static BlockType fromString(String name) {
-        if (!blockTypes.containsKey(name)) {
+        String temp = name;
+        int data = 0;
+        if (name.matches(".+:.+:\\d+")) {
+            temp = name.replaceAll(":\\d+", "");
+            try {
+                data = Integer.parseInt(name.replaceAll(".+:.+:", ""));
+            }
+            catch (NumberFormatException nfex) {
+                // Ignored
+            }
+        }
+        if (!blockTypes.containsKey(temp)) {
             return null;
         }
-        return blockTypes.get(name).get(0);
+        return blockTypes.get(temp).get(data);
     }
 
     /**
