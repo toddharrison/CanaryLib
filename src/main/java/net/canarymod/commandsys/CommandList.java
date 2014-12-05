@@ -51,11 +51,16 @@ import net.canarymod.commandsys.commands.system.StopServer;
 import net.canarymod.commandsys.commands.system.SystemInformation;
 import net.canarymod.commandsys.commands.system.UnbanCommand;
 import net.canarymod.commandsys.commands.system.Uptime;
-import net.canarymod.commandsys.commands.system.WhitelistCommand;
 import net.canarymod.commandsys.commands.system.kits.KitCreate;
 import net.canarymod.commandsys.commands.system.kits.KitDelete;
 import net.canarymod.commandsys.commands.system.kits.KitGive;
 import net.canarymod.commandsys.commands.system.kits.KitList;
+import net.canarymod.commandsys.commands.system.whitelist.WhitelistAdd;
+import net.canarymod.commandsys.commands.system.whitelist.WhitelistDisable;
+import net.canarymod.commandsys.commands.system.whitelist.WhitelistEnable;
+import net.canarymod.commandsys.commands.system.whitelist.WhitelistReload;
+import net.canarymod.commandsys.commands.system.whitelist.WhitelistRemove;
+import net.canarymod.commandsys.commands.system.whitelist.WhitelistShow;
 import net.canarymod.commandsys.commands.vanilla.Achievement;
 import net.canarymod.commandsys.commands.vanilla.BlockData;
 import net.canarymod.commandsys.commands.vanilla.Broadcast;
@@ -230,6 +235,7 @@ import static net.canarymod.commandsys.CanaryCommandPermissions.WARP$SET;
 import static net.canarymod.commandsys.CanaryCommandPermissions.WARP$USE;
 import static net.canarymod.commandsys.CanaryCommandPermissions.WEATHER;
 import static net.canarymod.commandsys.CanaryCommandPermissions.WHITELIST;
+import static net.canarymod.commandsys.CanaryCommandPermissions.WHITELIST$ADMIN;
 import static net.canarymod.commandsys.CanaryCommandPermissions.WORLD$CREATE;
 import static net.canarymod.commandsys.CanaryCommandPermissions.WORLD$DELETE;
 import static net.canarymod.commandsys.CanaryCommandPermissions.WORLD$LOAD;
@@ -323,7 +329,12 @@ public class CommandList implements CommandListener {
         temp.put("sysinfo", new SystemInformation());
         temp.put("unban", new UnbanCommand());
         temp.put("uptime", new Uptime());
-        temp.put("whitelist", new WhitelistCommand());
+        temp.put("whitelist.add", new WhitelistAdd());
+        temp.put("whitelist.remove", new WhitelistRemove());
+        temp.put("whitelist.show", new WhitelistShow());
+        temp.put("whitelist.enable", new WhitelistEnable());
+        temp.put("whitelist.disable", new WhitelistDisable());
+        temp.put("whitelist.reload", new WhitelistReload());
 
         /* vanilla */
         temp.put("achievement", new Achievement());
@@ -1280,17 +1291,96 @@ public class CommandList implements CommandListener {
             aliases = { "whitelist", "wlist", "wl" },
             description = "whitelist info",
             permissions = { WHITELIST },
-            toolTip = "/whitelist <add|remove|show> <playername>",
-            min = 2,
+            toolTip = "/whitelist <<add|remove <playername>>|show|enable|disable|reload>",
             version = 2
     )
     public void whitelistCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("whitelist").execute(caller, parameters);
+        Canary.help().getHelp(caller, "whitelist");
+    }
+
+    @Command(
+            aliases = { "add" },
+            description = "whitelist add",
+            permissions = { WHITELIST },
+            toolTip = "/whitelist add <playername>",
+            helpLookup = "whitelist add",
+            parent = "whitelist",
+            min = 1,
+            version = 2
+    )
+    public void whitelistAddCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("whitelist.add").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = { "remove" },
+            description = "whitelist remove",
+            permissions = { WHITELIST },
+            toolTip = "/whitelist remove <playername>",
+            helpLookup = "whitelist remove",
+            parent = "whitelist",
+            min = 1,
+            version = 2
+    )
+    public void whitelistRemoveCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("whitelist.remove").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = { "show", "list" },
+            description = "whitelist show",
+            permissions = { WHITELIST },
+            toolTip = "/whitelist show",
+            helpLookup = "whitelist show",
+            parent = "whitelist",
+            version = 2
+    )
+    public void whitelistShowCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("whitelist.show").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = { "enable", "on" },
+            description = "whitelist enable",
+            permissions = { WHITELIST$ADMIN },
+            toolTip = "/whitelist enable",
+            helpLookup = "whitelist enable",
+            parent = "whitelist",
+            version = 2
+    )
+    public void whitelistEnableCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("whitelist.enable").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = { "disable", "off" },
+            description = "whitelist disable",
+            permissions = { WHITELIST$ADMIN },
+            toolTip = "/whitelist disable",
+            helpLookup = "whitelist disable",
+            parent = "whitelist",
+            version = 2
+    )
+    public void whitelistDisableCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("whitelist.disable").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = { "reload" },
+            description = "whitelist reload",
+            permissions = { WHITELIST$ADMIN },
+            toolTip = "/whitelist reload",
+            helpLookup = "whitelist reload",
+            parent = "whitelist",
+            version = 2
+    )
+    public void whitelistReloadCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("whitelist.reload").execute(caller, parameters);
     }
 
     @TabComplete(commands = { "whitelist" })
     public List<String> whitelistTabComplete(MessageReceiver caller, String[] parameters) {
-        return parameters.length == 1 ? matchTo(parameters, new String[]{ "add", "remove" }) : null;
+        return parameters.length == 1 ? matchTo(parameters, new String[]{ "add", "remove", "show", "list", "enable", "on", "disable", "off", "reload" }) : null;
     }
 
     /* vanilla start */

@@ -72,7 +72,8 @@ public enum CanaryCommandPermissions {
             SYSINFO = "canary.command.sysinfo",
             UNBAN = "canary.command.unban",
             UPTIME = "canary.command.uptime",
-            WHITELIST = "canary.command.whitelist",
+            WHITELIST = "canary.command.whitelist", // add remove list
+            WHITELIST$ADMIN = "canary.command.whitelist.admin", // on off reload
             ACHIEVEMENT = "canary.command.achievement",
             ACHIEVEMENT$OTHER = "canary.command.achievement.other",
             BLOCKDATA = "canary.command.blockdata",
