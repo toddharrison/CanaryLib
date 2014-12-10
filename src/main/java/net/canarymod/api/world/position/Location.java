@@ -42,6 +42,14 @@ public class Location extends Vector3D {
         this.rotation = rotation;
     }
 
+    public Location(World world, Position template) {
+        super(template.x, template.y, template.z);
+        dimension = world.getType();
+        this.world = world.getName();
+        this.pitch = 0f;
+        this.rotation = 0f;
+    }
+
     /**
      * Constructs a new Location in the default world
      *
