@@ -459,7 +459,9 @@ public class XmlDatabase extends Database {
         }
         else {
             // No fields found, that means it is a new entry
-            insertData(file, data, table, write);
+            if (write) {
+                insertData(file, data, table, true);
+            }
         }
     }
 
