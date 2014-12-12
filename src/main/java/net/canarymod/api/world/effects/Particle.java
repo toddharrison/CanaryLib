@@ -62,6 +62,15 @@ public class Particle {
         public String getMcName() {
             return mcName;
         }
+
+        public static Type fromName(String name) {
+            for (Type t : values()) {
+                if (t.mcName.equals(name)) {
+                    return t;
+                }
+            }
+            return null;
+        }
     }
 
     public Type type;
