@@ -15,6 +15,7 @@ import net.canarymod.api.packet.Packet;
 import net.canarymod.api.potion.PotionEffect;
 import net.canarymod.api.statistics.Stat;
 import net.canarymod.api.world.Chunk;
+import net.canarymod.api.world.blocks.BlockType;
 import net.canarymod.api.world.position.Position;
 import net.canarymod.api.world.position.Vector3D;
 
@@ -530,6 +531,22 @@ public interface PacketFactory {
      * @return new BlockChange {@link Packet} or {@code null} if an error occurred
      */
     Packet blockChange(int x, int y, int z, int typeId, int data); //35
+
+    /**
+     * Creates a BlockChange {@link Packet}
+     *
+     * @param x
+     *         the Block X Coordinate
+     * @param y
+     *         the Block Y Coordinate
+     * @param z
+     *         the Block Z Coordinate
+     * @param type
+     *         the block type to send
+     *
+     * @return new BlockChange {@link Packet} or {@code null} if an error occurred
+     */
+    Packet blockChange(int x, int y, int z, BlockType type); //35
 
     /**
      * Creates a BlockAction {@link Packet}
