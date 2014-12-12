@@ -574,7 +574,11 @@ public final class BlockType {
             }
         }
         if (!blockTypes.containsKey(temp)) {
-            return null;
+            // Perhaps try by adding a namespace
+            temp = "minecraft:"+temp;
+            if (!blockTypes.containsKey(temp)) {
+                return null;
+            }
         }
         return blockTypes.get(temp).get(data);
     }
