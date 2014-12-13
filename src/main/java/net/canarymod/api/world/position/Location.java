@@ -16,6 +16,7 @@ public class Location extends Vector3D {
 
     private DimensionType dimension;
     private String world;
+    private World cachedWorld;
     private float pitch, rotation;
 
     /**
@@ -36,16 +37,14 @@ public class Location extends Vector3D {
      */
     public Location(World world, double x, double y, double z, float pitch, float rotation) {
         super(x, y, z);
-        dimension = world.getType();
-        this.world = world.getName();
+        this.cachedWorld = world;
         this.pitch = pitch;
         this.rotation = rotation;
     }
 
     public Location(World world, Position template) {
         super(template.x, template.y, template.z);
-        dimension = world.getType();
-        this.world = world.getName();
+        this.cachedWorld = world;
         this.pitch = 0f;
         this.rotation = 0f;
     }
@@ -62,8 +61,7 @@ public class Location extends Vector3D {
      */
     public Location(double x, double y, double z) {
         super(x, y, z);
-        world = Configuration.getServerConfig().getDefaultWorldName();
-        dimension = DimensionType.NORMAL;
+        this.cachedWorld = Canary.getServer().getDefaultWorld();
         pitch = rotation = 0f;
     }
 
@@ -74,8 +72,7 @@ public class Location extends Vector3D {
      */
     public Location(Location templ) {
         super(templ);
-        this.dimension = templ.getType();
-        this.world = templ.getWorldName();
+        this.cachedWorld = templ.cachedWorld;
         this.pitch = templ.getPitch();
         this.rotation = templ.getRotation();
     }
@@ -124,7 +121,7 @@ public class Location extends Vector3D {
      * @return the dimension
      */
     public DimensionType getType() {
-        return dimension;
+        return cachedWorld.getType();
     }
 
     /**
@@ -132,6 +129,7 @@ public class Location extends Vector3D {
      *         the dimension to set
      */
     public void setType(DimensionType dimension) {
+        this.cachedWorld = Canary.getServer().getWorldManager().getWorld(cachedWorld.getName(), dimension, true);
         this.dimension = dimension;
     }
 
@@ -163,7 +161,7 @@ public class Location extends Vector3D {
 
     /** @return the world */
     public String getWorldName() {
-        return world;
+        return cachedWorld.getName();
     }
 
     /**
@@ -171,6 +169,7 @@ public class Location extends Vector3D {
      *         the world to set
      */
     public void setWorldName(String world) {
+        this.cachedWorld = Canary.getServer().getWorldManager().getWorld(world, dimension, true);
         this.world = world;
     }
 
@@ -179,18 +178,28 @@ public class Location extends Vector3D {
      *
      * @param autoload    {@code true} to auto load the world; {@code false} otherwise.
      * @return the location's world
+     * @deprecated Use getWorld instead. World is loaded in all cases
      */
+    @Deprecated
     public World getWorld(boolean autoload) {
         return Canary.getServer().getWorldManager().getWorld(world, dimension, autoload);
     }
 
     /**
-     * Returns the actual world this location belongs to
+     * Returns the actual world this location belongs to.
+     * Returns null if the world name or dimension that was specified was invalid.
      *
      * @return the location's world
      */
     public World getWorld() {
-        return getWorld(false);
+        return this.cachedWorld;
+    }
+
+    /**
+     * Internal method to set the world after deserializing.
+     */
+    private void setWorld() {
+        this.cachedWorld = Canary.getServer().getWorldManager().getWorld(this.world, this.dimension, true);
     }
 
     /**
@@ -198,7 +207,9 @@ public class Location extends Vector3D {
      * Will auto load the world if the world's config has allow warp auto load set to {@code true}
      *
      * @return the location's world
+     * @deprecated use getWorld, world is already checked
      */
+    @Deprecated
     public World getWorldChecked() {
         String fqName = ToolBox.parseWorldName(world, dimension);
         return getWorld(Configuration.getWorldConfig(fqName).allowWarpAutoLoad());
@@ -241,6 +252,7 @@ public class Location extends Vector3D {
             loc.setRotation(Float.parseFloat(split[4]));
             loc.setType(DimensionType.fromId(Integer.parseInt(split[5])));
             loc.setWorldName(split[6]);
+            loc.setWorld();
             return loc;
         }
         catch (NumberFormatException e) {
