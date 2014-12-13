@@ -145,7 +145,11 @@ public class Vector3D extends Position {
      * @return
      */
     public boolean isWithin(Position min, Position max) {
-        return this.getBlockX() >= min.getBlockX() && this.getBlockX() <= max.getBlockX() && this.getBlockY() >= min.getBlockY() && this.getBlockY() <= max.getBlockY() && this.getBlockZ() >= min.getBlockZ() && this.getBlockZ() <= max.getBlockZ();
+        return (min.x <= this.x && this.x <= max.x) &&
+                (min.y <= this.y && this.y <= max.y) &&
+                (min.z <= this.z && this.z <= max.z);
+
+//        return this.getBlockX() >= min.getBlockX() && this.getBlockX() <= max.getBlockX() && this.getBlockY() >= min.getBlockY() && this.getBlockY() <= max.getBlockY() && this.getBlockZ() >= min.getBlockZ() && this.getBlockZ() <= max.getBlockZ();
     }
 
 
