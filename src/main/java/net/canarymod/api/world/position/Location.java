@@ -38,6 +38,8 @@ public class Location extends Vector3D {
     public Location(World world, double x, double y, double z, float pitch, float rotation) {
         super(x, y, z);
         this.cachedWorld = world;
+        this.dimension = cachedWorld.getType();
+        this.world = cachedWorld.getName();
         this.pitch = pitch;
         this.rotation = rotation;
     }
@@ -45,6 +47,8 @@ public class Location extends Vector3D {
     public Location(World world, Position template) {
         super(template.x, template.y, template.z);
         this.cachedWorld = world;
+        this.dimension = cachedWorld.getType();
+        this.world = cachedWorld.getName();
         this.pitch = 0f;
         this.rotation = 0f;
     }
@@ -62,6 +66,8 @@ public class Location extends Vector3D {
     public Location(double x, double y, double z) {
         super(x, y, z);
         this.cachedWorld = Canary.getServer().getDefaultWorld();
+        this.dimension = cachedWorld.getType();
+        this.world = cachedWorld.getName();
         pitch = rotation = 0f;
     }
 
@@ -73,6 +79,8 @@ public class Location extends Vector3D {
     public Location(Location templ) {
         super(templ);
         this.cachedWorld = templ.cachedWorld;
+        this.dimension = cachedWorld.getType();
+        this.world = cachedWorld.getName();
         this.pitch = templ.getPitch();
         this.rotation = templ.getRotation();
     }
