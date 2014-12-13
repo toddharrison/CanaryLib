@@ -73,6 +73,22 @@ public class Vector3D extends Position {
     }
 
     /**
+     * Get the square distance between this and the given vector.
+     * This is substantially faster than the standard getDistance
+     * but you'll have to squre the numbers you're checking against yourself
+     *
+     * @param v
+     * @return
+     */
+    public double getSquareDistance(Position v) {
+        double diffX = v.getX() - this.getX();
+        double diffY = v.getY() - this.getY();
+        double diffZ = v.getZ() - this.getZ();
+
+        return (diffX * diffX + diffY * diffY + diffZ * diffZ);
+    }
+
+    /**
      * Retrieve the distance between 2 given vectors
      *
      * @param v1
