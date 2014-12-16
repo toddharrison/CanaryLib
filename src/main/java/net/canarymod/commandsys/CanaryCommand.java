@@ -81,11 +81,17 @@ public abstract class CanaryCommand implements Comparable<CanaryCommand> {
      */
     boolean parseCommand(MessageReceiver caller, String[] parameters) {
         // Permission checks
+        boolean hasOnePermission = false;
         for (String permission : meta.permissions()) {
-            if (!caller.hasPermission(permission)) {
-                onPermissionDenied(caller);
-                return true;
-            }
+            hasOnePermission |= caller.hasPermission(permission);
+//            if (!caller.hasPermission(permission)) {
+//                onPermissionDenied(caller);
+//                return true;
+//            }
+        }
+        if (!hasOnePermission) {
+            onPermissionDenied(caller);
+            return true;
         }
 
         // command length checks
