@@ -18,7 +18,7 @@ public interface Human extends LivingBase {
      *
      * @return Player's display name
      */
-    public String getDisplayName();
+    String getDisplayName();
 
     /**
      * Sets the Player's name display name
@@ -26,17 +26,17 @@ public interface Human extends LivingBase {
      * @param display
      *         the name to have the Player display
      */
-    public void setDisplayName(String display);
+    void setDisplayName(String display);
 
     /** Destroys the current item in hand */
-    public void destroyItemHeld();
+    void destroyItemHeld();
 
     /**
      * Returns the item that is currently in the players hands
      *
      * @return item held
      */
-    public Item getItemHeld();
+    Item getItemHeld();
 
     /**
      * Make this player drop an item.
@@ -44,21 +44,21 @@ public interface Human extends LivingBase {
      * @param item
      *         the {@link Item} to drop
      */
-    public void dropItem(Item item);
+    void dropItem(Item item);
 
     /**
      * Get player inventory
      *
      * @return inventory
      */
-    public PlayerInventory getInventory();
+    PlayerInventory getInventory();
 
     /**
      * Drop all of this players inventory
      *
      * @return {@link EntityItem} array of dropped items
      */
-    public EntityItem[] dropInventory();
+    EntityItem[] dropInventory();
 
     /**
      * Give the player the item
@@ -66,14 +66,14 @@ public interface Human extends LivingBase {
      * @param item
      *         the {@link Item} to give
      */
-    public void giveItem(Item item);
+    void giveItem(Item item);
 
     /**
      * Return the color for this players name
      *
      * @return prefix
      */
-    public String getPrefix();
+    String getPrefix();
 
     /**
      * Set this players name color and prefix
@@ -81,26 +81,55 @@ public interface Human extends LivingBase {
      * @param prefix
      *         the prefix string to set
      */
-    public void setPrefix(String prefix);
+    void setPrefix(String prefix);
 
     /**
      * If this player is blocking (with a sword)
      *
      * @return {@code true} if blocking; {@code false} otherwise
      */
-    public boolean isBlocking();
+    boolean isBlocking();
 
     /**
      * If this player is shooting (with a bow)
      *
      * @return {@code true} if shooting; {@code false} otherwise
      */
-    public boolean isShooting();
+    boolean isShooting();
 
     /**
      * Gets the Capabilities of the Human entity (such as flying and invulnerability)
      *
      * @return the {@link HumanCapabilities}
      */
-    public HumanCapabilities getCapabilities();
+    HumanCapabilities getCapabilities();
+
+    /**
+     * Checks if the Human is sleeping.
+     *
+     * @return {@code true} if sleeping; {@code false} if not
+     */
+    boolean isSleeping();
+
+    /**
+     * Checks if the Human is in a deep sleep.
+     *
+     * @return {@code true} if deeply sleeping; {@code false} if not
+     */
+    boolean isDeeplySleeping();
+
+    /**
+     * Checks if the Human has insomnia. (Sleep checks ignored)
+     *
+     * @return {@code true} if suffers from insomnia; {@code false} if not
+     */
+    boolean isSleepingIgnored();
+
+    /**
+     * Sets whether the Human has insomnia or not (Sleep checks ignored)
+     *
+     * @param ignored
+     *         {@code true} for suffers from insomnia; {@code false} for not
+     */
+    void setSleepingIgnored(boolean ignored);
 }
