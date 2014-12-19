@@ -3,17 +3,32 @@ package net.canarymod.api;
 /**
  * Wraps the MobSpawnerLogic
  *
- * @author Jason (darkdiplomat)
+ * @author Jason Jason (darkdiplomat)
  * @author Willem (l4mRh4X0r)
  */
 public interface MobSpawnerLogic {
 
     /**
-     * Returns the spawns used.
+     * Gets the ID of the Mob that spawns (ignoring MobSpawnerEntries)
      *
-     * @return A String array of the names of the currently set Entities to spawn.
+     * @return mob name
      */
-    public String[] getSpawns();
+    String getSpawnId();
+
+    /**
+     * Sets the ID of the mob that spawns (ignoring MobSpawnerEntries)
+     *
+     * @param mobName
+     *         the fully qualified name of the Entity
+     */
+    void setSpawnId(String mobName);
+
+    /**
+     * Gets the current delay of the next spawn. This number is ever changing and gets randomized between spawns.
+     *
+     * @return current spawn delay
+     */
+    int getDelay();
 
     /**
      * Allows delay of what to spawn to change on-the-fly.
@@ -23,7 +38,7 @@ public interface MobSpawnerLogic {
      * @param delay
      *         Set the next spawn delay.
      */
-    public void setDelay(int delay);
+    void setDelay(int delay);
 
     /**
      * Returns the minimum delay of the spawner.
@@ -32,7 +47,7 @@ public interface MobSpawnerLogic {
      * @return minDelay
      *         The minimum delay for spawning.
      */
-    public int getMinDelay();
+    int getMinDelay();
 
     /**
      * Sets the minimum delay of the spawner.
@@ -42,7 +57,7 @@ public interface MobSpawnerLogic {
      * @param delay
      *         The min delay value to set.
      */
-    public void setMinDelay(int delay);
+    void setMinDelay(int delay);
 
     /**
      * Returns the maximum delay of the spawner.
@@ -51,7 +66,7 @@ public interface MobSpawnerLogic {
      * @return maxDelay
      *         The max delay value.
      */
-    public int getMaxDelay();
+    int getMaxDelay();
 
     /**
      * Sets the maximum delay of the spawner.
@@ -61,14 +76,14 @@ public interface MobSpawnerLogic {
      * @param delay
      *         The max delay value to set.
      */
-    public void setMaxDelay(int delay);
+    void setMaxDelay(int delay);
 
     /**
      * Returns the amount of mobs this spawner attempts to spawn.
      *
      * @return The amount of mobs this spawner attempts to spawn.
      */
-    public int getSpawnCount();
+    int getSpawnCount();
 
     /**
      * Sets the amount of mobs this spawner attempts to spawn.
@@ -77,7 +92,7 @@ public interface MobSpawnerLogic {
      * @param count
      *         Number of mobs for this spawner to spawn.
      */
-    public void setSpawnCount(int count);
+    void setSpawnCount(int count);
 
     /**
      * Returns the maximum number of entities this spawner allows nearby in order to continue spawning.
@@ -85,7 +100,7 @@ public interface MobSpawnerLogic {
      *
      * @return Max number of entities allowed to continue spawning.
      */
-    public int getMaxNearbyEntities();
+    int getMaxNearbyEntities();
 
     /**
      * Sets the maximum number of entities this spawner allows nearby in order to continue spawning.
@@ -95,14 +110,14 @@ public interface MobSpawnerLogic {
      * @param entities
      *         Value to set for max number of entities allowed to continue spawning.
      */
-    public void setMaxNearbyEntities(int entities);
+    void setMaxNearbyEntities(int entities);
 
     /**
      * If there are no players within this distance of the spawner, it won't spawn.
      *
      * @return the required range
      */
-    public int getRequiredPlayerRange();
+    int getRequiredPlayerRange();
 
     /**
      * If there are no players within this distance of the spawner, it won't spawn.
@@ -111,14 +126,14 @@ public interface MobSpawnerLogic {
      * @param range
      *         the range to be set
      */
-    public void setRequiredPlayerRange(int range);
+    void setRequiredPlayerRange(int range);
 
     /**
      * Returns the maximum distance that this spawner will spawn mobs at.
      *
      * @return the spawn range
      */
-    public int getSpawnRange();
+    int getSpawnRange();
 
     /**
      * Sets the maximum distance that this spawner will spawn mobs at.
@@ -127,7 +142,14 @@ public interface MobSpawnerLogic {
      * @param range
      *         the spawn range to set
      */
-    public void setSpawnRange(int range);
+    void setSpawnRange(int range);
+
+    /**
+     * Returns the spawns used.
+     *
+     * @return A String array of the names of the currently set Entities to spawn.
+     */
+    String[] getSpawns();
 
     /**
      * Sets the entities spawned by this spawner.
@@ -135,7 +157,7 @@ public interface MobSpawnerLogic {
      * @param entries
      *         The entities this spawner should spawn
      */
-    public void setSpawnedEntities(MobSpawnerEntry... entries);
+    void setSpawnedEntities(MobSpawnerEntry... entries);
 
     /**
      * Adds the entities passed to the list of entities
@@ -144,13 +166,13 @@ public interface MobSpawnerLogic {
      * @param entries
      *         The entities this spawner should spawn
      */
-    public void addSpawnedEntities(MobSpawnerEntry... entries);
+    void addSpawnedEntities(MobSpawnerEntry... entries);
 
     /**
      * Gets the entities spawned by this spawner.
      *
      * @return An {@code Array} of Entities set to spawn on this logic.
      */
-    public MobSpawnerEntry[] getSpawnedEntities();
+    MobSpawnerEntry[] getSpawnedEntities();
 
 }

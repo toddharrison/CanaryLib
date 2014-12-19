@@ -144,5 +144,8 @@ public enum CanaryCommandPermissions {
             WORLD$LOAD = "canary.commmand.world.load",
             MOB = "canary.command.mob",
             MOB$CLEAR = "canary.command.mob.clear",
-            MOB$COUNT = "canary.command.mob.count";
+            MOB$COUNT = "canary.command.mob.count",
+            MOBSPAWNER = "canary.command.mobspawner",
+            MOBSPAWNER$SET = "canary.command.mobspawner.set",
+            MOBSPAWNER$CHECK = "canary.command.mobspanwer.check";
 }

@@ -117,6 +117,8 @@ import net.canarymod.commandsys.commands.world.DeleteWorldCommand;
 import net.canarymod.commandsys.commands.world.LoadWorldCommand;
 import net.canarymod.commandsys.commands.world.MobClear;
 import net.canarymod.commandsys.commands.world.MobCount;
+import net.canarymod.commandsys.commands.world.MobSpawnerCheck;
+import net.canarymod.commandsys.commands.world.MobSpawnerSet;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -177,6 +179,9 @@ import static net.canarymod.commandsys.CanaryCommandPermissions.MESSAGERAW;
 import static net.canarymod.commandsys.CanaryCommandPermissions.MOB;
 import static net.canarymod.commandsys.CanaryCommandPermissions.MOB$CLEAR;
 import static net.canarymod.commandsys.CanaryCommandPermissions.MOB$COUNT;
+import static net.canarymod.commandsys.CanaryCommandPermissions.MOBSPAWNER;
+import static net.canarymod.commandsys.CanaryCommandPermissions.MOBSPAWNER$CHECK;
+import static net.canarymod.commandsys.CanaryCommandPermissions.MOBSPAWNER$SET;
 import static net.canarymod.commandsys.CanaryCommandPermissions.MOTD;
 import static net.canarymod.commandsys.CanaryCommandPermissions.MUTE;
 import static net.canarymod.commandsys.CanaryCommandPermissions.PARTICLE;
@@ -395,8 +400,10 @@ public class CommandList implements CommandListener {
         temp.put("createworld", new CreateWorldCommand());
         temp.put("deleteworld", new DeleteWorldCommand());
         temp.put("loadworld", new LoadWorldCommand());
-        temp.put("mobclear", new MobClear());
-        temp.put("mobcount", new MobCount());
+        temp.put("mob.clear", new MobClear());
+        temp.put("mob.count", new MobCount());
+        temp.put("mobspawner.set", new MobSpawnerSet());
+        temp.put("mobspawner.check", new MobSpawnerCheck());
 
         natives = Collections.unmodifiableMap(temp);
     }
@@ -2072,7 +2079,7 @@ public class CommandList implements CommandListener {
             version = 2
     )
     public void mobclear(MessageReceiver caller, String[] args) {
-        natives.get("mobclear").execute(caller, args);
+        natives.get("mob.clear").execute(caller, args);
     }
 
     @Command(
@@ -2081,10 +2088,11 @@ public class CommandList implements CommandListener {
             description = "Gets a Mob count.",
             permissions = { MOB$COUNT },
             toolTip = "/mob count [world]",
+            helpLookup = "mob count",
             version = 2
     )
     public void mobcount(MessageReceiver caller, String[] args) {
-        natives.get("mobcount").execute(caller, args);
+        natives.get("mob.count").execute(caller, args);
     }
 
     @TabComplete(commands = { "mob" })
@@ -2094,6 +2102,52 @@ public class CommandList implements CommandListener {
                 args[0].equals("clear") ? matchTo(args, new String[]{ "h", "ht", "hp", "hu", "htp", "htu", "htpu", "t", "tp", "tu", "tpu", "p", "pu", "u", "a" })
                         : args[0].equals("count") ? matchToLoadedWorld(args)
                         : null
+                : null;
+    }
+
+    @Command(
+            aliases = { "mobspawner" },
+            description = "Sets or Checks MobSpawner information",
+            permissions = { MOBSPAWNER },
+            toolTip = "/mobspawner <set|check>",
+            min = 1,
+            version = 2
+    )
+    public void mobspawner(MessageReceiver caller, String[] args) {
+        Canary.help().getHelp(caller, "mobspawner");
+    }
+
+    @Command(
+            aliases = { "set" },
+            parent = "mobspawner",
+            description = "Sets the MobSpawner's data",
+            permissions = { MOBSPAWNER$SET },
+            toolTip = "/mobspawner set <*see tab complete*>",
+            helpLookup = "mobspawner set",
+            version = 2
+    )
+    public void mobspawnerset(MessageReceiver caller, String[] args) {
+        natives.get("mobspawner.set").execute(caller, args);
+    }
+
+    @Command(
+            aliases = { "check" },
+            parent = "mobspawner",
+            description = "Checks the MobSpawner's data",
+            permissions = { MOBSPAWNER$CHECK },
+            toolTip = "/mobspawner check",
+            helpLookup = "mobspawner check",
+            version = 2
+    )
+    public void mobspawnercheck(MessageReceiver caller, String[] args) {
+        natives.get("mobspawner.check").execute(caller, args);
+    }
+
+    @TabComplete(commands = { "mobspawner" })
+    public List<String> mobspawnerTabComplete(MessageReceiver caller, String[] args) {
+        return args.length == 1 ? matchTo(args, new String[]{ "set", "check" })
+                : args.length > 2 && args[1].equals("set") ?
+                matchTo(args, new String[]{ "id:", "delay:", "minDelay:", "maxDelay:", "count:", "maxNearby:", "playerRange:", "spawnRange:" })
                 : null;
     }
 
