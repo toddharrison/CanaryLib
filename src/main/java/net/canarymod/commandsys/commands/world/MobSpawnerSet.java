@@ -22,7 +22,8 @@ public class MobSpawnerSet extends MobSpawnerCommand {
                 boolean changeMade = false;
                 for (String arg : args) {
                     try {
-                        if (arg.matches("((?i)id):[A-Z][a-z]+")) {
+                        // A proper Spawn name has to start with a capital letter...
+                        if (arg.matches("((?i)id):[A-Z][a-zA-Z]+")) {
                             logic.setSpawnId(arg.split(":")[1]);
                             changeMade = true;
                         }

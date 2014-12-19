@@ -2124,6 +2124,7 @@ public class CommandList implements CommandListener {
             permissions = { MOBSPAWNER$SET },
             toolTip = "/mobspawner set <*see tab complete*>",
             helpLookup = "mobspawner set",
+            min = 1,
             version = 2
     )
     public void mobspawnerset(MessageReceiver caller, String[] args) {
