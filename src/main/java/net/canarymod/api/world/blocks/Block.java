@@ -41,6 +41,7 @@ public interface Block {
      * Get this blocks data
      *
      * @return data
+     *
      * @deprecated Block meta data is going away, look at BlockProperties instead
      */
     @Deprecated
@@ -319,6 +320,16 @@ public interface Block {
      * @return map of properties and values
      */
     ImmutableMap<BlockProperty, Comparable> getProperties();
+
+    /**
+     * Gets the {@link net.canarymod.api.world.blocks.properties.BlockProperty} for the given name
+     *
+     * @param name
+     *         the name of the property
+     *
+     * @return the associated {@link net.canarymod.api.world.blocks.properties.BlockProperty} or {@code null} if no property found
+     */
+    BlockProperty getPropertyForName(String name);
 
     /**
      * Gets the value of a given {@link net.canarymod.api.world.blocks.properties.BlockProperty}

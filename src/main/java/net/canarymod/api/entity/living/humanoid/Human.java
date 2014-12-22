@@ -132,4 +132,18 @@ public interface Human extends LivingBase {
      *         {@code true} for suffers from insomnia; {@code false} for not
      */
     void setSleepingIgnored(boolean ignored);
+
+    /**
+     * Gets whether the Human is using an Item (like Eating)
+     *
+     * @return {@code true} if using an {@link net.canarymod.api.inventory.Item}; {@code false} if not
+     */
+    boolean isUsingItem();
+
+    /**
+     * Gets the {@link net.canarymod.api.inventory.Item} currently in use
+     *
+     * @return item in use or {@code null} if not using an item
+     */
+    Item getItemInUse();
 }
