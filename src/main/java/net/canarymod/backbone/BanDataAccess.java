@@ -7,7 +7,8 @@ import net.canarymod.database.DataAccess;
 /**
  * Ban Data Access
  *
- * @author Chris (damagefilter)
+ * @author Chris Ksoll (damagefilter)
+ * @author Jason Jones (darkdiplomat)
  */
 public class BanDataAccess extends DataAccess {
 
@@ -38,6 +39,10 @@ public class BanDataAccess extends DataAccess {
     /** Date to unban. */
     @Column(columnName = "unbanDate", dataType = DataType.LONG)
     public long unbanDate = -1;
+
+    /** Date ban issued. */
+    @Column(columnName = "issuedDate", dataType = DataType.LONG)
+    public long issuedDate = -1;
 
     @Override
     public DataAccess getInstance() {

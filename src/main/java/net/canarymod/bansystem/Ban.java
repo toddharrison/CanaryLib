@@ -1,6 +1,5 @@
 package net.canarymod.bansystem;
 
-import net.canarymod.Canary;
 import net.canarymod.ToolBox;
 import net.canarymod.api.PlayerReference;
 import net.canarymod.backbone.BackboneBans;
@@ -8,60 +7,38 @@ import net.canarymod.backbone.BackboneBans;
 /**
  * Contains information regarding a ban
  *
- * @author Chris Ksoll
+ * @author Chris Ksoll (damagefilter)
+ * @author Jason Jones (darkdiplomat)
  */
 public class Ban {
-    private String uuid, subject, ip, reason, banningPlayer;
+    private String uuid, subject, reason, moderator, ip = "xxx.xxx.xxx.xxx";
     private boolean isIpBan = false;
-
-    /**
-     * When this ban will expire as unix timestamp. Note: It's probably
-     * unnecessary all the way but we use a long here to dodge the 2038
-     * problem. Just to be cool :P
-     */
-    private long timestamp;
+    private long issued = ToolBox.getUnixTimestamp(), expiration = -1;
 
     /**
      * Create a default ban object.
      * It's highly recommended to override the values before saving to db
      */
     public Ban() {
-        setUUID("f84c6a790a4e45e0879bcd49ebd4c4e2");
-        setSubject("John Doe");
-        setIp("xxx.xxx.xxx");
-        setReason("Impersonating fictive characters");
-        setTimestamp(-1);
-        setIsIpBan(false);
+        this.uuid = "f84c6a790a4e45e0879bcd49ebd4c4e2";
+        this.subject = "John Doe";
+        this.reason = "Impersonating fictive characters";
     }
 
     public Ban(PlayerReference player, String reason, boolean ipBan) {
-        setUUID(player.getUUIDString());
-        setSubject(player.getName());
-        if (ipBan) {
-            setIp(player.getIP());
-            setIsIpBan(true);
-        }
-        else {
-            setIp("xxx.xxx.xxx");
-            setIsIpBan(false);
-        }
-        setReason(reason);
-        setTimestamp(-1);
+        this(player, reason, -1, ipBan);
     }
 
-    public Ban(PlayerReference player, String reason, long timestamp, boolean ipBan) {
-        setUUID(player.getUUIDString());
-        setSubject(player.getName());
+    public Ban(PlayerReference player, String reason, long expiration, boolean ipBan) {
+        this.uuid = player.getUUIDString();
+        this.subject = player.getName();
+        this.reason = reason;
+        this.expiration = expiration;
+
         if (ipBan) {
-            setIp(player.getIP());
-            setIsIpBan(true);
+            this.ip = player.getIP();
+            this.isIpBan = true;
         }
-        else {
-            setIp("xxx.xxx.xxx");
-            setIsIpBan(false);
-        }
-        setReason(reason);
-        setTimestamp(timestamp);
     }
 
     /**
@@ -127,9 +104,21 @@ public class Ban {
      * with a date formatter if you need to.
      *
      * @return UNIX timestamp
+     * @deprecated Use {@link Ban#getExpiration} instead
      */
+    @Deprecated
     public long getTimestamp() {
-        return timestamp;
+        return expiration;
+    }
+
+    /**
+     * Get the UNIX timestamp of when this ban will expire. You can use that
+     * with a date formatter if you need to.
+     *
+     * @return UNIX timestamp
+     */
+    public long getExpiration() {
+        return expiration;
     }
 
     /**
@@ -138,8 +127,19 @@ public class Ban {
      * @param timestamp
      *         the UNIX timestamp
      */
+    @Deprecated
     public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
+        this.expiration = timestamp;
+    }
+
+    /**
+     * Set the UNIX timestamp of when this ban will expire
+     *
+     * @param expiration
+     *         the UNIX timestamp
+     */
+    public void setExpiration(long expiration) {
+        this.expiration = expiration;
     }
 
     /**
@@ -148,13 +148,7 @@ public class Ban {
      * @return {@code true} if expired; {@code false} if not
      */
     public boolean isExpired() {
-
-        /*
-         * System.currentTimeMillis() returns milliseconds since Jan 1, 1970.
-         * Unixtimestamp is seconds since Jan 1, 1970. So we just do some simple
-         * 3rd class math :3
-         */
-        return timestamp != -1 && ((System.currentTimeMillis() / 1000L) >= timestamp);
+        return expiration != -1 && ToolBox.getUnixTimestamp() >= expiration;
     }
 
     /**
@@ -182,7 +176,7 @@ public class Ban {
      * @return the moderator
      */
     public String getBanningPlayer() {
-        return banningPlayer;
+        return moderator;
     }
 
     /**
@@ -192,7 +186,7 @@ public class Ban {
      *         the moderator
      */
     public void setBanningPlayer(String banningPlayer) {
-        this.banningPlayer = banningPlayer;
+        this.moderator = banningPlayer;
     }
     
     /**
@@ -215,5 +209,24 @@ public class Ban {
      */
     public void setUUID(String uuid) {
         this.uuid = uuid;
+    }
+
+    /**
+     * Gets the UNIX timestamp of when this ban was issued.
+     *
+     * @return UNIX timestamp
+     */
+    public long getIssuedDate() {
+        return issued;
+    }
+
+    /**
+     * Sets the UNIX timestamp of when this ban was issued.
+     *
+     * @param issued
+     *         UNIX timestamp
+     */
+    public void setIssuedDate(long issued) {
+        this.issued = issued;
     }
 }

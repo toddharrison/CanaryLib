@@ -10,6 +10,7 @@ allow=Allow
 ban banned={0} has been banned
 ban failed=Ban not issued
 ban info=Ban a player
+ban nocontrol=You cannot ban a player ranked higher than you
 compass console=Looking down from the great Minecraft Skies
 compass info=Displays the cardinal direction you're looking at
 compass=Compass:

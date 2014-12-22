@@ -1,5 +1,7 @@
 package net.canarymod.chat;
 
+import net.canarymod.api.chat.ChatComponent;
+
 /**
  * Callback interface for commands.
  *
@@ -79,6 +81,14 @@ public interface MessageReceiver {
      *         The message(s) to send.
      */
     void message(Iterable<? extends CharSequence> messages);
+
+    /**
+     * Sneds a {@link net.canarymod.api.chat.ChatComponent} message to this <tt>MessageReceiver</tt>
+     *
+     * @param chatComponents
+     *         The ChatComponent(s) to send
+     */
+    void message(ChatComponent... chatComponents);
 
     /**
      * Check if the {@link MessageReceiver} has this permission.
