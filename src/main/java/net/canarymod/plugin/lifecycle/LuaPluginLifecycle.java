@@ -1,7 +1,6 @@
 package net.canarymod.plugin.lifecycle;
 
 import net.canarymod.CanaryClassLoader;
-import net.canarymod.exceptions.InvalidPluginException;
 import net.canarymod.exceptions.PluginLoadFailedException;
 import net.canarymod.plugin.IPluginManager;
 import net.canarymod.plugin.Plugin;
@@ -33,8 +32,9 @@ public class LuaPluginLifecycle extends PluginLifecycleBase {
             p.setName(desc.getName());
             p.setPriority(desc.getPriority());
             desc.setPlugin(p);
-        } catch (Exception e) {
-            throw new PluginLoadFailedException("Failed to load plugin", e);
+        }
+        catch (Throwable thrown) {
+            throw new PluginLoadFailedException("Failed to load plugin", thrown);
         }
     }
 

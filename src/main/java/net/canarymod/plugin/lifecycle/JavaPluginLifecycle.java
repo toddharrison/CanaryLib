@@ -1,12 +1,12 @@
 package net.canarymod.plugin.lifecycle;
 
-import net.canarymod.Canary;
 import net.canarymod.CanaryClassLoader;
 import net.canarymod.exceptions.PluginLoadFailedException;
-import net.canarymod.plugin.*;
+import net.canarymod.plugin.IPluginManager;
+import net.canarymod.plugin.Plugin;
+import net.canarymod.plugin.PluginDescriptor;
 
 import java.io.File;
-import java.net.MalformedURLException;
 
 /**
  * Lifecycle manager for a java plugin
@@ -32,8 +32,9 @@ public class JavaPluginLifecycle extends PluginLifecycleBase {
             p.setName(desc.getName());
             p.setPriority(desc.getPriority());
             desc.setPlugin(p);
-        } catch (Exception e) {
-            throw new PluginLoadFailedException("Failed to load plugin", e);
+        }
+        catch (Throwable thrown) {
+            throw new PluginLoadFailedException("Failed to load plugin", thrown);
         }
     }
 
