@@ -2,7 +2,7 @@ package net.canarymod.commandsys.commands.system;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 
@@ -16,11 +16,11 @@ public class ReservelistCommand implements NativeCommand {
     public void execute(MessageReceiver caller, String[] args) {
         if (args[0].equalsIgnoreCase("add")) {
             Canary.reservelist().addPlayer(args[1]);
-            caller.message(Colors.YELLOW + Translator.translate("reservelist player added"));
+            caller.message(ChatFormat.YELLOW + Translator.translate("reservelist player added"));
         }
-        if (args[0].equalsIgnoreCase("remove")) {
+        else if (args[0].equalsIgnoreCase("remove")) {
             Canary.reservelist().removePlayer(args[1]);
-            caller.message(Colors.YELLOW + Translator.translate("reservelist player removed"));
+            caller.message(ChatFormat.YELLOW + Translator.translate("reservelist player removed"));
         }
     }
 }

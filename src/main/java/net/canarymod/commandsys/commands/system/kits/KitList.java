@@ -3,7 +3,7 @@ package net.canarymod.commandsys.commands.system.kits;
 import com.google.common.collect.Lists;
 import net.canarymod.Canary;
 import net.canarymod.api.entity.living.humanoid.Player;
-import net.canarymod.chat.TextFormat;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.chat.ReceiverType;
 import net.canarymod.commandsys.NativeCommand;
@@ -22,7 +22,7 @@ public class KitList implements NativeCommand {
     @Override
     public void execute(MessageReceiver caller, String[] parameters) {
         boolean notPlayer = !caller.getReceiverType().equals(ReceiverType.PLAYER);
-        caller.message(TextFormat.YELLOW + "Available Kits: ");
+        caller.message(ChatFormat.YELLOW + "Available Kits: ");
         List<Kit> kits = Canary.kits().getAllKits();
         StringBuilder kitList = new StringBuilder();
 

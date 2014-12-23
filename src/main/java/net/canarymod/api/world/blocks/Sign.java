@@ -1,5 +1,6 @@
 package net.canarymod.api.world.blocks;
 
+import net.canarymod.api.chat.ChatComponent;
 import net.canarymod.api.entity.living.humanoid.Player;
 
 /**
@@ -14,8 +15,31 @@ public interface Sign extends TileEntity {
      * Get this signs text
      *
      * @return the String array of text
+     *
+     * @deprecated Use {@link #getLines()} instead
      */
+    @Deprecated
     public String[] getText();
+
+    /**
+     * Get this sign's {@link net.canarymod.api.chat.ChatComponent}(s)
+     *
+     * @return the array of text
+     */
+    public ChatComponent[] getLines();
+
+    /**
+     * Get text in specified line
+     *
+     * @param line
+     *         the line index (0 - 3)
+     *
+     * @return the line of text
+     *
+     * @deprecated Use {@link #getComponentOnLine(int)} instead
+     */
+    @Deprecated
+    public String getTextOnLine(int line);
 
     /**
      * Get text in specified line
@@ -25,15 +49,25 @@ public interface Sign extends TileEntity {
      *
      * @return the line of text
      */
-    public String getTextOnLine(int line);
+    public ChatComponent getComponentOnLine(int line);
 
     /**
      * Override the whole sign content
      *
      * @param text
      *         the text to set
+     * @deprecated Use {@link #setComponents(net.canarymod.api.chat.ChatComponent[])} instead
      */
+    @Deprecated
     public void setText(String[] text);
+
+    /**
+     * Override the whole sign content
+     *
+     * @param components
+     *         the {@link net.canarymod.api.chat.ChatComponent}(s) to set
+     */
+    public void setComponents(ChatComponent[] components);
 
     /**
      * Set text on this line
@@ -42,8 +76,21 @@ public interface Sign extends TileEntity {
      *         the text to set on the line
      * @param line
      *         the line index
+     *
+     * @deprecated Use {@link #setComponentOnLine(net.canarymod.api.chat.ChatComponent, int)} instead
      */
+    @Deprecated
     public void setTextOnLine(String text, int line);
+
+    /**
+     * Sets a {@link net.canarymod.api.chat.ChatComponent} on this line
+     *
+     * @param component
+     *         the {@link net.canarymod.api.chat.ChatComponent} to set on the line
+     * @param line
+     *         the line index
+     */
+    public void setComponentOnLine(ChatComponent component, int line);
 
     /**
      * Gets whether the Sign is hanging on a wall or not

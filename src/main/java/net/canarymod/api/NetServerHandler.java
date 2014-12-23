@@ -1,7 +1,10 @@
 package net.canarymod.api;
 
+import net.canarymod.api.chat.ChatComponent;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.packet.Packet;
+
+import java.net.SocketAddress;
 
 /**
  * NetServerHandler wrapper
@@ -57,4 +60,19 @@ public interface NetServerHandler {
      *         the message to be sent
      */
     public void sendMessage(String messgage);
+
+    /**
+     * Privately send a {@link net.canarymod.api.chat.ChatComponent} message to the attached {@link Player}
+     *
+     * @param chatComponent
+     *         the {@link net.canarymod.api.chat.ChatComponent} message
+     */
+    public void sendMessage(ChatComponent chatComponent);
+    
+    /**
+     * Get the {@link SocketAdress} that is attached to this NetServerHandler
+     *
+     * @return the attached {@link SocketAdress}
+     */
+    public SocketAddress getSocketAdress();
 }

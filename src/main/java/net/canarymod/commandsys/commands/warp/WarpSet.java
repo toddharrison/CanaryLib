@@ -5,13 +5,16 @@ import net.canarymod.Translator;
 import net.canarymod.api.Server;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.blocks.CommandBlock;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.Group;
 import net.canarymod.warp.Warp;
 
-import static net.canarymod.commandsys.CanaryCommandPermissions.*;
+import static net.canarymod.commandsys.CanaryCommandPermissions.WARP$SET$ADMIN;
+import static net.canarymod.commandsys.CanaryCommandPermissions.WARP$SET$GROUP;
+import static net.canarymod.commandsys.CanaryCommandPermissions.WARP$SET$PRIVATE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.WARP$SET$PUBLIC;
 
 /**
  * Command to set a warp (including private and group warps)
@@ -33,9 +36,9 @@ public class WarpSet implements NativeCommand {
                 Warp newWarp = new Warp(player.getLocation(), args[0]);
 
                 Canary.warps().addWarp(newWarp);
-                player.message(Colors.YELLOW + Translator.translateAndFormat("setwarp success", args[0]));
+                player.message(ChatFormat.YELLOW + Translator.translateAndFormat("setwarp success", args[0]));
             }
-            if (args.length > 2) {
+            else if (args.length > 2) {
                 // SET GROUP SPECIFIC WARP
                 if (args[1].equalsIgnoreCase("G") && player.hasPermission(WARP$SET$GROUP)) {
                     Group[] groups = new Group[args.length - 2];
@@ -46,14 +49,14 @@ public class WarpSet implements NativeCommand {
                     Warp newWarp = new Warp(player.getLocation(), groups, args[0]);
 
                     Canary.warps().addWarp(newWarp);
-                    player.message(Colors.YELLOW + Translator.translateAndFormat("setwarp success group", args[0]));
+                    player.message(ChatFormat.YELLOW + Translator.translateAndFormat("setwarp success group", args[0]));
                 }
                 // SET PRIVATE WARP
                 else if (args[1].equalsIgnoreCase("P") && player.hasPermission(WARP$SET$PRIVATE)) {
                     Warp newWarp = new Warp(player.getLocation(), args[0], args[2], false);
 
                     Canary.warps().addWarp(newWarp);
-                    player.message(Colors.YELLOW + Translator.translateAndFormat("setwarp success private", args[0]));
+                    player.message(ChatFormat.YELLOW + Translator.translateAndFormat("setwarp success private", args[0]));
                 }
                 else {
                     Canary.help().getHelp(player, "setwarp");

@@ -15,6 +15,7 @@ import net.canarymod.api.packet.Packet;
 import net.canarymod.api.potion.PotionEffect;
 import net.canarymod.api.statistics.Stat;
 import net.canarymod.api.world.Chunk;
+import net.canarymod.api.world.blocks.BlockType;
 import net.canarymod.api.world.position.Position;
 import net.canarymod.api.world.position.Vector3D;
 
@@ -532,6 +533,22 @@ public interface PacketFactory {
     Packet blockChange(int x, int y, int z, int typeId, int data); //35
 
     /**
+     * Creates a BlockChange {@link Packet}
+     *
+     * @param x
+     *         the Block X Coordinate
+     * @param y
+     *         the Block Y Coordinate
+     * @param z
+     *         the Block Z Coordinate
+     * @param type
+     *         the block type to send
+     *
+     * @return new BlockChange {@link Packet} or {@code null} if an error occurred
+     */
+    Packet blockChange(int x, int y, int z, BlockType type); //35
+
+    /**
      * Creates a BlockAction {@link Packet}
      *
      * @param x
@@ -649,18 +666,18 @@ public interface PacketFactory {
      * Information unknown at this time
      *
      * @param name
-     * @param f1
-     * @param f2
-     * @param f3
-     * @param f4
-     * @param f5
-     * @param f6
-     * @param f7
-     * @param i1
+     * @param x
+     * @param y
+     * @param z
+     * @param velocityX
+     * @param velocityY
+     * @param velocityZ
+     * @param speed
+     * @param quantity
      *
      * @return
      */
-    Packet particles(String name, float f1, float f2, float f3, float f4, float f5, float f6, float f7, int i1); // 42
+    Packet particles(String name, float x, float y, float z, float velocityX, float velocityY, float velocityZ, float speed, int quantity); // 42
 
     /**
      * Creates a GameStateChange {@link Packet}

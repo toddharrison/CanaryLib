@@ -17,11 +17,22 @@ public interface Tameable extends EntityAnimal {
     public LivingBase getOwner();
 
     /**
-     * Gets the name of the owner
+     * Gets the name of the owner <br/>
+     * NOTE: As of Minecraft 1.8, this returns UUID string.
      *
      * @return the owner's name
+     *
+     * @deprecated use {@link net.canarymod.api.entity.living.animal.Tameable#getOwnerID()} instead
      */
+    @Deprecated
     public String getOwnerName();
+
+    /**
+     * Return the identity of this Tameabe's Owner
+     *
+     * @return owner id
+     */
+    public String getOwnerID();
 
     /**
      * Set the owner of this entity

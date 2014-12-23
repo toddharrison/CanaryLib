@@ -62,9 +62,10 @@ public class BackboneBans extends Backbone {
         data.uuid = ban.getUUID();
         data.player = ban.getSubject();
         data.banningPlayer = ban.getBanningPlayer();
-        data.unbanDate = ban.getTimestamp();
+        data.unbanDate = ban.getExpiration();
         data.reason = ban.getReason();
         data.ip = ban.getIp();
+        data.issuedDate = ban.getIssuedDate();
         try {
             Database.get().insert(data);
         }
@@ -136,7 +137,8 @@ public class BackboneBans extends Backbone {
         newBan.setIsIpBan(!data.ip.contains("xxx"));
         newBan.setReason(data.reason);
         newBan.setSubject(data.player);
-        newBan.setTimestamp(data.unbanDate);
+        newBan.setExpiration(data.unbanDate);
+        newBan.setIssuedDate(data.issuedDate);
         newBan.setBanningPlayer(data.banningPlayer);
         return newBan;
     }
@@ -160,7 +162,8 @@ public class BackboneBans extends Backbone {
                 data.ip = ban.getIp();
                 data.player = ban.getSubject();
                 data.reason = ban.getReason();
-                data.unbanDate = ban.getTimestamp();
+                data.unbanDate = ban.getExpiration();
+                data.issuedDate = ban.getIssuedDate();
                 Database.get().update(data, filter);
             }
 
@@ -195,7 +198,8 @@ public class BackboneBans extends Backbone {
                 ban.setIsIpBan(!data.ip.contains("xxx"));
                 ban.setReason(data.reason);
                 ban.setSubject(data.player);
-                ban.setTimestamp(data.unbanDate);
+                ban.setExpiration(data.unbanDate);
+                ban.setIssuedDate(data.issuedDate);
                 banList.add(ban);
             }
         }

@@ -1,6 +1,8 @@
 package net.canarymod.api.inventory.helper;
 
 import net.canarymod.Canary;
+import net.canarymod.api.chat.ChatComponent;
+import net.canarymod.api.factory.ChatComponentFactory;
 import net.canarymod.api.inventory.Enchantment;
 import net.canarymod.api.inventory.Item;
 import net.canarymod.api.inventory.ItemType;
@@ -22,7 +24,8 @@ public class BookHelper extends ItemHelper {
 
     private final static short MAX_PAGE_LENGTH = 255; // Roughly the most characters visible on the page
     private final static byte MAX_AUTHOR_LENGTH = 16; // The max length of a player's name
-    private final static byte MAX_TITLE_LENGTH = 40; // The max length of an anvil input
+    private final static byte MAX_TITLE_LENGTH = 32; // The max allowed title
+    private final static ChatComponentFactory CHAT_FACTO = Canary.factory().getChatComponentFactory();
     private final static ListTag<StringTag> PAGES_TAG = NBT_FACTO.newListTag();
     private final static ListTag<CompoundTag> STORED_ENCH_TAG = NBT_FACTO.newListTag();
     private final static StringTag PAGE_TITLE_AUTHOR = NBT_FACTO.newStringTag("null");
@@ -154,7 +157,14 @@ public class BookHelper extends ItemHelper {
         int size = pages_tags.size();
         String[] pages = new String[size];
         for (int index = 0; index < size; index++) {
-            pages[index] = pages_tags.get(index).getValue();
+            try {
+                pages[index] = pages_tags.get(index).getValue();
+            }
+            catch (Exception ex) {
+                // Older book format
+                Canary.log.debug("Error decompiling ChatComponent on Book Page", ex);
+                pages[index] = pages_tags.get(index).getValue();
+            }
         }
         return pages;
     }
@@ -176,6 +186,7 @@ public class BookHelper extends ItemHelper {
         if (!verifyTags(book, "pages", LIST, true)) {
             return false;
         }
+        book.getDataTag().put("resolved", true);
         boolean success = true;
         for (String page : pages) {
             if (page == null) {
@@ -183,6 +194,36 @@ public class BookHelper extends ItemHelper {
             }
             StringTag toAdd = PAGE_TITLE_AUTHOR.copy();
             toAdd.setValue(correctPage(page));
+            success &= book.getDataTag().getListTag("pages").add(toAdd);
+        }
+        return success;
+    }
+    
+    /**
+     * Adds pages to a writable/written book
+     *
+     * @param book
+     *         the Book to add pages too
+     * @param pages
+     *         the pages to be added
+     *
+     * @return {@code true} if all pages successfully added; {@code false} if all or some pages could not be added
+     */
+    public static boolean addPages(Item book, ChatComponent... pages) {
+        if (book == null || (book.getType() != ItemType.BookAndQuill && book.getType() != ItemType.WrittenBook)) {
+            return false;
+        }
+        if (!verifyTags(book, "pages", LIST, true)) {
+            return false;
+        }
+        book.getDataTag().put("resolved", true);
+        boolean success = true;
+        for (ChatComponent page : pages) {
+            if (page == null) {
+                continue;
+            }
+            StringTag toAdd = PAGE_TITLE_AUTHOR.copy();
+            toAdd.setValue(page.serialize());
             success &= book.getDataTag().getListTag("pages").add(toAdd);
         }
         return success;
@@ -215,6 +256,34 @@ public class BookHelper extends ItemHelper {
         book.getDataTag().getListTag("pages").set(page_index, toSet);
         return true;
     }
+    
+    /**
+     * Sets a page at the specified index
+     *
+     * @param book
+     *         the book to set a page for
+     * @param page_index
+     *         the index to add the page at
+     * @param page
+     *         the page to be added
+     *
+     * @return {@code true} if success; {@code false} if not
+     */
+    public static boolean setPage(Item book, int page_index, ChatComponent page) {
+        if (book == null || (book.getType() != ItemType.BookAndQuill && book.getType() != ItemType.WrittenBook)) {
+            return false;
+        }
+        if (!verifyTags(book, "pages", LIST, true)) {
+            return false;
+        }
+        if (!isValidPage(page_index, getPageCount(book))) {
+            return false;
+        }
+        StringTag toSet = PAGE_TITLE_AUTHOR.copy();
+        toSet.setValue(page.serialize());
+        book.getDataTag().getListTag("pages").set(page_index, toSet);
+        return true;
+    }
 
     /**
      * Sets the pages of the book
@@ -241,6 +310,37 @@ public class BookHelper extends ItemHelper {
             }
             StringTag toAdd = PAGE_TITLE_AUTHOR.copy();
             toAdd.setValue(correctPage(page));
+            success &= pages_to_set.add(toAdd);
+        }
+        book.getDataTag().put("pages", pages_to_set);
+        return success;
+    }
+    
+    /**
+     * Sets the pages of the book
+     *
+     * @param book
+     *         the book to set pages for
+     * @param pages
+     *         the pages to be set
+     *
+     * @return {@code true} if successful; {@code false} if all or some of the pages couldn't be added
+     */
+    public static boolean setPages(Item book, ChatComponent... pages) {
+        if (book == null || pages == null || pages.length == 0 || (book.getType() != ItemType.BookAndQuill && book.getType() != ItemType.WrittenBook)) {
+            return false;
+        }
+        if (!verifyTags(book, "pages", LIST, true)) {
+            return false;
+        }
+        ListTag<StringTag> pages_to_set = PAGES_TAG.copy(); // Don't bother checking, we are overriding anyways
+        boolean success = true;
+        for (ChatComponent page : pages) {
+            if (page == null) {
+                continue;
+            }
+            StringTag toAdd = PAGE_TITLE_AUTHOR.copy();
+            toAdd.setValue(page.serialize());
             success &= pages_to_set.add(toAdd);
         }
         book.getDataTag().put("pages", pages_to_set);
@@ -487,6 +587,14 @@ public class BookHelper extends ItemHelper {
     }
 
     /**
+    * @deprecated  As of release CanaryLib 1.2.0, replaced by {@link #addEnchantments(Item, Enchantment...)}
+    */
+    @Deprecated
+    public static boolean addEncahntments(Item book, Enchantment... enchantments) {
+        return addEnchantments(book,enchantments);
+    }
+    
+    /**
      * Adds enchantments to the book
      *
      * @param book
@@ -496,7 +604,7 @@ public class BookHelper extends ItemHelper {
      *
      * @return true if successful; false if not
      */
-    public static boolean addEncahntments(Item book, Enchantment... enchantments) {
+    public static boolean addEnchantments(Item book, Enchantment... enchantments) {
         if (book == null || enchantments == null || enchantments.length == 0) {
             return false;
         }
@@ -577,19 +685,21 @@ public class BookHelper extends ItemHelper {
         return true;
     }
 
-    private final static boolean isValidPage(int page, int page_count) {
+    private static boolean isValidPage(int page, int page_count) {
         return page > 0 && page < page_count;
     }
 
-    private final static String correctPage(String page) {
-        return page.length() > MAX_PAGE_LENGTH ? page.substring(0, MAX_PAGE_LENGTH) : page;
+    private static String correctPage(String page) {
+        page = page.length() > MAX_PAGE_LENGTH ? page.substring(0, MAX_PAGE_LENGTH) : page;
+        ChatComponent chatComponent = Canary.factory().getChatComponentFactory().compileChatComponent(page);
+        return chatComponent.serialize();
     }
 
-    private final static String correctAuthor(String author) {
+    private static String correctAuthor(String author) {
         return author.length() > MAX_AUTHOR_LENGTH ? author.substring(0, MAX_AUTHOR_LENGTH) : author;
     }
 
-    private final static String correctTitle(String title) {
+    private static String correctTitle(String title) {
         return title.length() > MAX_TITLE_LENGTH ? title.substring(0, MAX_TITLE_LENGTH) : title;
     }
 }

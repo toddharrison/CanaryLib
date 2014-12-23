@@ -3,8 +3,8 @@ package net.canarymod.commandsys.commands.system;
 import net.canarymod.Canary;
 import net.canarymod.Translator;
 import net.canarymod.api.entity.living.humanoid.Player;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
-import net.canarymod.chat.TextFormat;
 import net.canarymod.commandsys.NativeCommand;
 
 import java.util.Arrays;
@@ -21,7 +21,7 @@ public class HelpCommand implements NativeCommand {
 
     public void execute(MessageReceiver caller, String[] parameters) {
         if (caller instanceof Player) {
-            player((Player) caller, parameters);
+            player((Player)caller, parameters);
         }
         else {
             console(caller, parameters);
@@ -68,7 +68,7 @@ public class HelpCommand implements NativeCommand {
         }
         // Send all lines
         for (String l : lines) {
-            log.info(TextFormat.removeFormatting(l));
+            log.info(ChatFormat.removeFormatting(l));
         }
     }
 
@@ -116,5 +116,4 @@ public class HelpCommand implements NativeCommand {
             player.message(l);
         }
     }
-
 }

@@ -1,5 +1,6 @@
 package net.canarymod.database.xml;
 
+import com.google.common.io.Files;
 import net.canarymod.database.Column;
 import net.canarymod.database.Column.DataType;
 import net.canarymod.database.DataAccess;
@@ -12,6 +13,7 @@ import org.jdom2.Content;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
+import org.jdom2.input.JDOMParseException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
@@ -21,7 +23,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Represent access to an XML database
@@ -61,7 +68,6 @@ public class XmlDatabase extends Database {
                 if (!file.createNewFile()) {
                     throw new DatabaseWriteException("Failed to create database XML file: " + data.getName());
                 }
-                initFile(file, data.getName());
             }
             catch (IOException e) {
                 throw new DatabaseWriteException(e.getMessage());
@@ -71,7 +77,43 @@ public class XmlDatabase extends Database {
 
         try {
             dbTable = verifyTable(file, data.getName());
-            insertData(file, data, dbTable);
+            insertData(file, data, dbTable, true);
+        }
+        catch (JDOMException e) {
+            throw new DatabaseWriteException(e.getMessage(), e);
+        }
+        catch (IOException e) {
+            throw new DatabaseWriteException(e.getMessage(), e);
+        }
+        catch (DatabaseTableInconsistencyException e) {
+            throw new DatabaseWriteException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void insertAll(List<DataAccess> data) throws DatabaseWriteException {
+        DataAccess first = data.get(0);
+        File file = new File("db/" + first.getName() + ".xml");
+
+        if (!file.exists()) {
+            try {
+                if (!file.createNewFile()) {
+                    throw new DatabaseWriteException("Failed to create database XML file: " + first.getName());
+                }
+            }
+            catch (IOException e) {
+                throw new DatabaseWriteException(e.getMessage());
+            }
+        }
+        Document dbTable;
+
+        try {
+            dbTable = verifyTable(file, first.getName());
+            for (DataAccess da : data) {
+                insertData(file, da, dbTable, false);
+            }
+            write(file, dbTable);
+
         }
         catch (JDOMException e) {
             throw new DatabaseWriteException(e.getMessage(), e);
@@ -143,7 +185,34 @@ public class XmlDatabase extends Database {
 
         try {
             Document table = verifyTable(file, data.getName());
-            updateData(file, table, data, filters);
+            updateData(file, table, data, filters, true);
+        }
+        catch (JDOMException e) {
+            throw new DatabaseWriteException(e.getMessage(), e);
+        }
+        catch (IOException e) {
+            throw new DatabaseWriteException(e.getMessage(), e);
+        }
+        catch (DatabaseTableInconsistencyException e) {
+            throw new DatabaseWriteException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void updateAll(DataAccess data, Map<DataAccess, Map<String, Object>> list) throws DatabaseWriteException {
+
+        File file = new File("db/" + data.getName() + ".xml");
+
+        if (!file.exists()) {
+            throw new DatabaseWriteException("Table " + data.getName() + " does not exist!");
+        }
+
+        try {
+            Document table = verifyTable(file, data.getName());
+            for (DataAccess da : list.keySet()) {
+                updateData(file, table, da, list.get(da), false);
+            }
+            write(file, table);
         }
         catch (JDOMException e) {
             throw new DatabaseWriteException(e.getMessage(), e);
@@ -205,7 +274,6 @@ public class XmlDatabase extends Database {
                 if (!file.createNewFile()) {
                     throw new DatabaseWriteException("Failed to create database XML file: " + data.getName());
                 }
-                initFile(file, data.getName());
             }
             catch (IOException e) {
                 throw new DatabaseWriteException(e.getMessage(), e);
@@ -213,14 +281,13 @@ public class XmlDatabase extends Database {
         }
         try {
             Document table = verifyTable(file, data.getName());
-
             HashSet<Column> tableLayout = data.getTableLayout();
 
             for (Element element : table.getRootElement().getChildren()) {
                 addFields(element, tableLayout);
                 removeFields(element, tableLayout);
             }
-            write(file.getPath(), table);
+            write(file, table);
         }
         catch (JDOMException e) {
             throw new DatabaseWriteException(e.getMessage(), e);
@@ -233,11 +300,10 @@ public class XmlDatabase extends Database {
         }
     }
 
-    private void initFile(File file, String rootName) throws IOException {
-        Document doc = new Document();
-
-        doc.setRootElement(new Element(rootName));
-        write(file.getPath(), doc);
+    private Document initFile(File file, String rootName) throws IOException {
+        Document doc = new Document(new Element(rootName));
+        write(file, doc);
+        return doc;
     }
 
     /**
@@ -300,7 +366,7 @@ public class XmlDatabase extends Database {
      * @throws DatabaseTableInconsistencyException
      *
      */
-    private void insertData(File file, DataAccess data, Document dbTable) throws IOException, DatabaseTableInconsistencyException {
+    private void insertData(File file, DataAccess data, Document dbTable, boolean write) throws IOException, DatabaseTableInconsistencyException {
         HashMap<Column, Object> entry = data.toDatabaseEntryList();
 
         if (data.isInconsistent()) {
@@ -327,11 +393,13 @@ public class XmlDatabase extends Database {
                     foundDupe = true;
                 }
             }
-            if (!foundDupe) {
-            }
+//            if (!foundDupe) {
+//            }
         }
         dbTable.getRootElement().addContent(set);
-        write(file.getPath(), dbTable);
+        if (write) {
+            write(file, dbTable);
+        }
     }
 
     /**
@@ -346,13 +414,11 @@ public class XmlDatabase extends Database {
      *
      * @throws DatabaseWriteException
      */
-    private void updateData(File file, Document table, DataAccess data, Map<String, Object> filters) throws IOException, DatabaseTableInconsistencyException, DatabaseWriteException {
+    private void updateData(File file, Document table, DataAccess data, Map<String, Object> filters, boolean write) throws IOException, DatabaseTableInconsistencyException, DatabaseWriteException {
         boolean hasUpdated = false;
         String[] fields = new String[filters.size()];
         filters.keySet().toArray(fields); // We know those are strings
-        Iterator<Element> elementIterator = table.getRootElement().getChildren().iterator();
-        while (elementIterator.hasNext()) {
-            Element element = elementIterator.next();
+        for (Element element : table.getRootElement().getChildren()) {
             int equalFields = 0;
 
             for (String field : fields) {
@@ -388,12 +454,14 @@ public class XmlDatabase extends Database {
                 hasUpdated = true;
             }
         }
-        if (hasUpdated) {
-            write(file.getPath(), table);
+        if (hasUpdated && write) {
+            write(file, table);
         }
         else {
             // No fields found, that means it is a new entry
-            insert(data);
+            if (write) {
+                insertData(file, data, table, true);
+            }
         }
     }
 
@@ -426,7 +494,7 @@ public class XmlDatabase extends Database {
         for (Element e : toremove) {
             e.detach();
         }
-        write(file.getPath(), table);
+        write(file, table);
     }
 
     private void loadData(DataAccess data, Document table, Map<String, Object> filters) throws DatabaseAccessException {
@@ -729,9 +797,8 @@ public class XmlDatabase extends Database {
         }
     }
 
-    private void write(String path, Document doc) throws IOException {
+    private void write(File file, Document doc) throws IOException {
         sortElements(doc);
-        File file = new File(path);
         RandomAccessFile f = new RandomAccessFile(file.getPath(), "rw");
         f.getChannel().lock();
         f.setLength(0);
@@ -751,13 +818,25 @@ public class XmlDatabase extends Database {
     }
 
     private Document verifyTable(File file, String root) throws IOException, JDOMException {
+        Document document;
         if (file.length() <= 0) {
-            initFile(file, root);
+            // Don't even try reading this file
+            return initFile(file, root);
         }
 
         FileInputStream in = new FileInputStream(file);
-        Document document = fileBuilder.build(in);
-        in.close();
-        return document;
+        try {
+            return fileBuilder.build(in);
+        }
+        catch (JDOMParseException e) {
+            File dir = new File("db/damaged_db/");
+            dir.mkdirs();
+            // Assume the file is damaged. Make a backup, and do it again.
+            Files.move(file, new File(dir, file.getName()));
+            return initFile(file, root);
+        }
+        finally {
+            in.close();
+        }
     }
 }

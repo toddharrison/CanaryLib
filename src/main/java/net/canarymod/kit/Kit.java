@@ -4,8 +4,7 @@ import net.canarymod.Canary;
 import net.canarymod.ToolBox;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.inventory.Item;
-import net.canarymod.chat.TextFormat;
-
+import net.canarymod.chat.ChatFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -132,7 +131,7 @@ public class Kit {
             }
         }
         else {
-            player.notice("You have to wait " + TextFormat.ORANGE + ToolBox.getTimeUntil(lastUsed, delay) + TextFormat.LIGHT_RED + " before using again.");
+            player.notice("You have to wait " + ChatFormat.GOLD + ToolBox.getTimeUntil(lastUsed, delay) + ChatFormat.RED + " before using again.");
             return false;
         }
         return false;

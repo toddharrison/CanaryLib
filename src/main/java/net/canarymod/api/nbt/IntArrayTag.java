@@ -5,7 +5,7 @@ package net.canarymod.api.nbt;
  *
  * @author gregthegeek
  */
-public interface IntArrayTag extends BaseTag {
+public interface IntArrayTag extends BaseTag<IntArrayTag> {
 
     /**
      * Returns the value associated with this tag.
@@ -22,7 +22,4 @@ public interface IntArrayTag extends BaseTag {
      */
     public void setValue(int[] value);
 
-    /** {@inheritDoc} */
-    @Override
-    public IntArrayTag copy();
 }

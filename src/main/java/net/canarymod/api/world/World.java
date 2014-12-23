@@ -287,7 +287,10 @@ public interface World {
      * @param y
      * @param z
      * @param type
+     *
+     * @deprecated Use setBlockAt(Position position, BlockType type)
      */
+    @Deprecated
     public void setBlockAt(int x, int y, int z, short type);
 
     /**
@@ -301,9 +304,12 @@ public interface World {
     /**
      * Set the block type given at the position specified
      *
-     * @param lastPosition
+     * @param position
      * @param type
+     *
+     * @deprecated Use setBlockAt(Position position, BlockType type)
      */
+    @Deprecated
     public void setBlockAt(Position position, short type);
 
     /**
@@ -312,7 +318,10 @@ public interface World {
      * @param position
      * @param type
      * @param data
+     *
+     * @deprecated Use setBlockAt(Position position, BlockType type)
      */
+    @Deprecated
     public void setBlockAt(Position position, short type, short data);
 
     /**
@@ -565,6 +574,26 @@ public interface World {
      */
     public long getTotalTime();
 
+    /**
+     * Get the difficulty setting for this world.
+     * @return the difficulty enum property
+     */
+    public Difficulty getDifficulty();
+
+    /**
+     * Set the difficulty for this world.
+     *
+     * @param difficulty the new difficulty value to set
+     */
+    public void setDifficulty(Difficulty difficulty);
+
+    /**
+     * Get the WorldType for this world.
+     *
+     * @return the world type
+     */
+    public WorldType getWorldType();
+
     /** Spawns the given particle in the world */
     public void spawnParticle(Particle particle);
 
@@ -711,6 +740,21 @@ public interface World {
     public void setThundering(boolean thundering);
 
     /**
+     * Set the strength of the thundering.
+     * This is a value from 0 to X. Setting it will have an effect on the world weather
+     *
+     * @param strength the new thunder strength
+     */
+    public void setThunderStrength(float strength);
+
+    /**
+     * Get the current thunder strength value.
+     *
+     * @return the thunder strength
+     */
+    public float getThunderStrength();
+
+    /**
      * Set the time in ticks (~20/sec) for how long it should thunder
      *
      * @param ticks
@@ -723,6 +767,21 @@ public interface World {
      * @param downfall
      */
     public void setRaining(boolean downfall);
+
+    /**
+     * Set the strength of the rain.
+     * This is a value from 0 to X. Setting it will have an effect on the world weather
+     *
+     * @param strength the new rain strength
+     */
+    public void setRainStrength(float strength);
+
+    /**
+     * Get the current rain strength value.
+     *
+     * @return the rain strength
+     */
+    public float getRainStrength();
 
     /**
      * Set the time in ticks (~20/sec) for how long it should rain/snow
@@ -886,5 +945,45 @@ public interface World {
      *         the message to broadcast
      */
     public void broadcastMessage(String msg);
+    
+    /**
+     * Gets all the villages in this world
+     * 
+     * @return a list containing all the loaded villages in the world
+     */
+    public List<Village> getVillages();
+    
+    /**
+     * Gets the nearest villages to the specified position
+     * 
+     * @param position
+     * @param radius
+     * 
+     * @return the nearest village to that position in range; {@code null} if no village in range
+     */
+    public Village getNearestVillage(Position position, int radius);
+    
+    
+    /**
+     * Gets the nearest villages to the specified location
+     * 
+     * @param location
+     * @param radius
+     * 
+     * @return the nearest village to that location in range; {@code null} if no village in range
+     */
+    public Village getNearestVillage(Location location, int radius);
+    
+    /**
+     * Gets the nearest villages to the specified coordinates
+     * 
+     * @param x
+     * @param y
+     * @param z
+     * @param radius
+     * 
+     * @return the nearest village in range of the given coordinates; {@code null} if no village in range
+     */
+    public Village getNearestVillage(int x, int y, int z, int radius);
 
 }

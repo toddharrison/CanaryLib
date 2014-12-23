@@ -10,10 +10,5 @@ import java.util.List;
  *
  * @author gregthegeek
  */
-public interface ListTag<E extends BaseTag> extends BaseTag, List<E> {
-
-    /** {@inheritDoc} */
-    @Override
-    public ListTag<E> copy();
-
+public interface ListTag<E extends BaseTag> extends BaseTag<ListTag<E>>, List<E> {
 }

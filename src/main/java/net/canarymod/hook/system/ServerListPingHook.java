@@ -2,6 +2,8 @@ package net.canarymod.hook.system;
 
 import com.google.common.io.BaseEncoding;
 import com.mojang.authlib.GameProfile;
+import net.canarymod.Canary;
+import net.canarymod.api.chat.ChatComponent;
 import net.canarymod.hook.CancelableHook;
 
 import javax.imageio.ImageIO;
@@ -23,10 +25,11 @@ import java.util.List;
 public class ServerListPingHook extends CancelableHook {
     private final InetAddress requester;
     private final List<GameProfile> profiles;
-    private String motd, favicon;
+    private ChatComponent motd;
+    private String favicon;
     private int maxPlayers, currentPlayers;
 
-    public ServerListPingHook(InetAddress requester, String motd, int currentPlayers, int maxPlayers, String favicon, List<GameProfile> profiles) {
+    public ServerListPingHook(InetAddress requester, ChatComponent motd, int currentPlayers, int maxPlayers, String favicon, List<GameProfile> profiles) {
         this.requester = requester;
         this.motd = motd;
         this.maxPlayers = maxPlayers;
@@ -49,7 +52,7 @@ public class ServerListPingHook extends CancelableHook {
      *
      * @return The MOTD that will be sent to the client
      */
-    public String getMotd() {
+    public ChatComponent getMotd() {
         return motd;
     }
 
@@ -78,6 +81,19 @@ public class ServerListPingHook extends CancelableHook {
      *         The new MOTD
      */
     public void setMotd(String motd) {
+        this.motd = Canary.factory().getChatComponentFactory().compileChatComponent(motd);
+    }
+    
+    /**
+     * Set the MOTD that will be sent to the client
+     *
+     * @param motd
+     *         The new MOTD
+     */
+    public void setMotd(ChatComponent motd) {
+        if (motd == null) {
+            motd = Canary.factory().getChatComponentFactory().newChatComponent("");
+        }
         this.motd = motd;
     }
 

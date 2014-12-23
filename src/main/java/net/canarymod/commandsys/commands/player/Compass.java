@@ -20,7 +20,7 @@ public class Compass implements NativeCommand {
             console(caller);
         }
         else if (caller instanceof Player) {
-            player((Player) caller);
+            player((Player)caller);
         }
         else {
             throw new CommandException("Unknown MessageReceiver: " + caller.getClass().getSimpleName());
@@ -40,5 +40,4 @@ public class Compass implements NativeCommand {
 
         player.notice(Translator.translate("compass") + " " + Translator.translate(player.getCardinalDirection().toString()) + " (" + (Math.round(degrees * 10) / 10.0) + ")");
     }
-
 }

@@ -30,16 +30,6 @@ public interface CommandBlockLogic extends MessageReceiver {
     public void activate();
 
     /**
-     * Returns this command block's name.
-     * Displayed as prefix in chat when the doCommandBlockOutput game rule is
-     * true. Default value is "@".
-     *
-     * @return This command block's name
-     */
-    @Override
-    public String getName();
-
-    /**
      * Gets the dimension
      *
      * @return dimension

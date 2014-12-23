@@ -16,7 +16,10 @@ import net.canarymod.kit.KitProvider;
 import net.canarymod.logger.Logman;
 import net.canarymod.motd.MessageOfTheDay;
 import net.canarymod.permissionsystem.PermissionManager;
-import net.canarymod.plugin.IPluginManager;
+import net.canarymod.plugin.PluginManager;
+import net.canarymod.plugin.lifecycle.InvalidPluginLifecycleException;
+import net.canarymod.plugin.lifecycle.JavaPluginLifecycle;
+import net.canarymod.plugin.lifecycle.PluginLifecycleFactory;
 import net.canarymod.serialize.Serializer;
 import net.canarymod.tasks.TaskOwner;
 import net.canarymod.user.OperatorsProvider;
@@ -41,7 +44,7 @@ import java.util.HashMap;
  */
 public abstract class Canary implements TaskOwner {
     public final static Logman log;
-    private static boolean pluginsUp;
+    private static boolean latePluginsLoaded, earlyPluginsLoaded;
     private static String jarPath;
     protected Server server;
 
@@ -55,7 +58,7 @@ public abstract class Canary implements TaskOwner {
     protected ReservelistProvider reservelist;
     protected HookExecutor hookExecutor;
     protected Database database;
-    protected IPluginManager pluginManager;
+    protected PluginManager pluginManager;
     protected HelpManager helpManager;
     protected CommandManager commandManager;
     protected Factory factory;
@@ -73,6 +76,13 @@ public abstract class Canary implements TaskOwner {
     static {
         System.out.println("Please wait while the libraries initialize...");
         log = Logman.getLogman("CanaryMod");
+
+        try {
+            PluginLifecycleFactory.registerLifecycle("java", JavaPluginLifecycle.class);
+        }
+        catch (InvalidPluginLifecycleException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -157,21 +167,19 @@ public abstract class Canary implements TaskOwner {
     }
 
     /**
-     * @return {@link net.canarymod.plugin.PluginManager}
-     *
-     * @deprecated Use {@link Canary#manager()}
-     */
-    public static IPluginManager loader() {
-        return instance.pluginManager;
-    }
-
-    /**
      * Get the Plugin Manager to load, enable or disable plugins and manage
      * plugin dependencies
      *
-     * @return {@link net.canarymod.plugin.PluginManager}
+     * @return {@link net.canarymod.plugin.DefaultPluginManager}
+     *
+     * @deprecated use pluginManager() instead
      */
-    public static IPluginManager manager() {
+    @Deprecated
+    public static PluginManager manager() {
+        return pluginManager();
+    }
+
+    public static PluginManager pluginManager() {
         return instance.pluginManager;
     }
 
@@ -275,14 +283,28 @@ public abstract class Canary implements TaskOwner {
         instance.server = server;
     }
 
+
     /**
-     * Enables all plugins
+     * Enables all late plugins.
+     * That means: All plugins that require sub systems to be functioning, such as warps.
      */
-    public static void enablePlugins() {
-        if (!pluginsUp && instance.server != null) {
-            log.info("Enabling Plugins...");
-            manager().enableAllPlugins();
-            pluginsUp = true;
+    public static void enableLatePlugins() {
+        if (!latePluginsLoaded && instance.server != null) {
+            log.info("Enabling late Plugins...");
+            pluginManager().enableLatePlugins();
+            latePluginsLoaded = true;
+        }
+    }
+
+    /**
+     * Enables all early plugins.
+     * That means: All plugins that don't require sub systems to be functioning, such as warps.
+     */
+    public static void enableEarlyPlugins() {
+        if (!earlyPluginsLoaded && instance.server != null) {
+            log.info("Enabling early Plugins...");
+            pluginManager().enableEarlyPlugins();
+            earlyPluginsLoaded = true;
         }
     }
 

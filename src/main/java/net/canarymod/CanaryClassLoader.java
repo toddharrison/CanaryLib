@@ -33,6 +33,7 @@ public final class CanaryClassLoader extends URLClassLoader {
     public final Class<?> findClass(String name) throws ClassNotFoundException {
         ClassNotFoundException rethrow = null;
         Class<?> toRet = null;
+
         try {
             toRet = super.findClass(name); // Look for the class normally
         }
@@ -47,7 +48,7 @@ public final class CanaryClassLoader extends URLClassLoader {
             return toRet;
         }
         else {
-            toRet = ccw.findLoadedClass(name);
+            toRet = ccw.findLoadedClass(this, name);
             if (toRet != null) {
                 return toRet;
             }

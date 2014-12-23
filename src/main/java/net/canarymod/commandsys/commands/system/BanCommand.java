@@ -27,7 +27,7 @@ public class BanCommand implements NativeCommand {
             Canary.help().getHelp(caller, "ban");
             return;
         }
-        boolean isPlayerCommandBlock = caller.getReceiverType() != ReceiverType.SERVER;
+        boolean isPlayer = caller.getReceiverType().equals(ReceiverType.PLAYER);
 
         String reason = "Permanently Banned";
         long timestamp = -1L;
@@ -59,7 +59,7 @@ public class BanCommand implements NativeCommand {
         if (playerSelectorArray != null) {
             if (playerSelectorArray.length > 0) {
                 for (Player p : playerSelectorArray) {
-                    if (isPlayerCommandBlock) {
+                    if (isPlayer) {
                         Player c = (Player)caller;
                         if (!c.getGroup().hasControlOver(p.getGroup())) {
                             continue;
@@ -67,7 +67,7 @@ public class BanCommand implements NativeCommand {
                     }
                     Ban ban = new Ban();
                     ban.setReason(reason);
-                    ban.setTimestamp(timestamp);
+                    ban.setExpiration(timestamp);
                     ban.setBanningPlayer(caller.getName());
                     ban.setUUID(p.getUUIDString());
                     ban.setSubject(p.getName());
@@ -78,45 +78,58 @@ public class BanCommand implements NativeCommand {
                 }
             }
             else {
-                // Person not found on the server. Look remotely
-                UUID uuid = ToolBox.uuidFromUsername(parameters[0]);
-                if (uuid == null) {
-                    caller.notice(Translator.translateAndFormat("ban invalid user", parameters[0]));
-                    return;
-                }
+                if (!attemptPlayerBan(caller, parameters[0], reason, timestamp, isPlayer)) { // Targeting may have done something stupid
 
-                Ban ban = new Ban();
-                ban.setReason(reason);
-                ban.setTimestamp(timestamp);
-                ban.setBanningPlayer(caller.getName());
-                ban.setUUID(uuid.toString());
-                ban.setSubject(parameters[0]);
-                Canary.bans().issueBan(ban);
-                // NOTE: Ban hook cannot be issued here, there is no player instance
-                caller.notice(Translator.translateAndFormat("ban banned", parameters[0]));
+                    // Person not found on the server. Look remotely
+                    UUID uuid = ToolBox.uuidFromUsername(parameters[0]);
+                    if (uuid == null) {
+                        caller.notice(Translator.translateAndFormat("ban invalid user", parameters[0]));
+                        return;
+                    }
+
+                    Ban ban = new Ban();
+                    ban.setReason(reason);
+                    ban.setExpiration(timestamp);
+                    ban.setBanningPlayer(caller.getName());
+                    ban.setUUID(uuid.toString());
+                    ban.setSubject(parameters[0]);
+                    Canary.bans().issueBan(ban);
+
+                    // NOTE: Ban hook cannot be issued here, there is no player instance
+                    caller.notice(Translator.translateAndFormat("ban banned", parameters[0]));
+                }
             }
         }
         else {
-            PlayerReference ref = Canary.getServer().matchKnownPlayer(parameters[0]);
-            if (isPlayerCommandBlock) {
-                Player c = (Player)caller;
-                if (!c.getGroup().hasControlOver(ref.getGroup())) {
-                    caller.notice("nope!"); //TODO Better Message
-                    return;
-                }
-            }
-            Ban ban = new Ban();
-            ban.setReason(reason);
-            ban.setTimestamp(timestamp);
-            ban.setBanningPlayer(caller.getName());
-            ban.setUUID(ref.getUUIDString());
-            ban.setSubject(ref.getName());
-            Canary.bans().issueBan(ban);
-            Canary.hooks().callHook(new BanHook(ref, ref.getIP(), caller, reason, timestamp));
-            caller.notice(Translator.translateAndFormat("ban banned", ref.getName()));
-            if (ref.isOnline() && ref instanceof Player) {
-                ((Player)ref).kick(reason);
+            attemptPlayerBan(caller, parameters[0], reason, timestamp, isPlayer);
+        }
+    }
+
+    private boolean attemptPlayerBan(MessageReceiver caller, String name, String reason, long timestamp, boolean isPlayer) {
+        PlayerReference ref = Canary.getServer().matchKnownPlayer(name);
+        if (ref == null) {
+            return false;
+        }
+        if (isPlayer) {
+            Player c = (Player)caller;
+            if (!c.getGroup().hasControlOver(ref.getGroup())) {
+                caller.notice(Translator.localTranslate("ban nocontrol", caller.getLocale()));
+                return true;
             }
         }
+
+        Ban ban = new Ban();
+        ban.setReason(reason);
+        ban.setExpiration(timestamp);
+        ban.setBanningPlayer(caller.getName());
+        ban.setUUID(ref.getUUIDString());
+        ban.setSubject(ref.getName());
+        Canary.bans().issueBan(ban);
+        Canary.hooks().callHook(new BanHook(ref, ref.getIP(), caller, reason, timestamp));
+        caller.notice(Translator.translateAndFormat("ban banned", ref.getName()));
+        if (ref.isOnline() && ref instanceof Player) {
+            ((Player)ref).kick(reason);
+        }
+        return true;
     }
 }

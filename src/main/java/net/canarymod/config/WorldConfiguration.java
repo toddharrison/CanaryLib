@@ -26,15 +26,15 @@ public class WorldConfiguration implements ConfigurationContainer {
 
     /* Arrays of default mobs, leave static */
     private final static String[]
-            animals = new String[]{"Bat", "Chicken", "Cow", "Mooshroom", "Ocelot", "Pig", "Sheep", "Wolf", "Horse"},
-            wateranimals = new String[]{"Squid"},
-            monsters = new String[]{"Enderman", "PigZombie", "Blaze", "CaveSpider", "Creeper", "Ghast", "MagamaCube", "Silverfish", "Skeleton", "Slime", "Spider", "Witch", "Zombie", "Wither", "EnderDragon", "GiantZombie"},
-            golems = new String[]{"IronGolem", "Snowman"};
+            animals = new String[]{ "Bat", "Chicken", "Cow", "Mooshroom", "Ocelot", "Pig", "Sheep", "Wolf", "Horse", "Rabbit" },
+            wateranimals = new String[]{ "Squid" },
+            monsters = new String[]{ "Enderman", "PigZombie", "Blaze", "CaveSpider", "Creeper", "Ghast", "MagamaCube", "Silverfish", "Skeleton", "Slime", "Spider", "Witch", "Zombie", "Wither", "EnderDragon", "GiantZombie", "Endermite", "Guardian" },
+            golems = new String[]{ "IronGolem", "Snowman" };
 
     /* Arrays of default enderblocks and disallowed blocks, leave static */
     private final static int[]
-            enderblocks = new int[]{2, 3, 12, 13, 37, 38, 39, 40, 46, 81, 82, 86, 103, 110},
-            disallowedblocks = new int[]{7, 8, 9, 10, 11, 46, 51, 52};
+            enderblocks = new int[]{ 2, 3, 12, 13, 37, 38, 39, 40, 46, 81, 82, 86, 103, 110 },
+            disallowedblocks = new int[]{ 7, 8, 9, 10, 11, 46, 51, 52 };
 
     /* Only read this once. Major performance improvement here. */
     private HashSet<String> spawnableAnimals, spawnableGolems, spawnableMobs, spawnableWaterAnimals;
@@ -50,20 +50,26 @@ public class WorldConfiguration implements ConfigurationContainer {
         verifyConfig();
     }
 
-    /** Reloads the configuration file */
+    /**
+     * Reloads the configuration file
+     */
     @Override
     public void reload() {
         cfg.reload();
         verifyConfig();
     }
 
-    /** Get the configuration file */
+    /**
+     * Get the configuration file
+     */
     @Override
     public PropertiesFile getFile() {
         return cfg;
     }
 
-    /** Verifies the world configuration file */
+    /**
+     * Verifies the world configuration file
+     */
     private void verifyConfig() {
         cfg.getString("world-name", worldname);
         cfg.getString("world-type", "DEFAULT");

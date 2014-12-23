@@ -6,18 +6,19 @@ package net.canarymod.api.nbt;
  * @author Jason (darkdiplomat)
  */
 public enum NBTTagType {
+    /* DO NOT REORDER */
     UNKNOWN, //
     BYTE, //
-    BYTE_ARRAY, //
-    COMPOUND, //
-    DOUBLE, //
-    FLOAT, //
-    INT, //
-    INT_ARRAY, //
-    LIST, //
-    LONG, //
     SHORT, //
+    INT, //
+    LONG, //
+    FLOAT, //
+    DOUBLE, //
+    BYTE_ARRAY, //
     STRING, //
+    LIST, //
+    COMPOUND, //
+    INT_ARRAY, //
     ANY_NUMERIC, //
     ;
 

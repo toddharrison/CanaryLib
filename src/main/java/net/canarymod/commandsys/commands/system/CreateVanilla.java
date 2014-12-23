@@ -1,6 +1,6 @@
 package net.canarymod.commandsys.commands.system;
 
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.config.Configuration;
@@ -26,7 +26,7 @@ public class CreateVanilla implements NativeCommand {
             caller.notice("Failed to convert to vanilla.");
         }
         else {
-            caller.message(Colors.YELLOW + "Succeed to convert to vanilla; result is in the vanilla/ folder.");
+            caller.message(ChatFormat.YELLOW + "Succeed to convert to vanilla; result is in the vanilla/ folder.");
         }
     }
 }

@@ -71,5 +71,12 @@ public interface Factory {
      * @return {@link net.canarymod.api.factory.StatisticsFactory}
      */
     public StatisticsFactory getStatisticsFactory();
+    
+    /**
+     * Gets the {@link net.canarymod.api.factory.AIFactory} instance
+     * 
+     * @return {@link net.canarymod.api.factory.AIFactory}
+     */
+    public AIFactory getAIFactory();
 
 }

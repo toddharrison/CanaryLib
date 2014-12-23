@@ -4,7 +4,7 @@ import net.canarymod.Canary;
 import net.canarymod.Translator;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.inventory.Item;
-import net.canarymod.chat.TextFormat;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.chat.ReceiverType;
 import net.canarymod.commandsys.NativeCommand;
@@ -40,7 +40,7 @@ public class KitCreate implements NativeCommand {
                 newKit.setDelay(Integer.parseInt(args[1]));
                 newKit.setName(args[0]);
                 Canary.kits().addKit(newKit);
-                player.message(TextFormat.YELLOW + Translator.translateAndFormat("kit created", args[0]));
+                player.message(ChatFormat.YELLOW + Translator.translateAndFormat("kit created", args[0]));
                 return;
             }
 
@@ -66,7 +66,7 @@ public class KitCreate implements NativeCommand {
                     newKit.setName(args[0]);
                     newKit.setGroups(groups);
                     Canary.kits().addKit(newKit);
-                    player.message(TextFormat.YELLOW + Translator.translateAndFormat("kit created group", args[0]));
+                    player.message(ChatFormat.YELLOW + Translator.translateAndFormat("kit created group", args[0]));
                     return;
                 }
                 // ADD PLAYER PRIVATE KIT
@@ -81,7 +81,7 @@ public class KitCreate implements NativeCommand {
                     newKit.setName(args[0]);
                     newKit.setOwner(players);
                     Canary.kits().addKit(newKit);
-                    player.message(TextFormat.YELLOW + Translator.translateAndFormat("kit created private", args[0]));
+                    player.message(ChatFormat.YELLOW + Translator.translateAndFormat("kit created private", args[0]));
                     return;
                 }
                 else {

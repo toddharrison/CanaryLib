@@ -3,8 +3,8 @@ package net.canarymod.commandsys.commands.system;
 import net.canarymod.Canary;
 import net.canarymod.ToolBox;
 import net.canarymod.api.PlayerReference;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
-import net.canarymod.chat.TextFormat;
 import net.canarymod.commandsys.NativeCommand;
 
 import java.util.UUID;
@@ -18,7 +18,7 @@ public class OpList implements NativeCommand {
 
     @Override
     public void execute(MessageReceiver caller, String[] parameters) {
-        caller.message(TextFormat.LIGHT_GRAY + "**** OPERATORS ****");
+        caller.message(ChatFormat.GRAY + "**** OPERATORS ****");
         caller.message(createList());
     }
 

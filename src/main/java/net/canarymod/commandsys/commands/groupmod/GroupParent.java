@@ -2,7 +2,7 @@ package net.canarymod.commandsys.commands.groupmod;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.Group;
@@ -15,10 +15,7 @@ import net.canarymod.user.Group;
 public class GroupParent implements NativeCommand {
     // group) rename <foo> <bar>
     public void execute(MessageReceiver caller, String[] args) {
-        if (args[args.length - 1].equals("--help")) {
-            Canary.help().getHelp(caller, "group parent");
-            return;
-        }
+
         Group group = Canary.usersAndGroups().getGroup(args[0]);
         Group parent = Canary.usersAndGroups().getGroup(args[1]); // Must exist
         if (group == null || !group.getName().equals(args[0])) {
@@ -38,6 +35,6 @@ public class GroupParent implements NativeCommand {
         group.setParent(parent);
         //Updating the parent group will automatically save the child groups too
         Canary.usersAndGroups().updateGroup(parent, true);
-        caller.message(Colors.YELLOW + Translator.translateAndFormat("group parent changed", group.getName(), parent.getName()));
+        caller.message(ChatFormat.YELLOW + Translator.translateAndFormat("group parent changed", group.getName(), parent.getName()));
     }
 }

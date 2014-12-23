@@ -183,48 +183,22 @@ public interface EntityLiving extends LivingBase {
 
     /**
      * Returns the AIManager for this entity. <br>
-     * <b>NOTE:</b> This really does nothing for Players. It won't get used.
+     * <b>NOTE:</b> This manager is for AI that is reaction based. i.e. attacking 
+     * enemy entities when they are close or picking up an item that is nearby 
+     * when walking
      *
      * @return AI Manager
      */
     public AIManager getAITaskManager();
 
     /**
-     * Gets if the EntityLiving has a custom name
+     * Returns the AIManager for this entity. <br>
+     * <b>NOTE:</b> This manager is for AI that is target based. Like moving to 
+     * a Location or finding an entity to attack.
      *
-     * @return {@code true} if custom; {@code false} if not
+     * @return AI Manager
      */
-    public boolean hasDisplayName();
-
-    /**
-     * Gets the EntityLiving's name displayed to others
-     *
-     * @return EntityLiving's display name
-     */
-    public String getDisplayName();
-
-    /**
-     * Sets the EntityLiving's name display name
-     *
-     * @param display
-     *         the name to have the EntityLiving display
-     */
-    public void setDisplayName(String display);
-
-    /**
-     * Gets if the Custom Display name should show
-     *
-     * @return {@code true} if show; {@code false} if not
-     */
-    public boolean showingDisplayName();
-
-    /**
-     * Sets if the Custom Display name should show
-     *
-     * @param show
-     *         {@code true} if show; {@code false} if not
-     */
-    public void setShowDisplayName(boolean show);
+    public AIManager getAITargetTaskManager();
 
     /**
      * Checks if the EntityLiving can attack the {@link EntityType}

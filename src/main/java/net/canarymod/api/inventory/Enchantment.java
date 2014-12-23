@@ -29,6 +29,8 @@ public interface Enchantment {
         Respiration(5), //
         AquaAffinity(6), //
         Thorns(7), //
+        DepthStrider(8),
+        //
         Sharpness(16), //
         Smite(17), //
         BaneOfArthropods(18), //
@@ -45,6 +47,7 @@ public interface Enchantment {
         Infinity(51), //
         LuckOfTheSea(61), //
         Lure(62), //
+
         ;
 
         private int id;

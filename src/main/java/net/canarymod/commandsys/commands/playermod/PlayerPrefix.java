@@ -3,7 +3,7 @@ package net.canarymod.commandsys.commands.playermod;
 import net.canarymod.Canary;
 import net.canarymod.Translator;
 import net.canarymod.api.PlayerReference;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.visualillusionsent.utils.StringUtils;
@@ -30,6 +30,6 @@ public class PlayerPrefix implements NativeCommand {
             return;
         }
         target.setPrefix(prefix);
-        caller.message(Colors.YELLOW + Translator.translate("modify prefix set"));
+        caller.message(ChatFormat.YELLOW + Translator.translate("modify prefix set"));
     }
 }

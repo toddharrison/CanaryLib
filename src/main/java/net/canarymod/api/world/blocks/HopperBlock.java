@@ -8,7 +8,7 @@ import net.canarymod.api.inventory.Inventory;
  *
  * @author Somners
  */
-public interface HopperBlock extends Hopper, TileEntity {
+public interface HopperBlock extends Hopper, LockableTileEntity {
 
     /**
      * Gets the Inventory inputting to the hopper.
@@ -28,7 +28,7 @@ public interface HopperBlock extends Hopper, TileEntity {
      * Check if this hopper is connected to any Container either input or output.
      *
      * @return true - it is connected<br>
-     *         false - it is not connected
+     * false - it is not connected
      */
     public boolean isConnected();
 
@@ -36,7 +36,7 @@ public interface HopperBlock extends Hopper, TileEntity {
      * Check if the block this hopper inputs from is a Container.
      *
      * @return true - it is connected<br>
-     *         false - it is not connected
+     * false - it is not connected
      */
     public boolean isInputConnected();
 
@@ -44,7 +44,7 @@ public interface HopperBlock extends Hopper, TileEntity {
      * Check if the block this hopper outputs to is a Container.
      *
      * @return true - it is connected<br>
-     *         false - it is not connected
+     * false - it is not connected
      */
     public boolean isOutputConnected();
 }

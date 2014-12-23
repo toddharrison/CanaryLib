@@ -5,7 +5,7 @@ import net.canarymod.ToolBox;
 import net.canarymod.Translator;
 import net.canarymod.api.OfflinePlayer;
 import net.canarymod.api.entity.living.humanoid.Player;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 
@@ -39,10 +39,10 @@ public class UnbanCommand implements NativeCommand {
         }
         if (uuid != null) {
             Canary.bans().unban(uuid);
-            caller.message(Colors.YELLOW + Translator.translateAndFormat("unban success", cmd[0]));
+            caller.message(ChatFormat.YELLOW + Translator.translateAndFormat("unban success", cmd[0]));
         }
         else {
-            caller.message(Colors.YELLOW + Translator.translateAndFormat("unban failed invalid user", cmd[0]));
+            caller.message(ChatFormat.YELLOW + Translator.translateAndFormat("unban failed invalid user", cmd[0]));
         }
     }
 }

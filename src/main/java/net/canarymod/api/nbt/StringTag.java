@@ -5,7 +5,7 @@ package net.canarymod.api.nbt;
  *
  * @author gregthegeek
  */
-public interface StringTag extends BaseTag {
+public interface StringTag extends BaseTag<StringTag> {
 
     /**
      * Returns the value associated with this tag.
@@ -21,9 +21,5 @@ public interface StringTag extends BaseTag {
      *         the String value
      */
     public void setValue(String value);
-
-    /** {@inheritDoc} */
-    @Override
-    public StringTag copy();
 
 }

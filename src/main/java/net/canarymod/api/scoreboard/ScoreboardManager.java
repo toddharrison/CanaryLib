@@ -6,10 +6,8 @@ import net.canarymod.api.world.World;
 public interface ScoreboardManager {
 
     /**
-     * Get the Scoreboard for this world.
-     *
-     * @param world
-     *         The world to get the scoreboard for.
+     * Get the Default Scoreboard.
+     * This is the scoreboard used by the vanilla scoreboard commands.
      *
      * @return the Scoreboard.
      */

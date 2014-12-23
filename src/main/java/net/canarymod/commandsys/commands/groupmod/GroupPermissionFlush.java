@@ -2,7 +2,7 @@ package net.canarymod.commandsys.commands.groupmod;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.Group;
@@ -21,6 +21,6 @@ public class GroupPermissionFlush implements NativeCommand {
             return;
         }
         group.getPermissionProvider().flushCache();
-        caller.message(Colors.YELLOW + Translator.translate("modify permission cleared"));
+        caller.message(ChatFormat.YELLOW + Translator.translate("modify permission cleared"));
     }
 }

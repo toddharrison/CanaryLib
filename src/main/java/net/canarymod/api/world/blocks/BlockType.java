@@ -1,8 +1,9 @@
 package net.canarymod.api.world.blocks;
 
-import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map.Entry;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Static class of BlockTypes
@@ -12,8 +13,15 @@ import java.util.Map.Entry;
 public final class BlockType {
     public static final BlockType Air = new BlockType(0, 0, "minecraft:air");
     public static final BlockType Stone = new BlockType(1, 0, "minecraft:stone");
+    public static final BlockType Granite = new BlockType(1, 1, "minecraft:stone");
+    public static final BlockType PolishedGranite = new BlockType(1, 2, "minecraft:stone");
+    public static final BlockType Diorite = new BlockType(1, 3, "minecraft:stone");
+    public static final BlockType PolishedDiorite = new BlockType(1, 4, "minecraft:stone");
+    public static final BlockType Andesite = new BlockType(1, 5, "minecraft:stone");
+    public static final BlockType PolishedAndesite = new BlockType(1, 6, "minecraft:stone");
     public static final BlockType Grass = new BlockType(2, 0, "minecraft:grass");
     public static final BlockType Dirt = new BlockType(3, 0, "minecraft:dirt");
+    public static final BlockType CoarseDirt = new BlockType(3, 1, "minecraft:dirt");
     public static final BlockType Podzol = new BlockType(3, 2, "minecraft:dirt");
     public static final BlockType Cobble = new BlockType(4, 0, "minecraft:cobblestone");
     public static final BlockType OakWood = new BlockType(5, 0, "minecraft:planks");
@@ -34,6 +42,7 @@ public final class BlockType {
     public static final BlockType LavaFlowing = new BlockType(10, 0, "minecraft:flowing_lava");
     public static final BlockType Lava = new BlockType(11, 0, "minecraft:lava");
     public static final BlockType Sand = new BlockType(12, 0, "minecraft:sand");
+    public static final BlockType RedSand = new BlockType(12, 1, "minecraft:sand");
     public static final BlockType Gravel = new BlockType(13, 0, "minecraft:gravel");
     public static final BlockType GoldOre = new BlockType(14, 0, "minecraft:gold_ore");
     public static final BlockType IronOre = new BlockType(15, 0, "minecraft:iron_ore");
@@ -42,12 +51,11 @@ public final class BlockType {
     public static final BlockType PineLog = new BlockType(17, 1, "minecraft:log");
     public static final BlockType BirchLog = new BlockType(17, 2, "minecraft:log");
     public static final BlockType JungleLog = new BlockType(17, 3, "minecraft:log");
-
     public static final BlockType OakLeaves = new BlockType(18, 0, "minecraft:leaves");
     public static final BlockType PineLeaves = new BlockType(18, 1, "minecraft:leaves");
     public static final BlockType BirchLeaves = new BlockType(18, 2, "minecraft:leaves");
     public static final BlockType JungleLeaves = new BlockType(18, 3, "minecraft:leaves");
-    public static final BlockType Sponge = new BlockType(19, 0, "minecraft:sponge"); // THE SPONGE IS A LIE!
+    public static final BlockType Sponge = new BlockType(19, 0, "minecraft:sponge");
     public static final BlockType Glass = new BlockType(20, 0, "minecraft:glass");
     public static final BlockType LapislazuliOre = new BlockType(21, 0, "minecraft:lapis_ore");
     public static final BlockType LapisBlock = new BlockType(22, 0, "minecraft:lapis_block");
@@ -98,26 +106,26 @@ public final class BlockType {
     public static final BlockType RedMushroom = new BlockType(40, 0, "minecraft:red_mushroom");
     public static final BlockType GoldBlock = new BlockType(41, 0, "minecraft:gold_block");
     public static final BlockType IronBlock = new BlockType(42, 0, "minecraft:iron_block");
-    public static final BlockType DoublestepOrnateStone = new BlockType(43, 0, "minecraft:double_stone_slab");
-    public static final BlockType DoublestepSandStoneTrim = new BlockType(43, 1, "minecraft:double_stone_slab");
-    public static final BlockType DoublestepWood = new BlockType(43, 2, "minecraft:double_stone_slab");
-    public static final BlockType DoublestepCobble = new BlockType(43, 3, "minecraft:double_stone_slab");
-    public static final BlockType DoublestepBrickBlock = new BlockType(43, 4, "minecraft:double_stone_slab");
-    public static final BlockType DoublestepStoneBricks = new BlockType(43, 5, "minecraft:double_stone_slab");
-    public static final BlockType DoublestepNetherBrick = new BlockType(43, 6, "minecraft:double_stone_slab");
-    public static final BlockType DoublestepQuartz = new BlockType(43, 9, "minecraft:double_stone_slab");
-    public static final BlockType DoublestepStone = new BlockType(43, 8, "minecraft:double_stone_slab");
-    public static final BlockType DoublestepSandStone = new BlockType(43, 11, "minecraft:double_stone_slab");
-    public static final BlockType StepOrnateStone = new BlockType(44, 0, "minecraft:stone_slab");
-    public static final BlockType StepSandStoneTrim = new BlockType(44, 1, "minecraft:stone_slab");
-    public static final BlockType StepWood = new BlockType(44, 2, "minecraft:stone_slab");
-    public static final BlockType StepCobble = new BlockType(44, 3, "minecraft:stone_slab");
-    public static final BlockType StepBrickBlock = new BlockType(44, 4, "minecraft:stone_slab");
-    public static final BlockType StepStoneBricks = new BlockType(44, 5, "minecraft:stone_slab");
-    public static final BlockType StepNetherBricks = new BlockType(44, 6, "minecraft:stone_slab");
-    public static final BlockType StepQuartz = new BlockType(44, 7, "minecraft:stone_slab");
-    public static final BlockType StepStone = new BlockType(44, 10, "minecraft:stone_slab");
-    public static final BlockType StepSandStone = new BlockType(44, 11, "minecraft:stone_slab");
+    public static final BlockType DoubleOrnateStoneSlab = new BlockType(43, 0, "minecraft:double_stone_slab");
+    public static final BlockType DoubleSandStoneTrimSlab = new BlockType(43, 1, "minecraft:double_stone_slab");
+    public static final BlockType DoubleWoodSlab = new BlockType(43, 2, "minecraft:double_stone_slab");
+    public static final BlockType DoubleCobbleSlab = new BlockType(43, 3, "minecraft:double_stone_slab");
+    public static final BlockType DoubleBrickBlockSlab = new BlockType(43, 4, "minecraft:double_stone_slab");
+    public static final BlockType DoubleStoneBricksSlab = new BlockType(43, 5, "minecraft:double_stone_slab");
+    public static final BlockType DoubleNetherBrickSlab = new BlockType(43, 6, "minecraft:double_stone_slab");
+    public static final BlockType DoubleQuartzSlab = new BlockType(43, 9, "minecraft:double_stone_slab");
+    public static final BlockType DoubleStoneSlab = new BlockType(43, 8, "minecraft:double_stone_slab");
+    public static final BlockType DoubleSandStoneSlab = new BlockType(43, 11, "minecraft:double_stone_slab");
+    public static final BlockType OrnateStoneSlab = new BlockType(44, 0, "minecraft:stone_slab");
+    public static final BlockType SandStoneTrimSlab = new BlockType(44, 1, "minecraft:stone_slab");
+    public static final BlockType WoodSlab = new BlockType(44, 2, "minecraft:stone_slab");
+    public static final BlockType CobbleSlab = new BlockType(44, 3, "minecraft:stone_slab");
+    public static final BlockType BrickBlockSlab = new BlockType(44, 4, "minecraft:stone_slab");
+    public static final BlockType StoneBricksSlab = new BlockType(44, 5, "minecraft:stone_slab");
+    public static final BlockType NetherBricksSlab = new BlockType(44, 6, "minecraft:stone_slab");
+    public static final BlockType QuartzSlab = new BlockType(44, 7, "minecraft:stone_slab");
+    public static final BlockType StoneSlab = new BlockType(44, 10, "minecraft:stone_slab");
+    public static final BlockType SandStoneSlab = new BlockType(44, 11, "minecraft:stone_slab");
     public static final BlockType BrickBlock = new BlockType(45, 0, "minecraft:brick_block");
     public static final BlockType Tnt = new BlockType(46, 0, "minecraft:tnt");
     public static final BlockType Bookshelf = new BlockType(47, 0, "minecraft:bookshelf");
@@ -221,18 +229,18 @@ public final class BlockType {
     public static final BlockType EnderDragonEgg = new BlockType(122, 0, "minecraft:dragon_egg");
     public static final BlockType RedstoneLampOff = new BlockType(123, 0, "minecraft:redstone_lamp");
     public static final BlockType RedstoneLampOn = new BlockType(124, 0, "minecraft:lit_redstone_lamp");
-    public static final BlockType OakWoodDoubleStep = new BlockType(125, 0, "minecraft:double_wooden_slab");
-    public static final BlockType SpruceWoodDoubleStep = new BlockType(125, 1, "minecraft:double_wooden_slab");
-    public static final BlockType BirchWoodDoubleStep = new BlockType(125, 2, "minecraft:double_wooden_slab");
-    public static final BlockType JungleWoodDoubleStep = new BlockType(125, 3, "minecraft:double_wooden_slab");
-    public static final BlockType AcaciaWoodDoubleStep = new BlockType(125, 4, "minecraft:double_wooden_slab");
-    public static final BlockType DarkOakWoodDoubleStep = new BlockType(125, 5, "minecraft:double_wooden_slab");
-    public static final BlockType OakWoodStep = new BlockType(126, 0, "minecraft:wooden_slab");
-    public static final BlockType SpruceWoodStep = new BlockType(126, 1, "minecraft:wooden_slab");
-    public static final BlockType BirchWoodStep = new BlockType(126, 2, "minecraft:wooden_slab");
-    public static final BlockType JungleWoodStep = new BlockType(126, 3, "minecraft:wooden_slab");
-    public static final BlockType AcaciaWoodStep = new BlockType(126, 4, "minecraft:wooden_slab");
-    public static final BlockType DarkOakWoodStep = new BlockType(126, 5, "minecraft:wooden_slab");
+    public static final BlockType DoubleOakWoodSlab = new BlockType(125, 0, "minecraft:double_wooden_slab");
+    public static final BlockType DoubleSpruceWoodSlab = new BlockType(125, 1, "minecraft:double_wooden_slab");
+    public static final BlockType DoubleBirchWoodSlab = new BlockType(125, 2, "minecraft:double_wooden_slab");
+    public static final BlockType DoubleJungleWoodSlab = new BlockType(125, 3, "minecraft:double_wooden_slab");
+    public static final BlockType DoubleAcaciaWoodSlab = new BlockType(125, 4, "minecraft:double_wooden_slab");
+    public static final BlockType DoubleDarkOakWoodSlab = new BlockType(125, 5, "minecraft:double_wooden_slab");
+    public static final BlockType OakWoodSlab = new BlockType(126, 0, "minecraft:wooden_slab");
+    public static final BlockType SpruceWoodSlab = new BlockType(126, 1, "minecraft:wooden_slab");
+    public static final BlockType BirchWoodSlab = new BlockType(126, 2, "minecraft:wooden_slab");
+    public static final BlockType JungleWoodSlab = new BlockType(126, 3, "minecraft:wooden_slab");
+    public static final BlockType AcaciaWoodSlab = new BlockType(126, 4, "minecraft:wooden_slab");
+    public static final BlockType DarkOakWoodSlab = new BlockType(126, 5, "minecraft:wooden_slab");
     public static final BlockType CocoaPlant = new BlockType(127, 0, "minecraft:cocoa");
     public static final BlockType SandstoneStair = new BlockType(128, 0, "minecraft:sandstone_stairs");
     public static final BlockType EmeraldOre = new BlockType(129, 0, "minecraft:emerald_ore");
@@ -261,7 +269,7 @@ public final class BlockType {
     public static final BlockType LightWeightedPressurePlate = new BlockType(147, 0, "minecraft:light_weighted_pressure_plate");
     public static final BlockType HeavyWeightedPressurePlate = new BlockType(148, 0, "minecraft:heavy_weighted_pressure_plate");
     public static final BlockType RedstoneComparator = new BlockType(149, 0, "minecraft:unpowered_comparator");
-    // 150 not in use
+    public static final BlockType RedstoneComparatorPowered = new BlockType(150, 0, "minecraft:powered_comparator");
     public static final BlockType DaylightSensor = new BlockType(151, 0, "minecraft:daylight_detector");
     public static final BlockType RedstoneBlock = new BlockType(152, 0, "minecraft:redstone_block");
     public static final BlockType NetherQuartzOre = new BlockType(153, 0, "minecraft:quartz_ore");
@@ -312,7 +320,13 @@ public final class BlockType {
     public static final BlockType DarkOakLog = new BlockType(162, 1, "minecraft:log2");
     public static final BlockType AcaciaStairs = new BlockType(163, 0, "minecraft:acacia_stairs");
     public static final BlockType DarkOakStairs = new BlockType(164, 0, "minecraft:dark_oak_stairs");
-    // 165-169 MIA
+    public static final BlockType SlimeBlock = new BlockType(165, 0, "minecraft:slime");
+    public static final BlockType Barrier = new BlockType(166, 0, "minecraft:barrier");
+    public static final BlockType IronTrapDoor = new BlockType(167, 0, "minecraft:iron_trapdoor");
+    public static final BlockType Prismarine = new BlockType(168, 0, "minecraft:prismarine");
+    public static final BlockType PrismarineBricks = new BlockType(168, 1, "minecraft:prismarine");
+    public static final BlockType DarkPrismarine = new BlockType(168, 2, "minecraft:prismarine");
+    public static final BlockType SeaLanturn = new BlockType(169, 0, "minecraft:sea_lantern");
     public static final BlockType HayBale = new BlockType(170, 0, "minecraft:hay_block");
     public static final BlockType WhiteCarpet = new BlockType(171, 0, "minecraft:carpet");
     public static final BlockType OrangeCarpet = new BlockType(171, 1, "minecraft:carpet");
@@ -339,11 +353,36 @@ public final class BlockType {
     public static final BlockType LargeFern = new BlockType(175, 3, "minecraft:double_plant");
     public static final BlockType RoseBush = new BlockType(175, 4, "minecraft:double_plant");
     public static final BlockType Peony = new BlockType(175, 5, "minecraft:double_plant");
+    public static final BlockType StandingBanner = new BlockType(176, 0, "minecraft:standing_banner");
+    public static final BlockType WallBanner = new BlockType(177, 0, "minecraft:wall_banner");
+    public static final BlockType DaylightSensorInverted = new BlockType(178, 0, "minecraft:daylight_detector_inverted");
+    public static final BlockType RedSandstone = new BlockType(179, 0, "minecraft:red_sandstone");
+    public static final BlockType RedSandstoneOrnate = new BlockType(179, 1, "minecraft:red_sandstone");
+    public static final BlockType RedSandstoneBlank = new BlockType(179, 2, "minecraft:red_sandstone");
+    public static final BlockType RedSandstoneStairs = new BlockType(180, 0, "minecraft:red_sandstone_stairs");
+    public static final BlockType RedSandstoneSlab = new BlockType(181, 0, "minecraft:stone_slab2");
+    public static final BlockType DoubleRedSandstoneSlab = new BlockType(182, 0, "minecraft:double_stone_slab2");
+    public static final BlockType SpruceFenceGate = new BlockType(183, 0, "minecraft:spruce_fence_gate");
+    public static final BlockType BirchFenceGate = new BlockType(184, 0, "minecraft:birch_fence_gate");
+    public static final BlockType JungleFenceGate = new BlockType(185, 0, "minecraft:jungle_fence_gate");
+    public static final BlockType DarkOakFenceGate = new BlockType(186, 0, "minecraft:dark_oak_fence_gate");
+    public static final BlockType AcaciaFenceGate = new BlockType(187, 0, "minecraft:acacia_fence_gate");
+    public static final BlockType SpruceFence = new BlockType(188, 0, "minecraft:spruce_fence");
+    public static final BlockType BirchFence = new BlockType(189, 0, "minecraft:birch_fence");
+    public static final BlockType JungleFence = new BlockType(190, 0, "minecraft:jungle_fence");
+    public static final BlockType DarkOakFence = new BlockType(191, 0, "minecraft:dark_oak_fence");
+    public static final BlockType AcaciaFence = new BlockType(192, 0, "minecraft:acacia_fence");
+    public static final BlockType SpruceDoor = new BlockType(193, 0, "minecraft:spruce_door");
+    public static final BlockType BirchDoor = new BlockType(194, 0, "minecraft:birch_door");
+    public static final BlockType JungleDoor = new BlockType(195, 0, "minecraft:jungle_door");
+    public static final BlockType AcaciaDoor = new BlockType(196, 0, "minecraft:acacia_door");
+    public static final BlockType DarkOakDoor = new BlockType(197, 0, "minecraft:dark_oak_door");
+
     private final short id;
     private final short data;
     private final String machineName;
 
-    private static HashMap<Entry<String, Integer>, BlockType> blockTypes;
+    private static HashMap<String, Map<Integer, BlockType>> blockTypes;
 
     public BlockType(int id, String machineName) {
         this(id, 0, "canarymod:" + machineName);
@@ -368,22 +407,21 @@ public final class BlockType {
      */
     public BlockType(int id, int data, String machineName) {
         if (blockTypes == null) {
-            blockTypes = new HashMap<Entry<String, Integer>, BlockType>();
+            blockTypes = new HashMap<String, Map<Integer, BlockType>>();
         }
         if (machineName == null) {
             throw new CustomBlockTypeException("BlockType name cannot be null!");
         }
-        this.id = (short) id;
-        this.data = (short) data;
+        this.id = (short)id;
+        this.data = (short)data;
         this.machineName = machineName;
-        Entry<String, Integer> uniqueType = new SimpleImmutableEntry<String, Integer>(machineName, data);
-        if (!blockTypes.containsKey(uniqueType)) {
-            @SuppressWarnings("LeakingThisInConstructor")
-            BlockType ignored = blockTypes.put(uniqueType, this);
+        if (!blockTypes.containsKey(machineName)) {
+            blockTypes.put(machineName, new HashMap<Integer, BlockType>(3));
         }
-        else {
+        if (blockTypes.get(machineName).values().contains(this)) {
             throw new CustomBlockTypeException("BlockType '" + machineName + ":" + data + "' already exists!");
         }
+        blockTypes.get(machineName).put(data, this);
     }
 
     /**
@@ -415,6 +453,29 @@ public final class BlockType {
         return machineName;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        BlockType blockType = (BlockType) o;
+
+        return data == blockType.data && id == blockType.id && machineName.equals(blockType.machineName);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) id;
+        result = 31 * result + (int) data;
+        result = 31 * result + machineName.hashCode();
+        return result;
+    }
+
     /**
      * Get a custom block type.
      * Returns null if the requested BlockType does not exist.
@@ -440,21 +501,18 @@ public final class BlockType {
      * @return the custom {@link BlockType}
      */
     public static BlockType getCustomBlockType(String name, int data) {
-        Entry<String, Integer> custom = new SimpleImmutableEntry<String, Integer>(name, data);
-        if (!blockTypes.containsKey(custom)) {
-            for (BlockType t : blockTypes.values()) {
-                if (t.data == data && t.machineName.equalsIgnoreCase(name)) {
-                    return t;
-                }
-            }
+        if (!blockTypes.containsKey(name)) {
             return null;
         }
-        return blockTypes.get(custom);
+        return blockTypes.get(name).get(data);
     }
 
     /**
      * Get the BlockType according to the given ID.
      * This will return null if there is no BlockType with this id.
+     *
+     * Warning: This operation, as of Minecraft 1.8 is very expensive and exists for
+     * backwards compatibility only!
      *
      * @param id
      *         the id
@@ -462,9 +520,11 @@ public final class BlockType {
      * @return the associated {@link BlockType} or {@code null}
      */
     public static BlockType fromId(int id) {
-        for (BlockType t : blockTypes.values()) {
-            if (t.id == id) {
-                return t;
+        for (Map<Integer, BlockType> list : blockTypes.values()) {
+            for (BlockType t : list.values()) {
+                if (t.getId() == id) {
+                    return t;
+                }
             }
         }
         return null;
@@ -474,6 +534,8 @@ public final class BlockType {
      * Get the BlockType according to the given ID and Data.
      * This will return null if there is no BlockType with this id and data.
      *
+     * Warning: This operation, as of Minecraft 1.8 is very expensive and exists for
+     * backwards compatibility only!
      * @param id
      *         the id
      * @param data
@@ -482,9 +544,9 @@ public final class BlockType {
      * @return the associated {@link BlockType} or {@code null}
      */
     public static BlockType fromIdAndData(int id, int data) {
-        for (BlockType t : blockTypes.values()) {
-            if (t.id == id && t.data == data) {
-                return t;
+        for (Map<Integer, BlockType> list : blockTypes.values()) {
+            if(list.get(data).getId() == id) {
+                return list.get(data);
             }
         }
         return fromId(id); // if data has bit's set, it won't perfectly equal
@@ -500,12 +562,25 @@ public final class BlockType {
      * @return the associated {@link BlockType} or {@code null}
      */
     public static BlockType fromString(String name) {
-        for (BlockType t : blockTypes.values()) {
-            if (t.machineName.equalsIgnoreCase(name)) {
-                return t;
+        String temp = name;
+        int data = 0;
+        if (name.matches(".+:.+:\\d+")) {
+            temp = name.replaceAll(":\\d+", "");
+            try {
+                data = Integer.parseInt(name.replaceAll(".+:.+:", ""));
+            }
+            catch (NumberFormatException nfex) {
+                // Ignored
             }
         }
-        return null;
+        if (!blockTypes.containsKey(temp)) {
+            // Perhaps try by adding a namespace
+            temp = "minecraft:"+temp;
+            if (!blockTypes.containsKey(temp)) {
+                return null;
+            }
+        }
+        return blockTypes.get(temp).get(data);
     }
 
     /**
@@ -520,16 +595,11 @@ public final class BlockType {
      * @return the associated {@link BlockType} or {@code null}
      */
     public static BlockType fromStringAndData(String machineName, int data) {
-        Entry<String, Integer> needle = new SimpleImmutableEntry<String, Integer>(machineName, data);
-        if (!blockTypes.containsKey(needle)) {
-            for (BlockType t : blockTypes.values()) {
-                if (t.data == data && t.machineName.equalsIgnoreCase(machineName)) {
-                    return t;
-                }
-            }
-            return fromString(machineName); // Some blocks have data values that aren't reflected in the typing (like positioning meta)
+        if (!blockTypes.containsKey(machineName)) {
+            return null;
         }
-        return blockTypes.get(needle);
+        BlockType t = blockTypes.get(machineName).get(data);
+        return t == null ? fromString(machineName) : t;
     }
 
     /**
@@ -538,7 +608,10 @@ public final class BlockType {
      * @return all BlockTypes
      */
     public static BlockType[] values() {
-        return blockTypes.values().toArray(new BlockType[blockTypes.size()]);
+        List<BlockType> list = new ArrayList<BlockType>();
+        for (Map<Integer, BlockType> blocks : blockTypes.values()) {
+            list.addAll(blocks.values());
+        }
+        return list.toArray(new BlockType[list.size()]);
     }
-
 }

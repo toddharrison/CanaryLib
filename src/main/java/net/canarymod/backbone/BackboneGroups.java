@@ -2,17 +2,15 @@ package net.canarymod.backbone;
 
 import net.canarymod.Canary;
 import net.canarymod.ToolBox;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.database.DataAccess;
 import net.canarymod.database.Database;
 import net.canarymod.database.exceptions.DatabaseReadException;
 import net.canarymod.database.exceptions.DatabaseWriteException;
 import net.canarymod.user.Group;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import static net.canarymod.Canary.log;
 
 /**
@@ -157,7 +155,7 @@ public class BackboneGroups extends Backbone {
     }
 
     private Group loadParents(String parent, List<Group> existingGroups) {
-        if (parent == null || parent.isEmpty()) {
+        if (ToolBox.stringToNull(parent) == null || parent.isEmpty()) {
             return null;
         }
         for (Group g : existingGroups) {
@@ -260,28 +258,28 @@ public class BackboneGroups extends Backbone {
         visitors.isDefault = true;
         visitors.name = "visitors";
         visitors.parent = "visitors";
-        visitors.prefix = Colors.LIGHT_GRAY;
+        visitors.prefix = ChatFormat.GRAY.toString();
         visitors.worldName = null;
 
         // make player group data
         players.isDefault = false;
         players.name = "players";
         players.parent = "visitors";
-        players.prefix = Colors.WHITE;
+        players.prefix = ChatFormat.WHITE.toString();
         players.worldName = null;
 
         // make mod group data
         mods.isDefault = false;
         mods.name = "mods";
         mods.parent = "players";
-        mods.prefix = Colors.YELLOW;
+        mods.prefix = ChatFormat.YELLOW.toString();
         mods.worldName = null;
 
         // make admins group data
         admins.isDefault = false;
         admins.name = "admins";
         admins.parent = "mods";
-        admins.prefix = Colors.LIGHT_RED;
+        admins.prefix = ChatFormat.RED.toString();
         admins.worldName = null;
         try {
             Database.get().insert(visitors);

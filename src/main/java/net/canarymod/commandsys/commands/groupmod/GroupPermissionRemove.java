@@ -2,7 +2,7 @@ package net.canarymod.commandsys.commands.groupmod;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.permissionsystem.PermissionNode;
@@ -23,6 +23,6 @@ public class GroupPermissionRemove implements NativeCommand {
         }
         PermissionNode node = PermissionNode.fromString(args[1]);
         Canary.permissionManager().removeGroupPermission(node.getName(), group);
-        caller.message(Colors.YELLOW + Translator.translate("modify permission removed"));
+        caller.message(ChatFormat.YELLOW + Translator.translate("modify permission removed"));
     }
 }

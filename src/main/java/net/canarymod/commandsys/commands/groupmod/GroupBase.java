@@ -15,9 +15,5 @@ public class GroupBase implements NativeCommand {
         if (parameters.length == 0) {
             Canary.help().getHelp(caller, "groupmod");
         }
-        if (parameters.length == 1 && parameters[0].equals("--help")) {
-            Canary.help().getHelp(caller, "groupmod");
-        }
     }
-
 }

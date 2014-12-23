@@ -5,7 +5,7 @@ package net.canarymod.api.nbt;
  *
  * @author gregthegeek
  */
-public interface LongTag extends PrimativeTag {
+public interface LongTag extends PrimitiveTag<LongTag> {
 
     /**
      * Returns the value associated with this tag.
@@ -21,9 +21,5 @@ public interface LongTag extends PrimativeTag {
      *         the long value
      */
     public void setValue(long value);
-
-    /** {@inheritDoc} */
-    @Override
-    public LongTag copy();
 
 }

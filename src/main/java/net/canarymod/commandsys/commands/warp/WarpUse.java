@@ -5,7 +5,7 @@ import net.canarymod.Translator;
 import net.canarymod.api.Server;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.blocks.CommandBlock;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.warp.Warp;
@@ -21,16 +21,16 @@ public class WarpUse implements NativeCommand {
             caller.notice(Translator.translate("warp console"));
         }
         else {
-            Player player = (Player) caller;
+            Player player = (Player)caller;
             Warp target = Canary.warps().getWarp(args[0]);
 
             if (target != null) {
                 if (target.warp(player)) {
-                    player.message(Colors.YELLOW + Translator.translateAndFormat("warp success", target.getName()));
+                    player.message(ChatFormat.YELLOW + Translator.translateAndFormat("warp success", target.getName()));
                     return;
                 }
                 else {
-                    player.message(Colors.YELLOW + Translator.translateAndFormat("warp not allowed", target.getName()));
+                    player.message(ChatFormat.YELLOW + Translator.translateAndFormat("warp not allowed", target.getName()));
                     return;
                 }
             }

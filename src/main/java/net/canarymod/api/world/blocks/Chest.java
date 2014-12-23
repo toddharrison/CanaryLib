@@ -7,7 +7,7 @@ import net.canarymod.api.inventory.Inventory;
  *
  * @author Chris (damagefilter)
  */
-public interface Chest extends TileEntity, Inventory {
+public interface Chest extends LockableTileEntity, Inventory {
 
     /**
      * Check if this chest has an attached chest (is a double chest)

@@ -1,5 +1,8 @@
 package net.canarymod.api.scoreboard;
 
+import net.canarymod.api.entity.living.humanoid.Player;
+import net.canarymod.api.world.World;
+
 /** 
  * ScoreObjective wrapper
  *
@@ -38,4 +41,41 @@ public interface ScoreObjective {
      *         The name you wish to set the display name to.
      */
     public void setDisplayName(String name);
+
+    /**
+     * Sets this {@link ScoreObjective}'s position for all players on the server.
+     *
+     * @param type
+     *         the position type.
+     */
+    public void setScoreboardPosition(ScorePosition type);
+
+    /**
+     * Sets this {@link ScoreObjective}'s position for the given player.
+     *
+     * @param type
+     *         the position type.
+     * @param player
+     *         the player to set the scoreboard for.
+     */
+    public void setScoreboardPosition(ScorePosition type, Player player);
+
+    /**
+     * Sets this {@link ScoreObjective}'s position for all Players in the given 
+     * {@link World}.
+     *
+     * @param type
+     *         the position type.
+     * @param world
+     *         the player to set the scoreboard for.
+     */
+    public void setScoreboardPosition(ScorePosition type, World world);
+    
+    /**
+     * Gets the {@link Scoreboard} instance this ScoreObjective instance is 
+     * attached to.
+     * 
+     * @return {@link Scoreboard}
+     */
+    public Scoreboard getScoreboard();
 }

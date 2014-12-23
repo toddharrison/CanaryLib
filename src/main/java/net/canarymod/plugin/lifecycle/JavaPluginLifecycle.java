@@ -2,7 +2,6 @@ package net.canarymod.plugin.lifecycle;
 
 import net.canarymod.CanaryClassLoader;
 import net.canarymod.exceptions.PluginLoadFailedException;
-import net.canarymod.plugin.IPluginManager;
 import net.canarymod.plugin.Plugin;
 import net.canarymod.plugin.PluginDescriptor;
 
@@ -21,7 +20,7 @@ public class JavaPluginLifecycle extends PluginLifecycleBase {
     }
 
     @Override
-    protected void _load(IPluginManager manager) throws PluginLoadFailedException {
+    protected void _load() throws PluginLoadFailedException {
         try {
             ploader = new CanaryClassLoader(new File(desc.getPath()).toURI().toURL(), getClass().getClassLoader());
             Class<?> cls = ploader.loadClass(desc.getCanaryInf().getString("main-class"));
@@ -33,13 +32,13 @@ public class JavaPluginLifecycle extends PluginLifecycleBase {
             p.setPriority(desc.getPriority());
             desc.setPlugin(p);
         }
-        catch (Throwable thrown) {
-            throw new PluginLoadFailedException("Failed to load plugin", thrown);
+        catch (Exception e) {
+            throw new PluginLoadFailedException("Failed to load plugin", e);
         }
     }
 
     @Override
-    protected void _unload(IPluginManager manager) {
+    protected void _unload() {
         if (ploader != null) {
             ploader.close();
         }

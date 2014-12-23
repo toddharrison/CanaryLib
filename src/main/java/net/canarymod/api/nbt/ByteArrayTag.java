@@ -5,7 +5,7 @@ package net.canarymod.api.nbt;
  *
  * @author gregthegeek
  */
-public interface ByteArrayTag extends BaseTag {
+public interface ByteArrayTag extends BaseTag<ByteArrayTag> {
 
     /**
      * Returns the value associated with this tag.
@@ -21,9 +21,5 @@ public interface ByteArrayTag extends BaseTag {
      *         the byte array value
      */
     public void setValue(byte[] value);
-
-    /** {@inheritDoc} */
-    @Override
-    public ByteArrayTag copy();
 
 }

@@ -4,7 +4,7 @@ import net.canarymod.Canary;
 import net.canarymod.Translator;
 import net.canarymod.api.PlayerReference;
 import net.canarymod.api.entity.living.humanoid.Player;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 
@@ -17,7 +17,7 @@ public class SetHome implements NativeCommand {
 
     public void execute(MessageReceiver caller, String[] parameters) {
         if (caller instanceof Player) {
-            player((Player) caller, parameters);
+            player((Player)caller, parameters);
         }
         else {
             console(caller);
@@ -34,9 +34,9 @@ public class SetHome implements NativeCommand {
             if (target != null) {
                 target.setHome(player.getLocation());
                 if (target.isOnline()) {
-                    ((Player) target).message(Colors.YELLOW + "Your home has been set by " + player.getName());
+                    ((Player)target).message(ChatFormat.YELLOW + "Your home has been set by " + player.getName());
                 }
-                player.message(Colors.YELLOW + target.getName() + "'s  home has been set.");
+                player.message(ChatFormat.YELLOW + target.getName() + "'s  home has been set.");
             }
             else {
                 player.notice(Translator.translateAndFormat("unknown player", args[1]));
@@ -44,8 +44,7 @@ public class SetHome implements NativeCommand {
         }
         else {
             player.setHome(player.getLocation());
-            player.message(Colors.YELLOW + "Your home has been set.");
+            player.message(ChatFormat.YELLOW + "Your home has been set.");
         }
     }
-
 }

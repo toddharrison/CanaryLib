@@ -3,8 +3,8 @@ package net.canarymod.commandsys.commands.system;
 import net.canarymod.Canary;
 import net.canarymod.ToolBox;
 import net.canarymod.api.entity.living.humanoid.Player;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
-import net.canarymod.chat.TextFormat;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.OperatorsProvider;
 
@@ -33,7 +33,7 @@ public final class DeOp implements NativeCommand {
         if (opPro.isOpped(opUUID)) {
             opPro.removePlayer(opUUID);
             if (!opPro.isOpped(opUUID)) {
-                Canary.getServer().broadcastMessageToOps(TextFormat.LIGHT_GRAY + "[SERVER] De-opped " + args[0]);
+                Canary.getServer().broadcastMessageToOps(ChatFormat.GRAY + "[SERVER] De-opped " + args[0]);
             }
             else {
                 caller.notice("Failed to deop " + args[0]);

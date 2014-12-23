@@ -295,24 +295,6 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
     public World getDefaultWorld();
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getName();
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void notice(String message);
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean hasPermission(String node);
-
-    /**
      * Get the servers configuration manager.
      *
      * @return the {@link ConfigurationManager}
@@ -485,8 +467,20 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @param entry
      *         the {@link PlayerListEntry} to be sent
+     * @deprecated Use {@link #sendPlayerListData} instead
      */
+    @Deprecated
     public void sendPlayerListEntry(PlayerListEntry entry);
+
+    /**
+     * Sends a {@link net.canarymod.api.PlayerListData} to all {@link Player}s on the server.
+     * <p/>
+     * NOTE: The server needs to have PlayerList enabled in the configuration
+     *
+     * @param entry
+     *         the {@link net.canarymod.api.PlayerListData} to be sent
+     */
+    void sendPlayerListData(PlayerListData data);
 
     /**
      * Gets the currently tracked Tick count.<br>

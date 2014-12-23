@@ -5,7 +5,7 @@ package net.canarymod.api.nbt;
  *
  * @author gregthegeek
  */
-public interface ShortTag extends PrimativeTag {
+public interface ShortTag extends PrimitiveTag<ShortTag> {
 
     /**
      * Returns the value associated with this tag.
@@ -21,9 +21,5 @@ public interface ShortTag extends PrimativeTag {
      *         the short value
      */
     public void setValue(short value);
-
-    /** {@inheritDoc} */
-    @Override
-    public ShortTag copy();
 
 }

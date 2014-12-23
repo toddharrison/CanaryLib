@@ -19,5 +19,4 @@ public class Motd implements NativeCommand {
         }
         Canary.motd().sendMOTD(caller);
     }
-
 }

@@ -3,7 +3,7 @@ package net.canarymod.commandsys.commands.system.kits;
 import net.canarymod.Canary;
 import net.canarymod.Translator;
 import net.canarymod.api.entity.living.humanoid.Player;
-import net.canarymod.chat.TextFormat;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.chat.ReceiverType;
 import net.canarymod.commandsys.NativeCommand;
@@ -37,7 +37,7 @@ public final class KitGive implements NativeCommand {
 
             if (kit != null) {
                 if (kit.giveKit(player, false)) {
-                    player.message(TextFormat.YELLOW + Translator.translate("kit given"));
+                    player.message(ChatFormat.YELLOW + Translator.translate("kit given"));
                 }
                 else {
                     player.notice(Translator.translate("kit unavailable"));
@@ -59,7 +59,7 @@ public final class KitGive implements NativeCommand {
 
                 if (kit != null) {
                     if (kit.giveKit(recipient, false)) {
-                        recipient.message(TextFormat.YELLOW + Translator.translateAndFormat("kit given other", player.getName()));
+                        recipient.message(ChatFormat.YELLOW + Translator.translateAndFormat("kit given other", player.getName()));
                     }
                     else {
                         player.notice(Translator.translateAndFormat("kit unavailable other", recipient.getName()));
@@ -86,7 +86,7 @@ public final class KitGive implements NativeCommand {
 
                 if (kit != null) {
                     if (kit.giveKit(recipient, override)) {
-                        recipient.message(TextFormat.YELLOW + Translator.translateAndFormat("kit given other", caller.getName()));
+                        recipient.message(ChatFormat.YELLOW + Translator.translateAndFormat("kit given other", caller.getName()));
                     }
                     else {
                         caller.notice(Translator.translateAndFormat("kit unavailable other", recipient.getName()));

@@ -1,9 +1,13 @@
 package net.canarymod.chat;
 
+import net.canarymod.api.chat.ChatComponent;
+
 /**
  * Callback interface for commands.
  *
  * @author Willem (l4mRh4X0r)
+ * @author Larry1123
+ * @author Jason (darkdiplomat)
  */
 public interface MessageReceiver {
 
@@ -12,7 +16,7 @@ public interface MessageReceiver {
      *
      * @return the <tt>MessageReceiver</tt>'s name.
      */
-    public String getName();
+    String getName();
 
     /**
      * Sends a message to this <tt>MessageReceiver</tt>.
@@ -20,7 +24,7 @@ public interface MessageReceiver {
      * @param message
      *         The message to send.
      */
-    public void notice(String message);
+    void notice(String message);
 
     /**
      * Sends a message to this <tt>MessageReceiver</tt>.
@@ -28,7 +32,63 @@ public interface MessageReceiver {
      * @param message
      *         The message to send.
      */
-    public void message(String message);
+    void notice(CharSequence message);
+
+    /**
+     * Sends a message(s) to this <tt>MessageReceiver</tt>.
+     *
+     * @param messages
+     *         The message(s) to send.
+     */
+    void notice(CharSequence... messages);
+
+    /**
+     * Sends a message(s) to this <tt>MessageReceiver</tt>.
+     *
+     * @param messages
+     *         The message(s) to send.
+     */
+    void notice(Iterable<? extends CharSequence> messages);
+
+    /**
+     * Sends a message to this <tt>MessageReceiver</tt>.
+     *
+     * @param message
+     *         The message to send.
+     */
+    void message(String message);
+
+    /**
+     * Sends a message to this <tt>MessageReceiver</tt>.
+     *
+     * @param message
+     *         The message to send.
+     */
+    void message(CharSequence message);
+
+    /**
+     * Sends a message(s) to this <tt>MessageReceiver</tt>.
+     *
+     * @param messages
+     *         The message(s) to send.
+     */
+    void message(CharSequence... messages);
+
+    /**
+     * Sends a message(s) to this <tt>MessageReceiver</tt>.
+     *
+     * @param messages
+     *         The message(s) to send.
+     */
+    void message(Iterable<? extends CharSequence> messages);
+
+    /**
+     * Sneds a {@link net.canarymod.api.chat.ChatComponent} message to this <tt>MessageReceiver</tt>
+     *
+     * @param chatComponents
+     *         The ChatComponent(s) to send
+     */
+    void message(ChatComponent... chatComponents);
 
     /**
      * Check if the {@link MessageReceiver} has this permission.
@@ -40,9 +100,9 @@ public interface MessageReceiver {
      *         The node to check for.
      *
      * @return <tt>true</tt> if this <tt>MessageReceiver</tt> has the given
-     *         permission, <tt>false</tt> otherwise.
+     * permission, <tt>false</tt> otherwise.
      */
-    public boolean hasPermission(String node);
+    boolean hasPermission(String node);
 
     /**
      * Check if a {@link MessageReceiver} has this permission.
@@ -53,14 +113,21 @@ public interface MessageReceiver {
      *         ther permission node to check for
      *
      * @return <tt>true</tt> if this <tt>MessageReceiver</tt> has the given
-     *         permission, <tt>false</tt> otherwise.
+     * permission, <tt>false</tt> otherwise.
      */
-    public boolean safeHasPermission(String permission);
+    boolean safeHasPermission(String permission);
 
     /**
      * Gets the type of MessageReceiver the instance is
      *
      * @return receiver type
      */
-    public ReceiverType getReceiverType();
+    ReceiverType getReceiverType();
+
+    /**
+     * Gets the locale the MessageReceiver is using in their client. This is in the format of language_region e.g. en_US
+     *
+     * @return the MessageReceiver's locale
+     */
+    String getLocale();
 }

@@ -83,6 +83,16 @@ public abstract class Database {
     public abstract void insert(DataAccess data) throws DatabaseWriteException;
 
     /**
+     * Insert a range of DataAccess objects at once.
+     *
+     * @param data
+     *          the list of data to insert
+     * @throws DatabaseWriteException
+     *          when something went wrong during the write operation
+     */
+    public abstract void insertAll(List<DataAccess> data) throws DatabaseWriteException;
+
+    /**
      * Updates the record in the database that fits to your fields and values given.
      * Those are NOT the values and fields to update. Those are values and fields to identify
      * the correct entry in the database to update. The updated data must be provided in the DataAccess
@@ -95,6 +105,19 @@ public abstract class Database {
      * @throws DatabaseWriteException
      */
     public abstract void update(DataAccess data, Map<String, Object> filters) throws DatabaseWriteException;
+
+    /**
+     * Updates the records in the database that fits to your fields and values given.
+     * Those are NOT the values and fields to update. Those are values and fields to identify
+     * the correct entry in the database to update. The updated data must be provided in the DataAccess
+     *
+     * @param data
+     *          a map of data access objects to insert and the filters to apply them with
+     * @param template
+     *          the template data access used for verification.
+     * @throws DatabaseWriteException
+     */
+    public abstract void updateAll(DataAccess template, Map<DataAccess, Map<String, Object>> list) throws DatabaseWriteException;
 
     /**
      * Removes the data set from the given table that suits the given field names and values.

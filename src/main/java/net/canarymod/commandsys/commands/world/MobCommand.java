@@ -15,10 +15,10 @@ abstract class MobCommand implements NativeCommand {
 
     protected Location location(MessageReceiver caller) {
         if (caller instanceof Player) {
-            return ((Player) caller).getLocation();
+            return ((Player)caller).getLocation();
         }
         else if (caller instanceof CommandBlock) {
-            return ((CommandBlock) caller).getBlock().getLocation();
+            return ((CommandBlock)caller).getBlock().getLocation();
         }
         else {
             return new Location(Canary.getServer().getDefaultWorld(), 0, 64, 0, 0.0F, 0.0F);
@@ -27,10 +27,10 @@ abstract class MobCommand implements NativeCommand {
 
     protected World callerWorld(MessageReceiver caller) {
         if (caller instanceof Player) {
-            return ((Player) caller).getWorld();
+            return ((Player)caller).getWorld();
         }
         else if (caller instanceof CommandBlock) {
-            return ((CommandBlock) caller).getBlock().getWorld();
+            return ((CommandBlock)caller).getBlock().getWorld();
         }
         else {
             return Canary.getServer().getDefaultWorld();

@@ -2,28 +2,262 @@ package net.canarymod.commandsys;
 
 import net.canarymod.Canary;
 import net.canarymod.chat.MessageReceiver;
-import net.canarymod.commandsys.commands.groupmod.*;
+import net.canarymod.commandsys.commands.groupmod.GroupCheck;
+import net.canarymod.commandsys.commands.groupmod.GroupCreate;
+import net.canarymod.commandsys.commands.groupmod.GroupList;
+import net.canarymod.commandsys.commands.groupmod.GroupParent;
+import net.canarymod.commandsys.commands.groupmod.GroupPermissionAdd;
+import net.canarymod.commandsys.commands.groupmod.GroupPermissionCheck;
+import net.canarymod.commandsys.commands.groupmod.GroupPermissionFlush;
+import net.canarymod.commandsys.commands.groupmod.GroupPermissionList;
+import net.canarymod.commandsys.commands.groupmod.GroupPermissionRemove;
+import net.canarymod.commandsys.commands.groupmod.GroupPrefix;
+import net.canarymod.commandsys.commands.groupmod.GroupRemove;
+import net.canarymod.commandsys.commands.groupmod.GroupRename;
 import net.canarymod.commandsys.commands.player.Compass;
 import net.canarymod.commandsys.commands.player.GetPosition;
 import net.canarymod.commandsys.commands.player.GodCommand;
-import net.canarymod.commandsys.commands.player.Kill;
-import net.canarymod.commandsys.commands.playermod.*;
-import net.canarymod.commandsys.commands.system.*;
+import net.canarymod.commandsys.commands.playermod.PlayerCreate;
+import net.canarymod.commandsys.commands.playermod.PlayerGroupAdd;
+import net.canarymod.commandsys.commands.playermod.PlayerGroupCheck;
+import net.canarymod.commandsys.commands.playermod.PlayerGroupList;
+import net.canarymod.commandsys.commands.playermod.PlayerGroupRemove;
+import net.canarymod.commandsys.commands.playermod.PlayerGroupSet;
+import net.canarymod.commandsys.commands.playermod.PlayerPermissionAdd;
+import net.canarymod.commandsys.commands.playermod.PlayerPermissionCheck;
+import net.canarymod.commandsys.commands.playermod.PlayerPermissionList;
+import net.canarymod.commandsys.commands.playermod.PlayerPermissionRemove;
+import net.canarymod.commandsys.commands.playermod.PlayerPrefix;
+import net.canarymod.commandsys.commands.playermod.PlayerRemove;
+import net.canarymod.commandsys.commands.playermod.PlayermodBase;
+import net.canarymod.commandsys.commands.system.BanCommand;
+import net.canarymod.commandsys.commands.system.CanaryModCommand;
+import net.canarymod.commandsys.commands.system.CreateVanilla;
+import net.canarymod.commandsys.commands.system.DeOp;
+import net.canarymod.commandsys.commands.system.HelpCommand;
+import net.canarymod.commandsys.commands.system.IpBanCommand;
+import net.canarymod.commandsys.commands.system.Kick;
+import net.canarymod.commandsys.commands.system.ListPlugins;
+import net.canarymod.commandsys.commands.system.Motd;
+import net.canarymod.commandsys.commands.system.Mute;
+import net.canarymod.commandsys.commands.system.Op;
+import net.canarymod.commandsys.commands.system.OpList;
+import net.canarymod.commandsys.commands.system.PlayerInformation;
+import net.canarymod.commandsys.commands.system.PlayerList;
+import net.canarymod.commandsys.commands.system.PluginCommand;
+import net.canarymod.commandsys.commands.system.ReloadCommand;
+import net.canarymod.commandsys.commands.system.ReservelistCommand;
+import net.canarymod.commandsys.commands.system.StopServer;
+import net.canarymod.commandsys.commands.system.SystemInformation;
+import net.canarymod.commandsys.commands.system.UnbanCommand;
+import net.canarymod.commandsys.commands.system.Uptime;
 import net.canarymod.commandsys.commands.system.kits.KitCreate;
 import net.canarymod.commandsys.commands.system.kits.KitDelete;
 import net.canarymod.commandsys.commands.system.kits.KitGive;
 import net.canarymod.commandsys.commands.system.kits.KitList;
-import net.canarymod.commandsys.commands.vanilla.*;
-import net.canarymod.commandsys.commands.warp.*;
-import net.canarymod.commandsys.commands.world.*;
+import net.canarymod.commandsys.commands.system.whitelist.WhitelistAdd;
+import net.canarymod.commandsys.commands.system.whitelist.WhitelistDisable;
+import net.canarymod.commandsys.commands.system.whitelist.WhitelistEnable;
+import net.canarymod.commandsys.commands.system.whitelist.WhitelistReload;
+import net.canarymod.commandsys.commands.system.whitelist.WhitelistRemove;
+import net.canarymod.commandsys.commands.system.whitelist.WhitelistShow;
+import net.canarymod.commandsys.commands.vanilla.Achievement;
+import net.canarymod.commandsys.commands.vanilla.BlockData;
+import net.canarymod.commandsys.commands.vanilla.Broadcast;
+import net.canarymod.commandsys.commands.vanilla.Clear;
+import net.canarymod.commandsys.commands.vanilla.Clone;
+import net.canarymod.commandsys.commands.vanilla.Debug;
+import net.canarymod.commandsys.commands.vanilla.DefaultGameMode;
+import net.canarymod.commandsys.commands.vanilla.DefaultSpawnpoint;
+import net.canarymod.commandsys.commands.vanilla.Difficulty;
+import net.canarymod.commandsys.commands.vanilla.Effect;
+import net.canarymod.commandsys.commands.vanilla.Emote;
+import net.canarymod.commandsys.commands.vanilla.Enchant;
+import net.canarymod.commandsys.commands.vanilla.EntityData;
+import net.canarymod.commandsys.commands.vanilla.Execute;
+import net.canarymod.commandsys.commands.vanilla.Fill;
+import net.canarymod.commandsys.commands.vanilla.GameMode;
+import net.canarymod.commandsys.commands.vanilla.GameRule;
+import net.canarymod.commandsys.commands.vanilla.Give;
+import net.canarymod.commandsys.commands.vanilla.Kill;
+import net.canarymod.commandsys.commands.vanilla.Message;
+import net.canarymod.commandsys.commands.vanilla.MessageRaw;
+import net.canarymod.commandsys.commands.vanilla.Particle;
+import net.canarymod.commandsys.commands.vanilla.PlaySound;
+import net.canarymod.commandsys.commands.vanilla.ReplaceItem;
+import net.canarymod.commandsys.commands.vanilla.SaveAll;
+import net.canarymod.commandsys.commands.vanilla.SaveOff;
+import net.canarymod.commandsys.commands.vanilla.SaveOn;
+import net.canarymod.commandsys.commands.vanilla.Scoreboard;
+import net.canarymod.commandsys.commands.vanilla.SetBlock;
+import net.canarymod.commandsys.commands.vanilla.SpawnPoint;
+import net.canarymod.commandsys.commands.vanilla.SpreadPlayers;
+import net.canarymod.commandsys.commands.vanilla.Stats;
+import net.canarymod.commandsys.commands.vanilla.Summon;
+import net.canarymod.commandsys.commands.vanilla.Teleport;
+import net.canarymod.commandsys.commands.vanilla.TestFor;
+import net.canarymod.commandsys.commands.vanilla.TestForBlock;
+import net.canarymod.commandsys.commands.vanilla.TestForBlocks;
+import net.canarymod.commandsys.commands.vanilla.Time;
+import net.canarymod.commandsys.commands.vanilla.Title;
+import net.canarymod.commandsys.commands.vanilla.ToggleDownfall;
+import net.canarymod.commandsys.commands.vanilla.Trigger;
+import net.canarymod.commandsys.commands.vanilla.Weather;
+import net.canarymod.commandsys.commands.vanilla.WorldBorder;
+import net.canarymod.commandsys.commands.vanilla.XP;
+import net.canarymod.commandsys.commands.warp.Home;
+import net.canarymod.commandsys.commands.warp.SetHome;
+import net.canarymod.commandsys.commands.warp.SpawnCommand;
+import net.canarymod.commandsys.commands.warp.WarpList;
+import net.canarymod.commandsys.commands.warp.WarpRemove;
+import net.canarymod.commandsys.commands.warp.WarpSet;
+import net.canarymod.commandsys.commands.warp.WarpUse;
+import net.canarymod.commandsys.commands.world.CreateWorldCommand;
+import net.canarymod.commandsys.commands.world.DeleteWorldCommand;
+import net.canarymod.commandsys.commands.world.LoadWorldCommand;
+import net.canarymod.commandsys.commands.world.MobClear;
+import net.canarymod.commandsys.commands.world.MobCount;
+import net.canarymod.commandsys.commands.world.MobSpawnerCheck;
+import net.canarymod.commandsys.commands.world.MobSpawnerSet;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static net.canarymod.commandsys.CanaryCommandPermissions.*;
-import static net.canarymod.commandsys.TabCompleteHelper.*;
+import static net.canarymod.commandsys.CanaryCommandPermissions.ACHIEVEMENT;
+import static net.canarymod.commandsys.CanaryCommandPermissions.BAN;
+import static net.canarymod.commandsys.CanaryCommandPermissions.BLOCKDATA;
+import static net.canarymod.commandsys.CanaryCommandPermissions.BROADCAST;
+import static net.canarymod.commandsys.CanaryCommandPermissions.CANARYMOD;
+import static net.canarymod.commandsys.CanaryCommandPermissions.CLEAR;
+import static net.canarymod.commandsys.CanaryCommandPermissions.CLONE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.COMPASS;
+import static net.canarymod.commandsys.CanaryCommandPermissions.CREATEVANILLA;
+import static net.canarymod.commandsys.CanaryCommandPermissions.DEBUG;
+import static net.canarymod.commandsys.CanaryCommandPermissions.DEFAULTGAMEMODE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.DIFFICULTY;
+import static net.canarymod.commandsys.CanaryCommandPermissions.EFFECT;
+import static net.canarymod.commandsys.CanaryCommandPermissions.EMOTE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.ENCHANT;
+import static net.canarymod.commandsys.CanaryCommandPermissions.ENTITYDATA;
+import static net.canarymod.commandsys.CanaryCommandPermissions.EXECUTE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.FILL;
+import static net.canarymod.commandsys.CanaryCommandPermissions.GAMEMODE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.GAMERULE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.GETPOS;
+import static net.canarymod.commandsys.CanaryCommandPermissions.GIVE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.GOD;
+import static net.canarymod.commandsys.CanaryCommandPermissions.GOD$OTHER;
+import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD;
+import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$ADD;
+import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$CHECK;
+import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$LIST;
+import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$PARENT;
+import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$PERMISSIONS;
+import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$PERMISSIONS$ADD;
+import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$PERMISSIONS$CHECK;
+import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$PERMISSIONS$FLUSH;
+import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$PERMISSIONS$LIST;
+import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$PERMISSIONS$REMOVE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$PREFIX;
+import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$REMOVE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$RENAME;
+import static net.canarymod.commandsys.CanaryCommandPermissions.HELP;
+import static net.canarymod.commandsys.CanaryCommandPermissions.HOME;
+import static net.canarymod.commandsys.CanaryCommandPermissions.HOME$SET;
+import static net.canarymod.commandsys.CanaryCommandPermissions.IPBAN;
+import static net.canarymod.commandsys.CanaryCommandPermissions.KICK;
+import static net.canarymod.commandsys.CanaryCommandPermissions.KILL;
+import static net.canarymod.commandsys.CanaryCommandPermissions.KILL$OTHER;
+import static net.canarymod.commandsys.CanaryCommandPermissions.KIT;
+import static net.canarymod.commandsys.CanaryCommandPermissions.KIT$CREATE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.KIT$DELETE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.KIT$OTHER;
+import static net.canarymod.commandsys.CanaryCommandPermissions.MESSAGE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.MESSAGERAW;
+import static net.canarymod.commandsys.CanaryCommandPermissions.MOB;
+import static net.canarymod.commandsys.CanaryCommandPermissions.MOB$CLEAR;
+import static net.canarymod.commandsys.CanaryCommandPermissions.MOB$COUNT;
+import static net.canarymod.commandsys.CanaryCommandPermissions.MOBSPAWNER;
+import static net.canarymod.commandsys.CanaryCommandPermissions.MOBSPAWNER$CHECK;
+import static net.canarymod.commandsys.CanaryCommandPermissions.MOBSPAWNER$SET;
+import static net.canarymod.commandsys.CanaryCommandPermissions.MOTD;
+import static net.canarymod.commandsys.CanaryCommandPermissions.MUTE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.PARTICLE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYER$INFO;
+import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYER$LIST;
+import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD;
+import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$ADD;
+import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$GROUP;
+import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$GROUP$ADD;
+import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$GROUP$CHECK;
+import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$GROUP$LIST;
+import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$GROUP$REMOVE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$GROUP$SET;
+import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$PERMISSIONS;
+import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$PERMISSIONS$ADD;
+import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$PERMISSIONS$CHECK;
+import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$PERMISSIONS$LIST;
+import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$PERMISSIONS$REMOVE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$PREFIX;
+import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$REMOVE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYSOUND;
+import static net.canarymod.commandsys.CanaryCommandPermissions.PLUGIN$DISABLE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.PLUGIN$ENABLE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.PLUGIN$LIST;
+import static net.canarymod.commandsys.CanaryCommandPermissions.PLUGIN$RELOAD;
+import static net.canarymod.commandsys.CanaryCommandPermissions.RELOAD;
+import static net.canarymod.commandsys.CanaryCommandPermissions.REPLACEITEM;
+import static net.canarymod.commandsys.CanaryCommandPermissions.RESERVELIST;
+import static net.canarymod.commandsys.CanaryCommandPermissions.SAVE$ALL;
+import static net.canarymod.commandsys.CanaryCommandPermissions.SAVE$OFF;
+import static net.canarymod.commandsys.CanaryCommandPermissions.SAVE$ON;
+import static net.canarymod.commandsys.CanaryCommandPermissions.SCOREBOARD;
+import static net.canarymod.commandsys.CanaryCommandPermissions.SETBLOCK;
+import static net.canarymod.commandsys.CanaryCommandPermissions.SETWORLDSPAWN;
+import static net.canarymod.commandsys.CanaryCommandPermissions.SPAWN;
+import static net.canarymod.commandsys.CanaryCommandPermissions.SPAWNPOINT;
+import static net.canarymod.commandsys.CanaryCommandPermissions.SPREADPLAYERS;
+import static net.canarymod.commandsys.CanaryCommandPermissions.STATS;
+import static net.canarymod.commandsys.CanaryCommandPermissions.STOP;
+import static net.canarymod.commandsys.CanaryCommandPermissions.SUMMON;
+import static net.canarymod.commandsys.CanaryCommandPermissions.SYSINFO;
+import static net.canarymod.commandsys.CanaryCommandPermissions.TELEPORT;
+import static net.canarymod.commandsys.CanaryCommandPermissions.TELEPORT$OTHER;
+import static net.canarymod.commandsys.CanaryCommandPermissions.TESTFOR;
+import static net.canarymod.commandsys.CanaryCommandPermissions.TESTFORBLOCK;
+import static net.canarymod.commandsys.CanaryCommandPermissions.TESTFORBLOCKS;
+import static net.canarymod.commandsys.CanaryCommandPermissions.TIME;
+import static net.canarymod.commandsys.CanaryCommandPermissions.TITLE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.TOGGLEDOWNFALL;
+import static net.canarymod.commandsys.CanaryCommandPermissions.TRIGGER;
+import static net.canarymod.commandsys.CanaryCommandPermissions.UNBAN;
+import static net.canarymod.commandsys.CanaryCommandPermissions.UPTIME;
+import static net.canarymod.commandsys.CanaryCommandPermissions.WARP$LIST;
+import static net.canarymod.commandsys.CanaryCommandPermissions.WARP$REMOVE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.WARP$SET;
+import static net.canarymod.commandsys.CanaryCommandPermissions.WARP$USE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.WEATHER;
+import static net.canarymod.commandsys.CanaryCommandPermissions.WHITELIST;
+import static net.canarymod.commandsys.CanaryCommandPermissions.WHITELIST$ADMIN;
+import static net.canarymod.commandsys.CanaryCommandPermissions.WORLD$CREATE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.WORLD$DELETE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.WORLD$LOAD;
+import static net.canarymod.commandsys.CanaryCommandPermissions.WORLDBORDER;
+import static net.canarymod.commandsys.CanaryCommandPermissions.XP;
+import static net.canarymod.commandsys.TabCompleteHelper.matchTo;
+import static net.canarymod.commandsys.TabCompleteHelper.matchToBannedSubject;
+import static net.canarymod.commandsys.TabCompleteHelper.matchToDimension;
+import static net.canarymod.commandsys.TabCompleteHelper.matchToGroup;
+import static net.canarymod.commandsys.TabCompleteHelper.matchToKitNames;
+import static net.canarymod.commandsys.TabCompleteHelper.matchToKnownPlayer;
+import static net.canarymod.commandsys.TabCompleteHelper.matchToKnownWorld;
+import static net.canarymod.commandsys.TabCompleteHelper.matchToLoadedWorld;
+import static net.canarymod.commandsys.TabCompleteHelper.matchToOnlinePlayer;
+import static net.canarymod.commandsys.TabCompleteHelper.matchToPlayerPermission;
+import static net.canarymod.commandsys.TabCompleteHelper.matchToWarpNames;
+import static net.canarymod.commandsys.TabCompleteHelper.matchToWorldType;
 
 /**
  * Canary "native" commands
@@ -56,7 +290,6 @@ public class CommandList implements CommandListener {
         temp.put("compass", new Compass());
         temp.put("pos", new GetPosition());
         temp.put("god", new GodCommand());
-        temp.put("kill", new Kill());
 
         /* playermod */
         temp.put("playermod", new PlayermodBase());
@@ -101,12 +334,19 @@ public class CommandList implements CommandListener {
         temp.put("sysinfo", new SystemInformation());
         temp.put("unban", new UnbanCommand());
         temp.put("uptime", new Uptime());
-        temp.put("whitelist", new WhitelistCommand());
+        temp.put("whitelist.add", new WhitelistAdd());
+        temp.put("whitelist.remove", new WhitelistRemove());
+        temp.put("whitelist.show", new WhitelistShow());
+        temp.put("whitelist.enable", new WhitelistEnable());
+        temp.put("whitelist.disable", new WhitelistDisable());
+        temp.put("whitelist.reload", new WhitelistReload());
 
         /* vanilla */
         temp.put("achievement", new Achievement());
+        temp.put("blockdata", new BlockData());
         temp.put("broadcast", new Broadcast());
         temp.put("clear", new Clear());
+        temp.put("clone", new Clone());
         temp.put("debug", new Debug());
         temp.put("defaultgamemode", new DefaultGameMode());
         temp.put("defaultspawnpoint", new DefaultSpawnpoint());
@@ -114,12 +354,18 @@ public class CommandList implements CommandListener {
         temp.put("effect", new Effect());
         temp.put("emote", new Emote());
         temp.put("enchant", new Enchant());
+        temp.put("entitydata", new EntityData());
+        temp.put("execute", new Execute());
+        temp.put("fill", new Fill());
         temp.put("gamemode", new GameMode());
         temp.put("gamerule", new GameRule());
         temp.put("give", new Give());
+        temp.put("kill", new Kill());
         temp.put("message", new Message());
         temp.put("messageraw", new MessageRaw());
+        temp.put("particle", new Particle());
         temp.put("playsound", new PlaySound());
+        temp.put("replaceitem", new ReplaceItem());
         temp.put("save-all", new SaveAll());
         temp.put("save-off", new SaveOff());
         temp.put("save-on", new SaveOn());
@@ -127,13 +373,18 @@ public class CommandList implements CommandListener {
         temp.put("setblock", new SetBlock());
         temp.put("spawnpoint", new SpawnPoint());
         temp.put("spreadplayers", new SpreadPlayers());
+        temp.put("stats", new Stats());
         temp.put("summon", new Summon());
         temp.put("teleport", new Teleport());
         temp.put("testfor", new TestFor());
         temp.put("testforblock", new TestForBlock());
+        temp.put("testforblocks", new TestForBlocks());
         temp.put("time", new Time());
+        temp.put("title", new Title());
         temp.put("toggledownfall", new ToggleDownfall());
+        temp.put("trigger", new Trigger());
         temp.put("weather", new Weather());
+        temp.put("worldborder", new WorldBorder());
         temp.put("xp", new XP());
 
         /* warp */
@@ -149,22 +400,20 @@ public class CommandList implements CommandListener {
         temp.put("createworld", new CreateWorldCommand());
         temp.put("deleteworld", new DeleteWorldCommand());
         temp.put("loadworld", new LoadWorldCommand());
-        temp.put("mobclear", new MobClear());
-        temp.put("mobcount", new MobCount());
+        temp.put("mob.clear", new MobClear());
+        temp.put("mob.count", new MobCount());
+        temp.put("mobspawner.set", new MobSpawnerSet());
+        temp.put("mobspawner.check", new MobSpawnerCheck());
 
         natives = Collections.unmodifiableMap(temp);
     }
 
-    private static String perm(CanaryCommandPermissions perm) {
-        return perm.toString();
-    }
-
     /* groupmod start */
     @Command(
-            aliases = {"groupmod", "group"},
+            aliases = { "groupmod", "group" },
             helpLookup = "groupmod",
             description = "groupmod info",
-            permissions = {GROUPMOD},
+            permissions = { GROUPMOD },
             toolTip = "/groupmod <add|delete|rename|permission|list> [parameters...] [--help]",
             min = 1,
             version = 2
@@ -173,18 +422,19 @@ public class CommandList implements CommandListener {
         Canary.help().getHelp(caller, "groupmod");
     }
 
-    @TabComplete(commands = {"groupmod"})
+    @TabComplete(commands = { "groupmod" })
     public List<String> groupBaseTabComplete(MessageReceiver caller, String[] parameters) {
-        return parameters.length == 1 ? matchTo(parameters, new String[]{"add", "delete", "rename", "permission", "list"}) : null;
+        return parameters.length == 1 ? matchTo(parameters, new String[]{ "add", "delete", "rename", "permission", "list" }) : null;
     }
 
     @Command(
-            aliases = {"add", "create"},
+            aliases = { "add", "create" },
             parent = "groupmod",
             helpLookup = "groupmod add",
             description = "group add info",
-            permissions = {GROUPMOD$ADD},
+            permissions = { GROUPMOD$ADD },
             toolTip = "/groupmod add <name> [[parent] [world[:dimension]]]",
+            min = 1,
             max = 3,
             version = 2
     )
@@ -192,7 +442,7 @@ public class CommandList implements CommandListener {
         natives.get("groupmod.add").execute(caller, parameters);
     }
 
-    @TabComplete(commands = {"groupmod add", "groupmod create"})
+    @TabComplete(commands = { "groupmod add", "groupmod create" })
     public List<String> groupmodAddTabComplete(MessageReceiver caller, String[] parameters) {
         switch (parameters.length) {
             // case 1 would be user submitted and unknown
@@ -206,11 +456,11 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"permission", "perms"},
+            aliases = { "permission", "perms" },
             parent = "groupmod",
             helpLookup = "groupmod permission",
             description = "group permission info",
-            permissions = {GROUPMOD$PERMISSIONS},
+            permissions = { GROUPMOD$PERMISSIONS },
             toolTip = "/groupmod permission <add|remove|check|list> [arguments...] [--help]",
             min = 1
     )
@@ -218,17 +468,17 @@ public class CommandList implements CommandListener {
         Canary.help().getHelp(caller, "groupmod permission");
     }
 
-    @TabComplete(commands = {"groupmod permission", "groupmod perms"})
+    @TabComplete(commands = { "groupmod permission", "groupmod perms" })
     public List<String> groupmodPermissionTabComplete(MessageReceiver caller, String[] parameters) {
-        return parameters.length == 1 ? matchTo(parameters, new String[]{"add", "remove", "check", "list"}) : null;
+        return parameters.length == 1 ? matchTo(parameters, new String[]{ "add", "remove", "check", "list" }) : null;
     }
 
     @Command(
-            aliases = {"add"},
+            aliases = { "add" },
             parent = "groupmod.permission",
             helpLookup = "groupmod permission add",
             description = "groupmod permission add info",
-            permissions = {GROUPMOD$PERMISSIONS$ADD},
+            permissions = { GROUPMOD$PERMISSIONS$ADD },
             toolTip = "/groupmod permission add <group> <path>:[value]",
             min = 2
     )
@@ -237,11 +487,11 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"remove"},
+            aliases = { "remove" },
             parent = "groupmod.permission",
             helpLookup = "groupmod permission remove",
             description = "groupmod permission remove info",
-            permissions = {GROUPMOD$PERMISSIONS$REMOVE},
+            permissions = { GROUPMOD$PERMISSIONS$REMOVE },
             toolTip = "/groupmod permission remove <group> <path>:[value]",
             min = 2,
             version = 2
@@ -251,11 +501,11 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"check"},
+            aliases = { "check" },
             parent = "groupmod.permission",
             helpLookup = "groupmod permission check",
             description = "groupmod permission check info",
-            permissions = {GROUPMOD$PERMISSIONS$CHECK},
+            permissions = { GROUPMOD$PERMISSIONS$CHECK },
             toolTip = "/groupmod permission check <group> <path>:[value]",
             min = 2,
             version = 2
@@ -264,19 +514,26 @@ public class CommandList implements CommandListener {
         natives.get("groupmod.perms.check").execute(caller, parameters);
     }
 
-    @TabComplete(commands = {"groupmod permission add", "groupmod permission remove", "groupmod permission check"})
+    @TabComplete(commands = { "groupmod permission add", "groupmod permission remove", "groupmod permission check" })
     public List<String> groupmodPermissionAddRemoveCheckTabComplete(MessageReceiver caller, String[] parameters) {
-        return parameters.length == 1 ? matchToGroup(parameters)
-                       : parameters.length == 2 && parameters[1].contains(":") ? matchTo(parameters, new String[]{ parameters[1].split(":")[0].concat(":true"), parameters[1].split(":")[0].concat(":false") })
-                : null;
+        switch (parameters.length) {
+            case 1:
+                return matchToGroup(parameters);
+            case 2:
+                if (parameters[1].contains(":")) {
+                    String pre = parameters[1].split(":")[0];
+                    return matchTo(parameters, new String[]{ pre.concat(":true"), pre.concat(":false") });
+                }
+        }
+        return null;
     }
 
     @Command(
-            aliases = {"list"},
+            aliases = { "list" },
             parent = "groupmod.permission",
             helpLookup = "groupmod permission list",
             description = "groupmod permission list info",
-            permissions = {GROUPMOD$PERMISSIONS$LIST},
+            permissions = { GROUPMOD$PERMISSIONS$LIST },
             toolTip = "/groupmod permission list <group>",
             min = 1,
             version = 2
@@ -286,11 +543,11 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"flush"},
+            aliases = { "flush" },
             parent = "groupmod.permission",
             helpLookup = "groupmod permission flush",
             description = "group permissionflush info",
-            permissions = {GROUPMOD$PERMISSIONS$FLUSH},
+            permissions = { GROUPMOD$PERMISSIONS$FLUSH },
             toolTip = "/groupmod permission flush <group>",
             min = 1,
             version = 2
@@ -300,11 +557,11 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"list", "show"},
+            aliases = { "list", "show" },
             parent = "groupmod",
             helpLookup = "groupmod list",
             description = "group list info",
-            permissions = {GROUPMOD$LIST},
+            permissions = { GROUPMOD$LIST },
             toolTip = "/groupmod list"
     )
     public void groupList(MessageReceiver caller, String[] parameters) {
@@ -312,11 +569,11 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"remove", "delete"},
+            aliases = { "remove", "delete" },
             parent = "groupmod",
             helpLookup = "groupmod remove",
             description = "group remove info",
-            permissions = {GROUPMOD$REMOVE},
+            permissions = { GROUPMOD$REMOVE },
             toolTip = "/groupmod remove <name>",
             min = 1,
             version = 2
@@ -326,11 +583,11 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"check", "show"},
+            aliases = { "check", "show" },
             parent = "groupmod",
             helpLookup = "groupmod check",
             description = "group check info",
-            permissions = {GROUPMOD$CHECK},
+            permissions = { GROUPMOD$CHECK },
             toolTip = "/groupmod check <name>",
             min = 1,
             version = 2
@@ -340,11 +597,11 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"rename"},
+            aliases = { "rename" },
             parent = "groupmod",
             helpLookup = "groupmod rename",
             description = "group rename info",
-            permissions = {GROUPMOD$RENAME},
+            permissions = { GROUPMOD$RENAME },
             toolTip = "/groupmod rename <group> <newname>",
             min = 2,
             version = 2
@@ -354,11 +611,11 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"prefix"},
+            aliases = { "prefix" },
             parent = "groupmod",
             helpLookup = "groupmod prefix",
             description = "group prefix info",
-            permissions = {GROUPMOD$PREFIX},
+            permissions = { GROUPMOD$PREFIX },
             toolTip = "/groupmod prefix <group> <prefix>",
             min = 2,
             version = 2
@@ -368,11 +625,11 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"parent"},
+            aliases = { "parent" },
             parent = "groupmod",
             helpLookup = "groupmod parent",
             description = "group parent info",
-            permissions = {GROUPMOD$PARENT},
+            permissions = { GROUPMOD$PARENT },
             toolTip = "/groupmod parent <group> <parent group>",
             min = 2,
             version = 2
@@ -381,12 +638,12 @@ public class CommandList implements CommandListener {
         natives.get("groupmod.parent").execute(caller, parameters);
     }
 
-    @TabComplete(commands = {"groupmod parent"})
+    @TabComplete(commands = { "groupmod parent" })
     public List<String> groupmodParentTabComplete(MessageReceiver caller, String[] parameters) {
         return parameters.length == 1 || parameters.length == 2 ? matchToGroup(parameters) : null;
     }
 
-    @TabComplete(commands = {"groupmod permissions list", "groupmod permission flush", "groupmod remove", "groupmod check", "groupmod rename", "groupmod prefix"})
+    @TabComplete(commands = { "groupmod permissions list", "groupmod permission flush", "groupmod remove", "groupmod check", "groupmod rename", "groupmod prefix" })
     public List<String> matchToGroupTabComplete(MessageReceiver caller, String[] parameters) {
         return parameters.length == 1 ? matchToGroup(parameters) : null;
     }
@@ -394,9 +651,9 @@ public class CommandList implements CommandListener {
 
     /* player */
     @Command(
-            aliases = {"compass"},
+            aliases = { "compass" },
             description = "compass info",
-            permissions = {COMPASS},
+            permissions = { COMPASS },
             toolTip = "/compass"
     )
     public void compassCommand(MessageReceiver caller, String[] parameters) {
@@ -404,9 +661,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"pos", "getpos"},
+            aliases = { "pos", "getpos" },
             description = "getpos info",
-            permissions = {GETPOS},
+            permissions = { GETPOS },
             toolTip = "/getpos"
     )
     public void getPosCommand(MessageReceiver caller, String[] parameters) {
@@ -414,9 +671,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"god", "godmode"},
+            aliases = { "god", "godmode" },
             description = "enable god mode",
-            permissions = {GOD, GOD$OTHER},
+            permissions = { GOD, GOD$OTHER },
             toolTip = "/god [playername]",
             version = 2
     )
@@ -425,10 +682,10 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"kill", "murder"},
+            aliases = { "kill", "murder" },
             description = "kill info",
-            permissions = {KILL, KILL$OTHER},
-            toolTip = "/kill [playername]",
+            permissions = { KILL, KILL$OTHER },
+            toolTip = "/kill [player:entity]",
             version = 2
     )
     public void killCommand(MessageReceiver caller, String[] parameters) {
@@ -437,9 +694,9 @@ public class CommandList implements CommandListener {
 
     /* playermod start */
     @Command(
-            aliases = {"playermod", "player"},
+            aliases = { "playermod", "player" },
             description = "playermod info",
-            permissions = {PLAYERMOD},
+            permissions = { PLAYERMOD },
             toolTip = "/playermod <add|remove|prefix|permission|group> [parameters...] [--help]",
             min = 1,
             version = 2
@@ -448,17 +705,17 @@ public class CommandList implements CommandListener {
         natives.get("playermod").execute(caller, parameters);
     }
 
-    @TabComplete(commands = {"playermod", "player"})
+    @TabComplete(commands = { "playermod", "player" })
     public List<String> playerBaseTabComplete(MessageReceiver caller, String[] parameters) {
-        return parameters.length == 1 ? matchTo(parameters, new String[]{"add", "remove", "prefix", "permission", "group"}) : null;
+        return parameters.length == 1 ? matchTo(parameters, new String[]{ "add", "remove", "prefix", "permission", "group" }) : null;
     }
 
     @Command(
-            aliases = {"add", "create"},
+            aliases = { "add", "create" },
             parent = "playermod",
             helpLookup = "playermod add",
             description = "playermod add info",
-            permissions = {PLAYERMOD$ADD},
+            permissions = { PLAYERMOD$ADD },
             toolTip = "/playermod add <name> <group>",
             min = 2,
             version = 2
@@ -467,7 +724,7 @@ public class CommandList implements CommandListener {
         natives.get("playermod.add").execute(caller, parameters);
     }
 
-    @TabComplete(commands = {"playermod add"})
+    @TabComplete(commands = { "playermod add" })
     public List<String> playerAddTabComplete(MessageReceiver caller, String[] parameters) {
         return parameters.length == 1 ? matchToOnlinePlayer(parameters)
                 : parameters.length == 2 ? matchToGroup(parameters)
@@ -475,11 +732,11 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"permission", "perms"},
+            aliases = { "permission", "perms" },
             parent = "playermod",
             helpLookup = "playermod permission",
             description = "playermod permission info",
-            permissions = {PLAYERMOD$PERMISSIONS},
+            permissions = { PLAYERMOD$PERMISSIONS },
             toolTip = "/playermod permission <add|remove|check|list> [arguments...] [--help]"
     )
     public void playerPermissions(MessageReceiver caller, String[] parameters) {
@@ -487,11 +744,11 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"add"},
+            aliases = { "add" },
             parent = "playermod.permission",
             helpLookup = "playermod permission add",
             description = "playermod permission add info",
-            permissions = {PLAYERMOD$PERMISSIONS$ADD},
+            permissions = { PLAYERMOD$PERMISSIONS$ADD },
             toolTip = "/playermod permission add <player> <path>:[value]",
             min = 2,
             version = 2
@@ -501,11 +758,11 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"remove"},
+            aliases = { "remove" },
             parent = "playermod.permission",
             helpLookup = "playermod permission remove",
             description = "playermod permission remove info",
-            permissions = {PLAYERMOD$PERMISSIONS$REMOVE},
+            permissions = { PLAYERMOD$PERMISSIONS$REMOVE },
             toolTip = "/playermod permission remove <player> <path>",
             min = 2,
             version = 2
@@ -514,7 +771,7 @@ public class CommandList implements CommandListener {
         natives.get("playermod.perms.remove").execute(caller, parameters);
     }
 
-    @TabComplete(commands = {"playermod permission remove"})
+    @TabComplete(commands = { "playermod permission remove" })
     public List<String> playermodPermissionRemove(MessageReceiver caller, String[] parameters) {
         return parameters.length == 1 ? matchToKnownPlayer(parameters)
                 : parameters.length == 2 ? matchToPlayerPermission(Canary.getServer().matchKnownPlayer(parameters[1]), parameters)
@@ -522,11 +779,11 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"check"},
+            aliases = { "check" },
             parent = "playermod.permission",
             helpLookup = "playermod permission check",
             description = "playermod permission check info",
-            permissions = {PLAYERMOD$PERMISSIONS$CHECK},
+            permissions = { PLAYERMOD$PERMISSIONS$CHECK },
             toolTip = "/playermod permission check <player> <path>",
             min = 2,
             version = 2
@@ -536,11 +793,11 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"list"},
+            aliases = { "list" },
             parent = "playermod.permission",
             helpLookup = "playermod permission list",
             description = "playermod permission list info",
-            permissions = {PLAYERMOD$PERMISSIONS$LIST},
+            permissions = { PLAYERMOD$PERMISSIONS$LIST },
             toolTip = "/playermod permission list <player>",
             version = 2
     )
@@ -549,11 +806,11 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"prefix", "color"},
+            aliases = { "prefix", "color" },
             parent = "playermod",
             helpLookup = "playermod prefix",
             description = "playermod prefix info",
-            permissions = {PLAYERMOD$PREFIX},
+            permissions = { PLAYERMOD$PREFIX },
             toolTip = "/playermod prefix <name> <prefix>",
             version = 2
     )
@@ -562,11 +819,11 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"remove", "delete"},
+            aliases = { "remove", "delete" },
             parent = "playermod",
             helpLookup = "playermod remove",
             description = "playermod remove info",
-            permissions = {PLAYERMOD$REMOVE},
+            permissions = { PLAYERMOD$REMOVE },
             toolTip = "/playermod remove <name>",
             version = 2
     )
@@ -575,28 +832,28 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"group"},
+            aliases = { "group" },
             parent = "playermod",
             helpLookup = "playermod group",
             description = "playermod group info",
-            permissions = {PLAYERMOD$GROUP},
+            permissions = { PLAYERMOD$GROUP },
             toolTip = "/playermod group <list|check|set|add> [arguments...] [--help]"
     )
     public void playerGroup(MessageReceiver caller, String[] parameters) {
         Canary.help().getHelp(caller, "playermod group");
     }
 
-    @TabComplete(commands = {"playermod permission remove"})
+    @TabComplete(commands = { "playermod permission remove" })
     public List<String> playerGroupTabComplete(MessageReceiver caller, String[] parameters) {
-        return parameters.length == 1 ? matchTo(parameters, new String[]{"list", "check", "set", "add"}) : null;
+        return parameters.length == 1 ? matchTo(parameters, new String[]{ "list", "check", "set", "add" }) : null;
     }
 
     @Command(
-            aliases = {"set"},
+            aliases = { "set" },
             parent = "playermod.group",
             helpLookup = "playermod group set",
             description = "playermod group set info",
-            permissions = {PLAYERMOD$GROUP$SET},
+            permissions = { PLAYERMOD$GROUP$SET },
             toolTip = "/playermod group set <player> <group> [--help]",
             version = 2
     )
@@ -605,11 +862,11 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"add"},
+            aliases = { "add" },
             parent = "playermod.group",
             helpLookup = "playermod group add",
             description = "playermod group add info",
-            permissions = {PLAYERMOD$GROUP$ADD},
+            permissions = { PLAYERMOD$GROUP$ADD },
             toolTip = "/playermod group add <player> <group> [--help]",
             version = 2
     )
@@ -618,11 +875,11 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"list"},
+            aliases = { "list" },
             parent = "playermod.group",
             helpLookup = "playermod group list",
             description = "playermod group list info",
-            permissions = {PLAYERMOD$GROUP$LIST},
+            permissions = { PLAYERMOD$GROUP$LIST },
             toolTip = "/playermod group list <player> [--help]",
             version = 2
     )
@@ -631,11 +888,11 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"check"},
+            aliases = { "check" },
             parent = "playermod.group",
             helpLookup = "playermod group check",
             description = "playermod group check info",
-            permissions = {PLAYERMOD$GROUP$CHECK},
+            permissions = { PLAYERMOD$GROUP$CHECK },
             toolTip = "/playermod group check <player> <group> [--help]",
             min = 2,
             version = 2
@@ -645,11 +902,11 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"remove"},
+            aliases = { "remove" },
             parent = "playermod.group",
             helpLookup = "playermod group remove",
             description = "playermod group remove info",
-            permissions = {PLAYERMOD$GROUP$REMOVE},
+            permissions = { PLAYERMOD$GROUP$REMOVE },
             toolTip = "/playermod group remove <player> <group> [--help]",
             min = 2,
             version = 2
@@ -658,7 +915,7 @@ public class CommandList implements CommandListener {
         natives.get("playermod.group.remove").execute(caller, parameters);
     }
 
-    @TabComplete(commands = {"playermod group add", "playermod group remove", "playermod group set"})
+    @TabComplete(commands = { "playermod group add", "playermod group remove", "playermod group set" })
     public List<String> playermodGroupAddRemoveSet(MessageReceiver caller, String[] parameters) {
         return parameters.length == 1 ? matchToKnownPlayer(parameters)
                 : parameters.length == 2 ? matchToGroup(parameters)
@@ -668,9 +925,9 @@ public class CommandList implements CommandListener {
 
     /* system */
     @Command(
-            aliases = {"ban"},
+            aliases = { "ban" },
             description = "ban info",
-            permissions = {BAN},
+            permissions = { BAN },
             toolTip = "/ban <player> [reason] [#number hour|day|week|month]",
             min = 1,
             version = 2
@@ -679,17 +936,17 @@ public class CommandList implements CommandListener {
         natives.get("ban").execute(caller, parameters);
     }
 
-    @TabComplete(commands = {"ban"})
+    @TabComplete(commands = { "ban" })
     public List<String> banTabComplete(MessageReceiver caller, String[] parameters) {
         return parameters.length == 1 ? matchToKnownPlayer(parameters)
-                : parameters.length >= 2 && parameters[parameters.length - 2].matches("\\d+") ? matchTo(parameters, new String[]{"hour", "day", "week", "month"})
+                : parameters.length >= 2 && parameters[parameters.length - 2].matches("\\d+") ? matchTo(parameters, new String[]{ "hour", "day", "week", "month" })
                 : null;
     }
 
     @Command(
-            aliases = {"canarymod", "version"},
+            aliases = { "canarymod", "version" },
             description = "CanaryMod Information",
-            permissions = {CANARYMOD},
+            permissions = { CANARYMOD },
             toolTip = "/canarymod"
     )
     public void canarymodInfoCommand(MessageReceiver caller, String[] parameters) {
@@ -697,9 +954,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"createvanilla", "makevanilla"},
+            aliases = { "createvanilla", "makevanilla" },
             description = "makevanilla info",
-            permissions = {CREATEVANILLA},
+            permissions = { CREATEVANILLA },
             toolTip = "/createvanilla <defaultworld>",
             min = 1,
             version = 2
@@ -709,9 +966,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"deop"},
+            aliases = { "deop" },
             description = "Takes Op from a Player",
-            permissions = {"canary.command.deop"}, // Really no point, Requires Op
+            permissions = { "canary.command.deop" }, // Really no point, Requires Op
             toolTip = "/deop <player>",
             min = 1,
             version = 2
@@ -720,15 +977,15 @@ public class CommandList implements CommandListener {
         natives.get("deop").execute(caller, args);
     }
 
-    @TabComplete(commands = {"deop"})
+    @TabComplete(commands = { "deop" })
     public List<String> deopTabComplete(MessageReceiver caller, String[] args) {
         return args.length == 1 ? matchTo(args, Canary.ops().getOps()) : null;
     }
 
     @Command(
-            aliases = {"help"},
+            aliases = { "help", "?" },
             description = "help info",
-            permissions = {HELP},
+            permissions = { HELP },
             toolTip = "/help [search terms] [page]"
     )
     public void helpCommand(MessageReceiver caller, String[] parameters) {
@@ -736,9 +993,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"ipban"},
+            aliases = { "ipban" },
             description = "ipban info",
-            permissions = {IPBAN},
+            permissions = { IPBAN },
             toolTip = "/ipban <player> [reason] [#number hour|day|week|month]",
             min = 1,
             version = 2
@@ -748,9 +1005,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"kick"},
+            aliases = { "kick" },
             description = "kick info",
-            permissions = {KICK},
+            permissions = { KICK },
             toolTip = "/kick <playername> [reason]",
             min = 1,
             version = 2
@@ -842,9 +1099,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"listplugins", "plugins"},
+            aliases = { "listplugins", "plugins" },
             description = "lplugin info",
-            permissions = {PLUGIN$LIST},
+            permissions = { PLUGIN$LIST },
             toolTip = "/listplugins"
     )
     public void listPluginsCommand(MessageReceiver caller, String[] parameters) {
@@ -852,9 +1109,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"motd"},
+            aliases = { "motd" },
             description = "motd info",
-            permissions = {MOTD},
+            permissions = { MOTD },
             toolTip = "/motd"
     )
     public void motdCommand(MessageReceiver caller, String[] parameters) {
@@ -862,9 +1119,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"mute", "stfu"},
+            aliases = { "mute", "stfu" },
             description = "mute info",
-            permissions = {MUTE},
+            permissions = { MUTE },
             toolTip = "/mute <playername>",
             min = 1,
             version = 2
@@ -874,9 +1131,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"op"},
+            aliases = { "op" },
             description = "Give Op to a Player",
-            permissions = {"canary.command.op"}, // Really no point, Requires Op
+            permissions = { "canary.command.op" }, // Really no point, Requires Op
             toolTip = "/op <player>",
             min = 1,
             version = 2
@@ -886,9 +1143,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"oplist"},
+            aliases = { "oplist" },
             description = "Displays a list of Operators",
-            permissions = {"canary.command.oplist"}, // Really no point, Requires Op
+            permissions = { "canary.command.oplist" }, // Really no point, Requires Op
             toolTip = "/oplist",
             version = 2
     )
@@ -897,9 +1154,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"playerinfo", "pinfo"},
+            aliases = { "playerinfo", "pinfo" },
             description = "Player Information",
-            permissions = {PLAYER$INFO},
+            permissions = { PLAYER$INFO },
             toolTip = "/playerinfo [player]",
             version = 2
     )
@@ -908,19 +1165,20 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"playerlist", "players", "who", "list"},
+            aliases = { "playerlist", "players", "who", "list" },
             description = "who info",
-            permissions = {PLAYER$LIST},
-            toolTip = "/who"
+            permissions = { PLAYER$LIST },
+            toolTip = "/who [world]",
+            version = 2
     )
     public void playerListCommand(MessageReceiver caller, String[] parameters) {
         natives.get("playerlist").execute(caller, parameters);
     }
 
     @Command(
-            aliases = {"enableplugin"},
+            aliases = { "enableplugin" },
             description = "plugin enable info",
-            permissions = {PLUGIN$ENABLE},
+            permissions = { PLUGIN$ENABLE },
             toolTip = "/enableplugin <plugin>",
             min = 1,
             version = 2
@@ -930,9 +1188,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"disableplugin"},
+            aliases = { "disableplugin" },
             description = "plugin disable info",
-            permissions = {PLUGIN$DISABLE},
+            permissions = { PLUGIN$DISABLE },
             toolTip = "/disableplugin <plugin>",
             min = 1,
             version = 2
@@ -942,9 +1200,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"reloadplugin"},
+            aliases = { "reloadplugin" },
             description = "plugin reload info",
-            permissions = {PLUGIN$RELOAD},
+            permissions = { PLUGIN$RELOAD },
             toolTip = "/reloadplugin <plugin>",
             min = 1,
             version = 2
@@ -953,24 +1211,24 @@ public class CommandList implements CommandListener {
         natives.get("reloadplugin").execute(caller, parameters);
     }
 
-    @TabComplete(commands = {"disableplugin", "reloadplugin"})
+    @TabComplete(commands = { "disableplugin", "reloadplugin" })
     public List<String> matchPluginName(MessageReceiver caller, String[] args) {
-        return args.length == 1 ? matchTo(args, Canary.manager().getPluginNames().toArray(new String[0])) : null;
+        return args.length == 1 ? matchTo(args, Canary.pluginManager().getPluginNames().toArray(new String[0])) : null;
     }
 
     @Command(
-            aliases = {"reload"},
+            aliases = { "reload" },
             description = "reload info",
-            permissions = {RELOAD},
+            permissions = { RELOAD },
             toolTip = "/reload")
     public void reloadCommand(MessageReceiver caller, String[] parameters) {
         natives.get("reload").execute(caller, parameters);
     }
 
     @Command(
-            aliases = {"reservelist", "rlist", "rl"},
+            aliases = { "reservelist", "rlist", "rl" },
             description = "reservelist info",
-            permissions = {RESERVELIST},
+            permissions = { RESERVELIST },
             toolTip = "/reservelist <add|remove> <playername>",
             min = 2,
             version = 2
@@ -979,9 +1237,9 @@ public class CommandList implements CommandListener {
         natives.get("reservelist").execute(caller, parameters);
     }
 
-    @TabComplete(commands = {"reservelist"})
+    @TabComplete(commands = { "reservelist" })
     public List<String> reservelistTabComplete(MessageReceiver caller, String[] parameters) {
-        return parameters.length == 1 ? matchTo(parameters, new String[]{"add", "remove"})
+        return parameters.length == 1 ? matchTo(parameters, new String[]{ "add", "remove" })
                 : parameters.length == 2 ?
                 parameters[0].equals("remove") ? matchTo(parameters, Canary.reservelist().getReservations())
                         : parameters[0].equals("add") ? matchToKnownPlayer(parameters)
@@ -990,9 +1248,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"stop", "shutdown"},
+            aliases = { "stop", "shutdown" },
             description = "stop info",
-            permissions = {STOP},
+            permissions = { STOP },
             toolTip = "/stop"
     )
     public void stopCommand(MessageReceiver caller, String[] parameters) {
@@ -1000,9 +1258,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"sysinfo"},
+            aliases = { "sysinfo" },
             description = "System Information",
-            permissions = {SYSINFO},
+            permissions = { SYSINFO },
             toolTip = "/sysinfo"
     )
     public void sysinfo(MessageReceiver caller, String[] parameters) {
@@ -1010,9 +1268,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"unban"},
+            aliases = { "unban" },
             description = "unban info",
-            permissions = {UNBAN},
+            permissions = { UNBAN },
             toolTip = "/unban <player>",
             min = 1,
             version = 2
@@ -1021,15 +1279,15 @@ public class CommandList implements CommandListener {
         natives.get("unban").execute(caller, parameters);
     }
 
-    @TabComplete(commands = {"unban"})
+    @TabComplete(commands = { "unban" })
     public List<String> unbanTabComplete(MessageReceiver caller, String[] parameters) {
         return parameters.length == 1 ? matchToBannedSubject(parameters) : null;
     }
 
     @Command(
-            aliases = {"uptime"},
+            aliases = { "uptime" },
             description = "server uptime",
-            permissions = {UPTIME},
+            permissions = { UPTIME },
             toolTip = "/uptime"
     )
     public void uptime(MessageReceiver caller, String[] parameters) {
@@ -1037,26 +1295,106 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"whitelist", "wlist", "wl"},
+            aliases = { "whitelist", "wlist", "wl" },
             description = "whitelist info",
-            permissions = {WHITELIST},
-            toolTip = "/whitelist <add|remove> <playername>",
-            min = 2
+            permissions = { WHITELIST },
+            toolTip = "/whitelist <<add|remove <playername>>|show|enable|disable|reload>",
+            version = 2
     )
     public void whitelistCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("whitelist").execute(caller, parameters);
+        Canary.help().getHelp(caller, "whitelist");
     }
 
-    @TabComplete(commands = {"whitelist"})
+    @Command(
+            aliases = { "add" },
+            description = "whitelist add",
+            permissions = { WHITELIST },
+            toolTip = "/whitelist add <playername>",
+            helpLookup = "whitelist add",
+            parent = "whitelist",
+            min = 1,
+            version = 2
+    )
+    public void whitelistAddCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("whitelist.add").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = { "remove" },
+            description = "whitelist remove",
+            permissions = { WHITELIST },
+            toolTip = "/whitelist remove <playername>",
+            helpLookup = "whitelist remove",
+            parent = "whitelist",
+            min = 1,
+            version = 2
+    )
+    public void whitelistRemoveCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("whitelist.remove").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = { "show", "list" },
+            description = "whitelist show",
+            permissions = { WHITELIST },
+            toolTip = "/whitelist show",
+            helpLookup = "whitelist show",
+            parent = "whitelist",
+            version = 2
+    )
+    public void whitelistShowCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("whitelist.show").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = { "enable", "on" },
+            description = "whitelist enable",
+            permissions = { WHITELIST$ADMIN },
+            toolTip = "/whitelist enable",
+            helpLookup = "whitelist enable",
+            parent = "whitelist",
+            version = 2
+    )
+    public void whitelistEnableCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("whitelist.enable").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = { "disable", "off" },
+            description = "whitelist disable",
+            permissions = { WHITELIST$ADMIN },
+            toolTip = "/whitelist disable",
+            helpLookup = "whitelist disable",
+            parent = "whitelist",
+            version = 2
+    )
+    public void whitelistDisableCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("whitelist.disable").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = { "reload" },
+            description = "whitelist reload",
+            permissions = { WHITELIST$ADMIN },
+            toolTip = "/whitelist reload",
+            helpLookup = "whitelist reload",
+            parent = "whitelist",
+            version = 2
+    )
+    public void whitelistReloadCommand(MessageReceiver caller, String[] parameters) {
+        natives.get("whitelist.reload").execute(caller, parameters);
+    }
+
+    @TabComplete(commands = { "whitelist" })
     public List<String> whitelistTabComplete(MessageReceiver caller, String[] parameters) {
-        return parameters.length == 1 ? matchTo(parameters, new String[]{"add", "remove"}) : null;
+        return parameters.length == 1 ? matchTo(parameters, new String[]{ "add", "remove", "show", "list", "enable", "on", "disable", "off", "reload" }) : null;
     }
 
     /* vanilla start */
     @Command(
-            aliases = {"achievement"},
+            aliases = { "achievement" },
             description = "Gives a player an achievement or increases a statistic.",
-            permissions = {ACHIEVEMENT},
+            permissions = { ACHIEVEMENT },
             toolTip = "/achievement <give|take> <stat_name|*> [player]",
             min = 2,
             max = 3,
@@ -1067,9 +1405,22 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"say", "broadcast"},
+            aliases = { "blockdata" },
+            description = "Modifies NBT data at a specific coordinate, the <dataTag> merges with the block at that position",
+            permissions = { BLOCKDATA },
+            toolTip = "/blockdata <x> <y> <z> <dataTag>",
+            min = 3,
+            max = 4,
+            version = 2
+    )
+    public void blockdata(MessageReceiver caller, String[] args) {
+        natives.get("blockdata").execute(caller, args);
+    }
+
+    @Command(
+            aliases = { "say", "broadcast" },
             description = "Broadcasts a message",
-            permissions = {BROADCAST},
+            permissions = { BROADCAST },
             toolTip = "/say <message>",
             min = 1,
             version = 2
@@ -1079,9 +1430,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"clear", "clearinventory", "clearinv"},
+            aliases = { "clear", "clearinventory", "clearinv" },
             description = "Clears items from player inventory.",
-            permissions = {CLEAR},
+            permissions = { CLEAR },
             toolTip = "/clear <player> [item] [data] [maxCount] [dataTag]",
             min = 1,
             version = 2
@@ -1091,9 +1442,21 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"debug"},
+            aliases = { "clone" },
+            description = "Clones all the blocks (not entities) from a given area to a different given area. The clone can be replace, masked, or filtered",
+            permissions = { CLONE },
+            toolTip = "/clone <x1> <y1> <z1> <x2> <y2> <z2> <x> <y> <z> [mode]",
+            min = 9,
+            version = 2
+    )
+    public void clone(MessageReceiver caller, String[] args) {
+        natives.get("clone").execute(caller, args);
+    }
+
+    @Command(
+            aliases = { "debug" },
             description = "Starts or stops a debugging session.",
-            permissions = {DEBUG},
+            permissions = { DEBUG },
             toolTip = "/debug <start|stop|chunk> [<x> <y> <z>]",
             min = 1,
             version = 2
@@ -1103,9 +1466,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"defaultgamemode", "defaultmode"},
+            aliases = { "defaultgamemode", "defaultmode" },
             description = "Sets the default game mode (creative, survival, etc.) for new players entering a multiplayer server.",
-            permissions = {DEFAULTGAMEMODE},
+            permissions = { DEFAULTGAMEMODE },
             toolTip = "/defaultgamemode <gamemode>",
             min = 1,
             version = 2
@@ -1115,9 +1478,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"setworldspawn", "setspawn"},
+            aliases = { "setworldspawn", "setspawn" },
             description = "Sets everyones GameMode",
-            permissions = {SETWORLDSPAWN},
+            permissions = { SETWORLDSPAWN },
             toolTip = "/setworldspawn [<x> <y> <z>]",
             version = 2
     )
@@ -1126,9 +1489,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"difficulty"},
+            aliases = { "difficulty" },
             description = "Sets the difficulty level (peaceful, easy, etc.).",
-            permissions = {DIFFICULTY},
+            permissions = { DIFFICULTY },
             toolTip = "/difficulty <new difficulty> [world]",
             min = 1,
             version = 2
@@ -1138,9 +1501,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"effect"},
+            aliases = { "effect" },
             description = "The effect command manages status effects on players and other entities.",
-            permissions = {EFFECT},
+            permissions = { EFFECT },
             toolTip = "/effect <player> <clear|effect> [seconds] [amplifier] [hideParticles]",
             min = 2,
             version = 2
@@ -1150,9 +1513,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"emote", "me"},
+            aliases = { "emote", "me" },
             description = "Express an emotion",
-            permissions = {EMOTE},
+            permissions = { EMOTE },
             toolTip = "/emote <action...>",
             min = 1,
             version = 2
@@ -1162,9 +1525,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"enchant"},
+            aliases = { "enchant" },
             description = "Enchants target's held item",
-            permissions = {ENCHANT},
+            permissions = { ENCHANT },
             toolTip = "/enchant <player> <enchantment ID> [level]",
             min = 2,
             version = 2
@@ -1174,9 +1537,45 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"gamemode", "mode"},
+            aliases = { "entitydata" },
+            description = "Works similarly to /blockdata, but for entities. Does not work on Players.",
+            permissions = { ENTITYDATA },
+            toolTip = "/entitydata <entity> <dataTag>",
+            min = 2,
+            version = 2
+    )
+    public void entitydata(MessageReceiver caller, String[] args) {
+        natives.get("entitydata").execute(caller, args);
+    }
+
+    @Command(
+            aliases = { "execute" },
+            description = "Allows commands to be run from the position of specified entities",
+            permissions = { EXECUTE },
+            toolTip = "/execute <entity> <x> <y> <z> [detect <x2> <y2> <z2> <block> <data>] <command…>",
+            min = 5,
+            version = 2
+    )
+    public void execute(MessageReceiver caller, String[] args) {
+        natives.get("execute").execute(caller, args);
+    }
+
+    @Command(
+            aliases = { "fill" },
+            description = "Fills a given volume with a specified block",
+            permissions = { FILL },
+            toolTip = "/fill <x1> <y1> <z1> <x2> <y2> <z2> <TileName> [dataValue] [oldBlockHandling] [dataTag]",
+            min = 7,
+            version = 2
+    )
+    public void fill(MessageReceiver caller, String[] args) {
+        natives.get("fill").execute(caller, args);
+    }
+
+    @Command(
+            aliases = { "gamemode", "mode" },
             description = "Sets a player's game mode.",
-            permissions = {GAMEMODE},
+            permissions = { GAMEMODE },
             toolTip = "/gamemode <mode> [player]",
             min = 1,
             version = 2
@@ -1186,9 +1585,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"gamerule"},
+            aliases = { "gamerule" },
             description = "Sets or queries a game rule value.",
-            permissions = {GAMERULE},
+            permissions = { GAMERULE },
             toolTip = "/gamerule <rule name> [value]",
             min = 1,
             version = 2
@@ -1198,9 +1597,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"give", "item", "i"},
+            aliases = { "give", "item", "i" },
             description = "Gives an item to a player.",
-            permissions = {GIVE},
+            permissions = { GIVE },
             toolTip = "/give <player> <item> [amount] [data] [dataTag]",
             min = 2,
             version = 2
@@ -1210,9 +1609,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"message", "msg", "tell"},
+            aliases = { "message", "msg", "tell" },
             description = "Sends a private message to a player",
-            permissions = {MESSAGE},
+            permissions = { MESSAGE },
             toolTip = "/tell <player> <private message ...>",
             min = 2,
             version = 2
@@ -1222,9 +1621,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"messageraw", "msgraw", "tellraw"},
+            aliases = { "messageraw", "msgraw", "tellraw" },
             description = "Sends a private message to a player",
-            permissions = {MESSAGERAW},
+            permissions = { MESSAGERAW },
             toolTip = "/tellraw <player> <raw json message>",
             min = 2,
             version = 2
@@ -1234,9 +1633,21 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"playsound"},
+            aliases = { "particle" },
+            description = "Spawns particles in a given area",
+            permissions = { PARTICLE },
+            toolTip = "/particle <name> <x> <y> <z> <xd> <yd> <zd> <speed> [count] [force]",
+            min = 8,
+            version = 2
+    )
+    public void particle(MessageReceiver caller, String[] args) {
+        natives.get("particle").execute(caller, args);
+    }
+
+    @Command(
+            aliases = { "playsound" },
             description = "Plays a sound",
-            permissions = {PLAYSOUND},
+            permissions = { PLAYSOUND },
             toolTip = "/playsound <sound> <player> [x] [y] [z] [volume] [pitch] [minimumVolume]",
             min = 2,
             version = 2
@@ -1246,9 +1657,21 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"save-all", "saveall"},
+            aliases = { "replaceitem" },
+            description = "Can replace items in any inventory, including the inventories of mobs such as zombies",
+            permissions = { REPLACEITEM },
+            toolTip = "/replaceitem <entity <entity> | block <x> <y> <z>> <slot> <item> <slot> <item> [amount] [data value]",
+            min = 6,
+            version = 2
+    )
+    public void replaceitem(MessageReceiver caller, String[] args) {
+        natives.get("replaceitem").execute(caller, args);
+    }
+
+    @Command(
+            aliases = { "save-all", "saveall" },
             description = "Saves world data",
-            permissions = {SAVE$ALL},
+            permissions = { SAVE$ALL },
             toolTip = "/save-all",
             version = 2
     )
@@ -1257,9 +1680,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"save-off", "saveoff"},
+            aliases = { "save-off", "saveoff" },
             description = "Turns off world data saving",
-            permissions = {SAVE$OFF},
+            permissions = { SAVE$OFF },
             toolTip = "/save-off",
             version = 2
     )
@@ -1268,9 +1691,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"save-on", "saveon"},
+            aliases = { "save-on", "saveon" },
             description = "Turns on world data saving",
-            permissions = {SAVE$ON},
+            permissions = { SAVE$ON },
             toolTip = "/save-on",
             version = 2
     )
@@ -1279,9 +1702,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"scoreboard"},
+            aliases = { "scoreboard" },
             description = "SCORE(BOARD)!",
-            permissions = {SCOREBOARD},
+            permissions = { SCOREBOARD },
             toolTip = "/scoreboard <objectives|players|teams>",
             min = 1,
             version = 2
@@ -1291,9 +1714,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"setblock"},
+            aliases = { "setblock" },
             description = "Sets a block",
-            permissions = {SETBLOCK},
+            permissions = { SETBLOCK },
             toolTip = "/setblock <x> <y> <z> <TileName> [dataValue] [oldBlockHandling] [dataTag]",
             min = 4,
             version = 2
@@ -1303,9 +1726,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"spawnpoint"},
+            aliases = { "spawnpoint" },
             description = "Spawnpoint setting (Player based)",
-            permissions = {SPAWNPOINT},
+            permissions = { SPAWNPOINT },
             toolTip = "/spawnpoint [player [<x> <y> <z>]]",
             version = 2
     )
@@ -1314,9 +1737,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"spreadplayers"},
+            aliases = { "spreadplayers" },
             description = "Spreads out them players",
-            permissions = {SPREADPLAYERS},
+            permissions = { SPREADPLAYERS },
             toolTip = "/spreadplayers <x> <z> <spreadDistance> <maxRange> <respectTeams true|false> <player ...>",
             min = 4,
             version = 2
@@ -1326,9 +1749,21 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"summon", "mspawn", "mobspawn", "spawnmob"},
+            aliases = { "stats" },
+            description = "Alternative and more featureful way of interacting with CommandStats",
+            permissions = { STATS },
+            toolTip = "/stats <entity <selector>|block [x] [y] [z]> <mode>",
+            min = 3,
+            version = 2
+    )
+    public void stats(MessageReceiver caller, String[] args) {
+        natives.get("stats").execute(caller, args);
+    }
+
+    @Command(
+            aliases = { "summon", "mspawn", "mobspawn", "spawnmob" },
             description = "Summons an entity",
-            permissions = {SUMMON},
+            permissions = { SUMMON },
             toolTip = "/summon <EntityName> [x] [y] [z] [dataTag]",
             min = 1,
             version = 2
@@ -1338,10 +1773,10 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"teleport", "tp"},
+            aliases = { "teleport", "tp" },
             description = "Teleports a player",
-            permissions = {TELEPORT, TELEPORT$OTHER},
-            toolTip = "/tp [target] <player | <<x> <y> <z>>> | /tp <target> <x> <y> <z> <world_fqname> [load]",
+            permissions = { TELEPORT, TELEPORT$OTHER },
+            toolTip = "/tp [target] <player | <<x> <y> <z> <rotX> <rotY>> | /tp <target> <x> <y> <z> <rotX> <rotY> <world_fqname> [load]",
             min = 1,
             version = 2
     )
@@ -1350,9 +1785,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"testfor"},
+            aliases = { "testfor" },
             description = "Counts entities (players, mobs, items, etc.) matching specified conditions.",
-            permissions = {TESTFOR},
+            permissions = { TESTFOR },
             toolTip = "/testfor <player|targetselector> [datatag]",
             min = 1,
             version = 2
@@ -1362,9 +1797,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"testforblock"},
+            aliases = { "testforblock" },
             description = "Tests whether a certain block is in a specific location.",
-            permissions = {TESTFORBLOCK},
+            permissions = { TESTFORBLOCK },
             toolTip = "/testforblock <x> <y> <z> <TileName> [dataValue] [dataTag]",
             min = 4,
             version = 2
@@ -1374,9 +1809,21 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"time"},
+            aliases = { "testforblocks" },
+            description = "Compares two areas of a world",
+            permissions = { TESTFORBLOCKS },
+            toolTip = "/testforblocks <x1> <y1> <z1> <x2> <y2> <z2> [mode]",
+            min = 6,
+            version = 2
+    )
+    public void testforblocks(MessageReceiver caller, String[] args) {
+        natives.get("testforblocks").execute(caller, args);
+    }
+
+    @Command(
+            aliases = { "time" },
             description = "Changes or queries the world's game time.",
-            permissions = {TIME},
+            permissions = { TIME },
             toolTip = "/time <add|query|set> <value>",
             min = 2,
             version = 2
@@ -1386,9 +1833,21 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"toggledownfall"},
+            aliases = { "title" },
+            description = "Can make text display on a players screen in the form of a title and/or subtitle using JSON",
+            permissions = { TITLE },
+            toolTip = "/title <params...>",
+            min = 1,
+            version = 2
+    )
+    public void title(MessageReceiver caller, String[] args) {
+        natives.get("title").execute(caller, args);
+    }
+
+    @Command(
+            aliases = { "toggledownfall" },
             description = "Toggles the weather.",
-            permissions = {TOGGLEDOWNFALL},
+            permissions = { TOGGLEDOWNFALL },
             toolTip = "/Toggles the weather.",
             version = 2
     )
@@ -1397,9 +1856,21 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"weather"},
+            aliases = { "trigger" },
+            description = "Functions the same way as /scoreboard players set or /scoreboard players add, but can only modify objectives with the trigger criteria (referred to as \"triggers\") and can only modify the score of the player running the command",
+            permissions = { TRIGGER },
+            toolTip = "/trigger <objective> <add:set> <value>",
+            min = 3,
+            version = 2
+    )
+    public void trigger(MessageReceiver caller, String[] args) {
+        natives.get("trigger").execute(caller, args);
+    }
+
+    @Command(
+            aliases = { "weather" },
             description = "Sets the weather.",
-            permissions = {WEATHER},
+            permissions = { WEATHER },
             toolTip = "/weather <clear|rain|thunder> [duration in seconds]",
             min = 1,
             version = 2
@@ -1409,9 +1880,21 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"xp", "experience"},
+            aliases = { "worldborder" },
+            description = "World border modification",
+            permissions = { WORLDBORDER },
+            toolTip = "/worldborder <<set|add <sizeInBlocks> <timeInSeconds>>:center <x> <z>:damage <buffer|amount>:warning <time|distance>:get>",
+            min = 1,
+            version = 2
+    )
+    public void worldborder(MessageReceiver caller, String[] args) {
+        natives.get("worldborder").execute(caller, args);
+    }
+
+    @Command(
+            aliases = { "xp", "experience" },
             description = "Adds experience to a player.",
-            permissions = {XP},
+            permissions = { XP },
             toolTip = "/xp <amount[L]> [player]",
             min = 1,
             version = 2
@@ -1422,9 +1905,9 @@ public class CommandList implements CommandListener {
     /* vanilla end */
 
     @Command(
-            aliases = {"home"},
+            aliases = { "home" },
             description = "home info",
-            permissions = {HOME},
+            permissions = { HOME },
             toolTip = "/home [playername]",
             version = 2
     )
@@ -1433,9 +1916,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"sethome"},
+            aliases = { "sethome" },
             description = "sethome info",
-            permissions = {HOME$SET},
+            permissions = { HOME$SET },
             toolTip = "/sethome [player]",
             version = 2
     )
@@ -1443,9 +1926,9 @@ public class CommandList implements CommandListener {
         natives.get("sethome").execute(caller, parameters);
     }
 
-    @Command(aliases = {"spawn"},
+    @Command(aliases = { "spawn" },
             description = "spawn info",
-            permissions = {SPAWN},
+            permissions = { SPAWN },
             toolTip = "/spawn [worldname] [player]",
             min = 1,
             max = 3
@@ -1454,7 +1937,7 @@ public class CommandList implements CommandListener {
         natives.get("spawn").execute(caller, parameters);
     }
 
-    @TabComplete(commands = {"spawn"})
+    @TabComplete(commands = { "spawn" })
     public List<String> matchWorldNamePlayerName(MessageReceiver caller, String[] args) {
         return args.length == 1 ? matchToKnownWorld(args)
                 : args.length == 2 ? matchToOnlinePlayer(args)
@@ -1462,9 +1945,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"listwarps", "warps"},
+            aliases = { "listwarps", "warps" },
             description = "lwarps info",
-            permissions = {WARP$LIST},
+            permissions = { WARP$LIST },
             toolTip = "/listwarps"
     )
     public void listWarpsCommand(MessageReceiver caller, String[] parameters) {
@@ -1472,9 +1955,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"delwarp", "removewarp"},
+            aliases = { "delwarp", "removewarp" },
             description = "delwarp info",
-            permissions = {WARP$REMOVE},
+            permissions = { WARP$REMOVE },
             toolTip = "/delwarp <name>",
             min = 1,
             version = 2
@@ -1484,9 +1967,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"setwarp"},
+            aliases = { "setwarp" },
             description = "setwarp info",
-            permissions = {WARP$SET},
+            permissions = { WARP$SET },
             toolTip = "/setwarp <name> [G <group>|P <player>]",
             min = 1,
             version = 2
@@ -1496,9 +1979,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"warp"},
+            aliases = { "warp" },
             description = "warp info",
-            permissions = {WARP$USE},
+            permissions = { WARP$USE },
             toolTip = "/warp <name>",
             min = 1,
             version = 2
@@ -1507,24 +1990,25 @@ public class CommandList implements CommandListener {
         natives.get("warp").execute(caller, parameters);
     }
 
-    @TabComplete(commands = {"warp", "delwarp"})
+    @TabComplete(commands = { "warp", "delwarp" })
     public List<String> matchWarpNames(MessageReceiver caller, String[] args) {
         return args.length == 1 ? matchToWarpNames(args, caller) : null;
     }
 
     @Command(
-            aliases = {"createworld"},
+            aliases = { "createworld" },
             description = "creates a world",
-            permissions = {WORLD$CREATE},
+            permissions = { WORLD$CREATE },
             toolTip = "/createworld <name> [seed] [dimensionType] [worldType]",
             max = 5,
+            min = 1,
             version = 2
     )
     public void createWorld(MessageReceiver caller, String[] args) {
         natives.get("createworld").execute(caller, args);
     }
 
-    @TabComplete(commands = {"createworld"})
+    @TabComplete(commands = { "createworld" })
     public List<String> createWorldTabComplete(MessageReceiver caller, String[] args) {
         switch (args.length) {
             case 3:
@@ -1537,9 +2021,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"deleteworld"},
+            aliases = { "deleteworld" },
             description = "Deletes a world",
-            permissions = {WORLD$DELETE},
+            permissions = { WORLD$DELETE },
             toolTip = "/deleteworld <world_fqName>",
             min = 1,
             version = 2
@@ -1548,15 +2032,15 @@ public class CommandList implements CommandListener {
         natives.get("deleteworld").execute(caller, args);
     }
 
-    @TabComplete(commands = {"deleteworld"})
+    @TabComplete(commands = { "deleteworld" })
     public List<String> deleteworldTabComplete(MessageReceiver caller, String[] args) {
         return args.length == 1 ? matchToKnownWorld(args) : null;
     }
 
     @Command(
-            aliases = {"loadworld"},
+            aliases = { "loadworld" },
             description = "loads a world",
-            permissions = {WORLD$LOAD},
+            permissions = { WORLD$LOAD },
             toolTip = "/loadworld <worldName> [dimensionType]",
             min = 1,
             version = 2
@@ -1565,7 +2049,7 @@ public class CommandList implements CommandListener {
         natives.get("loadworld").execute(caller, args);
     }
 
-    @TabComplete(commands = {"loadworld"})
+    @TabComplete(commands = { "loadworld" })
     public List<String> matchWorldNameDimension(MessageReceiver caller, String[] args) {
         return args.length == 1 ? matchToKnownWorld(args)
                 : args.length == 2 ? matchToDimension(args)
@@ -1573,10 +2057,10 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"mob"},
+            aliases = { "mob" },
             description = "Gets a Mob count or destroys mobs within a radius.",
-            permissions = {MOB},
-            toolTip = "/mob count [world [dimension]] or /mob remove <h|p|t|u|a> [radius] [world [dimension]]",
+            permissions = { MOB },
+            toolTip = "/mob count [world [dimension]] or /mob clear <h|p|t|u|a> [radius] [world [dimension]]",
             min = 1,
             version = 2
     )
@@ -1585,42 +2069,90 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
-            aliases = {"clear"},
+            aliases = { "clear" },
             parent = "mob",
             description = "Destroys mobs within a radius.",
-            permissions = {MOB$CLEAR},
+            permissions = { MOB$CLEAR },
             toolTip = "/mob clear <h|p|t|u|a> [radius] [world <dimension>]  NOTE: (h = Hostiles p = Passives t = Tamed u = Utility (Like Items) and a = all)",
             helpLookup = "mob clear",
             min = 1,
             version = 2
     )
     public void mobclear(MessageReceiver caller, String[] args) {
-        natives.get("mobclear").execute(caller, args);
+        natives.get("mob.clear").execute(caller, args);
     }
 
     @Command(
-            aliases = {"count"},
+            aliases = { "count" },
             parent = "mob",
             description = "Gets a Mob count.",
-            permissions = {MOB$COUNT},
+            permissions = { MOB$COUNT },
             toolTip = "/mob count [world]",
+            helpLookup = "mob count",
             version = 2
     )
     public void mobcount(MessageReceiver caller, String[] args) {
-        natives.get("mobcount").execute(caller, args);
+        natives.get("mob.count").execute(caller, args);
     }
 
-    @TabComplete(commands = {"mob"})
+    @TabComplete(commands = { "mob" })
     public List<String> mobTabComplete(MessageReceiver caller, String[] args) {
-        return args.length == 1 ? matchTo(args, new String[]{"clear", "count"})
+        return args.length == 1 ? matchTo(args, new String[]{ "clear", "count" })
                 : args.length == 2 ?
-                args[0].equals("clear") ? matchTo(args, new String[]{"h", "ht", "hp", "hu", "htp", "htu", "htpu", "t", "tp", "tu", "tpu", "p", "pu", "u", "a"})
+                args[0].equals("clear") ? matchTo(args, new String[]{ "h", "ht", "hp", "hu", "htp", "htu", "htpu", "t", "tp", "tu", "tpu", "p", "pu", "u", "a" })
                         : args[0].equals("count") ? matchToLoadedWorld(args)
                         : null
                 : null;
     }
 
-    @TabComplete(commands = {"playerinfo", "home", "op", "playermod permission add",
+    @Command(
+            aliases = { "mobspawner" },
+            description = "Sets or Checks MobSpawner information",
+            permissions = { MOBSPAWNER },
+            toolTip = "/mobspawner <set|check>",
+            min = 1,
+            version = 2
+    )
+    public void mobspawner(MessageReceiver caller, String[] args) {
+        Canary.help().getHelp(caller, "mobspawner");
+    }
+
+    @Command(
+            aliases = { "set" },
+            parent = "mobspawner",
+            description = "Sets the MobSpawner's data",
+            permissions = { MOBSPAWNER$SET },
+            toolTip = "/mobspawner set <*see tab complete*>",
+            helpLookup = "mobspawner set",
+            min = 1,
+            version = 2
+    )
+    public void mobspawnerset(MessageReceiver caller, String[] args) {
+        natives.get("mobspawner.set").execute(caller, args);
+    }
+
+    @Command(
+            aliases = { "check" },
+            parent = "mobspawner",
+            description = "Checks the MobSpawner's data",
+            permissions = { MOBSPAWNER$CHECK },
+            toolTip = "/mobspawner check",
+            helpLookup = "mobspawner check",
+            version = 2
+    )
+    public void mobspawnercheck(MessageReceiver caller, String[] args) {
+        natives.get("mobspawner.check").execute(caller, args);
+    }
+
+    @TabComplete(commands = { "mobspawner" })
+    public List<String> mobspawnerTabComplete(MessageReceiver caller, String[] args) {
+        return args.length == 1 ? matchTo(args, new String[]{ "set", "check" })
+                : args.length > 2 && args[1].equals("set") ?
+                matchTo(args, new String[]{ "id:", "delay:", "minDelay:", "maxDelay:", "count:", "maxNearby:", "playerRange:", "spawnRange:" })
+                : null;
+    }
+
+    @TabComplete(commands = { "playerinfo", "home", "op", "playermod permission add",
             "playermod permission check", "playermod prefix", "playermod remove",
             "playermod group list"
     })
@@ -1628,9 +2160,8 @@ public class CommandList implements CommandListener {
         return args.length == 1 ? matchToKnownPlayer(args) : null;
     }
 
-    @TabComplete(commands = {"kick", "kill", "mute", "god"})
+    @TabComplete(commands = { "kick", "mute", "god" })
     public List<String> matchOnlinePlayer(MessageReceiver caller, String[] args) {
         return args.length == 1 ? matchToOnlinePlayer(args) : null;
     }
-
 }

@@ -23,8 +23,8 @@ public class Translator extends LocaleHelper {
     private static final String canaryLang = "lang/canary/"; //allow plugins to borrow the lang directory for their lang files
     private static final boolean doUpdate = Configuration.getServerConfig().updateLang();
     private static final String[] locales = new String[]{ // The Default Supported
-            "en_US", "da_DK", "nl_NL", "fi_FI", "fr_FR", "de_DE", "it_IT", "no_NO",
-            "pl_PL", "en_PT", "ru_RU", "es_ES", "sv_SE"
+                                                                "en_US", "da_DK", "nl_NL", "fi_FI", "fr_FR", "de_DE", "it_IT", "no_NO",
+                                                                "pl_PL", "en_PT", "ru_RU", "es_ES", "sv_SE"
     };
     private static final Translator instance;
 
@@ -63,7 +63,7 @@ public class Translator extends LocaleHelper {
      *
      * @return the translated message
      *
-     * @see MessageFormat
+     * @see java.text.MessageFormat
      */
     public static String localTranslate(String key, String locale, Object... args) {
         return instance.localeTranslate(key, locale, args);
@@ -91,7 +91,7 @@ public class Translator extends LocaleHelper {
      *
      * @return the translated message
      *
-     * @see MessageFormat
+     * @see java.text.MessageFormat
      */
     public static String translateAndFormat(String messageKey, Object... format) {
         return instance.systemTranslate(messageKey, format);

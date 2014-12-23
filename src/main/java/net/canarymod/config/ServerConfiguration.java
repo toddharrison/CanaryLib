@@ -1,5 +1,6 @@
 package net.canarymod.config;
 
+import net.visualillusionsent.utils.BooleanUtils;
 import net.visualillusionsent.utils.PropertiesFile;
 import org.apache.logging.log4j.Level;
 
@@ -14,7 +15,9 @@ import static net.canarymod.Canary.log;
  * @author Jason (darkdiplomat)
  */
 public class ServerConfiguration implements ConfigurationContainer {
-    private PropertiesFile cfg;
+    private final PropertiesFile cfg;
+    private final PropertiesFile servCfg; // Panel support
+    private final boolean panelSupport = BooleanUtils.parseBoolean(System.getProperty("panel.support", "off"));
 
     public ServerConfiguration(String path) {
         File test = new File(path);
@@ -23,6 +26,16 @@ public class ServerConfiguration implements ConfigurationContainer {
             log.info("Could not find the server configuration at " + path + ", creating default.");
         }
         this.cfg = new PropertiesFile("config" + File.separatorChar + "server.cfg");
+
+        // For control panels still tweaking the server.properties file only...
+        PropertiesFile servCfgTemp = null;
+        if(panelSupport){
+            // Only initialize the file if we need to read from it
+            servCfgTemp = new PropertiesFile("server.properties");
+        }
+        servCfg = servCfgTemp;
+        //
+
         verifyConfig();
     }
 
@@ -57,12 +70,13 @@ public class ServerConfiguration implements ConfigurationContainer {
         cfg.setComments("ban-expiration-date-message", "The message to prefix to the timestamp of a tempban expiration");
         cfg.getString("chat-format", "<%prefix%name&f> %message");
         cfg.setComments("chat-format", "Valid default placeholders are:",
-                "%prefix (player prefix), %name (player name), %group (main group)",
-                "You can use standard color codes at all times. Use & as identifier if you miss a § key",
-                "Plugins may extend the list of available placeholders");
+                        "%prefix (player prefix), %name (player name), %group (main group)",
+                        "You can use standard color codes at all times. Use & as identifier if you miss a § key",
+                        "Plugins may extend the list of available placeholders"
+                       );
         cfg.getBoolean("command-block-enabled", false);
         cfg.setComments("command-block-enabled", "Sets whether the Command Block is allowed or not");
-        cfg.getString("command-block-group", "default");
+        cfg.getString("command-block-group", "admins");
         cfg.setComments("command-block-group", "This groups permissions will determine what Command Block can and can not do!");
         cfg.getBoolean("command-block-op", false);
         cfg.setComments("command-block-op", "Sets whether the Command Block is considered Operator or not (Vanilla command use)");
@@ -79,6 +93,8 @@ public class ServerConfiguration implements ConfigurationContainer {
         }
         cfg.getString("default-world-name", "default");
         cfg.setComments("default-world-name", "Name of the default loaded world");
+        cfg.getInt("default-world-size", 29999984);
+        cfg.setComments("default-world-size", "This sets the maximum possible size in blocks, expressed as a radius, that the world border can obtain.");
         //cfg.getBoolean("logging", false); //REMOVED
         if (cfg.containsKey("logging")) { // Remove old key
             cfg.removeKey("logging");
@@ -89,11 +105,16 @@ public class ServerConfiguration implements ConfigurationContainer {
         // RESERVED SPACE
         cfg.getInt("max-players", 20);
         cfg.setComments("max-players", "The maximum allowed players online (Does not count ReserveList users connecting after server is full)");
+        cfg.getInt("max-tick-time", 60000);
+        cfg.setComments("max-tick-time", "The maximum number of milliseconds a single tick may take before the server watchdog stops the server. Setting to -1 disables WatchDog.");
         cfg.getString("motd", "CanaryMod Minecraft Server");
         cfg.setComments("motd", "The Server list Message of the Day");
+        cfg.getInt("network-compression-threshold", 256);
+        cfg.setComments("network-compression-threshold", "By default it allows packets that are n-1 bytes big to go normally, but a packet that n bytes or more will be compressed down.");
         cfg.getBoolean("online-mode", true);
         cfg.setComments("online-mode", "Sets whether to authenticate connecting users.",
-                "WARNING: Setting to false is INSECURE and should not be done in a production environment ");
+                        "WARNING: Setting to false is INSECURE and should not be done in a production environment."
+                       );
         cfg.getInt("player-idle-timeout", 1);
         cfg.setComments("player-idle-timeout", "Timeout in minutes before kicking an idle player");
         cfg.getBoolean("playerlist-enabled", true);
@@ -150,7 +171,7 @@ public class ServerConfiguration implements ConfigurationContainer {
         cfg.getBoolean("world-cache-timer-enabled", true);
         cfg.setComments("world-cache-timer-enabled", "Enable automatic unloading of unused worlds.");
         cfg.getLong("world-cache-timeout", 60);
-        cfg.setComments("world-cache-timeout", "For how long should a world be empty before it will be unloaded (if use-world-cache is enabled)");
+        cfg.setComments("world-cache-timeout", "The number of minutes a world should be empty before it will be unloaded (if use-world-cache is enabled)");
         cfg.getBoolean("bungeecord", false);
         cfg.setComments("bungeecord", "If you want to enable Bungeecord support. REQUIRES THAT ONLINE MODE IS DISABLED (false)");
 
@@ -212,7 +233,7 @@ public class ServerConfiguration implements ConfigurationContainer {
      * @return command block group name
      */
     public String getCommandBlockGroupName() {
-        return cfg.getString("command-block-group", "default");
+        return cfg.getString("command-block-group", "admins");
     }
 
     /**
@@ -285,6 +306,9 @@ public class ServerConfiguration implements ConfigurationContainer {
      * @return max players
      */
     public int getMaxPlayers() {
+        if(panelSupport){
+            return servCfg.getInt("max-players", 20);
+        }
         return cfg.getInt("max-players", 20);
     }
 
@@ -306,6 +330,9 @@ public class ServerConfiguration implements ConfigurationContainer {
      * @return {@code true} if online mode is enabled; {@code false} if not
      */
     public boolean isOnlineMode() {
+        if(panelSupport){
+            return servCfg.getBoolean("online-mode", true);
+        }
         return cfg.getBoolean("online-mode", true);
     }
 
@@ -321,7 +348,8 @@ public class ServerConfiguration implements ConfigurationContainer {
     /**
      * Sets the time in minutes before a player is kicked for idling
      *
-     * @param timeout the idle timeout
+     * @param timeout
+     *         the idle timeout
      */
     public void setPlayerIdleTimeout(int timeout) {
         cfg.setInt("player-idle-timeout", timeout);
@@ -370,6 +398,9 @@ public class ServerConfiguration implements ConfigurationContainer {
      * @return {@code true} if enabled; {@code false} if not
      */
     public boolean isQueryEnabled() {
+        if(panelSupport){
+            return servCfg.getBoolean("enable-query", false);
+        }
         return cfg.getBoolean("query-enabled", false);
     }
 
@@ -379,6 +410,9 @@ public class ServerConfiguration implements ConfigurationContainer {
      * @return query port
      */
     public int getQueryPort() {
+        if(panelSupport){
+            return servCfg.getInt("query.port", 25570);
+        }
         return cfg.getInt("query-port", 25565);
     }
 
@@ -451,6 +485,9 @@ public class ServerConfiguration implements ConfigurationContainer {
      * @return server ip
      */
     public String getBindIp() {
+        if(panelSupport){
+            return servCfg.getString("server-ip", "");
+        }
         return cfg.getString("server-ip", "");
     }
 
@@ -460,6 +497,9 @@ public class ServerConfiguration implements ConfigurationContainer {
      * @return port
      */
     public int getPort() {
+        if(panelSupport){
+            return servCfg.getInt("server-port", 25565);
+        }
         return cfg.getInt("server-port", 25565);
     }
 
@@ -570,6 +610,33 @@ public class ServerConfiguration implements ConfigurationContainer {
      */
     public long getWorldCacheTimeout() {
         return cfg.getLong("world-cache-timeout", 60);
+    }
+
+    /**
+     * Gets the Network Compression Threshold
+     *
+     * @return network compression threshold
+     */
+    public int getNetworkCompressionThreshold() {
+        return cfg.getInt("network-compression-threshold", 256);
+    }
+
+    /**
+     * Gets the default max world size
+     *
+     * @return default max world size
+     */
+    public int getDefaultMaxWorldSize() {
+        return cfg.getInt("default-world-size", 29999984);
+    }
+
+    /**
+     * Gets the max time a tick may take
+     *
+     * @return max tick time
+     */
+    public int getMaxTickTime() {
+        return cfg.getInt("max-tick-time", 60000);
     }
 
     /**

@@ -4,7 +4,7 @@ import net.canarymod.Canary;
 import net.canarymod.ToolBox;
 import net.canarymod.Translator;
 import net.canarymod.api.world.World;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.Group;
@@ -17,10 +17,6 @@ import net.canarymod.user.Group;
 public class GroupCreate implements NativeCommand {
     // group) add <name> [[parent] [world[:dimension]]]
     public void execute(MessageReceiver caller, String[] args) {
-        if (args[args.length - 1].equals("--help")) {
-            Canary.help().getHelp(caller, "groupmod add");
-            return;
-        }
 
         String worldName = null;
         Group parent = null;
@@ -67,11 +63,20 @@ public class GroupCreate implements NativeCommand {
             }
         }
 
+        if (Canary.usersAndGroups().groupExists(args[0])) {
+            caller.notice(Translator.translateAndFormat("group failed dupe", args[0]));
+            return;
+        }
         group.setName(args[0]);
         group.setPermissionProvider(Canary.permissionManager().getGroupsProvider(args[0], worldName));
         group.setParent(parent);
         group.setWorldName(worldName);
         Canary.usersAndGroups().addGroup(group);
-        caller.message(Colors.YELLOW + Translator.translateAndFormat("group created", group.getName()));
+        if (parent == null) {
+            caller.message(ChatFormat.YELLOW + Translator.translateAndFormat("group created", group.getName()));
+        }
+        else {
+            caller.message(ChatFormat.YELLOW + Translator.translateAndFormat("group created parent", group.getName(), parent.getName()));
+        }
     }
 }

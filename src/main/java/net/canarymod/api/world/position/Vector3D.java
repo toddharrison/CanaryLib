@@ -1,5 +1,7 @@
 package net.canarymod.api.world.position;
 
+import net.canarymod.CanaryDeserializeException;
+
 /**
  * A Vector3D represents a point ins in the 3D space.
  * That can be a block or a player coodinate
@@ -40,9 +42,18 @@ public class Vector3D extends Position {
     /**
      * Copy constructor copies the primitives
      *
-     * @param key
+     * @param templ
      */
     public Vector3D(Vector3D templ) {
+        super(templ);
+    }
+
+    /**
+     * Copy constructor copies the primitives
+     *
+     * @param templ
+     */
+    public Vector3D(Position templ) {
         super(templ);
     }
 
@@ -62,9 +73,25 @@ public class Vector3D extends Position {
     }
 
     /**
-     * Retrieve the distance between 2 given vectors
+     * Get the square distance between this and the given vector.
+     * This is substantially faster than the standard getDistance
+     * but you'll have to squre the numbers you're checking against yourself
      *
      * @param v
+     * @return
+     */
+    public double getSquareDistance(Position v) {
+        double diffX = v.getX() - this.getX();
+        double diffY = v.getY() - this.getY();
+        double diffZ = v.getZ() - this.getZ();
+
+        return (diffX * diffX + diffY * diffY + diffZ * diffZ);
+    }
+
+    /**
+     * Retrieve the distance between 2 given vectors
+     *
+     * @param v1
      *
      * @return double The Distance
      */
@@ -110,6 +137,23 @@ public class Vector3D extends Position {
     }
 
     /**
+     * Check if this vector is contained within the range of the given two.
+     * It can be seen as a AABB collision test.
+     *
+     * @param min
+     * @param max
+     * @return
+     */
+    public boolean isWithin(Position min, Position max) {
+        return (min.x <= this.x && this.x <= max.x) &&
+                (min.y <= this.y && this.y <= max.y) &&
+                (min.z <= this.z && this.z <= max.z);
+
+//        return this.getBlockX() >= min.getBlockX() && this.getBlockX() <= max.getBlockX() && this.getBlockY() >= min.getBlockY() && this.getBlockY() <= max.getBlockY() && this.getBlockZ() >= min.getBlockZ() && this.getBlockZ() <= max.getBlockZ();
+    }
+
+
+    /**
      * Add the given Vector to this Vector and return the result as new Vector3D
      *
      * @param toAdd
@@ -134,7 +178,7 @@ public class Vector3D extends Position {
     /**
      * Scalar multiply this vector with a given factor and return the result as new Vector3D
      *
-     * @param toRemove
+     * @param scalar
      *
      * @return scalar product as Vector3D
      */
@@ -152,7 +196,108 @@ public class Vector3D extends Position {
     }
 
     @Override
-    public Vector3D clone() {
+    public Vector3D clone() throws CloneNotSupportedException {
+        return (Vector3D)super.clone();
+    }
+
+    public Vector3D copy() {
+        try {
+            return this.clone();
+        }
+        catch (CloneNotSupportedException e) {
+            // it is supported...
+        }
         return new Vector3D(this);
+    }
+
+    /**
+     * Gets the minimum components of two vectors.
+     *
+     * @param v1
+     * @param v2
+     * @return minimum
+     */
+    public static Vector3D getMinimum(Position v1, Position v2) {
+        return new Vector3D(Math.min(v1.getX(), v2.getX()), Math.min(v1.getY(), v2.getY()), Math.min(v1.getZ(), v2.getZ()));
+    }
+
+    /**
+     * Gets the maximum components of two vectors.
+     *
+     * @param v1
+     * @param v2
+     * @return minimum
+     */
+    public static Vector3D getMaximum(Position  v1, Position v2) {
+        return new Vector3D(Math.max(v1.getX(), v2.getX()), Math.max(v1.getY(), v2.getY()), Math.max(v1.getZ(), v2.getZ()));
+    }
+
+    /**
+     * Calculates the center point between 2 points
+     *
+     * @param p1 first point
+     * @param p2 second point
+     * @return Vector between p1 and p2
+     */
+    public static Vector3D getCenterPoint(Position p1, Position p2) {
+        double x = (p1.getX() + p2.getX()) / 2;
+        double y = (p1.getY() + p2.getY()) / 2;
+        double z = (p1.getZ() + p2.getZ()) / 2;
+        return new Vector3D(x, y, z);
+    }
+
+    /**
+     * Retrieve the major of two vectors (the one farther away from 0,0,0)
+     *
+     * @param v1
+     * @param v2
+     * @return Major Vector, null if something went wrong
+     */
+    public static Vector3D getMajor(Vector3D v1, Vector3D v2) {
+        double dv1 = v1.getMagnitude();
+        double dv2 = v2.getMagnitude();
+        double max = Math.max(v1.getMagnitude(), v2.getMagnitude());
+        if (max == dv1) {
+            return v1;
+        }
+        else if (max == dv2) {
+            return v2;
+        }
+        else {
+            return null;
+        }
+    }
+
+    /**
+     * Retrieve the minor of two vectors (the one nearer to 0,0,0
+     *
+     * @param v1
+     * @param v2
+     * @return Minor Vector, null if something went wrong
+     */
+    public static Vector3D getMinor(Vector3D v1, Vector3D v2) {
+        double dv1 = v1.getMagnitude();
+        double dv2 = v2.getMagnitude();
+        double min = Math.min(v1.getMagnitude(), v2.getMagnitude());
+        if (min == dv1) {
+            return v1;
+        }
+        else if (min == dv2) {
+            return v2;
+        }
+        else {
+            return null;
+        }
+    }
+
+    public static Vector3D fromString(String in) {
+        String[] parts = in.split(":");
+        if (parts.length != 3) {
+            throw new CanaryDeserializeException("Given Vector3 String does not contain 3 components!", "CanaryMod");
+        }
+        double x = Double.parseDouble(parts[0]);
+        double y = Double.parseDouble(parts[1]);
+        double z = Double.parseDouble(parts[2]);
+        return new Vector3D(x, y, z);
     }
 }

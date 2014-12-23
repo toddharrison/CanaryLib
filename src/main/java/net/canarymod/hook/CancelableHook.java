@@ -17,4 +17,12 @@ public abstract class CancelableHook extends Hook {
         return isCanceled;
     }
 
+    /**
+     * Calls a Hook if not already executed
+     *
+     * @return this
+     */
+    public CancelableHook call() {
+        return (CancelableHook)super.call();
+    }
 }

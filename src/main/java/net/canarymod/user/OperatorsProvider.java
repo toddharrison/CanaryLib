@@ -24,7 +24,9 @@ public class OperatorsProvider {
         readOpsCfg();
     }
 
-    /** Reload the ops from database */
+    /**
+     * Reload the ops from database
+     */
     public void reload() {
         ops = backboneOps.loadOps();
         readOpsCfg();

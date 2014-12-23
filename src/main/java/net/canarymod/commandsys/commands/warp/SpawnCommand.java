@@ -1,12 +1,18 @@
 package net.canarymod.commandsys.commands.warp;
 
 import net.canarymod.Canary;
+import net.canarymod.ToolBox;
 import net.canarymod.Translator;
 import net.canarymod.api.entity.living.humanoid.Player;
+import net.canarymod.api.world.UnknownWorldException;
 import net.canarymod.api.world.World;
-import net.canarymod.chat.Colors;
+import net.canarymod.api.world.position.Location;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
+import net.canarymod.chat.ReceiverType;
 import net.canarymod.commandsys.NativeCommand;
+import net.canarymod.config.Configuration;
+import net.canarymod.hook.player.TeleportHook;
 
 /**
  * Command to teleport yourself or someoneelse to spawn
@@ -16,8 +22,8 @@ import net.canarymod.commandsys.NativeCommand;
 public class SpawnCommand implements NativeCommand {
 
     public void execute(MessageReceiver caller, String[] parameters) {
-        if (caller instanceof Player) {
-            player((Player) caller, parameters);
+        if (caller.getReceiverType().equals(ReceiverType.PLAYER)) {
+            player((Player)caller, parameters);
         }
         else {
             console(caller, parameters);
@@ -25,49 +31,77 @@ public class SpawnCommand implements NativeCommand {
     }
 
     private void console(MessageReceiver caller, String[] args) {
-        if (args.length < 3) {
-            caller.notice(Translator.translate("spawn failed console"));
-        }
-        else {
-            Player player = Canary.getServer().matchPlayer(args[2]);
-            World w = Canary.getServer().getWorld(args[1]);
-
-            if (player != null && w != null) {
-                player.teleportTo(w.getSpawnLocation());
-                caller.notice(Translator.translateAndFormat("spawn success other", player.getName()));
-            }
-            else {
+        try {
+            if (args.length < 3) {
                 caller.notice(Translator.translate("spawn failed console"));
             }
-        }
+            else {
+                String fqName = ToolBox.parseWorldName(args[1]);
+                World w = ToolBox.parseWorld(fqName, Configuration.getWorldConfig(fqName).allowWarpAutoLoad());
+                Player player = Canary.getServer().matchPlayer(args[2]);
 
+                if (w == null) {
+                    caller.notice(Translator.translateAndFormat("unknown world", args[1]));
+                }
+                else if (player != null) {
+                    Location loc = w.getSpawnLocation();
+                    loc.setY(w.getHighestBlockAt(loc.getBlockX(), loc.getBlockZ()));
+                    player.teleportTo(loc, TeleportHook.TeleportCause.COMMAND);
+                    caller.notice(Translator.translateAndFormat("spawn success other", player.getName()));
+                }
+                else {
+                    caller.notice(Translator.translate("spawn failed console"));
+                }
+            }
+        }
+        catch (UnknownWorldException exception) {
+            caller.notice(Translator.translateAndFormat("unknown world", args[1]));
+        }
     }
 
     private void player(Player player, String[] args) {
-        if (args.length == 1) {
-            player.teleportTo(player.getWorld().getSpawnLocation());
-            player.message(Colors.YELLOW + Translator.translate("spawn success"));
-        }
-        else if (args.length == 2) {
-            World w = Canary.getServer().getWorld(args[1]);
+        try {
+            if (args.length == 1) {
+                Location loc = player.getWorld().getSpawnLocation();
+                loc.setY(player.getWorld().getHighestBlockAt(loc.getBlockX(), loc.getBlockZ()));
+                player.teleportTo(loc, TeleportHook.TeleportCause.COMMAND);
+                player.message(ChatFormat.YELLOW + Translator.translate("spawn success"));
+            }
+            else if (args.length == 2) {
+                String fqName = ToolBox.parseWorldName(args[1]);
+                World w = ToolBox.parseWorld(fqName, Configuration.getWorldConfig(fqName).allowWarpAutoLoad());
 
-            if (w == null) {
-                player.notice(Translator.translate("spawn failed"));
+                if (w == null) {
+                    player.notice(Translator.translateAndFormat("unknown world", args[1]));
+                }
+                else {
+                    Location loc = w.getSpawnLocation();
+                    loc.setY(w.getHighestBlockAt(loc.getBlockX(), loc.getBlockZ()));
+                    player.teleportTo(loc, TeleportHook.TeleportCause.COMMAND);
+                    player.message(ChatFormat.YELLOW + Translator.translate("spawn success"));
+                }
             }
             else {
-                player.teleportTo(w.getSpawnLocation());
-                player.message(Colors.YELLOW + Translator.translate("spawn success"));
+                String fqName = ToolBox.parseWorldName(args[1]);
+                World w = ToolBox.parseWorld(fqName, Configuration.getWorldConfig(fqName).allowWarpAutoLoad());
+                Player target = Canary.getServer().matchPlayer(args[2]);
+
+                if (w == null) {
+                    player.notice(Translator.translateAndFormat("unknown world", args[1]));
+                }
+                else if (target != null) {
+                    Location loc = w.getSpawnLocation();
+                    loc.setY(w.getHighestBlockAt(loc.getBlockX(), loc.getBlockZ()));
+                    target.teleportTo(loc, TeleportHook.TeleportCause.COMMAND);
+                    player.message(ChatFormat.YELLOW + Translator.translateAndFormat("spawn success other", player.getName()));
+                }
+                else {
+                    player.notice(Translator.translate("spawn failed"));
+                }
             }
         }
-        else {
-            World w = Canary.getServer().getWorld(args[1]);
-            Player target = Canary.getServer().matchPlayer(args[2]);
-
-            if (target != null && w != null) {
-                target.teleportTo(w.getSpawnLocation());
-                player.message(Colors.YELLOW + Translator.translateAndFormat("spawn success other", player.getName()));
-            }
+        catch (UnknownWorldException exception) {
+            player.notice(Translator.translateAndFormat("unknown world", args[1]));
         }
     }
-
 }

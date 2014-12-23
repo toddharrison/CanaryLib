@@ -1,13 +1,11 @@
 package net.canarymod.api.world.blocks;
 
-import net.canarymod.api.inventory.Inventory;
-
 /**
  * Furnace wrapper
  *
  * @author Jason (darkdiplomat)
  */
-public interface Furnace extends TileEntity, Inventory {
+public interface Furnace extends LockableTileEntity {
     /**
      * Returns the number of ticks the current fuel item has to go.
      *

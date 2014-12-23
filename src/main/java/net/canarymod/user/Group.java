@@ -1,8 +1,7 @@
 package net.canarymod.user;
 
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.permissionsystem.PermissionProvider;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -182,7 +181,7 @@ public class Group {
      * @return the prefix
      */
     public String getPrefix() {
-        return prefix != null ? prefix : Colors.WHITE;
+        return prefix != null ? prefix : ChatFormat.WHITE.toString();
     }
 
     /**

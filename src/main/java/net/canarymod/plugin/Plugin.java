@@ -22,16 +22,16 @@ import java.util.ArrayList;
  * @author Jason (darkdiplomat)
  */
 public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
-    private int priority = 0;
-    private boolean isClosed = false;
-    private boolean disabled = true;
-    private final ArrayList<String> dependents = new ArrayList<String>();
-    private String name;
     /**
      * This is used to get the correct name during load process, before it is set in the field above.
      */
     public static ThreadLocal<String> threadLocalName = new ThreadLocal<String>() {
     };
+    private final ArrayList<String> dependents = new ArrayList<String>();
+    private int priority = 0;
+    private boolean isClosed = false;
+    private boolean disabled = true;
+    private String name;
 
     /**
      * CanaryMod will call this upon enabling this plugin
@@ -61,7 +61,7 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
 
     /**
      * Sets the Plugin's name. Used internally since plugins are stored by name.
-     * Calling this outside of {@link net.canarymod.plugin.IPluginLifecycle#load(IPluginManager)}
+     * Calling this outside of {@link PluginLifecycle#load()}
      * may end disastrously
      */
     final public void setName(String name) {
@@ -109,15 +109,15 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
     /**
      * Gets the name of the Plugin's Jar File
      *
-     * @deprecated Plugins may or may not be in a jar file. This method will return null if there is no jar.
-     *
      * @return the Jar File name
+     * @deprecated Plugins may or may not be in a jar file. This method will return null if there is no jar.
      */
     public String getJarName() {
         String path = getPath();
         if (path.endsWith(".jar")) {
             return new File(path).getName();
-        } else {
+        }
+        else {
             return null;
         }
     }
@@ -125,21 +125,22 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
     /**
      * Gets the path of the Plugin's Jar file as {@literal "plugins/<jar>"}
      *
-     * @deprecated  Plugins may or may not be in a jar file. This method will return null if there is no jar.
-     *
      * @return the Plugin's Jar path
+     * @deprecated Plugins may or may not be in a jar file. This method will return null if there is no jar.
      */
     public String getJarPath() {
         String path = getPath();
         if (path.endsWith(".jar")) {
             return path;
-        } else {
+        }
+        else {
             return null;
         }
     }
 
     /**
      * Returns the path for this plugin. May be a file, or a directory.
+     *
      * @return
      */
     public String getPath() {
@@ -161,7 +162,7 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
      * @return The plugin's descriptor
      */
     public final PluginDescriptor getDescriptor() {
-        return Canary.manager().getPluginDescriptor(this);
+        return Canary.pluginManager().getPluginDescriptor(this);
     }
 
     /**
@@ -175,7 +176,7 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
      * @return the Plugin's Canary.inf
      */
     public final PropertiesFile getCanaryInf() {
-        return Canary.manager().getPluginDescriptor(this).getCanaryInf();
+        return Canary.pluginManager().getPluginDescriptor(this).getCanaryInf();
     }
 
     /**
@@ -326,6 +327,6 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
      */
     @Override
     public final String toString() {
-        return String.format("Plugin[Name: '%s' Version: '%s' Author: '%s' JarPath: '%s']", getName(), getVersion(), getAuthor(), getJarPath());
+        return String.format("Plugin[Name: '%s' Version: '%s' Author: '%s' Path: '%s']", getName(), getVersion(), getAuthor(), getPath());
     }
 }

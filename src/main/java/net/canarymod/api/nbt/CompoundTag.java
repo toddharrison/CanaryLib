@@ -8,7 +8,7 @@ import java.util.Set;
  *
  * @author gregthegeek
  */
-public interface CompoundTag extends BaseTag {
+public interface CompoundTag extends BaseTag<CompoundTag> {
 
     /**
      * Gets the values inside the CompoundTag
@@ -165,6 +165,16 @@ public interface CompoundTag extends BaseTag {
     public boolean containsKey(String key);
 
     /**
+     * Checks if the CompoundTag contains the given key with a given value type
+     * @param key
+     * the key to check for
+     * @param type
+     * the {@link net.canarymod.api.nbt.NBTTagType} to check for
+     * @return {@code true} if the key is of the given type; {@code false} if not
+     */
+    public boolean containsKey(String key, NBTTagType type);
+
+    /**
      * Gets a byte value from the CompoundTag
      *
      * @param key
@@ -272,7 +282,7 @@ public interface CompoundTag extends BaseTag {
      *
      * @return the {@link ListTag} value
      */
-    public <T extends BaseTag> ListTag<T> getListTag(String key);
+    public <E extends BaseTag> ListTag<E> getListTag(String key);
 
     /**
      * Gets a boolean value from the CompoundTag
@@ -299,7 +309,4 @@ public interface CompoundTag extends BaseTag {
      */
     public boolean isEmpty();
 
-    /** {@inheritDoc} */
-    @Override
-    public CompoundTag copy();
 }

@@ -8,19 +8,6 @@ package net.canarymod.api.ai;
 public interface AIManager {
 
     /**
-     * Creates a new instance of the class extending AIBase to be added to the
-     * Entity that owns this AIManager.
-     *
-     * @param priority
-     *         priority of this task. Higher numbers are higher priority.
-     * @param ai
-     *         The class to add.
-     *
-     * @return True if it was successfully added, false otherwise.
-     */
-    public boolean addTask(int priority, Class<? extends AIBase> ai);
-
-    /**
      * Adds this instance of the class extending AIBase to be added to the
      * Entity that owns this AIManager.
      *

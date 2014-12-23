@@ -9,6 +9,8 @@ import net.canarymod.database.exceptions.DatabaseAccessException;
 import net.canarymod.database.exceptions.DatabaseReadException;
 import net.canarymod.database.exceptions.DatabaseTableInconsistencyException;
 import net.canarymod.database.exceptions.DatabaseWriteException;
+import net.visualillusionsent.utils.StringUtils;
+import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
 import java.sql.Connection;
@@ -24,8 +26,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.logging.log4j.LogManager;
 
 import static net.canarymod.Canary.log;
 
@@ -72,27 +72,8 @@ public class SQLiteDatabase extends Database {
         PreparedStatement ps = null;
 
         try {
-            StringBuilder fields = new StringBuilder();
-            StringBuilder values = new StringBuilder();
             HashMap<Column, Object> columns = data.toDatabaseEntryList();
-            Iterator<Column> it = columns.keySet().iterator();
-
-            Column column;
-            while (it.hasNext()) {
-                column = it.next();
-                if (!column.autoIncrement()) {
-                    fields.append("`").append(column.columnName()).append("`").append(",");
-                    values.append("?").append(",");
-                }
-            }
-            if (fields.length() > 0) {
-                fields.deleteCharAt(fields.length() - 1);
-            }
-            if (values.length() > 0) {
-                values.deleteCharAt(values.length() - 1);
-            }
-            String state = "INSERT INTO `" + data.getName() + "` (" + fields.toString() + ") VALUES(" + values.toString() + ")";
-            ps = JdbcConnectionManager.getConnection().prepareStatement(state);
+            ps = JdbcConnectionManager.getConnection().prepareStatement(generateQuery(data));
 
             int i = 1;
             for (Column c : columns.keySet()) {
@@ -119,6 +100,13 @@ public class SQLiteDatabase extends Database {
             close(null, ps, null);
         }
 
+    }
+
+    @Override
+    public void insertAll(List<DataAccess> data) throws DatabaseWriteException {
+        for (DataAccess da : data) {
+            insert(da);
+        }
     }
 
     @Override
@@ -170,6 +158,15 @@ public class SQLiteDatabase extends Database {
                 log.error(e.getMessage(), e);
             }
             close(conn, st, rs);
+        }
+    }
+
+    @Override
+    public void updateAll(DataAccess template, Map<DataAccess, Map<String, Object>> list) throws DatabaseWriteException {
+        // FIXME: Might be worthwhile collecting all queries into one statement?
+        // But then if something errors out it's hard to find what it was
+        for (DataAccess da : list.keySet()) {
+            update(da, list.get(da));
         }
     }
 
@@ -360,37 +357,40 @@ public class SQLiteDatabase extends Database {
 
         try {
             StringBuilder fields = new StringBuilder();
+            List<String> primary = new ArrayList<String>();
             HashMap<Column, Object> columns = data.toDatabaseEntryList();
             Iterator<Column> it = columns.keySet().iterator();
             Column column;
             while (it.hasNext()) {
                 column = it.next();
                 fields.append("`").append(column.columnName()).append("` ");
-                if (column.columnType().equals(Column.ColumnType.PRIMARY) && column.autoIncrement() && column.dataType() == Column.DataType.INTEGER) {
-                    fields.append(" INTEGER PRIMARY KEY ASC");
-                    if (it.hasNext()) {
-                        fields.append(", ");
-                    }
-                    continue;
+                fields.append(getDataTypeSyntax(column.dataType()));
+                if (column.autoIncrement()) {
+                    fields.append(" AUTOINCREMENT");
                 }
-                else {
-                    fields.append(getDataTypeSyntax(column.dataType()));
-                }
-
-
-                if (column.columnType() == Column.ColumnType.PRIMARY) {
-                    fields.append(" PRIMARY KEY");
-                    if (column.autoIncrement()) {
-                        fields.append(" AUTOINCREMENT");
-                    }
-                } else if (column.columnType() == Column.ColumnType.UNIQUE) {
+                else if (column.columnType() == Column.ColumnType.UNIQUE) {
                     fields.append(" UNIQUE");
                 }
                 if (it.hasNext()) {
                     fields.append(", ");
                 }
+                if (column.columnType() == Column.ColumnType.PRIMARY) {
+                    if (column.dataType() == DataType.INTEGER) {
+                        primary.add(column.columnName().concat(" ASC"));
+                    }
+                    else {
+                        primary.add(column.columnName());
+                    }
+
+                }
             }
-            String state = "CREATE TABLE IF NOT EXISTS `" + data.getName() + "` (" + fields.toString() + ")";
+
+            String primaryFields = "";
+            if (primary.size() > 0) {
+                primaryFields = " PRIMARY KEY (" + StringUtils.joinString(primary.toArray(new String[primary.size()]), ",", 0) + ")";
+            }
+            // CREATE TABLE something (column1, column2, column3, PRIMARY KEY (column1, column2));
+            String state = "CREATE TABLE IF NOT EXISTS `" + data.getName() + "` (" + fields.toString() + ""+primaryFields+")";
             ps = JdbcConnectionManager.getConnection().prepareStatement(state);
             if (ps.execute()) {
                 log.debug("Statment Executed!");
@@ -818,6 +818,29 @@ public class SQLiteDatabase extends Database {
                 break;
         }
         return list;
+    }
+
+    private String generateQuery(DataAccess data) throws DatabaseTableInconsistencyException {
+        StringBuilder fields = new StringBuilder();
+        StringBuilder values = new StringBuilder();
+        HashMap<Column, Object> columns = data.toDatabaseEntryList();
+        Iterator<Column> it = columns.keySet().iterator();
+
+        Column column;
+        while (it.hasNext()) {
+            column = it.next();
+            if (!column.autoIncrement()) {
+                fields.append("`").append(column.columnName()).append("`").append(",");
+                values.append("?").append(",");
+            }
+        }
+        if (fields.length() > 0) {
+            fields.deleteCharAt(fields.length() - 1);
+        }
+        if (values.length() > 0) {
+            values.deleteCharAt(values.length() - 1);
+        }
+        return "INSERT INTO `" + data.getName() + "` (" + fields.toString() + ") VALUES(" + values.toString() + ")";
     }
 
     /**

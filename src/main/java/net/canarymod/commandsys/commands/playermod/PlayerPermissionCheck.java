@@ -3,7 +3,7 @@ package net.canarymod.commandsys.commands.playermod;
 import net.canarymod.Canary;
 import net.canarymod.Translator;
 import net.canarymod.api.PlayerReference;
-import net.canarymod.chat.Colors;
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.permissionsystem.PermissionNode;
@@ -30,18 +30,18 @@ public class PlayerPermissionCheck implements NativeCommand {
         }
         if (hasPath) {
             if (result) {
-                caller.message(Colors.LIGHT_GREEN + node.getName() + ": true");
+                caller.message(ChatFormat.GREEN + node.getName() + ": true");
             }
             else {
-                caller.message(Colors.LIGHT_RED + node.getName() + ": false");
+                caller.message(ChatFormat.RED + node.getName() + ": false");
             }
         }
         else {
             if (result) {
-                caller.message(Colors.LIGHT_GREEN + node.getName() + ": true");
+                caller.message(ChatFormat.GREEN + node.getName() + ": true");
             }
             else {
-                caller.message(Colors.YELLOW + node.getName() + ": " + Translator.translate("no"));
+                caller.message(ChatFormat.YELLOW + node.getName() + ": " + Translator.translate("no"));
             }
         }
     }

@@ -3,11 +3,13 @@ package net.canarymod.chat;
 /**
  * This class contains James' color list and additionally formatting options for
  * underlining, bolding, striking text etc etc
- *
+ * 
+ * @deprecated use {@link ChatFormat} instead.
  * @author Chris (damagefilter)
  * @author Jason (darkdiplomat)
  * @author James
  */
+@Deprecated
 public class TextFormat extends Colors {
 
     /** The character sequence to make the following text bold. */

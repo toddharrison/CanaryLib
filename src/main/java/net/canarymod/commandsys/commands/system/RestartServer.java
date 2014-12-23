@@ -34,5 +34,4 @@ public class RestartServer {
     //
     // player.notice("Compass: " + player.getCardinalDirection().toString() + " (" + (Math.round(degrees * 10) / 10.0) + ")");
     // }
-
 }

@@ -24,14 +24,14 @@ public final class CreateWorldCommand implements NativeCommand {
 
             if (parameters.length > 1) {
                 if (parameters[1].matches("\\d+")) {
-                    seed = Long.parseLong(parameters[2]);
+                    seed = Long.parseLong(parameters[1]);
                 }
                 else {
                     seed = parameters[1].hashCode();
                 }
             }
             if (parameters.length > 2) {
-                if (parameters[2].matches("\\d")) {
+                if (parameters[2].matches("\\d+")) {
                     dType = DimensionType.fromId(Integer.parseInt(parameters[2]));
                 }
                 else {
@@ -39,24 +39,24 @@ public final class CreateWorldCommand implements NativeCommand {
                 }
             }
             if (dType == null) {
-                caller.notice("Dimension Type is non-existant");
+                caller.notice("Dimension Type is non-existent");
                 return;
             }
             if (parameters.length > 3) {
                 wType = WorldType.fromString(parameters[3]);
             }
             if (wType == null) {
-                caller.notice("World Type is non-existant");
+                caller.notice("World Type is non-existent");
                 return;
             }
 
             caller.notice("Please wait while the world is generated...");
             manage.createWorld(name, seed, dType, wType);
             caller.notice("World Created!");
-
         }
         catch (Exception ex) {
             caller.notice("Failed to create world. Check console for errors.");
+            Canary.log.error("Exception thrown while creating a world", ex);
         }
     }
 }

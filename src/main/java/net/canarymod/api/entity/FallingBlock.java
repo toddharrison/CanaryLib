@@ -12,34 +12,59 @@ import net.canarymod.api.world.blocks.Block;
 public interface FallingBlock extends Entity {
 
     /**
+     * Gets the {@link Block} (state) of the FallingBlock
+     *
+     * @return block
+     */
+    Block getBlock();
+
+    /**
+     * Sets the {@link Block} (state) of the FallingBlock
+     *
+     * @param block
+     *         the block to set
+     */
+    void setBlock(Block block);
+
+    /**
      * Gets the Block ID of the FallingBlock
      *
      * @return the Block ID
+     * @deprecated use {@link #getBlock()} instead
      */
-    public short getBlockID();
+    @Deprecated
+    short getBlockID();
 
     /**
      * Sets the Block ID of the FallingBlock
      *
      * @param id
      *         the Block ID
+     * @deprecated use {@link #setBlock(net.canarymod.api.world.blocks.Block)} instead
      */
-    public void setBlockID(short id);
+    @Deprecated
+    void setBlockID(short id);
 
     /**
      * Gets the Block's metadata
      *
      * @return the Block's MetaData
+     *
+     * @deprecated metadata is no longer used, use {@link #getBlock()} instead
      */
-    public short getBlockMetaData();
+    @Deprecated
+    short getBlockMetaData();
 
     /**
      * Sets the Block's metadata
      *
      * @param data
      *         the Block's MetaData
+     *
+     * @deprecated metadata is no longer used, use {@link #setBlock(net.canarymod.api.world.blocks.Block)} instead
      */
-    public void setBlockMetaData(short data);
+    @Deprecated
+    void setBlockMetaData(short data);
 
     /**
      * Gets the ticks that the entity has fallen.<br>
@@ -47,7 +72,7 @@ public interface FallingBlock extends Entity {
      *
      * @return fall time
      */
-    public int getFallTime();
+    int getFallTime();
 
     /**
      * Sets the amount of time the entity has fallen.
@@ -55,14 +80,14 @@ public interface FallingBlock extends Entity {
      * @param fallTime
      *         the ticks of fallTime
      */
-    public void setFallTime(int fallTime);
+    void setFallTime(int fallTime);
 
     /**
      * Gets if when the entity finishes falling if it turns into a {@link Block} or drops an {@link Item}
      *
      * @return {@code true} if drops {@link Item}; {@code false} if turns into a {@link Block}
      */
-    public boolean dropsItem();
+    boolean dropsItem();
 
     /**
      * Sets if when the entity finishes falling if it turns into a {@link Block} or drops an {@link Item}
@@ -70,14 +95,14 @@ public interface FallingBlock extends Entity {
      * @param drops
      *         {@code true} if drops {@link Item}; {@code false} if turns into a {@link Block}
      */
-    public void setDropsItem(boolean drops);
+    void setDropsItem(boolean drops);
 
     /**
      * Gets if the fall will destroy the {@link Anvil} (if it is an {@link Anvil})
      *
      * @return {@code true} if breaking; {@code false} if not
      */
-    public boolean isBreakingAnvil();
+    boolean isBreakingAnvil();
 
     /**
      * Gets if the fall will destroy the {@link Anvil} (if it is an {@link Anvil})<br>
@@ -86,14 +111,14 @@ public interface FallingBlock extends Entity {
      * @param breaking
      *         {@code true} if breaking; {@code false} if not
      */
-    public void setIsBreakingAnvil(boolean breaking);
+    void setIsBreakingAnvil(boolean breaking);
 
     /**
      * Gets if the entity will hurt entities
      *
      * @return {@code true} if hurts; {@code false} if not
      */
-    public boolean hurtEntities();
+    boolean hurtEntities();
 
     /**
      * Sets if the entity will hurt entities
@@ -101,14 +126,14 @@ public interface FallingBlock extends Entity {
      * @param hurt
      *         {@code true} if hurts; {@code false} if not
      */
-    public void setHurtEntities(boolean hurt);
+    void setHurtEntities(boolean hurt);
 
     /**
      * Gets the maximum damage the Block can cause if it hits an Entity
      *
      * @return maximum damage
      */
-    public int getMaxDamage();
+    int getMaxDamage();
 
     /**
      * Sets the maximum damage the Block can cause if it hits an Entity
@@ -116,7 +141,7 @@ public interface FallingBlock extends Entity {
      * @param max
      *         the maximum damage the block may cause
      */
-    public void setMaxDamage(int max);
+    void setMaxDamage(int max);
 
     /**
      * Gets the damage caused by the FallingBlock multiplied by the number of blocks fell
@@ -124,7 +149,7 @@ public interface FallingBlock extends Entity {
      * @return damage
      *         the amount of base damage
      */
-    public float getDamageAmount();
+    float getDamageAmount();
 
     /**
      * Sets the damage caused by the FallingBlock
@@ -132,5 +157,5 @@ public interface FallingBlock extends Entity {
      * @param damage
      *         the amount of base damage to cause
      */
-    public void setDamageAmount(float damage);
+    void setDamageAmount(float damage);
 }

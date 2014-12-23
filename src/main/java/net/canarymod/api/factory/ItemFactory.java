@@ -14,7 +14,7 @@ import net.canarymod.api.inventory.MapData;
 public interface ItemFactory {
 
     /**
-     * Make a new {@link Item} with an id. Damage 0, stack size = 0
+     * Make a new {@link Item} with an id. Damage 0, stack size = 1
      *
      * @param id
      *         the Item ID
@@ -24,7 +24,7 @@ public interface ItemFactory {
     Item newItem(int id);
 
     /**
-     * Make a new {@link Item} with id, damage. Stack size 0
+     * Make a new {@link Item} with id, damage. Stack size 1
      *
      * @param id
      *         the Item ID
@@ -50,7 +50,7 @@ public interface ItemFactory {
     Item newItem(int id, int damage, int stackSize);
 
     /**
-     * Make a new {@link Item} with item type. Damage 0, stack size 0
+     * Make a new {@link Item} with item type. Damage 0, stack size 1
      *
      * @param type
      *         the {@link ItemType}
@@ -60,7 +60,7 @@ public interface ItemFactory {
     Item newItem(ItemType type);
 
     /**
-     * Make a new {@link Item} with item type, damage. Stack size 0
+     * Make a new {@link Item} with item type, damage. Stack size 1
      *
      * @param type
      *         the {@link ItemType}
