@@ -565,7 +565,7 @@ public final class BlockType {
     public static BlockType fromString(String name, boolean withData) {
         String temp = name;
         int data = 0;
-        if (withData) {
+        if (!blockTypes.containsKey(name)) {
             if (name.matches(".+:.+:\\d+")) {
                 temp = name.replaceAll(":\\d+", "");
                 try {
@@ -575,13 +575,12 @@ public final class BlockType {
                     // Ignored
                 }
             }
-        }
-
-        if (!blockTypes.containsKey(temp)) {
-            // Perhaps try by adding a namespace
-            temp = "minecraft:"+temp;
-            if (!blockTypes.containsKey(temp)) {
-                return null;
+            else {
+                // Perhaps try by adding a namespace
+                temp = "minecraft:"+temp;
+                if (!blockTypes.containsKey(temp)) {
+                    return null;
+                }
             }
         }
         return blockTypes.get(temp).get(data);
