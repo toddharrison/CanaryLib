@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,14 +24,19 @@ import java.util.List;
  * @author Jason (darkdiplomat)
  */
 public class ServerListPingHook extends CancelableHook {
-    private final InetAddress requester;
+    private final InetAddress requesterAddress;
+    private final int requesterPort, requesterProtocol;
+    private final String hostNamePinged;
     private final List<GameProfile> profiles;
     private ChatComponent motd;
     private String favicon;
     private int maxPlayers, currentPlayers;
 
-    public ServerListPingHook(InetAddress requester, ChatComponent motd, int currentPlayers, int maxPlayers, String favicon, List<GameProfile> profiles) {
-        this.requester = requester;
+    public ServerListPingHook(InetSocketAddress remoteSocket, int requesterProtocol, String hostNamePinged, ChatComponent motd, int currentPlayers, int maxPlayers, String favicon, List<GameProfile> profiles) {
+        this.requesterAddress = remoteSocket.getAddress();
+        this.requesterPort = remoteSocket.getPort();
+        this.requesterProtocol = requesterProtocol;
+        this.hostNamePinged = hostNamePinged;
         this.motd = motd;
         this.maxPlayers = maxPlayers;
         this.currentPlayers = currentPlayers;
@@ -44,7 +50,34 @@ public class ServerListPingHook extends CancelableHook {
      * @return {@link java.net.InetAddress} of requesting party
      */
     public InetAddress getRequesterAddress() {
-        return requester;
+        return requesterAddress;
+    }
+
+    /**
+     * Gets the port used by the requesting party
+     *
+     * @return port
+     */
+    public int getRequesterPort() {
+        return requesterPort;
+    }
+
+    /**
+     * Gets the protocol version for the requesting party
+     *
+     * @return requester's protocol version
+     */
+    public int getRequesterProtocol() {
+        return requesterProtocol;
+    }
+
+    /**
+     * Gets the HostName (or IP) used by the requester to connect to the server
+     *
+     * @return host name (or IP) used
+     */
+    public String getHostNamePinged() {
+        return hostNamePinged;
     }
 
     /**
