@@ -3,7 +3,7 @@ package net.canarymod.plugin;
 import net.canarymod.exceptions.PluginLoadFailedException;
 
 /**
- * Defines lifecycle methods for a plugin - load, enable, disable. Implemented by individual {@link net.canarymod.plugin.IPluginLoader}s
+ * Defines lifecycle methods for a plugin - load, enable, disable. Implemented by individual {@link net.canarymod.plugin.PluginManager}s
  *
  * @author Pwootage
  */

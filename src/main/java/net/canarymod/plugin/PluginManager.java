@@ -22,9 +22,16 @@ public interface PluginManager {
     boolean enablePlugin(String name) throws PluginLoadFailedException;
 
     /**
-     * Enables all plugins, used when starting up the server.
+     * Enables all plugins, after loading worlds and subsystems.
+     * Most plugins will be loaded here.
      */
-    void enableAllPlugins();
+    void enableLatePlugins();
+
+    /**
+     * Enables all plugins that require to be loaded before sub systems and worlds.
+     * For instance, if they want to replace any of them.
+     */
+    void enableEarlyPlugins();
 
     /**
      * Disables the given plugin

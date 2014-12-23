@@ -64,7 +64,6 @@ public final class DefaultPluginManager implements PluginManager {
             if (dep.getCurrentState() == PluginState.ENABLED) {
                 continue;
             }
-            log.info("Enabling plugin " + name);
             if (!enablePlugin(s)) {
                 log.warn("Dependency " + s + " of " + descriptor.getName() + " cannot be enabled; cannot enable.");
                 return false;
@@ -73,10 +72,11 @@ public final class DefaultPluginManager implements PluginManager {
         if (descriptor.getCurrentState() == PluginState.KNOWN) {
             descriptor.getPluginLifecycle().load();
         }
+        log.info("Enabling plugin " + name);
         boolean enabled = descriptor.getPluginLifecycle().enable();
         if (!enabled) {
-            disablePlugin(name);
             log.warn("Unable to enable plugin " + descriptor.getName() + ". Will disable it.");
+            disablePlugin(name);
             return false;
         }
         Canary.hooks().callHook(new PluginEnableHook(descriptor.getPlugin()));
@@ -101,16 +101,38 @@ public final class DefaultPluginManager implements PluginManager {
      * {@inheritDoc}
      */
     @Override
-    public void enableAllPlugins() {
+    public void enableLatePlugins() {
         synchronized (lock) {
             for (String plugin : plugins.keySet()) {
-                try {
-                    if (!enablePlugin(plugin)) {
-                        log.error("Failed to enable plugin: " + plugin);
+                PluginDescriptor descriptor = plugins.get(plugin);
+                if (!descriptor.enableEarly()) {
+                    try {
+                        if (!enablePlugin(plugin)) {
+                            log.error("Failed to enable plugin: " + plugin);
+                        }
+                    }
+                    catch (Exception e) {
+                        log.error("Exception while enabling plugin: " + plugin, e);
                     }
                 }
-                catch (Exception e) {
-                    log.error("Exception while enabling plugin: " + plugin, e);
+            }
+        }
+    }
+
+    @Override
+    public void enableEarlyPlugins() {
+        synchronized (lock) {
+            for (String plugin : plugins.keySet()) {
+                PluginDescriptor descriptor = plugins.get(plugin);
+                if (descriptor.enableEarly()) {
+                    try {
+                        if (!enablePlugin(plugin)) {
+                            log.error("Failed to enable plugin: " + plugin);
+                        }
+                    }
+                    catch (Exception e) {
+                        log.error("Exception while enabling plugin: " + plugin, e);
+                    }
                 }
             }
         }

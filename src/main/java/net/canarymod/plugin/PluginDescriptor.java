@@ -20,6 +20,7 @@ public class PluginDescriptor {
     private String version;
     private String author;
     private String language;
+    private boolean enableEarly;
     private Plugin plugin;
     private PluginLifecycle pluginLifecycle;
     private String[] dependencies;
@@ -53,6 +54,7 @@ public class PluginDescriptor {
         version = canaryInf.getString("version", "UNKNOWN");
         author = canaryInf.getString("author", "UNKNOWN");
         language = canaryInf.getString("language", "java");
+        enableEarly = canaryInf.getBoolean("enable-early", false); // Enable before subsystems are initialized and before the first world gets loaded
         if (canaryInf.containsKey("dependencies")) {
             dependencies = canaryInf.getStringArray("dependencies", ",");
         }
@@ -99,6 +101,10 @@ public class PluginDescriptor {
 
     public String getLanguage() {
         return language;
+    }
+
+    public boolean enableEarly() {
+        return enableEarly;
     }
 
     public PluginLifecycle getPluginLifecycle() {

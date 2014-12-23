@@ -44,7 +44,7 @@ import java.util.HashMap;
  */
 public abstract class Canary implements TaskOwner {
     public final static Logman log;
-    private static boolean pluginsUp;
+    private static boolean latePluginsLoaded, earlyPluginsLoaded;
     private static String jarPath;
     protected Server server;
 
@@ -283,14 +283,28 @@ public abstract class Canary implements TaskOwner {
         instance.server = server;
     }
 
+
     /**
-     * Enables all plugins
+     * Enables all late plugins.
+     * That means: All plugins that require sub systems to be functioning, such as warps.
      */
-    public static void enablePlugins() {
-        if (!pluginsUp && instance.server != null) {
-            log.info("Enabling Plugins...");
-            pluginManager().enableAllPlugins();
-            pluginsUp = true;
+    public static void enableLatePlugins() {
+        if (!latePluginsLoaded && instance.server != null) {
+            log.info("Enabling late Plugins...");
+            pluginManager().enableLatePlugins();
+            latePluginsLoaded = true;
+        }
+    }
+
+    /**
+     * Enables all early plugins.
+     * That means: All plugins that don't require sub systems to be functioning, such as warps.
+     */
+    public static void enableEarlyPlugins() {
+        if (!earlyPluginsLoaded && instance.server != null) {
+            log.info("Enabling early Plugins...");
+            pluginManager().enableEarlyPlugins();
+            earlyPluginsLoaded = true;
         }
     }
 
