@@ -32,8 +32,8 @@ public class JavaPluginLifecycle extends PluginLifecycleBase {
             p.setPriority(desc.getPriority());
             desc.setPlugin(p);
         }
-        catch (Exception e) {
-            throw new PluginLoadFailedException("Failed to load plugin", e);
+        catch (Throwable thrown) {
+            throw new PluginLoadFailedException("Failed to load plugin", thrown);
         }
     }
 

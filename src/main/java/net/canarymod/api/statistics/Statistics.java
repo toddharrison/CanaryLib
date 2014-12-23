@@ -13,10 +13,10 @@ import java.util.HashMap;
 public enum Statistics {
     LEAVEGAME("leaveGame"),
     PLAYONEMINUTE("playOneMinute"),
-    // TIMESINCEDEATH("timeSinceDeath"), 1.8
+    TIMESINCEDEATH("timeSinceDeath"),
     WALKONECM("walkOneCm"),
-    // CROUCHONECM("crouchOneCm"), 1.8
-    // SPRINTONECM("sprintOneCm"), 1.8
+    CROUCHONECM("crouchOneCm"),
+    SPRINTONECM("sprintOneCm"),
     SWIMONECM("swimOneCm"),
     FALLONECM("fallOneCm"),
     CLIMBONECM("climbOneCm"),
@@ -37,9 +37,8 @@ public enum Statistics {
     FISHCAUGHT("fishCaught"),
     JUNKFISHED("junkFished"),
     TREASUREFISHED("treasureFished"),
-    // TALKEDTOVILLAGER("talkedToVillager"), 1.8
-    // TRADEDWITHVILLAGER("tradedWithVillager"), 1.8
-    ;
+    TALKEDTOVILLAGER("talkedToVillager"),
+    TRADEDWITHVILLAGER("tradedWithVillager"),;
 
     private final String nmsName;
     private final static HashMap<String, Statistics> statisticsHashMap = Maps.newHashMap();

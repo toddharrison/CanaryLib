@@ -44,9 +44,8 @@ public enum Achievements {
     THEBEGINNING("spawnWither"),
     THEBEGINNING2("killWither"),
     BEACONATOR("fullBeacon"),
-    //ADVENTURINGTIME("exploreAllBiomes"), 1.8 only
-    //OVERPOWERED("overpowered"), 1.8 only
-    ;
+    ADVENTURINGTIME("exploreAllBiomes"),
+    OVERPOWERED("overpowered"),;
 
     private final String nmsName;
     private final static HashMap<String, Achievements> achievementsMap = Maps.newHashMap();
