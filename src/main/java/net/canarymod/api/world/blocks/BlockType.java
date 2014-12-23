@@ -557,22 +557,26 @@ public final class BlockType {
      * This returns null if there is no BlockType with this name.
      *
      * @param name
-     *         The machine name
-     *
+     *              The machine name
+     * @param withData
+     *              true if you want to pass a data value at the end of the name (like minecraft:stone:5)
      * @return the associated {@link BlockType} or {@code null}
      */
-    public static BlockType fromString(String name) {
+    public static BlockType fromString(String name, boolean withData) {
         String temp = name;
         int data = 0;
-        if (name.matches(".+:.+:\\d+")) {
-            temp = name.replaceAll(":\\d+", "");
-            try {
-                data = Integer.parseInt(name.replaceAll(".+:.+:", ""));
-            }
-            catch (NumberFormatException nfex) {
-                // Ignored
+        if (withData) {
+            if (name.matches(".+:.+:\\d+")) {
+                temp = name.replaceAll(":\\d+", "");
+                try {
+                    data = Integer.parseInt(name.replaceAll(".+:.+:", ""));
+                }
+                catch (NumberFormatException nfex) {
+                    // Ignored
+                }
             }
         }
+
         if (!blockTypes.containsKey(temp)) {
             // Perhaps try by adding a namespace
             temp = "minecraft:"+temp;
@@ -581,6 +585,19 @@ public final class BlockType {
             }
         }
         return blockTypes.get(temp).get(data);
+    }
+
+    /**
+     * Returns a BlockType according to its name.
+     * This returns null if there is no BlockType with this name.
+     *
+     * @param name
+     *         The machine name
+     *
+     * @return the associated {@link BlockType} or {@code null}
+     */
+    public static BlockType fromString(String name) {
+        return fromString(name, false);
     }
 
     /**
