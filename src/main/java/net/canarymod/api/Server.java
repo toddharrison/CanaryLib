@@ -2,7 +2,11 @@ package net.canarymod.api;
 
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.gui.GUIControl;
-import net.canarymod.api.inventory.recipes.*;
+import net.canarymod.api.inventory.recipes.CraftingRecipe;
+import net.canarymod.api.inventory.recipes.Recipe;
+import net.canarymod.api.inventory.recipes.ShapedRecipe;
+import net.canarymod.api.inventory.recipes.ShapelessRecipe;
+import net.canarymod.api.inventory.recipes.SmeltRecipe;
 import net.canarymod.api.world.World;
 import net.canarymod.api.world.WorldManager;
 import net.canarymod.chat.MessageReceiver;
@@ -30,56 +34,56 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return the host name
      */
-    public String getHostname();
+    String getHostname();
 
     /**
      * Get the amount of players that are online
      *
      * @return the number of {@link Player}s online
      */
-    public int getNumPlayersOnline();
+    int getNumPlayersOnline();
 
     /**
      * Get the number of maximum allowed {@link Player}s online
      *
      * @return the mximum
      */
-    public int getMaxPlayers();
+    int getMaxPlayers();
 
     /**
      * Get a list of names from {@link Player}s that are currently online
      *
      * @return string array of {@link Player} names
      */
-    public String[] getPlayerNameList();
+    String[] getPlayerNameList();
 
     /**
      * Gets a {@code String[]} of known {@link Player} names, including {@link net.canarymod.api.OfflinePlayer} names
      *
      * @return {@code String[]} of known player names
      */
-    public String[] getKnownPlayerNames();
+    String[] getKnownPlayerNames();
 
     /**
      * Get a list of online {@link Player}s
      *
      * @return an {@link List} of {@link Player}s
      */
-    public List<Player> getPlayerList();
+    List<Player> getPlayerList();
 
     /**
      * Get the default world name
      *
      * @return the name of the default world
      */
-    public String getDefaultWorldName();
+    String getDefaultWorldName();
 
     /**
      * Get the world container
      *
      * @return the {@link WorldManager}
      */
-    public WorldManager getWorldManager();
+    WorldManager getWorldManager();
 
     /**
      * Use a MC vanilla console command
@@ -89,7 +93,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return {@code true} if command has been parsed by CanaryMod; {@code false} otherwise
      */
-    public boolean consoleCommand(String command);
+    boolean consoleCommand(String command);
 
     /**
      * Use a MC vanilla console command as the given player (Ingame vanilla
@@ -102,7 +106,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return {@code true} if command has been parsed by CanaryMod; {@code false} otherwise
      */
-    public boolean consoleCommand(String command, Player player);
+    boolean consoleCommand(String command, Player player);
 
     /**
      * Use a MC vanilla console command as the given player (Ingame vanilla
@@ -115,7 +119,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return {@code true} if command has been parsed by CanaryMod; {@code false} otherwise
      */
-    public boolean consoleCommand(String command, CommandBlockLogic cmdBlockLogic);
+    boolean consoleCommand(String command, CommandBlockLogic cmdBlockLogic);
 
     /**
      * Passes a pre-processed Vanilla Command into the the Vanilla Command System
@@ -126,7 +130,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      * @param command
      *         the command being executed
      */
-    public void executeVanillaCommand(MessageReceiver caller, String command);
+    void executeVanillaCommand(MessageReceiver caller, String command);
 
     /**
      * Set a timer in the built-in vanilla Timer System.
@@ -136,7 +140,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      * @param time
      *         Time in milliseconds.
      */
-    public void setTimer(String uniqueName, int time);
+    void setTimer(String uniqueName, int time);
 
     /**
      * Check if a registered Timer has expired already
@@ -146,7 +150,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return {@code true} if expired; {@code false} if not
      */
-    public boolean isTimerExpired(String uniqueName);
+    boolean isTimerExpired(String uniqueName);
 
     /**
      * Matches a {@link Player} name or a partial name of a {@link Player} name to an existing online {@link Player}
@@ -156,7 +160,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return a reference to an online {@link Player} or {@code null} if no match was found
      */
-    public Player matchPlayer(String player);
+    Player matchPlayer(String player);
 
     /**
      * Get an {@link OfflinePlayer}. This will only return an {@link OfflinePlayer} instance
@@ -169,7 +173,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return the {@link OfflinePlayer} instance or null if the playername/uuid doesn't exist.
      */
-    public OfflinePlayer getOfflinePlayer(String player);
+    OfflinePlayer getOfflinePlayer(String player);
 
     /**
      * Get an {@link OfflinePlayer}. This will only return an {@link OfflinePlayer} instance
@@ -182,7 +186,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return the {@link OfflinePlayer} instance or null if the playername/uuid doesn't exist.
      */
-    public OfflinePlayer getOfflinePlayer(UUID uuid);
+    OfflinePlayer getOfflinePlayer(UUID uuid);
 
     /**
      * Gets a {@link PlayerReference} of a known player
@@ -192,7 +196,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return the {@link PlayerReference} if found; {@code null} if no player found
      */
-    public PlayerReference matchKnownPlayer(String player);
+    PlayerReference matchKnownPlayer(String player);
 
     /**
      * Gets a {@link PlayerReference} of a known player
@@ -202,7 +206,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return the {@link PlayerReference} if found; {@code null} if no player found
      */
-    public PlayerReference matchKnownPlayer(UUID uuid);
+    PlayerReference matchKnownPlayer(UUID uuid);
 
     /**
      * Like matchPlayer, this returns a player according to a name String.
@@ -214,7 +218,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return a reference to an online {@link Player}; {@code null} if there is no {@link Player} with the given name
      */
-    public Player getPlayer(String player);
+    Player getPlayer(String player);
 
     /**
      * This returns a player with the given uuid.
@@ -224,7 +228,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return a reference to an online {@link Player}; {@code null} if there is no {@link Player} with the given uuid
      */
-    public Player getPlayerFromUUID(String uuid);
+    Player getPlayerFromUUID(String uuid);
 
     /**
      * This returns a player with the given uuid.
@@ -234,7 +238,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return a reference to an online {@link Player}; {@code null} if there is no {@link Player} with the given uuid
      */
-    public Player getPlayerFromUUID(UUID uuid);
+    Player getPlayerFromUUID(UUID uuid);
 
     /**
      * Send (broadcast) the given message to ALL players on the server,
@@ -243,7 +247,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      * @param message
      *         the message to be broadcasted
      */
-    public void broadcastMessage(String message);
+    void broadcastMessage(String message);
 
     /**
      * Send (broadcast) the given message to ALL Operators on the server,
@@ -252,7 +256,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      * @param message
      *         the message to be broadcasted
      */
-    public void broadcastMessageToOps(String message);
+    void broadcastMessageToOps(String message);
 
     /**
      * Send (broadcast) the given message to ALL Administrators on the server,
@@ -261,7 +265,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      * @param message
      *         the message to be broadcasted
      */
-    public void broadcastMessageToAdmins(String message);
+    void broadcastMessageToAdmins(String message);
 
     /**
      * Load a {@link World} with the given name from file.
@@ -273,7 +277,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return true on success, false if the world didn't exist
      */
-    public boolean loadWorld(String name, long seed);
+    boolean loadWorld(String name, long seed);
 
     /**
      * Get a {@link World} that already is loaded.
@@ -285,21 +289,21 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return {@link World} if found; {@code null} if not
      */
-    public World getWorld(String name);
+    World getWorld(String name);
 
     /**
      * Get the {@link World} that is defined as default per config
      *
      * @return the default {@link World}
      */
-    public World getDefaultWorld();
+    World getDefaultWorld();
 
     /**
      * Get the servers configuration manager.
      *
      * @return the {@link ConfigurationManager}
      */
-    public ConfigurationManager getConfigurationManager();
+    ConfigurationManager getConfigurationManager();
 
     /**
      * Signal the server to shut down and exit.
@@ -308,7 +312,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *         The shutdown message, or {@code null} for the default
      *         message.
      */
-    public void initiateShutdown(String message);
+    void initiateShutdown(String message);
 
     /**
      * Restart the server by shutting it down and
@@ -317,7 +321,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      * @param reloadCanary
      *         Set true if CanaryMod should reload its data too
      */
-    public void restart(boolean reloadCanary);
+    void restart(boolean reloadCanary);
 
     /**
      * Check if the server is running. This is rarely useful
@@ -325,7 +329,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return {@code true} if running; {@code false} if not
      */
-    public boolean isRunning();
+    boolean isRunning();
 
     /**
      * Adds a CraftingRecipe to the Server
@@ -340,14 +344,14 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      * @see ShapedRecipe
      * @see ShapelessRecipe
      */
-    public Recipe addRecipe(CraftingRecipe recipe);
+    Recipe addRecipe(CraftingRecipe recipe);
 
     /**
      * Gets a list of {@link Recipe} that the Server has
      *
      * @return the {@link Recipe} list
      */
-    public List<Recipe> getServerRecipes();
+    List<Recipe> getServerRecipes();
 
     /**
      * Attempts to remove a {@link Recipe}
@@ -357,7 +361,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return {@code true} if successful; {@code false} if not
      */
-    public boolean removeRecipe(Recipe recipe);
+    boolean removeRecipe(Recipe recipe);
 
     /**
      * Adds a Smelting recipe to the Server
@@ -367,14 +371,14 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @see SmeltRecipe
      */
-    public void addSmeltingRecipe(SmeltRecipe recipe);
+    void addSmeltingRecipe(SmeltRecipe recipe);
 
     /**
      * Gets a list of {@link SmeltRecipe} that the Server has
      *
      * @return a list of {@link SmeltRecipe}
      */
-    public List<SmeltRecipe> getServerSmeltRecipes();
+    List<SmeltRecipe> getServerSmeltRecipes();
 
     /**
      * Attempts to remove a {@link SmeltRecipe} from the Server<br>
@@ -385,7 +389,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return {@code true} if successful; {@code false} if not
      */
-    public boolean removeSmeltRecipe(SmeltRecipe recipe);
+    boolean removeSmeltRecipe(SmeltRecipe recipe);
 
     /**
      * Changes the current GUI to the given GUI
@@ -393,35 +397,42 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      * @param gui
      *         the {@link GUIControl} to add
      */
-    public void addGUI(GUIControl gui);
+    void addGUI(GUIControl gui);
 
     /**
      * Gets the array of Time Ticks
      *
      * @return array of Time ticks
      */
-    public long[] getTickTimeArray();
+    long[] getTickTimeArray();
 
     /**
      * Get the version of CanaryMod that is currently running
      *
      * @return the internal CanaryMod version
      */
-    public String getCanaryModVersion();
+    String getCanaryModVersion();
 
     /**
      * Get the version of the implemented Minecraft Server<br>
      *
      * @return the internal Minecraft Server version
      */
-    public String getServerVersion();
+    String getServerVersion();
+
+    /**
+     * Gets the version of the implemented Minecraft Server's Packet Protocol
+     *
+     * @return packet protocol version
+     */
+    int getProtocolVersion();
 
     /**
      * Gets the log up to this point if the ServerGUI is running.
      *
      * @return log
      */
-    public String getServerGUILog();
+    String getServerGUILog();
 
     /**
      * Gets the current GUI's control interface
@@ -429,7 +440,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return current {@link GUIControl} or {@code null} if none set
      */
-    public GUIControl getCurrentGUI();
+    GUIControl getCurrentGUI();
 
     /**
      * Gets if the Server is headless or not
@@ -437,7 +448,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return {@code true} if headless (no gui); {@code false} if gui enabled
      */
-    public boolean isHeadless();
+    boolean isHeadless();
 
     /**
      * Add a task to the servers synchronous task queue.
@@ -448,7 +459,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return {@code true} if task was added successfully, {@code false} otherwise
      */
-    public boolean addSynchronousTask(ServerTask task);
+    boolean addSynchronousTask(ServerTask task);
 
     /**
      * Remove the given task from the task queue.
@@ -458,7 +469,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return {@code true} if task was removed successfully, {@code false} otherwise
      */
-    public boolean removeSynchronousTask(ServerTask task);
+    boolean removeSynchronousTask(ServerTask task);
 
     /**
      * Sends a {@link PlayerListEntry} to all {@link Player}s on the server.
@@ -470,7 +481,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      * @deprecated Use {@link #sendPlayerListData} instead
      */
     @Deprecated
-    public void sendPlayerListEntry(PlayerListEntry entry);
+    void sendPlayerListEntry(PlayerListEntry entry);
 
     /**
      * Sends a {@link net.canarymod.api.PlayerListData} to all {@link Player}s on the server.
@@ -488,7 +499,7 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return the current tick
      */
-    public int getCurrentTick();
+    int getCurrentTick();
 
     /**
      * Gets the currently read TPS.<br>
@@ -496,5 +507,5 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      *
      * @return the current TPS
      */
-    public float getTicksPerSecond();
+    float getTicksPerSecond();
 }
