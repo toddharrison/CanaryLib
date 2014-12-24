@@ -7,6 +7,7 @@ import net.canarymod.plugin.Plugin;
 import net.canarymod.plugin.PluginDescriptor;
 import net.canarymod.plugin.PluginLifecycle;
 import net.canarymod.plugin.PluginState;
+import net.canarymod.tasks.ServerTaskManager;
 
 /**
  * Base class for plugin lifecycles
@@ -52,6 +53,7 @@ public abstract class PluginLifecycleBase implements PluginLifecycle {
             Canary.commands().unregisterCommands(p);
             Canary.motd().unregisterMOTDListener(p);
             PlayerInformation.removeInfoAdditions(p);
+            ServerTaskManager.removeTasks(p);
             return true;
         }
         return false;
