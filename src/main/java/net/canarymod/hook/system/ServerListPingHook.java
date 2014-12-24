@@ -25,18 +25,19 @@ import java.util.List;
  */
 public class ServerListPingHook extends CancelableHook {
     private final InetAddress requesterAddress;
-    private final int requesterPort, requesterProtocol;
+    private final int requesterPort, requesterProtocol, portPinged;
     private final String hostNamePinged;
     private final List<GameProfile> profiles;
     private ChatComponent motd;
     private String favicon;
     private int maxPlayers, currentPlayers;
 
-    public ServerListPingHook(InetSocketAddress remoteSocket, int requesterProtocol, String hostNamePinged, ChatComponent motd, int currentPlayers, int maxPlayers, String favicon, List<GameProfile> profiles) {
+    public ServerListPingHook(InetSocketAddress remoteSocket, int requesterProtocol, String hostNamePinged, int portPinged, ChatComponent motd, int currentPlayers, int maxPlayers, String favicon, List<GameProfile> profiles) {
         this.requesterAddress = remoteSocket.getAddress();
         this.requesterPort = remoteSocket.getPort();
         this.requesterProtocol = requesterProtocol;
         this.hostNamePinged = hostNamePinged;
+        this.portPinged = portPinged;
         this.motd = motd;
         this.maxPlayers = maxPlayers;
         this.currentPlayers = currentPlayers;
@@ -78,6 +79,15 @@ public class ServerListPingHook extends CancelableHook {
      */
     public String getHostNamePinged() {
         return hostNamePinged;
+    }
+
+    /**
+     * Gets the port the Requester has stated it has pinged
+     *
+     * @return port pinged
+     */
+    public int getPortPinged() {
+        return portPinged;
     }
 
     /**
