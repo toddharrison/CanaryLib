@@ -1,11 +1,7 @@
 package net.canarymod.api.entity.living.humanoid;
 
 import com.mojang.authlib.GameProfile;
-import net.canarymod.api.NetServerHandler;
-import net.canarymod.api.PlayerListAction;
-import net.canarymod.api.PlayerListData;
-import net.canarymod.api.PlayerListEntry;
-import net.canarymod.api.PlayerReference;
+import net.canarymod.api.*;
 import net.canarymod.api.chat.ChatComponent;
 import net.canarymod.api.inventory.Inventory;
 import net.canarymod.api.packet.Packet;
@@ -336,5 +332,25 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      *
      * @return the top {@link Inventory} on the player's window. {@code null} will be returned if there isn't one.
      */
-    public Inventory getSecondInventory();
+    Inventory getSecondInventory();
+
+    /**
+     * Shows a Title to the Player
+     *
+     * @param title
+     *         the text of the title to show
+     */
+    void showTitle(ChatComponent title);
+
+    /**
+     * Shows a Title (and possible sub title) to the Player
+     *
+     * @param title
+     *         the text of the title to show
+     * @param subtitle
+     *         the text of the subtile to show; may be {@code null}
+     */
+    void showTitle(ChatComponent title, ChatComponent subtitle);
+
+
 }

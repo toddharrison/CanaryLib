@@ -1,12 +1,9 @@
 package net.canarymod.api;
 
+import net.canarymod.api.chat.ChatComponent;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.gui.GUIControl;
-import net.canarymod.api.inventory.recipes.CraftingRecipe;
-import net.canarymod.api.inventory.recipes.Recipe;
-import net.canarymod.api.inventory.recipes.ShapedRecipe;
-import net.canarymod.api.inventory.recipes.ShapelessRecipe;
-import net.canarymod.api.inventory.recipes.SmeltRecipe;
+import net.canarymod.api.inventory.recipes.*;
 import net.canarymod.api.world.World;
 import net.canarymod.api.world.WorldManager;
 import net.canarymod.chat.MessageReceiver;
@@ -508,4 +505,22 @@ public interface Server extends MessageReceiver, CommandOwner, TaskOwner, MOTDOw
      * @return the current TPS
      */
     float getTicksPerSecond();
+
+    /**
+     * Shows a Title to all {@link Player}(s) on the Server
+     *
+     * @param title
+     *         the text of the title to show
+     */
+    void showTitle(ChatComponent title);
+
+    /**
+     * Shows a Title (and possible sub title) to all {@link Player}(s) on the Server
+     *
+     * @param title
+     *         the text of the title to show
+     * @param subtitle
+     *         the text of the subtile to show; may be {@code null}
+     */
+    void showTitle(ChatComponent title, ChatComponent subtitle);
 }

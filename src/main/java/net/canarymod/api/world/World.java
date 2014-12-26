@@ -3,6 +3,7 @@ package net.canarymod.api.world;
 import net.canarymod.api.EntityTracker;
 import net.canarymod.api.GameMode;
 import net.canarymod.api.PlayerManager;
+import net.canarymod.api.chat.ChatComponent;
 import net.canarymod.api.entity.Entity;
 import net.canarymod.api.entity.EntityItem;
 import net.canarymod.api.entity.living.EntityLiving;
@@ -1002,4 +1003,22 @@ public interface World {
      * @return {@code true} if the tree was created successfully; {@code false} otherwise
      */
     boolean generateTree(Position pos, TreeType type);
+
+    /**
+     * Shows a Title to all {@link Player}(s) in the World
+     *
+     * @param title
+     *         the text of the title to show
+     */
+    void showTitle(ChatComponent title);
+
+    /**
+     * Shows a Title (and possible sub title) to all {@link Player}(s) in the World
+     *
+     * @param title
+     *         the text of the title to show
+     * @param subtitle
+     *         the text of the subtile to show; may be {@code null}
+     */
+    void showTitle(ChatComponent title, ChatComponent subtitle);
 }
