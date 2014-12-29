@@ -1,7 +1,11 @@
 package net.canarymod.api.entity.living.humanoid;
 
 import com.mojang.authlib.GameProfile;
-import net.canarymod.api.*;
+import net.canarymod.api.NetServerHandler;
+import net.canarymod.api.PlayerListAction;
+import net.canarymod.api.PlayerListData;
+import net.canarymod.api.PlayerListEntry;
+import net.canarymod.api.PlayerReference;
 import net.canarymod.api.chat.ChatComponent;
 import net.canarymod.api.inventory.Inventory;
 import net.canarymod.api.packet.Packet;
@@ -263,13 +267,43 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      *
      * @param player
      *         the {@link Player} to hide this {@link Player} from.
+     *
+     * @deprecated use {@link net.canarymod.api.entity.living.humanoid.Player#hideFrom(Player)} instead
      */
+    @Deprecated
     void hidePlayer(Player player);
+
+    /**
+     * Make this {@link Player} hidden to the given {@link Player}.
+     *
+     * @param player
+     *         the {@link Player} to hide this {@link Player} from.
+     */
+    void hideFrom(Player player);
+
+    /**
+     * Make this {@link Player} hidden to all {@link Player}s.
+     *
+     * @deprecated use {@link net.canarymod.api.entity.living.humanoid.Player#hideFromAll} instead
+     */
+    @Deprecated
+    void hidePlayerGlobal();
 
     /**
      * Make this {@link Player} hidden to all {@link Player}s.
      */
-    void hidePlayerGlobal();
+    void hideFromAll();
+
+    /**
+     * Make this {@link Player} shown to the given {@link Player}.
+     *
+     * @param player
+     *         The {@link Player} to show this {@link Player} to.
+     *
+     * @deprecated use {@link net.canarymod.api.entity.living.humanoid.Player#showTo(Player)} instead
+     */
+    @Deprecated
+    void showPlayer(Player player);
 
     /**
      * Make this {@link Player} shown to the given {@link Player}.
@@ -277,12 +311,20 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      * @param player
      *         The {@link Player} to show this {@link Player} to.
      */
-    void showPlayer(Player player);
+    void showTo(Player player);
+
+    /**
+     * Make this {@link Player} shown to all {@link Player}s.
+     *
+     * @deprecated use {@link Player#showToAll} instead
+     */
+    @Deprecated
+    void showPlayerGlobal();
 
     /**
      * Make this {@link Player} shown to all {@link Player}s.
      */
-    void showPlayerGlobal();
+    void showToAll();
 
     /**
      * Checks if a {@link Player} is hidden to another {@link Player}.
@@ -293,8 +335,28 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      *         Player to check if is hidden to Target Player.
      *
      * @return true if isHidden is hidden to player; false otherwise.
+     *
+     * @deprecated use {@link net.canarymod.api.entity.living.humanoid.Player#isHiddenFrom(Player)} instead
      */
+    @Deprecated
     boolean isPlayerHidden(Player player, Player isHidden);
+
+    /**
+     * Checks if a this {@link Player} is hidden to another {@link Player}.
+     *
+     * @param player
+     *         Target Player
+     *
+     * @return true if is hidden to the other player; false otherwise.
+     */
+    boolean isHiddenFrom(Player player);
+
+    /**
+     * Checks if a this {@link Player} is hidden to all other {@link Player}s.
+     *
+     * @return true if is hidden from other players; false otherwise.
+     */
+    boolean isHiddenFromAll();
 
     /**
      * Set the compass target to a {@link Player}
