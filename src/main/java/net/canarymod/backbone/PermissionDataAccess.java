@@ -1,5 +1,6 @@
 package net.canarymod.backbone;
 
+import net.canarymod.config.Configuration;
 import net.canarymod.database.Column;
 import net.canarymod.database.Column.DataType;
 import net.canarymod.database.DataAccess;
@@ -20,7 +21,7 @@ public class PermissionDataAccess extends DataAccess {
      *         the suffix
      */
     public PermissionDataAccess(String suffix) {
-        super("permission", suffix);
+        super(Configuration.getDbConfig().getPermissionsTableName(), suffix);
         this.suffix = suffix;
     }
 

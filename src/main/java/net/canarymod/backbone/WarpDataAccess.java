@@ -1,5 +1,6 @@
 package net.canarymod.backbone;
 
+import net.canarymod.config.Configuration;
 import net.canarymod.database.Column;
 import net.canarymod.database.Column.DataType;
 import net.canarymod.database.DataAccess;
@@ -14,7 +15,7 @@ import java.util.List;
 public class WarpDataAccess extends DataAccess {
 
     public WarpDataAccess() {
-        super("warp");
+        super(Configuration.getDbConfig().getWarpsTableName());
     }
 
     /** Name of this warp. */

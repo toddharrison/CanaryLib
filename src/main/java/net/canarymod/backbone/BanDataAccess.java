@@ -1,5 +1,6 @@
 package net.canarymod.backbone;
 
+import net.canarymod.config.Configuration;
 import net.canarymod.database.Column;
 import net.canarymod.database.Column.DataType;
 import net.canarymod.database.DataAccess;
@@ -13,7 +14,7 @@ import net.canarymod.database.DataAccess;
 public class BanDataAccess extends DataAccess {
 
     public BanDataAccess() {
-        super("ban");
+        super(Configuration.getDbConfig().getBansTableName());
     }
 
     /** Player uuid for this ban. */

@@ -57,37 +57,66 @@ public class DatabaseConfiguration implements ConfigurationContainer {
         // c3p0 settings
 
         cfg.getInt("acquire-increment", 5);
-        cfg.addComment("acquire-increment", "Determines how many connections at a time c3p0 will try to acquire when the pool is exhausted.");
+        cfg.setComments("acquire-increment", "Determines how many connections at a time c3p0 will try to acquire when the pool is exhausted.");
 
         cfg.getInt("max-connection-idle-time", 900); //15 minutes
-        cfg.addComment("max-connection-idle-time", "Determines how long idle connections can stay in the connection pool before they are removed.");
+        cfg.setComments("max-connection-idle-time", "Determines how long idle connections can stay in the connection pool before they are removed.");
 
         cfg.getInt("max-excess-connections-idle-time", 1800); // 30 minutes
-        cfg.addComment("max-excess-connections-idle-time", "Time until the connection pool will be culled down to min-connection-pool-size. Set 0 to not enforce pool shrinking.");
+        cfg.setComments("max-excess-connections-idle-time", "Time until the connection pool will be culled down to min-connection-pool-size. Set 0 to not enforce pool shrinking.");
 
         cfg.getInt("max-connection-pool-size", 10);
-        cfg.addComment("max-connection-pool-size", "The maximum allowed number of pooled connections. More for larger servers");
+        cfg.setComments("max-connection-pool-size", "The maximum allowed number of pooled connections. More for larger servers");
 
         cfg.getInt("min-connection-pool-size", 3);
-        cfg.addComment("min-connection-pool-size", "The minimum amount of connections allowed. More means more memory usage but takes away some impact from creating new connections.");
+        cfg.setComments("min-connection-pool-size", "The minimum amount of connections allowed. More means more memory usage but takes away some impact from creating new connections.");
 
         cfg.getInt("num-helper-threads", 4);
-        cfg.addComment("num-helper-threads", "Amount of threads that will perform slow JDBC operations (closing idle connections, returning connections to pool etc)");
+        cfg.setComments("num-helper-threads", "Amount of threads that will perform slow JDBC operations (closing idle connections, returning connections to pool etc)");
 
         cfg.getInt("return-connection-timeout", 900); //15 minutes
-        cfg.addComment("return-connection-timeout", "Defines a time a connection can remain checked out. After that it will be forced back into the connection pool.");
+        cfg.setComments("return-connection-timeout", "Defines a time a connection can remain checked out. After that it will be forced back into the connection pool.");
 
         cfg.getInt("connection-test-frequency", 0); // 60 minutes
-        cfg.addComment("idle-connection-test-frequency", "Every this amount of seconds idle connections will be checked for validity. Set 0 to turn off");
+        cfg.setComments("idle-connection-test-frequency", "Every this amount of seconds idle connections will be checked for validity. Set 0 to turn off");
 
         cfg.getInt("max-cached-statements", 50);
-        cfg.addComment("max-cached-statements", "Number of max cached statements on all connections. (Roughly 5 * expected pooled connections)");
+        cfg.setComments("max-cached-statements", "Number of max cached statements on all connections. (Roughly 5 * expected pooled connections)");
 
         cfg.getInt("max-statements-per-connection", 5);
-        cfg.addComment("max-statements-per-connection", "Number of max cached statements on a single connection.");
+        cfg.setComments("max-statements-per-connection", "Number of max cached statements on a single connection.");
 
         cfg.getInt("statement-cache-close-threads", 1);
-        cfg.addComment("statement-cache-close-threads", "Number of threads to use when closing statements is deferred (happens when parent connection is still in use)");
+        cfg.setComments("statement-cache-close-threads", "Number of threads to use when closing statements is deferred (happens when parent connection is still in use)");
+
+        // Table Naming Schemes...
+        cfg.getString("bans-table-name", "ban");
+        cfg.setComments("bans-table-name", "The name to use for the Bans table. NOTE: Changing this here will require you to manually change the name of the table in the database (if present)");
+
+        cfg.getString("groups-table-name", "group");
+        cfg.setComments("groups-table-name", "The name to use for the Groups table. NOTE: Changing this here will require you to manually change the name of the table in the database (if present)");
+
+        cfg.getString("kits-table-name", "kit");
+        cfg.setComments("kits-table-name", "The name to use for the Kits table. NOTE: Changing this here will require you to manually change the name of the table in the database (if present)");
+
+        cfg.getString("operators-table-name", "operators");
+        cfg.setComments("operators-table-name", "The name to use for the Operators table. NOTE: Changing this here will require you to manually change the name of the table in the database (if present)");
+
+        cfg.getString("permissions-table-name", "permission");
+        cfg.setComments("permissions-table-name", "The name to use for the Permissions table. NOTE: Changing this here will require you to manually change the name of the table in the database (if present)");
+
+        cfg.getString("players-table-name", "player");
+        cfg.setComments("players-table-name", "The name to use for the Permissions table. NOTE: Changing this here will require you to manually change the name of the table in the database (if present)");
+
+        cfg.getString("reservelist-table-name", "reservelist");
+        cfg.setComments("reservelist-table-name", "The name to use for the ReserveList table. NOTE: Changing this here will require you to manually change the name of the table in the database (if present)");
+
+        cfg.getString("warps-table-name", "warp");
+        cfg.setComments("warps-table-name", "The name to use for the Warps table. NOTE: Changing this here will require you to manually change the name of the table in the database (if present)");
+
+        cfg.getString("whitelist-table-name", "whitelist");
+        cfg.setComments("whitelist-table-name", "The name to use for the WhiteList table. NOTE: Changing this here will require you to manually change the name of the table in the database (if present)");
+        //
 
         cfg.save();
     }
@@ -274,4 +303,41 @@ public class DatabaseConfiguration implements ConfigurationContainer {
     public int getMaxConnectionIdleTime() {
         return cfg.getInt("max-connection-idle-time", 900);
     }
+
+    public String getBansTableName() {
+        return cfg.getString("bans-table-name", "ban");
+    }
+
+    public String getGroupsTableName() {
+        return cfg.getString("groups-table-name", "group");
+    }
+
+    public String getKitsTableName() {
+        return cfg.getString("kits-table-name", "kit");
+    }
+
+    public String getOpertatorsTableName() {
+        return cfg.getString("operators-table-name", "operators");
+    }
+
+    public String getPermissionsTableName() {
+        return cfg.getString("permissions-table-name", "permission");
+    }
+
+    public String getPlayersTableName() {
+        return cfg.getString("players-table-name", "player");
+    }
+
+    public String getReservelistTableName() {
+        return cfg.getString("reservelist-table-name", "reservelist");
+    }
+
+    public String getWarpsTableName() {
+        return cfg.getString("warps-table-name", "warp");
+    }
+
+    public String getWhitelistTableName() {
+        return cfg.getString("whitelist-table-name", "whitelist");
+    }
+
 }

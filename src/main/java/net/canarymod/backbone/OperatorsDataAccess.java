@@ -1,5 +1,6 @@
 package net.canarymod.backbone;
 
+import net.canarymod.config.Configuration;
 import net.canarymod.database.Column;
 import net.canarymod.database.Column.DataType;
 import net.canarymod.database.DataAccess;
@@ -12,7 +13,7 @@ import net.canarymod.database.DataAccess;
 public class OperatorsDataAccess extends DataAccess {
 
     public OperatorsDataAccess() {
-        super("operators");
+        super(Configuration.getDbConfig().getOpertatorsTableName());
     }
 
     /** Playername for this operator entry */

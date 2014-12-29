@@ -136,7 +136,7 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      * @return {@link PlayerListEntry} for the Player
      *
      * @see PlayerListEntry
-     * @deprecated Use {@link #getPlayerListData()} instead
+     * @deprecated Use {@link #getPlayerListData(net.canarymod.api.PlayerListAction)} instead
      */
     @Deprecated
     PlayerListEntry getPlayerListEntry(boolean shown);

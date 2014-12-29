@@ -1,5 +1,6 @@
 package net.canarymod.backbone;
 
+import net.canarymod.config.Configuration;
 import net.canarymod.database.Column;
 import net.canarymod.database.Column.DataType;
 import net.canarymod.database.DataAccess;
@@ -14,7 +15,7 @@ import java.util.List;
 public class KitDataAccess extends DataAccess {
 
     public KitDataAccess() {
-        super("kit");
+        super(Configuration.getDbConfig().getKitsTableName());
     }
 
     /** Delay in seconds to receive this kit. */
