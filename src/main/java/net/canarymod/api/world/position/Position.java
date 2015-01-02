@@ -2,6 +2,7 @@ package net.canarymod.api.world.position;
 
 import net.canarymod.ToolBox;
 import net.canarymod.api.world.blocks.BlockFace;
+import net.canarymod.database.PositionDataAccess;
 
 /**
  * Position is a x, y, z triple
@@ -277,6 +278,21 @@ public class Position implements Cloneable {
         this.z += z;
     }
 
+    public PositionDataAccess toDataAccess(PositionDataAccess pda) {
+        pda.posX = this.x;
+        pda.posY = this.y;
+        pda.posZ = this.z;
+        return pda;
+    }
+
+    public static Position fromDataAccess(PositionDataAccess pda) {
+        Position pos = new Position(0, 0, 0);
+        pos.setX(pda.posX);
+        pos.setY(pda.posY);
+        pos.setZ(pda.posZ);
+        return pos;
+    }
+
     /**
      * Checks if another object equals this one
      *
@@ -317,7 +333,7 @@ public class Position implements Cloneable {
         return (Position)super.clone();
     }
 
-    public Position safeClone() {
+    public Position copy() {
         try {
             return this.clone();
         }

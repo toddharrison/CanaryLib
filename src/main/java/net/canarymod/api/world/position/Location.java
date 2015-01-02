@@ -6,6 +6,7 @@ import net.canarymod.ToolBox;
 import net.canarymod.api.world.DimensionType;
 import net.canarymod.api.world.World;
 import net.canarymod.config.Configuration;
+import net.canarymod.database.LocationDataAccess;
 
 /**
  * A Location represents a point in the world including pitch and rotation headings.
@@ -266,6 +267,28 @@ public class Location extends Vector3D {
         catch (NumberFormatException e) {
             throw new CanaryDeserializeException("Failed to deserialize Location: " + e.getMessage(), "CanaryMod");
         }
+    }
+
+    public LocationDataAccess toDataAccess(LocationDataAccess lda) {
+        super.toDataAccess(lda);
+        lda.rotation = this.rotation;
+        lda.pitch = this.pitch;
+        lda.world = this.world;
+        lda.dimension = this.dimension.getName();
+        return lda;
+    }
+
+    public static Location fromDataAccess(LocationDataAccess lda) {
+        Location loc = new Location(fromDataAccess(lda));
+        loc.setX(lda.posX);
+        loc.setY(lda.posY);
+        loc.setZ(lda.posZ);
+        loc.setPitch(lda.pitch);
+        loc.setRotation(lda.rotation);
+        loc.setType(DimensionType.fromName(lda.dimension));
+        loc.setWorldName(lda.world);
+        loc.setWorld();
+        return loc;
     }
 
     @Override
