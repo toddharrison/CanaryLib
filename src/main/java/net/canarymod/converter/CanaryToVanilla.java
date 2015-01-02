@@ -1,21 +1,8 @@
 package net.canarymod.converter;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Writer;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
-import java.util.ArrayList;
+import com.google.gson.stream.JsonWriter;
 import net.canarymod.Canary;
+import net.canarymod.ToolBox;
 import net.canarymod.api.PlayerReference;
 import net.canarymod.bansystem.Ban;
 import net.canarymod.config.Configuration;
@@ -23,10 +10,22 @@ import net.canarymod.config.ServerConfiguration;
 import net.canarymod.config.WorldConfiguration;
 import net.visualillusionsent.utils.PropertiesFile;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.Writer;
+
 /**
  * Convert a Canary server into files Vanilla can understand
  *
- * @author Jos Kuijpers 
+ * @author Jos Kuijpers
+ * @author Jason Jones (darkdiplomat)
  */
 public class CanaryToVanilla {
 
@@ -34,46 +33,52 @@ public class CanaryToVanilla {
     }
 
     public boolean convert(String world) {
-
-        if (!createFolders(world)) {
-            return false;
-        }
-        if (!downloadMinecraft()) {
-            return false;
-        }
-        if (!createServerProperties(world)) {
-            return false;
-        }
-        if (!createBans()) {
-            return false;
-        }
-        if (!createOps(world)) {
-            return false;
-        }
-        return createWhitelist();
-
+        return createFolders(world) &&
+                createServerProperties(world) &&
+                createBans() &&
+                createOps() &&
+                createWhitelist();
     }
 
-    private void copyFolder(File src, File dest)
-            throws IOException {
+    private boolean createFolders(String world) {
+        File vanilla = new File("vanilla/");
+        if (!vanilla.mkdir()) {
+            Canary.log.error("Failed to create directory structure for Vanilla conversion.");
+            return false;
+        }
 
+        File canaryWorld = new File("worlds/" + world);
+        if (!canaryWorld.isDirectory() || !canaryWorld.exists()) {
+            Canary.log.error("No CanaryMod world found");
+            return false;
+        }
+
+        File dstFolder = new File("vanilla/world/");
+        try {
+            copyFolder(canaryWorld, dstFolder);
+        }
+        catch (IOException ioex) {
+            Canary.log.error("Failed to migrate world files... ", ioex);
+            return false;
+        }
+        return true;
+    }
+
+    private void copyFolder(File src, File dest) throws IOException {
         if (src.isDirectory()) { // Create directories
-
-            // Create the destination if not existend
-            if (!dest.exists()) {
-                dest.mkdirs();
+            // Create the destination if not existent
+            if (!dest.exists() && !dest.mkdirs()) {
+                throw new IOException("Failed to make destination directory structure");
             }
 
             // List the files/directories
             String contents[] = src.list();
-
             // Do a recursive call
             for (String file : contents) {
                 copyFolder(new File(src, file), new File(dest, file));
             }
         }
         else { // Copy files
-
             InputStream in = new FileInputStream(src);
             OutputStream out = new FileOutputStream(dest);
 
@@ -88,55 +93,42 @@ public class CanaryToVanilla {
             in.close();
             out.close();
         }
-
     }
 
-    private boolean createFolders(String world) {
+    private boolean createServerProperties(String worldname) {
 
-        File vanilla = new File("vanilla/");
+        PropertiesFile props = new PropertiesFile("vanilla/server.properties");
 
-        vanilla.mkdir();
+        ServerConfiguration server = Configuration.getServerConfig();
+        WorldConfiguration world = Configuration.getWorldConfig(worldname);
 
-        File canaryWorld = new File("worlds/" + world);
+        props.setBoolean("allow-flight", world.isFlightAllowed());
+        props.setBoolean("allow-nether", world.isNetherAllowed());
+        props.setInt("difficulty", world.getDifficulty().getId());
+        props.setBoolean("enable-query", server.isQueryEnabled());
+        props.setBoolean("enable-rcon", server.isRconEnabled());
+        props.setInt("gamemode", world.getGameMode().getId());
+        props.setBoolean("generate-structures", world.generatesStructures());
+        props.setString("level-name", world.getWorldName());
+        props.setString("level-seed", world.getWorldSeed());
+        props.setString("level-type", world.getWorldType().toString());
+        props.setInt("max-build-height", world.getMaxBuildHeight());
+        props.setInt("max-players", server.getMaxPlayers());
+        props.setString("motd", server.getMotd());
+        props.setBoolean("online-mode", server.isOnlineMode());
+        props.setBoolean("pvp", world.isPvpEnabled());
+        props.setInt("query.port", server.getQueryPort());
+        props.setString("rcon.password", server.getRconPassword());
+        props.setInt("rcon.port", server.getRconPort());
+        props.setString("server-ip", server.getBindIp());
+        props.setInt("server-port", server.getPort());
+        props.setBoolean("spawn-animals", world.canSpawnAnimals());
+        props.setBoolean("spawn-monsters", world.canSpawnMonsters());
+        props.setBoolean("spawn-npcs", world.canSpawnVillagers());
+        props.setInt("view-distance", server.getViewDistance());
+        props.setBoolean("white-list", server.isWhitelistEnabled());
 
-        if (!canaryWorld.isDirectory() || !canaryWorld.exists()) {
-            return false;
-        }
-
-        File dstFolder = new File("vanilla/world/");
-
-        try {
-            copyFolder(canaryWorld, dstFolder);
-        }
-        catch (IOException ioe) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @SuppressWarnings("resource")
-    private boolean downloadMinecraft() {
-        URL mc;
-        ReadableByteChannel rbc;
-        FileOutputStream fos;
-
-        try {
-            mc = new URL("https://s3.amazonaws.com/MinecraftDownload/launcher/minecraft_server.jar");
-            rbc = Channels.newChannel(mc.openStream());
-            fos = new FileOutputStream("vanilla/minecraft_server.jar");
-            fos.getChannel().transferFrom(rbc, 0, 1 << 24);
-        }
-        catch (FileNotFoundException e) {
-            return false;
-        }
-        catch (MalformedURLException e1) {
-            return false;
-        }
-        catch (IOException e1) {
-            return false;
-        }
-
+        props.save();
         return true;
     }
 
@@ -185,86 +177,62 @@ public class CanaryToVanilla {
         return true;
     }
 
-    private String[] getUsersWithPermission(String permission, String world) {
-        String[] ret = { };
-        ArrayList<String> val = new ArrayList<String>();
-        for (String user : Canary.usersAndGroups().getPlayers()) {
-            PlayerReference pr = Canary.getServer().matchKnownPlayer(user);
-            if (Canary.permissionManager().getPlayerProvider(pr.getUUIDString(), world).queryPermission(permission)) {
-                val.add(user);
-            }
-        }
+    private boolean createOps() {
+        boolean failure = false;
+        File opsFile = new File("vanilla/ops.json");
 
-        return val.toArray(ret);
-    }
-
-    private boolean createOps(String world) {
-        // by all users in all groups, and all users, with permission canary.vanilla.op
-        Writer output = null;
-
+        JsonWriter writer = null;
+        PrintWriter pWriter = null;
         try {
-            File opFile = new File("vanilla/ops.txt");
-
-            opFile.createNewFile();
-            output = new BufferedWriter(new FileWriter(opFile));
-
-            for (String user : getUsersWithPermission("canary.vanilla.op", world)) {
-                output.write(user + "\n");
+            if (!opsFile.createNewFile()) {
+                Canary.log.error("Failed to create a new ops.json");
+                return false;
             }
 
-            output.close();
+            pWriter = new PrintWriter(opsFile);
+            writer = new JsonWriter(pWriter);
+            writer.beginArray(); // Master Array start
+            pWriter.println();
+            for (String op : Canary.ops().getOps()) {
+                writer.beginObject(); // Operator Object start
+                pWriter.print("\t"); // Indent
+                PlayerReference reference = Canary.getServer().getOfflinePlayer(op);
+                writer.name("uuid"); // UUID
+                writer.value(ToolBox.isUUID(op) ? op : ToolBox.usernameToUUID(op));
+                pWriter.println(); // next line
+                pWriter.print("\t"); // Indent
+                writer.name("name");
+                writer.value(!ToolBox.isUUID(op) ? op : reference != null ? reference.getName() : "");
+                pWriter.println(); // next line
+                pWriter.print("\t"); // Indent
+                writer.value("level");
+                writer.value(4); // Canary only uses the level 4 op
+                pWriter.println(); // next line
+                // No indent
+                writer.endObject(); // Operator Object end
+                pWriter.println();
+            }
+            writer.endArray(); // Master Array end
         }
-        catch (IOException ioe) {
-            if (output != null) {
-                try {
-                    output.close();
-                }
-                catch (IOException ioe2) {
-                    return false;
+        catch (Exception ex) {
+            Canary.log.error("Failed to convert Ops from database to Vanilla json...", ex);
+            failure = true;
+        }
+        finally {
+            try {
+                if (writer != null) {
+                    writer.close();
                 }
             }
-            return false;
+            catch (IOException ioex) {
+                //IGNORED
+            }
+            if (pWriter != null) {
+                pWriter.close();
+            }
         }
 
-        return true;
-    }
-
-    private boolean createServerProperties(String worldname) {
-
-        PropertiesFile props = new PropertiesFile("vanilla/server.properties");
-
-        ServerConfiguration server = Configuration.getServerConfig();
-        WorldConfiguration world = Configuration.getWorldConfig(worldname);
-
-        props.setBoolean("allow-flight", world.isFlightAllowed());
-        props.setBoolean("allow-nether", world.isNetherAllowed());
-        props.setInt("difficulty", world.getDifficulty().getId());
-        props.setBoolean("enable-query", server.isQueryEnabled());
-        props.setBoolean("enable-rcon", server.isRconEnabled());
-        props.setInt("gamemode", world.getGameMode().getId());
-        props.setBoolean("generate-structures", world.generatesStructures());
-        props.setString("level-name", world.getWorldName());
-        props.setString("level-seed", world.getWorldSeed());
-        props.setString("level-type", world.getWorldType().toString());
-        props.setInt("max-build-height", world.getMaxBuildHeight());
-        props.setInt("max-players", server.getMaxPlayers());
-        props.setString("motd", server.getMotd());
-        props.setBoolean("online-mode", server.isOnlineMode());
-        props.setBoolean("pvp", world.isPvpEnabled());
-        props.setInt("query.port", server.getQueryPort());
-        props.setString("rcon.password", server.getRconPassword());
-        props.setInt("rcon.port", server.getRconPort());
-        props.setString("server-ip", server.getBindIp());
-        props.setInt("server-port", server.getPort());
-        props.setBoolean("spawn-animals", world.canSpawnAnimals());
-        props.setBoolean("spawn-monsters", world.canSpawnMonsters());
-        props.setBoolean("spawn-npcs", world.canSpawnVillagers());
-        props.setInt("view-distance", server.getViewDistance());
-        props.setBoolean("white-list", false);
-
-        props.save();
-
-        return true;
+        return !failure;
     }
 
     private boolean createWhitelist() {
