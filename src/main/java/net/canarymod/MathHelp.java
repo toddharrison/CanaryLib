@@ -39,4 +39,20 @@ public class MathHelp {
         return def <= max ? def >= min ? def : min : max;
     }
 
+    /**
+     * Sets a float within the given range
+     *
+     * @param def
+     *         the float to check
+     * @param min
+     *         the minimum value allowed
+     * @param max
+     *         the maximum value allowed
+     *
+     * @return {@code def} if in range; {@code min} if {@code def} is lower than {@code min}; {@code max} if {@code def} is greater than {@code max}
+     */
+    public static float setInRange(float def, float min, float max) {
+        return def <= max ? def >= min ? def : min : max;
+    }
+
 }
