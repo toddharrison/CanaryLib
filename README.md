@@ -27,7 +27,7 @@ Maven
         <dependency>
             <groupId>net.canarymod</groupId>
             <artifactId>CanaryLib</artifactId>
-            <version>[1.0-RC-4-SNAPSHOT,)</version> <!-- Will always use the latest version found (including snapshots)-->
+            <version>[1.0.0,)</version> <!-- Will always use the latest version found (including snapshots)-->
         </dependency>
 
 
@@ -103,7 +103,7 @@ If you would like a feature added, feel free to open an issue describing the fea
 License
 -------
 
-Copyright &copy; 2012 - 2014, CanaryMod Team  
+Copyright &copy; 2012 - 2015, CanaryMod Team
 Under the management of PlayBlack and Visual Illusions Entertainment  
 All rights reserved.  
   
