@@ -14,7 +14,7 @@ public final class Kill extends VanillaCommandWrapper {
 
     @Override
     public void execute(MessageReceiver caller, String[] parameters) {
-        if (isNotSelfOrServer(caller, parameters[0]) && !caller.hasPermission(KILL$OTHER)) {
+        if (parameters.length > 0 && isNotSelfOrServer(caller, parameters[0]) && !caller.hasPermission(KILL$OTHER)) {
             caller.notice(Translator.nativeTranslate("commands.generic.permission"));
             return;
         }
