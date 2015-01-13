@@ -3,9 +3,9 @@ package net.canarymod.commandsys.commands.playermod;
 import net.canarymod.Canary;
 import net.canarymod.Translator;
 import net.canarymod.api.PlayerReference;
+import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
-import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.permissionsystem.PermissionNode;
 
 /**
@@ -13,35 +13,62 @@ import net.canarymod.permissionsystem.PermissionNode;
  *
  * @author Chris (damagefilter)
  */
-public class PlayerPermissionCheck implements NativeCommand {
+public class PlayerPermissionCheck extends PlayermodBase {
     // groupmod permission add group value
     public void execute(MessageReceiver caller, String[] args) {
-        PlayerReference player = Canary.getServer().matchKnownPlayer(args[0]);
         PermissionNode node = PermissionNode.fromString(args[1]);
         boolean result;
         boolean hasPath;
-        if (player == null) {
-            caller.notice(Translator.translateAndFormat("unknown player", args[0]));
-            return;
+
+        Player[] selection = selection(caller, args, 0);
+        if (isSelectionValid(selection)) {
+            for (Player target : selection) {
+                hasPath = target.getPermissionProvider().pathExists(node.getName());
+                result = target.hasPermission(node.getName());
+
+                if (hasPath) {
+                    if (result) {
+                        caller.message(ChatFormat.YELLOW + target.getName() + ": " + ChatFormat.GREEN + node.getName() + ": true");
+                    }
+                    else {
+                        caller.message(ChatFormat.YELLOW + target.getName() + ": " + ChatFormat.RED + node.getName() + ": false");
+                    }
+                }
+                else {
+                    if (result) {
+                        caller.message(ChatFormat.YELLOW + target.getName() + ": " + ChatFormat.GREEN + node.getName() + ": true");
+                    }
+                    else {
+                        caller.message(ChatFormat.YELLOW + target.getName() + ": " + ChatFormat.YELLOW + node.getName() + ": " + Translator.translate("no"));
+                    }
+                }
+            }
         }
         else {
-            result = player.hasPermission(node.getName());
-            hasPath = player.getPermissionProvider().pathExists(node.getName());
-        }
-        if (hasPath) {
-            if (result) {
-                caller.message(ChatFormat.GREEN + node.getName() + ": true");
+            PlayerReference target = Canary.getServer().matchKnownPlayer(args[0]);
+            if (target == null) {
+                caller.notice(Translator.translateAndFormat("unknown player", args[0]));
+                return;
+            }
+
+            hasPath = target.getPermissionProvider().pathExists(node.getName());
+            result = target.hasPermission(node.getName());
+
+            if (hasPath) {
+                if (result) {
+                    caller.message(ChatFormat.GREEN + node.getName() + ": true");
+                }
+                else {
+                    caller.message(ChatFormat.RED + node.getName() + ": false");
+                }
             }
             else {
-                caller.message(ChatFormat.RED + node.getName() + ": false");
-            }
-        }
-        else {
-            if (result) {
-                caller.message(ChatFormat.GREEN + node.getName() + ": true");
-            }
-            else {
-                caller.message(ChatFormat.YELLOW + node.getName() + ": " + Translator.translate("no"));
+                if (result) {
+                    caller.message(ChatFormat.GREEN + node.getName() + ": true");
+                }
+                else {
+                    caller.message(ChatFormat.YELLOW + node.getName() + ": " + Translator.translate("no"));
+                }
             }
         }
     }

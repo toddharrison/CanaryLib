@@ -29,20 +29,19 @@ import java.io.Writer;
  */
 public class CanaryToVanilla {
 
-    public CanaryToVanilla() {
-    }
+    private static final String path = "vanilla/%s/";
 
     public boolean convert(String world) {
-        return createFolders(world) &&
-                createServerProperties(world) &&
-                createBans() &&
-                createOps() &&
+        File vanillaDir = new File(String.format(path, world));
+        return createFolders(vanillaDir, world) &&
+                createServerProperties(vanillaDir, world) &&
+                createBans(vanillaDir) &&
+                createOps(vanillaDir) &&
                 createWhitelist();
     }
 
-    private boolean createFolders(String world) {
-        File vanilla = new File("vanilla/");
-        if (!vanilla.mkdir()) {
+    private boolean createFolders(File directory, String world) {
+        if (!directory.exists() && !directory.mkdirs()) {
             Canary.log.error("Failed to create directory structure for Vanilla conversion.");
             return false;
         }
@@ -53,7 +52,7 @@ public class CanaryToVanilla {
             return false;
         }
 
-        File dstFolder = new File("vanilla/world/");
+        File dstFolder = new File(directory, "world/");
         try {
             copyFolder(canaryWorld, dstFolder);
         }
@@ -95,12 +94,11 @@ public class CanaryToVanilla {
         }
     }
 
-    private boolean createServerProperties(String worldname) {
-
-        PropertiesFile props = new PropertiesFile("vanilla/server.properties");
+    private boolean createServerProperties(File directory, String worldName) {
+        PropertiesFile props = new PropertiesFile(directory.getAbsolutePath().concat("server.properties"));
 
         ServerConfiguration server = Configuration.getServerConfig();
-        WorldConfiguration world = Configuration.getWorldConfig(worldname);
+        WorldConfiguration world = Configuration.getWorldConfig(worldName);
 
         props.setBoolean("allow-flight", world.isFlightAllowed());
         props.setBoolean("allow-nether", world.isNetherAllowed());
@@ -132,15 +130,29 @@ public class CanaryToVanilla {
         return true;
     }
 
-    private boolean createBans() {
+    private boolean createBans(File directory) {
+        /*
+
+        [
+          {
+            "uuid": "35fed202-9f93-4d91-b208-93fd903e74e6",
+            "name": "theantibukkit",
+            "created": "2015-01-06 09:17:55 -0600",
+            "source": "Server",
+            "expires": "forever",
+            "reason": "Banned by an operator."
+          }
+        ]
+
+        */
         Ban[] bans = Canary.bans().getAllBans();
 
         Writer banOutput = null;
         Writer ipBanOutput = null;
 
         try {
-            File banFile = new File("vanilla/banned-players.txt");
-            File ipBanFile = new File("vanilla/banned-ips.txt");
+            File banFile = new File(directory, "banned-players.json");
+            File ipBanFile = new File(directory, "banned-ips.json");
 
             banFile.createNewFile();
             ipBanFile.createNewFile();
@@ -177,9 +189,9 @@ public class CanaryToVanilla {
         return true;
     }
 
-    private boolean createOps() {
+    private boolean createOps(File directory) {
         boolean failure = false;
-        File opsFile = new File("vanilla/ops.json");
+        File opsFile = new File(directory, "ops.json");
 
         JsonWriter writer = null;
         PrintWriter pWriter = null;
@@ -194,21 +206,21 @@ public class CanaryToVanilla {
             writer.beginArray(); // Master Array start
             pWriter.println();
             for (String op : Canary.ops().getOps()) {
+                writer.setIndent("  "); // Indent
                 writer.beginObject(); // Operator Object start
-                pWriter.print("\t"); // Indent
+                pWriter.println(); // Next line
+                writer.setIndent("    "); // Indent
                 PlayerReference reference = Canary.getServer().getOfflinePlayer(op);
                 writer.name("uuid"); // UUID
                 writer.value(ToolBox.isUUID(op) ? op : ToolBox.usernameToUUID(op));
                 pWriter.println(); // next line
-                pWriter.print("\t"); // Indent
                 writer.name("name");
                 writer.value(!ToolBox.isUUID(op) ? op : reference != null ? reference.getName() : "");
                 pWriter.println(); // next line
-                pWriter.print("\t"); // Indent
                 writer.value("level");
                 writer.value(4); // Canary only uses the level 4 op
                 pWriter.println(); // next line
-                // No indent
+                writer.setIndent("  "); // Indent
                 writer.endObject(); // Operator Object end
                 pWriter.println();
             }

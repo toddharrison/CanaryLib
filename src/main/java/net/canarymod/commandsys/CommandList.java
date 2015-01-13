@@ -1469,7 +1469,7 @@ public class CommandList implements CommandListener {
             aliases = { "defaultgamemode", "defaultmode" },
             description = "Sets the default game mode (creative, survival, etc.) for new players entering a multiplayer server.",
             permissions = { DEFAULTGAMEMODE },
-            toolTip = "/defaultgamemode <gamemode>",
+            toolTip = "/defaultgamemode <gamemode> [worldName]",
             min = 1,
             version = 2
     )

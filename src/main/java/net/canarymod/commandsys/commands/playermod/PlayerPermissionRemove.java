@@ -5,7 +5,6 @@ import net.canarymod.Translator;
 import net.canarymod.api.PlayerReference;
 import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
-import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.permissionsystem.PermissionNode;
 
 /**
@@ -13,7 +12,7 @@ import net.canarymod.permissionsystem.PermissionNode;
  *
  * @author Chris (damagefilter)
  */
-public class PlayerPermissionRemove implements NativeCommand {
+public class PlayerPermissionRemove extends PlayermodBase {
     // groupmod permission add group value
     public void execute(MessageReceiver caller, String[] args) {
         PlayerReference player = Canary.getServer().matchKnownPlayer(args[0]);

@@ -247,7 +247,7 @@ public class Location extends Vector3D {
      *         if the String does not contain enough information or incorrect information
      */
     public static Location fromString(String fields) throws CanaryDeserializeException {
-        Location loc = new Location(0, 0, 0);
+        Location loc = emptyLocation();
         String[] split = fields.split(";");
 
         if (split.length != 7) {
@@ -279,7 +279,7 @@ public class Location extends Vector3D {
     }
 
     public static Location fromDataAccess(LocationDataAccess lda) {
-        Location loc = new Location(fromDataAccess(lda));
+        Location loc = emptyLocation();
         loc.setX(lda.posX);
         loc.setY(lda.posY);
         loc.setZ(lda.posZ);
@@ -289,6 +289,10 @@ public class Location extends Vector3D {
         loc.setWorldName(lda.world);
         loc.setWorld();
         return loc;
+    }
+
+    public static Location emptyLocation() {
+        return new Location(0, 0, 0);
     }
 
     @Override
