@@ -80,6 +80,8 @@ public class ServerConfiguration implements ConfigurationContainer {
         cfg.setComments("command-block-group", "This groups permissions will determine what Command Block can and can not do!");
         cfg.getBoolean("command-block-op", false);
         cfg.setComments("command-block-op", "Sets whether the Command Block is considered Operator or not (Vanilla command use)");
+        cfg.getBoolean("command-block-silent", false);
+        cfg.setComments("command-block-silent", "Sets whether the Command Block logs command output (set to true to 'silence' CommandBlocks)");
         cfg.getString("data-source", "xml");
         cfg.setComments("data-source", "The Datasource type to use (Default available: xml, mysql, sqlite");
         cfg.getString("date-format", "yyyy.MM.dd, hh:mm:ss");
@@ -243,6 +245,15 @@ public class ServerConfiguration implements ConfigurationContainer {
      */
     public boolean isCommandBlockOpped() {
         return cfg.getBoolean("command-block-op", false);
+    }
+
+    /**
+     * Gets whether the Command Block is silent
+     *
+     * @return {@code true} if silent; {@code false} otherwise
+     */
+    public boolean isCommandBlockSilent() {
+        return cfg.getBoolean("command-block-silent", false);
     }
 
     /**
