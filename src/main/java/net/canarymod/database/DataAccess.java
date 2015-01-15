@@ -131,7 +131,7 @@ public abstract class DataAccess {
                 isInconsistent = true;
                 throw new DatabaseAccessException("Cannot apply data to " + getClass().getSimpleName() + ". Column name mismatches! (" + col.columnName() + " does not exist) - " + dataSet.keySet().toString());
             }
-            field.set(this, dataSet.get(col.columnName()));
+            field.set(this, dataSet.get(col.columnName())); // TODO: Fix null value to use field default
             columnFields++;
         }
         // If the columnFields is not the size of the dataSet,

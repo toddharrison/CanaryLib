@@ -57,4 +57,6 @@ public @interface Column {
     /** Is this field an implementation of the List interface? */
     boolean isList() default false;
 
+    boolean notNull() default false;
+
 }

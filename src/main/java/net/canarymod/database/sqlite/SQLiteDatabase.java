@@ -1,5 +1,6 @@
 package net.canarymod.database.sqlite;
 
+import net.canarymod.Canary;
 import net.canarymod.database.Column;
 import net.canarymod.database.Column.DataType;
 import net.canarymod.database.DataAccess;
@@ -337,7 +338,15 @@ public class SQLiteDatabase extends Database {
                     retainColumns(schemaTemplate, columnNames);
                 }
                 for (Map.Entry<String, Column> entry : toAdd.entrySet()) {
-                    insertColumn(schemaTemplate.getName(), entry.getValue());
+                    try {
+                        insertColumn(schemaTemplate.getName(), entry.getValue(), schemaTemplate.getClass().getField(entry.getValue().columnName()).get(schemaTemplate));
+                    }
+                    catch (IllegalAccessException iaex) {
+                        Canary.log.warn("", iaex);
+                    }
+                    catch (NoSuchFieldException nsfex) {
+                        Canary.log.warn("", nsfex);
+                    }
                 }
             }
         }
@@ -371,6 +380,26 @@ public class SQLiteDatabase extends Database {
                 else if (column.columnType() == Column.ColumnType.UNIQUE) {
                     fields.append(" UNIQUE");
                 }
+
+                // NOT NULL
+                if (column.notNull()) {
+                    fields.append(" NOT NULL");
+                }
+
+                // DEFAULT
+                try {
+                    Object defVal = data.getClass().getField(column.columnName()).get(data);
+                    if (defVal != null) {
+                        fields.append(" DEFAULT ").append(defVal.toString());
+                    }
+                }
+                catch (IllegalAccessException e) {
+                    // OOPS
+                }
+                catch (NoSuchFieldException e) {
+                    // OOPS
+                }
+
                 if (it.hasNext()) {
                     fields.append(", ");
                 }
@@ -407,17 +436,22 @@ public class SQLiteDatabase extends Database {
         }
     }
 
-    public void insertColumn(String tableName, Column column) throws DatabaseWriteException {
+    public void insertColumn(String tableName, Column column, Object defVal) throws DatabaseWriteException {
         PreparedStatement ps = null;
 
         try {
             if (column != null && !column.columnName().trim().equals("")) {
-                ps = JdbcConnectionManager.getConnection().prepareStatement("ALTER TABLE `" + tableName + "` ADD `" + column.columnName() + "` " + getDataTypeSyntax(column.dataType()));
+                ps = JdbcConnectionManager.getConnection().prepareStatement("ALTER TABLE `" + tableName
+                                                                                    + "` ADD `" + column.columnName()
+                                                                                    + "` " + getDataTypeSyntax(column.dataType())
+                                                                                    + (column.notNull() ? " NOT NULL" : "")
+                                                                                    + (defVal != null ? " DEFAULT " + defVal.toString() : "")
+                                                                           );
                 ps.execute();
             }
         }
         catch (SQLException ex) {
-            throw new DatabaseWriteException("Error adding SQLite collumn: " + column.columnName());
+            throw new DatabaseWriteException("Error adding SQLite column: " + column.columnName());
         }
         finally {
             close(null, ps, null);

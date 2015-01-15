@@ -1,6 +1,8 @@
 package net.canarymod.database.xml;
 
 import com.google.common.io.Files;
+import com.mchange.v1.lang.BooleanUtils;
+import net.canarymod.Canary;
 import net.canarymod.database.Column;
 import net.canarymod.database.Column.DataType;
 import net.canarymod.database.DataAccess;
@@ -54,7 +56,9 @@ public class XmlDatabase extends Database {
         return instance;
     }
 
-    /** Used to serialize the XML data into a bytestream */
+    /**
+     * Used to serialize the XML data into a bytestream
+     */
     private XMLOutputter xmlSerializer = new XMLOutputter(Format.getPrettyFormat().setExpandEmptyElements(true).setOmitDeclaration(true).setOmitEncoding(true).setLineSeparator("\n"));
 
     private SAXBuilder fileBuilder = new SAXBuilder();
@@ -113,7 +117,6 @@ public class XmlDatabase extends Database {
                 insertData(file, da, dbTable, false);
             }
             write(file, dbTable);
-
         }
         catch (JDOMException e) {
             throw new DatabaseWriteException(e.getMessage(), e);
@@ -172,7 +175,6 @@ public class XmlDatabase extends Database {
         catch (DatabaseAccessException e) {
             throw new DatabaseReadException(e.getMessage(), e);
         }
-
     }
 
     @Override
@@ -364,7 +366,6 @@ public class XmlDatabase extends Database {
      *
      * @throws IOException
      * @throws DatabaseTableInconsistencyException
-     *
      */
     private void insertData(File file, DataAccess data, Document dbTable, boolean write) throws IOException, DatabaseTableInconsistencyException {
         HashMap<Column, Object> entry = data.toDatabaseEntryList();
@@ -386,15 +387,6 @@ public class XmlDatabase extends Database {
             addToElement(dbTable, col, entry.get(column), column);
             set.addContent(col);
 
-            boolean foundDupe = false;
-
-            for (Element c : dbTable.getRootElement().getChildren()) {
-                if (elementEquals(set, c)) {
-                    foundDupe = true;
-                }
-            }
-//            if (!foundDupe) {
-//            }
         }
         dbTable.getRootElement().addContent(set);
         if (write) {
@@ -409,9 +401,9 @@ public class XmlDatabase extends Database {
      * @param file
      * @param table
      * @param filters
+     *
      * @throws IOException
      * @throws DatabaseTableInconsistencyException
-     *
      * @throws DatabaseWriteException
      */
     private void updateData(File file, Document table, DataAccess data, Map<String, Object> filters, boolean write) throws IOException, DatabaseTableInconsistencyException, DatabaseWriteException {
@@ -486,7 +478,7 @@ public class XmlDatabase extends Database {
             }
             // table.getRootElement().removeContent(element);
             toremove.add(element);
-            if(!removeAll) {
+            if (!removeAll) {
                 // Just remove one row
                 break;
             }
@@ -518,7 +510,7 @@ public class XmlDatabase extends Database {
             HashMap<String, Object> dataSet = new HashMap<String, Object>();
             for (Element child : element.getChildren()) {
                 DataType type = DataType.fromString(child.getAttributeValue("data-type"));
-                addTypeToMap(child, dataSet, type);
+                addTypeToMap(child, dataSet, type, data.getInstance());
             }
             data.load(dataSet);
             return;
@@ -548,7 +540,7 @@ public class XmlDatabase extends Database {
             for (Element child : element.getChildren()) {
                 DataType type = DataType.fromString(child.getAttributeValue("data-type"));
 
-                addTypeToMap(child, dataSet, type);
+                addTypeToMap(child, dataSet, type, template.getInstance());
             }
             DataAccess da = template.getInstance();
 
@@ -579,8 +571,8 @@ public class XmlDatabase extends Database {
             return true;
         }
 
-        Element elB = (Element) b;
-        Element elA = (Element) a;
+        Element elB = (Element)b;
+        Element elA = (Element)a;
 
         if (elA.getContentSize() != elB.getContentSize()) {
             return false;
@@ -608,7 +600,6 @@ public class XmlDatabase extends Database {
      * @return
      *
      * @throws DatabaseTableInconsistencyException
-     *
      */
     private int getIncrementId(Document doc, Column col) throws DatabaseTableInconsistencyException {
         // Search from last to first content entry for a valid element
@@ -646,100 +637,196 @@ public class XmlDatabase extends Database {
      * @param dataSet
      * @param type
      */
-    private void addTypeToMap(Element child, HashMap<String, Object> dataSet, DataType type) {
+    private void addTypeToMap(Element child, HashMap<String, Object> dataSet, DataType type, DataAccess template) {
         switch (type) {
             case BYTE:
                 if (Boolean.valueOf(child.getAttributeValue("is-list"))) {
-                    ArrayList<Byte> byteList = new ArrayList<Byte>();
+                    ArrayList<Byte> values = new ArrayList<Byte>();
 
                     for (Element el : child.getChildren()) {
-                        byteList.add(Byte.parseByte(el.getText()));
+                        try {
+                            values.add((Byte)typeParse(el.getValue(), child.getName(), type, template.getInstance()));
+                        }
+                        catch (IllegalAccessException e) {
+                            Canary.log.debug("XML Database - Byte - List", e);
+                        }
+                        catch (NoSuchFieldException e) {
+                            Canary.log.debug("XML Database - Byte - List", e);
+                        }
                     }
-                    dataSet.put(child.getName(), byteList);
+                    dataSet.put(child.getName(), values);
                 }
                 else {
-                    dataSet.put(child.getName(), Byte.parseByte(child.getText()));
-                }
-                break;
-
-            case DOUBLE:
-                if (Boolean.valueOf(child.getAttributeValue("is-list"))) {
-                    ArrayList<Double> byteList = new ArrayList<Double>();
-
-                    for (Element el : child.getChildren()) {
-                        byteList.add(Double.parseDouble(el.getText()));
+                    try {
+                        dataSet.put(child.getName(), typeParse(child.getValue(), child.getName(), type, template.getInstance()));
                     }
-                    dataSet.put(child.getName(), byteList);
-                }
-                else {
-                    dataSet.put(child.getName(), Double.parseDouble(child.getText()));
-                }
-                break;
-
-            case FLOAT:
-                if (Boolean.valueOf(child.getAttributeValue("is-list"))) {
-                    ArrayList<Float> byteList = new ArrayList<Float>();
-
-                    for (Element el : child.getChildren()) {
-                        byteList.add(Float.parseFloat(el.getText()));
+                    catch (IllegalAccessException e) {
+                        Canary.log.debug("XML Database - Byte - NonList", e);
                     }
-                    dataSet.put(child.getName(), byteList);
-                }
-                else {
-                    dataSet.put(child.getName(), Float.parseFloat(child.getText()));
-                }
-                break;
-
-            case INTEGER:
-                if (Boolean.valueOf(child.getAttributeValue("is-list"))) {
-                    ArrayList<Integer> byteList = new ArrayList<Integer>();
-
-                    for (Element el : child.getChildren()) {
-                        byteList.add(Integer.parseInt(el.getText()));
+                    catch (NoSuchFieldException e) {
+                        Canary.log.debug("XML Database - Byte - NonList", e);
                     }
-                    dataSet.put(child.getName(), byteList);
-                }
-                else {
-                    dataSet.put(child.getName(), Integer.parseInt(child.getText()));
-                }
-                break;
-
-            case LONG:
-                if (Boolean.valueOf(child.getAttributeValue("is-list"))) {
-                    ArrayList<Long> byteList = new ArrayList<Long>();
-
-                    for (Element el : child.getChildren()) {
-                        byteList.add(Long.parseLong(el.getText()));
-                    }
-                    dataSet.put(child.getName(), byteList);
-                }
-                else {
-                    dataSet.put(child.getName(), Long.parseLong(child.getText()));
                 }
                 break;
 
             case SHORT:
                 if (Boolean.valueOf(child.getAttributeValue("is-list"))) {
-                    ArrayList<Short> byteList = new ArrayList<Short>();
+                    ArrayList<Short> values = new ArrayList<Short>();
 
                     for (Element el : child.getChildren()) {
-                        byteList.add(Short.parseShort(el.getText()));
+                        try {
+                            values.add((Short)typeParse(el.getValue(), child.getName(), type, template.getInstance()));
+                        }
+                        catch (IllegalAccessException e) {
+                            Canary.log.debug("XML Database - Short - List", e);
+                        }
+                        catch (NoSuchFieldException e) {
+                            Canary.log.debug("XML Database - Short - List", e);
+                        }
                     }
-                    dataSet.put(child.getName(), byteList);
+                    dataSet.put(child.getName(), values);
                 }
                 else {
-                    dataSet.put(child.getName(), Short.parseShort(child.getText()));
+                    try {
+                        dataSet.put(child.getName(), typeParse(child.getValue(), child.getName(), type, template.getInstance()));
+                    }
+                    catch (IllegalAccessException e) {
+                        Canary.log.debug("XML Database - Short - NonList", e);
+                    }
+                    catch (NoSuchFieldException e) {
+                        Canary.log.debug("XML Database - Short - NonList", e);
+                    }
+                }
+                break;
+
+            case INTEGER:
+                if (Boolean.valueOf(child.getAttributeValue("is-list"))) {
+                    ArrayList<Integer> values = new ArrayList<Integer>();
+
+                    for (Element el : child.getChildren()) {
+                        try {
+                            values.add((Integer)typeParse(el.getValue(), child.getName(), type, template.getInstance()));
+                        }
+                        catch (IllegalAccessException e) {
+                            Canary.log.debug("XML Database - Integer - List", e);
+                        }
+                        catch (NoSuchFieldException e) {
+                            Canary.log.debug("XML Database - Integer - List", e);
+                        }
+                    }
+                    dataSet.put(child.getName(), values);
+                }
+                else {
+                    try {
+                        dataSet.put(child.getName(), typeParse(child.getValue(), child.getName(), type, template.getInstance()));
+                    }
+                    catch (IllegalAccessException e) {
+                        Canary.log.debug("XML Database - Integer - NonList", e);
+                    }
+                    catch (NoSuchFieldException e) {
+                        Canary.log.debug("XML Database - Integer - NonList", e);
+                    }
+                }
+                break;
+
+            case LONG:
+                if (Boolean.valueOf(child.getAttributeValue("is-list"))) {
+                    ArrayList<Long> values = new ArrayList<Long>();
+
+                    for (Element el : child.getChildren()) {
+                        try {
+                            values.add((Long)typeParse(el.getValue(), child.getName(), type, template.getInstance()));
+                        }
+                        catch (IllegalAccessException e) {
+                            Canary.log.debug("XML Database - Long - List", e);
+                        }
+                        catch (NoSuchFieldException e) {
+                            Canary.log.debug("XML Database - Long - List", e);
+                        }
+                    }
+                    dataSet.put(child.getName(), values);
+                }
+                else {
+                    try {
+                        dataSet.put(child.getName(), typeParse(child.getValue(), child.getName(), type, template.getInstance()));
+                    }
+                    catch (IllegalAccessException e) {
+                        Canary.log.debug("XML Database - Long - NonList", e);
+                    }
+                    catch (NoSuchFieldException e) {
+                        Canary.log.debug("XML Database - Long - NonList", e);
+                    }
+                }
+                break;
+
+            case FLOAT:
+                if (Boolean.valueOf(child.getAttributeValue("is-list"))) {
+                    ArrayList<Float> values = new ArrayList<Float>();
+
+                    for (Element el : child.getChildren()) {
+                        try {
+                            values.add((Float)typeParse(el.getValue(), child.getName(), type, template.getInstance()));
+                        }
+                        catch (IllegalAccessException e) {
+                            Canary.log.debug("XML Database - Float - List", e);
+                        }
+                        catch (NoSuchFieldException e) {
+                            Canary.log.debug("XML Database - Float - List", e);
+                        }
+                    }
+                    dataSet.put(child.getName(), values);
+                }
+                else {
+                    try {
+                        dataSet.put(child.getName(), typeParse(child.getValue(), child.getName(), type, template.getInstance()));
+                    }
+                    catch (IllegalAccessException e) {
+                        Canary.log.debug("XML Database - Float - NonList", e);
+                    }
+                    catch (NoSuchFieldException e) {
+                        Canary.log.debug("XML Database - Float - NonList", e);
+                    }
+                }
+                break;
+
+            case DOUBLE:
+                if (Boolean.valueOf(child.getAttributeValue("is-list"))) {
+                    ArrayList<Double> values = new ArrayList<Double>();
+
+                    for (Element el : child.getChildren()) {
+                        try {
+                            values.add((Double)typeParse(el.getValue(), child.getName(), type, template.getInstance()));
+                        }
+                        catch (IllegalAccessException e) {
+                            Canary.log.debug("XML Database - Double - List", e);
+                        }
+                        catch (NoSuchFieldException e) {
+                            Canary.log.debug("XML Database - Double - List", e);
+                        }
+                    }
+                    dataSet.put(child.getName(), values);
+                }
+                else {
+                    try {
+                        dataSet.put(child.getName(), typeParse(child.getValue(), child.getName(), type, template.getInstance()));
+                    }
+                    catch (IllegalAccessException e) {
+                        Canary.log.debug("XML Database - Double - NonList", e);
+                    }
+                    catch (NoSuchFieldException e) {
+                        Canary.log.debug("XML Database - Double - NonList", e);
+                    }
                 }
                 break;
 
             case STRING:
                 if (Boolean.valueOf(child.getAttributeValue("is-list"))) {
-                    ArrayList<String> byteList = new ArrayList<String>();
+                    ArrayList<String> values = new ArrayList<String>();
 
                     for (Element el : child.getChildren()) {
-                        byteList.add(el.getText());
+                        values.add(el.getText());
                     }
-                    dataSet.put(child.getName(), byteList);
+                    dataSet.put(child.getName(), values);
                 }
                 else {
                     dataSet.put(child.getName(), child.getText());
@@ -748,12 +835,12 @@ public class XmlDatabase extends Database {
 
             case BOOLEAN:
                 if (Boolean.valueOf(child.getAttributeValue("is-list"))) {
-                    ArrayList<Boolean> byteList = new ArrayList<Boolean>();
+                    ArrayList<Boolean> values = new ArrayList<Boolean>();
 
                     for (Element el : child.getChildren()) {
-                        byteList.add(Boolean.valueOf(el.getText()));
+                        values.add(Boolean.valueOf(el.getText()));
                     }
-                    dataSet.put(child.getName(), byteList);
+                    dataSet.put(child.getName(), values);
                 }
                 else {
                     dataSet.put(child.getName(), Boolean.valueOf(child.getText()));
@@ -772,18 +859,17 @@ public class XmlDatabase extends Database {
      * @param obj
      *
      * @throws DatabaseTableInconsistencyException
-     *
      */
     private void addToElement(Document doc, Element element, Object obj, Column col) throws DatabaseTableInconsistencyException {
         if (col.autoIncrement()) {
             element.setText(String.valueOf(getIncrementId(doc, col)));
         }
         else if (col.isList()) {
-            List<?> entries = (List<?>) obj;
+            List<?> entries = (List<?>)obj;
 
             // First detach everything so there won't be dupes
             element.getChildren().clear();
-            
+
             if (obj == null) {
                 return;
             }
@@ -809,11 +895,12 @@ public class XmlDatabase extends Database {
     private void sortElements(Document doc) {
         for (Element e : doc.getRootElement().getChildren()) {
             e.sortChildren(new Comparator<Element>() {
-                @Override
-                public int compare(Element o1, Element o2) {
-                    return o1.getName().compareTo(o2.getName());
-                }
-            });
+                               @Override
+                               public int compare(Element o1, Element o2) {
+                                   return o1.getName().compareTo(o2.getName());
+                               }
+                           }
+                          );
         }
     }
 
@@ -829,7 +916,7 @@ public class XmlDatabase extends Database {
             return fileBuilder.build(in);
         }
         catch (JDOMParseException e) {
-            File dir = new File("db/damaged_db/");
+            File dir = new File("db/damaged_db/" + System.currentTimeMillis() + "/");
             dir.mkdirs();
             // Assume the file is damaged. Make a backup, and do it again.
             Files.move(file, new File(dir, file.getName()));
@@ -837,6 +924,61 @@ public class XmlDatabase extends Database {
         }
         finally {
             in.close();
+        }
+    }
+
+    private Comparable typeParse(String value, String field, DataType type, DataAccess defValTempl) throws NoSuchFieldException, IllegalAccessException {
+        switch (type) {
+            case BYTE:
+                try {
+                    return Byte.parseByte(value);
+                }
+                catch (NumberFormatException nfex) {
+                    return defValTempl.getClass().getField(field).getByte(defValTempl);
+                }
+
+            case SHORT:
+                try {
+                    return Short.parseShort(value);
+                }
+                catch (NumberFormatException nfex) {
+                    return defValTempl.getClass().getField(field).getShort(defValTempl);
+                }
+
+            case INTEGER:
+                try {
+                    return Integer.parseInt(value);
+                }
+                catch (NumberFormatException nfex) {
+                    return defValTempl.getClass().getField(field).getInt(defValTempl);
+                }
+            case LONG:
+                try {
+                    return Long.parseLong(value);
+                }
+                catch (NumberFormatException nfex) {
+                    return defValTempl.getClass().getField(field).getLong(defValTempl);
+                }
+
+            case FLOAT:
+                try {
+                    return Float.parseFloat(value);
+                }
+                catch (NumberFormatException nfex) {
+                    return defValTempl.getClass().getField(field).getFloat(defValTempl);
+                }
+            case DOUBLE:
+                try {
+                    return Double.parseDouble(value);
+                }
+                catch (NumberFormatException nfex) {
+                    return defValTempl.getClass().getField(field).getDouble(defValTempl);
+                }
+            case BOOLEAN:
+                return BooleanUtils.parseBoolean(value);
+            case STRING:
+            default:
+                return value;
         }
     }
 }

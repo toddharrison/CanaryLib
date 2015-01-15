@@ -10,16 +10,27 @@ import net.canarymod.database.exceptions.DatabaseTableInconsistencyException;
 import net.canarymod.database.exceptions.DatabaseWriteException;
 import org.apache.logging.log4j.LogManager;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import static net.canarymod.Canary.log;
 
 /**
  * Represents access to a MySQL database
  *
- * @author somners (Aaron)
- * @author damagefilter (Chris)
+ * @author Aaron (somners)
+ * @author Chris Ksoll (damagefilter)
+ * @author Jason Jones (darkdiplomat)
  */
 public class MySQLDatabase extends Database {
 
@@ -396,7 +407,15 @@ public class MySQLDatabase extends Database {
                     this.deleteColumn(schemaTemplate.getName(), name);
                 }
                 for (Map.Entry<String, Column> entry : toAdd.entrySet()) {
-                    this.insertColumn(schemaTemplate.getName(), entry.getValue());
+                    try {
+                        this.insertColumn(schemaTemplate.getName(), entry.getValue(), schemaTemplate.getClass().getField(entry.getValue().columnName()).get(schemaTemplate));
+                    }
+                    catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    catch (NoSuchFieldException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -429,9 +448,25 @@ public class MySQLDatabase extends Database {
                 if (column.autoIncrement()) {
                     fields.append(" AUTO_INCREMENT");
                 }
+                if (column.notNull()) {
+                    fields.append(" NOT NULL");
+                }
                 if (column.columnType().equals(Column.ColumnType.PRIMARY)) {
                     primary.add(column.columnName());
                 }
+                try {
+                    Object defVal = data.getClass().getField(column.columnName()).get(data);
+                    if (defVal != null) {
+                        fields.append(" DEFAULT ").append(defVal.toString());
+                    }
+                }
+                catch (IllegalAccessException e) {
+                    // OOPS
+                }
+                catch (NoSuchFieldException e) {
+                    // OOPS
+                }
+
                 if (it.hasNext()) {
                     fields.append(", ");
                 }
@@ -455,18 +490,22 @@ public class MySQLDatabase extends Database {
         }
     }
 
-    public void insertColumn(String tableName, Column column) throws DatabaseWriteException {
+    public void insertColumn(String tableName, Column column, Object defVal) throws DatabaseWriteException {
         Connection conn = JdbcConnectionManager.getConnection();
         PreparedStatement ps = null;
 
         try {
             if (column != null && !column.columnName().trim().equals("")) {
-                ps = conn.prepareStatement("ALTER TABLE `" + tableName + "` ADD `" + column.columnName() + "` " + this.getDataTypeSyntax(column.dataType()));
+                ps = conn.prepareStatement("ALTER TABLE `" + tableName + "` ADD `" + column.columnName() + "` "
+                                                   + this.getDataTypeSyntax(column.dataType())
+                                                   + (column.notNull() ? " NOT NULL" : "")
+                                                   + (defVal != null ? " DEFAULT " + defVal.toString() : "")
+                                          );
                 ps.execute();
             }
         }
         catch (SQLException ex) {
-            throw new DatabaseWriteException("Error adding MySQL collumn: " + column.columnName());
+            throw new DatabaseWriteException("Error adding MySQL column: " + column.columnName(), ex);
         }
         finally {
             close(conn, ps, null);
@@ -485,7 +524,7 @@ public class MySQLDatabase extends Database {
             }
         }
         catch (SQLException ex) {
-            throw new DatabaseWriteException("Error deleting MySQL collumn: " + columnName);
+            throw new DatabaseWriteException("Error deleting MySQL column: " + columnName);
         }
         finally {
             close(conn, ps, null);
@@ -650,17 +689,17 @@ public class MySQLDatabase extends Database {
     private String getDataTypeSyntax(Column.DataType type) {
         switch (type) {
             case BYTE:
-                return "INT";
+                return "TINYINT";
             case INTEGER:
                 return "INT";
             case FLOAT:
-                return "DOUBLE";
+                return "FLOAT";
             case DOUBLE:
                 return "DOUBLE";
             case LONG:
                 return "BIGINT";
             case SHORT:
-                return "INT";
+                return "SMALLINT";
             case STRING:
                 return "TEXT";
             case BOOLEAN:

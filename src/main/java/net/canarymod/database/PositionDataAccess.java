@@ -15,12 +15,13 @@ public abstract class PositionDataAccess extends DataAccess {
         super(tableName, tableSuffix);
     }
 
-    @Column(columnName = "PosX", dataType = Column.DataType.DOUBLE)
-    public double posX = Double.MIN_VALUE;
+    // Absolute out of world defaults used
+    @Column(columnName = "posX", notNull = true, dataType = Column.DataType.DOUBLE)
+    public double posX = 0;
 
-    @Column(columnName = "PosY", dataType = Column.DataType.DOUBLE)
+    @Column(columnName = "posY", notNull = true, dataType = Column.DataType.DOUBLE)
     public double posY = 0;
 
-    @Column(columnName = "PosZ", dataType = Column.DataType.DOUBLE)
+    @Column(columnName = "posZ", notNull = true, dataType = Column.DataType.DOUBLE)
     public double posZ = 0;
 }
