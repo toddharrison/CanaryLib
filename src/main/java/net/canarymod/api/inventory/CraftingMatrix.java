@@ -6,5 +6,5 @@ package net.canarymod.api.inventory;
  *
  * @author Jason (darkdiplomat)
  */
-public interface CraftingMatrix {
+public interface CraftingMatrix extends Inventory {
 }
