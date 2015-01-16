@@ -1,5 +1,6 @@
 package net.canarymod.database.xml;
 
+import com.google.common.collect.Maps;
 import com.google.common.io.Files;
 import com.mchange.v1.lang.BooleanUtils;
 import net.canarymod.Canary;
@@ -11,10 +12,7 @@ import net.canarymod.database.exceptions.DatabaseAccessException;
 import net.canarymod.database.exceptions.DatabaseReadException;
 import net.canarymod.database.exceptions.DatabaseTableInconsistencyException;
 import net.canarymod.database.exceptions.DatabaseWriteException;
-import org.jdom2.Content;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
+import org.jdom2.*;
 import org.jdom2.input.JDOMParseException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
@@ -24,13 +22,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Represent access to an XML database
@@ -43,7 +38,9 @@ public class XmlDatabase extends Database {
         File path = new File("db/");
 
         if (!path.exists()) {
-            path.mkdirs();
+            if (!path.mkdirs()) {
+                throw new ExceptionInInitializerError("Unable to create database directories... Please check your read/write permissions and try again");
+            }
         }
     }
 
@@ -59,9 +56,14 @@ public class XmlDatabase extends Database {
     /**
      * Used to serialize the XML data into a bytestream
      */
-    private XMLOutputter xmlSerializer = new XMLOutputter(Format.getPrettyFormat().setExpandEmptyElements(true).setOmitDeclaration(true).setOmitEncoding(true).setLineSeparator("\n"));
+    private XMLOutputter xmlSerializer = new XMLOutputter(Format.getPrettyFormat().setExpandEmptyElements(false).setOmitDeclaration(true).setOmitEncoding(true).setLineSeparator("\n"));
 
     private SAXBuilder fileBuilder = new SAXBuilder();
+
+    /**
+     * Used to store the table properties
+     */
+    private Map<String, Element> tableProperties = Maps.newConcurrentMap();
 
     @Override
     public void insert(DataAccess data) throws DatabaseWriteException {
@@ -139,7 +141,6 @@ public class XmlDatabase extends Database {
 
         try {
             Document table = verifyTable(file, data.getName());
-
             loadData(data, table, filters);
         }
         catch (JDOMException e) {
@@ -163,7 +164,6 @@ public class XmlDatabase extends Database {
 
         try {
             Document table = verifyTable(file, typeTemplate.getName());
-
             loadAllData(typeTemplate, datasets, table, filters);
         }
         catch (JDOMException e) {
@@ -283,11 +283,28 @@ public class XmlDatabase extends Database {
         }
         try {
             Document table = verifyTable(file, data.getName());
+
+            if (table.getRootElement().getChild("tableProperties") == null) {
+                table.getRootElement().addContent(generateProperties(data));
+            }
+
             HashSet<Column> tableLayout = data.getTableLayout();
 
+            for (Column column : tableLayout) {
+                if (table.getRootElement().getChild("tableProperties").getChild(column.columnName()) == null) {
+                    setPropertyFor(column, table.getRootElement().getChild("tableProperties"));
+                }
+            }
             for (Element element : table.getRootElement().getChildren()) {
-                addFields(element, tableLayout);
-                removeFields(element, tableLayout);
+                if (!element.getName().equals("tableProperties")) {
+                    addFields(element, tableLayout);
+                    removeFields(element, tableLayout);
+
+                    // Clean out the old attribute data
+                    for (Element child : element.getChildren()) {
+                        child.getAttributes().clear();
+                    }
+                }
             }
             write(file, table);
         }
@@ -324,13 +341,7 @@ public class XmlDatabase extends Database {
                 }
             }
             if (!found) {
-                Element col = new Element(column.columnName());
-
-                col.setAttribute("auto-increment", String.valueOf(column.autoIncrement()));
-                col.setAttribute("data-type", column.dataType().name());
-                col.setAttribute("column-type", column.columnType().name());
-                col.setAttribute("is-list", String.valueOf(column.isList()));
-                element.addContent(col);
+                element.addContent(new Element(column.columnName()));
             }
         }
     }
@@ -379,11 +390,6 @@ public class XmlDatabase extends Database {
         for (Column column : entry.keySet()) {
 
             Element col = new Element(column.columnName());
-
-            col.setAttribute("auto-increment", String.valueOf(column.autoIncrement()));
-            col.setAttribute("data-type", column.dataType().name());
-            col.setAttribute("column-type", column.columnType().name());
-            col.setAttribute("is-list", String.valueOf(column.isList()));
             addToElement(dbTable, col, entry.get(column), column);
             set.addContent(col);
 
@@ -509,7 +515,7 @@ public class XmlDatabase extends Database {
             }
             HashMap<String, Object> dataSet = new HashMap<String, Object>();
             for (Element child : element.getChildren()) {
-                DataType type = DataType.fromString(child.getAttributeValue("data-type"));
+                DataType type = DataType.fromString(tableProperties.get(data.getName()).getChild(child.getName()).getAttributeValue("data-type"));
                 addTypeToMap(child, dataSet, type, data.getInstance());
             }
             data.load(dataSet);
@@ -520,32 +526,44 @@ public class XmlDatabase extends Database {
     private void loadAllData(DataAccess template, List<DataAccess> datasets, Document table, Map<String, Object> filters) throws DatabaseAccessException {
         String[] fields = new String[filters.size()];
         filters.keySet().toArray(fields); // We know those are strings
+
+        sortElements(table); // pre-sort so if tableProperties is moved from the top it will be returned
+
+        if (table.getRootElement().getChild("tableProperties") == null) {
+            table.getRootElement().addContent(generateProperties(template));
+        }
+        else {
+            tableProperties.put(template.getName(), table.getRootElement().getChild("tableProperties"));
+        }
+
         for (Element element : table.getRootElement().getChildren()) {
-            int equalFields = 0;
+            if (!element.getName().equals("tableProperties")) {
+                int equalFields = 0;
 
-            for (String field : fields) {
-                Element child = element.getChild(field);
+                for (String field : fields) {
+                    Element child = element.getChild(field);
 
-                if (child != null) {
-                    if (child.getText().equals(String.valueOf(filters.get(field)))) {
-                        equalFields++;
+                    if (child != null) {
+                        if (child.getText().equals(String.valueOf(filters.get(field)))) {
+                            equalFields++;
+                        }
                     }
                 }
-            }
-            if (equalFields != fields.length) {
-                continue; // Not the entry we're looking for
-            }
-            HashMap<String, Object> dataSet = new HashMap<String, Object>();
+                if (equalFields != fields.length) {
+                    continue; // Not the entry we're looking for
+                }
+                HashMap<String, Object> dataSet = new HashMap<String, Object>();
 
-            for (Element child : element.getChildren()) {
-                DataType type = DataType.fromString(child.getAttributeValue("data-type"));
+                for (Element child : element.getChildren()) {
+                    DataType type = DataType.fromString(tableProperties.get(template.getName()).getChild(child.getName()).getAttributeValue("data-type"));
 
-                addTypeToMap(child, dataSet, type, template.getInstance());
+                    addTypeToMap(child, dataSet, type, template.getInstance());
+                }
+                DataAccess da = template.getInstance();
+
+                da.load(dataSet);
+                datasets.add(da);
             }
-            DataAccess da = template.getInstance();
-
-            da.load(dataSet);
-            datasets.add(da);
         }
     }
 
@@ -606,7 +624,7 @@ public class XmlDatabase extends Database {
         int id;
         int index = doc.getRootElement().getChildren().size() - 1;
 
-        if (index < 0) {
+        if (index < 1) { // Skip first index as that would be the tableProperties
             // No data in this document yet, start at 1
             return 1;
         }
@@ -626,7 +644,7 @@ public class XmlDatabase extends Database {
             }
         }
         catch (NumberFormatException e) {
-            throw new DatabaseTableInconsistencyException(col.columnName() + "is not an incrementable field. Fix your DataAccess!");
+            throw new DatabaseTableInconsistencyException(col.columnName() + " is not an incrementable field. Fix your DataAccess!");
         }
     }
 
@@ -638,9 +656,15 @@ public class XmlDatabase extends Database {
      * @param type
      */
     private void addTypeToMap(Element child, HashMap<String, Object> dataSet, DataType type, DataAccess template) {
+        boolean isList = false;
+        try {
+            isList = tableProperties.get(template.getName()).getChild(child.getName()).getAttribute("is-list").getBooleanValue();
+        }
+        catch (DataConversionException dcex) {
+        }
         switch (type) {
             case BYTE:
-                if (Boolean.valueOf(child.getAttributeValue("is-list"))) {
+                if (isList) {
                     ArrayList<Byte> values = new ArrayList<Byte>();
 
                     for (Element el : child.getChildren()) {
@@ -670,7 +694,7 @@ public class XmlDatabase extends Database {
                 break;
 
             case SHORT:
-                if (Boolean.valueOf(child.getAttributeValue("is-list"))) {
+                if (isList) {
                     ArrayList<Short> values = new ArrayList<Short>();
 
                     for (Element el : child.getChildren()) {
@@ -700,7 +724,7 @@ public class XmlDatabase extends Database {
                 break;
 
             case INTEGER:
-                if (Boolean.valueOf(child.getAttributeValue("is-list"))) {
+                if (isList) {
                     ArrayList<Integer> values = new ArrayList<Integer>();
 
                     for (Element el : child.getChildren()) {
@@ -730,7 +754,7 @@ public class XmlDatabase extends Database {
                 break;
 
             case LONG:
-                if (Boolean.valueOf(child.getAttributeValue("is-list"))) {
+                if (isList) {
                     ArrayList<Long> values = new ArrayList<Long>();
 
                     for (Element el : child.getChildren()) {
@@ -760,7 +784,7 @@ public class XmlDatabase extends Database {
                 break;
 
             case FLOAT:
-                if (Boolean.valueOf(child.getAttributeValue("is-list"))) {
+                if (isList) {
                     ArrayList<Float> values = new ArrayList<Float>();
 
                     for (Element el : child.getChildren()) {
@@ -790,7 +814,7 @@ public class XmlDatabase extends Database {
                 break;
 
             case DOUBLE:
-                if (Boolean.valueOf(child.getAttributeValue("is-list"))) {
+                if (isList) {
                     ArrayList<Double> values = new ArrayList<Double>();
 
                     for (Element el : child.getChildren()) {
@@ -820,7 +844,7 @@ public class XmlDatabase extends Database {
                 break;
 
             case STRING:
-                if (Boolean.valueOf(child.getAttributeValue("is-list"))) {
+                if (isList) {
                     ArrayList<String> values = new ArrayList<String>();
 
                     for (Element el : child.getChildren()) {
@@ -834,7 +858,7 @@ public class XmlDatabase extends Database {
                 break;
 
             case BOOLEAN:
-                if (Boolean.valueOf(child.getAttributeValue("is-list"))) {
+                if (isList) {
                     ArrayList<Boolean> values = new ArrayList<Boolean>();
 
                     for (Element el : child.getChildren()) {
@@ -893,6 +917,25 @@ public class XmlDatabase extends Database {
     }
 
     private void sortElements(Document doc) {
+        // Need tableProperties to be at the top
+        doc.getRootElement().sortChildren(
+                new Comparator<Element>() {
+                    @Override
+                    public int compare(Element o1, Element o2) {
+                        if (o1.getName().equals("tableProperties")) {
+                            return -1;
+                        }
+                        else if (o2.getName().equals("tableProperties")) {
+                            return 1;
+                        }
+                        else {
+                            return Integer.valueOf(o1.getChildText("id")).compareTo(Integer.valueOf(o2.getChildText("id")));
+                        }
+                    }
+                }
+        );
+
+        /* Why is this necessary? */
         for (Element e : doc.getRootElement().getChildren()) {
             e.sortChildren(new Comparator<Element>() {
                                @Override
@@ -905,7 +948,7 @@ public class XmlDatabase extends Database {
     }
 
     private Document verifyTable(File file, String root) throws IOException, JDOMException {
-        Document document;
+        //Document document;
         if (file.length() <= 0) {
             // Don't even try reading this file
             return initFile(file, root);
@@ -916,10 +959,14 @@ public class XmlDatabase extends Database {
             return fileBuilder.build(in);
         }
         catch (JDOMParseException e) {
-            File dir = new File("db/damaged_db/" + System.currentTimeMillis() + "/");
-            dir.mkdirs();
             // Assume the file is damaged. Make a backup, and do it again.
-            Files.move(file, new File(dir, file.getName()));
+            File dir = new File("db/damaged_db/" + System.currentTimeMillis() + "/");
+            if (dir.mkdirs()) {
+                Files.move(file, new File(dir, file.getName()));
+            }
+            else {
+                Canary.log.warn("Failed to back up damaged database files...");
+            }
             return initFile(file, root);
         }
         finally {
@@ -980,5 +1027,30 @@ public class XmlDatabase extends Database {
             default:
                 return value;
         }
+    }
+
+    private Element generateProperties(DataAccess template) {
+        Element properties = new Element("tableProperties");
+        Canary.log.debug("tableProperties is installing...");
+        for (Field field : template.getClass().getFields()) {
+            for (Annotation annotation : field.getAnnotations()) {
+                if (annotation instanceof Column) {
+                    Column column = (Column) annotation;
+                    setPropertyFor(column, properties);
+                }
+            }
+        }
+        tableProperties.put(template.getName(), properties);
+        return properties;
+    }
+
+    private void setPropertyFor(Column column, Element tableProperties) {
+        Element col = new Element(column.columnName());
+        col.setAttribute("auto-increment", String.valueOf(column.autoIncrement()));
+        col.setAttribute("data-type", column.dataType().name());
+        col.setAttribute("column-type", column.columnType().name());
+        col.setAttribute("is-list", String.valueOf(column.isList()));
+        col.setAttribute("not-null", String.valueOf(column.notNull()));
+        tableProperties.addContent(col);
     }
 }
