@@ -12,7 +12,11 @@ import net.canarymod.database.exceptions.DatabaseAccessException;
 import net.canarymod.database.exceptions.DatabaseReadException;
 import net.canarymod.database.exceptions.DatabaseTableInconsistencyException;
 import net.canarymod.database.exceptions.DatabaseWriteException;
-import org.jdom2.*;
+import org.jdom2.Content;
+import org.jdom2.DataConversionException;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
 import org.jdom2.input.JDOMParseException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
@@ -25,7 +29,12 @@ import java.io.RandomAccessFile;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Represent access to an XML database
@@ -515,7 +524,7 @@ public class XmlDatabase extends Database {
             }
             HashMap<String, Object> dataSet = new HashMap<String, Object>();
             for (Element child : element.getChildren()) {
-                DataType type = DataType.fromString(tableProperties.get(data.getName()).getChild(child.getName()).getAttributeValue("data-type"));
+                DataType type = DataType.fromString(getTableProperties(table, data.getName(), data.getInstance()).getChild(child.getName()).getAttributeValue("data-type"));
                 addTypeToMap(child, dataSet, type, data.getInstance());
             }
             data.load(dataSet);
@@ -529,12 +538,7 @@ public class XmlDatabase extends Database {
 
         sortElements(table); // pre-sort so if tableProperties is moved from the top it will be returned
 
-        if (table.getRootElement().getChild("tableProperties") == null) {
-            table.getRootElement().addContent(generateProperties(template));
-        }
-        else {
-            tableProperties.put(template.getName(), table.getRootElement().getChild("tableProperties"));
-        }
+        Element properties = getTableProperties(table, template.getName(), template);
 
         for (Element element : table.getRootElement().getChildren()) {
             if (!element.getName().equals("tableProperties")) {
@@ -555,7 +559,7 @@ public class XmlDatabase extends Database {
                 HashMap<String, Object> dataSet = new HashMap<String, Object>();
 
                 for (Element child : element.getChildren()) {
-                    DataType type = DataType.fromString(tableProperties.get(template.getName()).getChild(child.getName()).getAttributeValue("data-type"));
+                    DataType type = DataType.fromString(properties.getChild(child.getName()).getAttributeValue("data-type"));
 
                     addTypeToMap(child, dataSet, type, template.getInstance());
                 }
@@ -644,7 +648,7 @@ public class XmlDatabase extends Database {
             }
         }
         catch (NumberFormatException e) {
-            throw new DatabaseTableInconsistencyException(col.columnName() + " is not an incrementable field. Fix your DataAccess!");
+            throw new DatabaseTableInconsistencyException(col.columnName() + " is not an incremental field. Fix your DataAccess!");
         }
     }
 
@@ -1052,5 +1056,17 @@ public class XmlDatabase extends Database {
         col.setAttribute("is-list", String.valueOf(column.isList()));
         col.setAttribute("not-null", String.valueOf(column.notNull()));
         tableProperties.addContent(col);
+    }
+
+    private Element getTableProperties(Document table, String tableName, DataAccess template) {
+        if (!tableProperties.containsKey(tableName)) {
+            if (table.getRootElement().getChild("tableProperties") == null) {
+                table.getRootElement().addContent(generateProperties(template));
+            }
+            else {
+                tableProperties.put(tableName, table.getRootElement().getChild("tableProperties"));
+            }
+        }
+        return tableProperties.get(tableName);
     }
 }
