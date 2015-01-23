@@ -8,6 +8,7 @@ import net.canarymod.api.PlayerListEntry;
 import net.canarymod.api.PlayerReference;
 import net.canarymod.api.chat.ChatComponent;
 import net.canarymod.api.inventory.Inventory;
+import net.canarymod.api.inventory.Item;
 import net.canarymod.api.packet.Packet;
 import net.canarymod.api.world.blocks.Sign;
 import net.canarymod.api.world.position.Direction;
@@ -240,6 +241,14 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      *         the {@link Sign} to edit
      */
     void openSignEditWindow(Sign sign);
+
+    /**
+     * Opens a given Written Book dynamically
+     *
+     * @param writtenbook
+     *         the Written Book to be opened
+     */
+    void openBook(Item writtenbook);
 
     /**
      * Closes an open Inventory GUI if one is presently open.<br/>
