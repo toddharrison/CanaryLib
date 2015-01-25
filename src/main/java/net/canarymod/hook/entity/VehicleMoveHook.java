@@ -5,7 +5,7 @@ import net.canarymod.api.world.position.Vector3D;
 import net.canarymod.hook.CancelableHook;
 
 /**
- * Is called when a LivingEntity enters a vehicle
+ * Is called when a LivingEntity moves a vehicle
  *
  * @author Chris (damagefilter)
  */
