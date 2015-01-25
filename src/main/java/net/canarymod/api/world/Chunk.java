@@ -90,8 +90,17 @@ public interface Chunk {
      * Get the max height of any chunk
      *
      * @return max height
+     * @deprecated replaced by getMaxHeight()
      */
-    public int getMaxHeigth();
+    @Deprecated public int getMaxHeigth();
+    
+    /**
+     * Get the max height of any chunk
+     *
+     * @return max height
+     * 
+     */
+    public int getMaxHeight();
 
     /**
      * Is that chunk loaded?
