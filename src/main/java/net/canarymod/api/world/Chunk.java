@@ -90,6 +90,15 @@ public interface Chunk {
      * Get the max height of any chunk
      *
      * @return max height
+     * @deprecated replaced by getMaxHeight()
+     */
+    @Deprecated public int getMaxHeigth();
+    
+    /**
+     * Get the max height of any chunk
+     *
+     * @return max height
+     * 
      */
     public int getMaxHeight();
 
