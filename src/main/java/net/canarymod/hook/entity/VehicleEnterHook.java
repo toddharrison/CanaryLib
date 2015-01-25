@@ -5,7 +5,7 @@ import net.canarymod.api.entity.vehicle.Vehicle;
 import net.canarymod.hook.CancelableHook;
 
 /**
- * Is called when a LivingEntity exits a vehicle
+ * Is called when a LivingEntity enters a vehicle
  *
  * @author Chris (damagefilter)
  */
