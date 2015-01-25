@@ -87,6 +87,16 @@ public interface NonPlayableCharacter extends Human {
      * Gets the list of {@link NPCBehaviorListener} for this NonPlayableCharacter
      *
      * @return the list of {@link NPCBehaviorListener}s
+     * 
+     * @deprecated in favour of getRegisteredListeners();
+     */
+    @Deprecated public List<NPCBehaviorListener> geRegisteredListeners();
+    
+    /**
+     * Gets the list of {@link NPCBehaviorListener} for this NonPlayableCharacter
+     *
+     * @return the list of {@link NPCBehaviorListener}s
+     *
      */
     public List<NPCBehaviorListener> getRegisteredListeners();
 
