@@ -88,6 +88,6 @@ public interface NonPlayableCharacter extends Human {
      *
      * @return the list of {@link NPCBehaviorListener}s
      */
-    public List<NPCBehaviorListener> geRegisteredListeners();
+    public List<NPCBehaviorListener> getRegisteredListeners();
 
 }
