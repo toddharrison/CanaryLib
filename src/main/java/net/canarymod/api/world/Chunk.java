@@ -91,7 +91,7 @@ public interface Chunk {
      *
      * @return max height
      */
-    public int getMaxHeigth();
+    public int getMaxHeight();
 
     /**
      * Is that chunk loaded?
