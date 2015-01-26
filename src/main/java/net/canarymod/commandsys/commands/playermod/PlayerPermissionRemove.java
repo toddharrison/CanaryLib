@@ -1,11 +1,13 @@
 package net.canarymod.commandsys.commands.playermod;
 
 import net.canarymod.Canary;
-import net.canarymod.Translator;
 import net.canarymod.api.PlayerReference;
 import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.permissionsystem.PermissionNode;
+
+import static net.canarymod.Translator.sendTranslatedMessage;
+import static net.canarymod.Translator.sendTranslatedNotice;
 
 /**
  * Command to remove a permission node from a player
@@ -18,12 +20,12 @@ public class PlayerPermissionRemove extends PlayermodBase {
         PlayerReference player = Canary.getServer().matchKnownPlayer(args[0]);
         PermissionNode node = PermissionNode.fromString(args[1]);
         if (player == null) {
-            caller.notice(Translator.translateAndFormat("unknown player", args[0]));
+            sendTranslatedNotice(caller, "unknown player", args[0]);
             return;
         }
         else {
             Canary.permissionManager().removePlayerPermission(node.getName(), player);
         }
-        caller.message(ChatFormat.YELLOW + Translator.translate("modify permission removed"));
+        sendTranslatedMessage(caller, ChatFormat.YELLOW, "modify permission removed");
     }
 }

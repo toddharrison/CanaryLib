@@ -6,6 +6,8 @@ import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.kit.Kit;
 
+import static net.canarymod.Translator.sendTranslatedNotice;
+
 /**
  * /kit delete
  *
@@ -14,14 +16,14 @@ import net.canarymod.kit.Kit;
 public class KitDelete implements NativeCommand {
 
     @Override
-    public void execute(MessageReceiver caller, String[] parameters) {
-        Kit kat = Canary.kits().getKit(parameters[0]);
+    public void execute(MessageReceiver caller, String[] args) {
+        Kit kat = Canary.kits().getKit(args[0]);
         if (kat != null) {
             Canary.kits().removeKit(kat);
-            caller.notice(String.format("Kit '%s%s%s' deleted", ChatFormat.YELLOW, parameters[0], ChatFormat.RED));
+            caller.notice(String.format("Kit '%s%s%s' deleted", ChatFormat.YELLOW, args[0], ChatFormat.RED));
         }
         else {
-            caller.notice("Error 404: Kit Not Found...");
+            sendTranslatedNotice(caller, "kit invalid", args[0]);
         }
     }
 }

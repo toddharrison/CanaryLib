@@ -7,6 +7,8 @@ import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.Group;
 
+import static net.canarymod.Translator.sendTranslatedNotice;
+
 /**
  * Command to check the values of a group
  *
@@ -17,7 +19,7 @@ public class GroupCheck implements NativeCommand {
     public void execute(MessageReceiver caller, String[] args) {
         Group g = Canary.usersAndGroups().getGroup(args[0]);
         if (g == null || !g.getName().equals(args[0])) {
-            caller.notice(Translator.translateAndFormat("unknown group", args[0]));
+            sendTranslatedNotice(caller, "unknown group", args[0]);
             return;
         }
         caller.message("Name: " + g.getName());

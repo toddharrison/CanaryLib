@@ -8,6 +8,8 @@ import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.permissionsystem.PermissionNode;
 
+import static net.canarymod.Translator.sendTranslatedNotice;
+
 /**
  * Command to check if a player has a permission node
  *
@@ -47,7 +49,7 @@ public class PlayerPermissionCheck extends PlayermodBase {
         else {
             PlayerReference target = Canary.getServer().matchKnownPlayer(args[0]);
             if (target == null) {
-                caller.notice(Translator.translateAndFormat("unknown player", args[0]));
+                sendTranslatedNotice(caller, "unknown player", args[0]);
                 return;
             }
 

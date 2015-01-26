@@ -1,12 +1,15 @@
 package net.canarymod.commandsys.commands.world;
 
 import net.canarymod.Canary;
+import net.canarymod.Translator;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.DimensionType;
 import net.canarymod.api.world.World;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.tasks.ServerTask;
+
+import static net.canarymod.Translator.sendTranslatedNotice;
 
 /**
  * @author Jason (darkdiplomat)
@@ -18,7 +21,7 @@ public class DeleteWorldCommand implements NativeCommand {
             caller.notice("There was no world by that name.");
             return;
         }
-        caller.notice("Please wait while the world is removed...");
+        sendTranslatedNotice(caller, "world delete inprogress");
         Canary.getServer().addSynchronousTask(new DeleteWorldTask(caller, parameters[0]));
     }
 
@@ -40,7 +43,7 @@ public class DeleteWorldCommand implements NativeCommand {
                 if (!world.getPlayerList().isEmpty()) {
                     for (Player player : world.getPlayerList()) {
                         player.teleportTo(Canary.getServer().getDefaultWorld().getSpawnLocation());
-                        player.notice("You have been transfered to the default world due to World Deletion.");
+                        player.notice(Translator.localTranslate("world deleted transfer", player.getLocale()));
                     }
                 }
                 Canary.getServer().getWorldManager().unloadWorld(worldName.replaceAll("_.+", ""), DimensionType.fromName(worldName.replaceAll(".+_", "")), true);
@@ -50,12 +53,12 @@ public class DeleteWorldCommand implements NativeCommand {
             if (attempts <= 10) {
                 attempts++;
                 if (Canary.getServer().getWorldManager().destroyWorld(worldName)) {
-                    caller.notice(String.format("World '%s' deleted", worldName));
+                    caller.notice(Translator.localTranslate("world delete success", caller.getLocale(), worldName));
                     Canary.getServer().removeSynchronousTask(this);
                     return;
                 }
             }
-            caller.notice(String.format("Unable to delete World '%s'", worldName));
+            caller.notice(Translator.localTranslate("world delete success", caller.getLocale(), worldName));
             Canary.getServer().removeSynchronousTask(this);
             return;
         }

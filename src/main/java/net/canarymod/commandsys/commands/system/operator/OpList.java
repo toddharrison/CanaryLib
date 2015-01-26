@@ -1,4 +1,4 @@
-package net.canarymod.commandsys.commands.system;
+package net.canarymod.commandsys.commands.system.operator;
 
 import net.canarymod.Canary;
 import net.canarymod.ToolBox;

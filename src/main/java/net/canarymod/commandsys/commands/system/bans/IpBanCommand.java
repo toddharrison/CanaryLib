@@ -1,4 +1,4 @@
-package net.canarymod.commandsys.commands.system;
+package net.canarymod.commandsys.commands.system.bans;
 
 import net.canarymod.Canary;
 import net.canarymod.ToolBox;
@@ -11,6 +11,8 @@ import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.hook.player.BanHook;
 import net.visualillusionsent.utils.IPAddressUtils;
 import net.visualillusionsent.utils.StringUtils;
+
+import static net.canarymod.Translator.sendTranslatedNotice;
 
 /**
  * Command to ban players by ip
@@ -46,7 +48,7 @@ public class IpBanCommand implements NativeCommand {
             }
         }
         ban.setReason(reason);
-        ban.setTimestamp(timestamp);
+        ban.setExpiration(timestamp);
         ban.setBanningPlayer(caller.getName());
         ban.setIsIpBan(true);
         if (ref != null) {
@@ -60,7 +62,7 @@ public class IpBanCommand implements NativeCommand {
 
         Canary.bans().issueBan(ban);
         Canary.hooks().callHook(new BanHook(ref != null ? ref : null, ref != null ? ref.getIP() : parameters[0], caller, reason, timestamp));
-        caller.notice(Translator.translateAndFormat("ipban banned", parameters[0]));
+        sendTranslatedNotice(caller, "ipban banned", parameters[0]);
         if (ref != null && ref.isOnline() && ref instanceof Player) {
             ((Player)ref).kick(reason);
         }

@@ -1,4 +1,4 @@
-package net.canarymod.commandsys.commands.system;
+package net.canarymod.commandsys.commands.system.informational;
 
 import net.canarymod.ToolBox;
 import net.canarymod.chat.ChatFormat;

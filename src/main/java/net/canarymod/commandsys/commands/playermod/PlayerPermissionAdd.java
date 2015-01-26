@@ -1,12 +1,14 @@
 package net.canarymod.commandsys.commands.playermod;
 
 import net.canarymod.Canary;
-import net.canarymod.Translator;
 import net.canarymod.api.PlayerReference;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.permissionsystem.PermissionNode;
+
+import static net.canarymod.Translator.sendTranslatedMessage;
+import static net.canarymod.Translator.sendTranslatedNotice;
 
 /**
  * Command to add a permission node to a player
@@ -27,13 +29,13 @@ public class PlayerPermissionAdd extends PlayermodBase {
         else {
             PlayerReference target = Canary.getServer().matchKnownPlayer(args[0]);
             if (target == null) {
-                caller.notice(Translator.translateAndFormat("unknown player", args[0]));
+                sendTranslatedNotice(caller, "unknown player", args[0]);
                 return;
             }
             else {
                 target.getPermissionProvider().addPermission(node.getName(), node.getValue());
             }
         }
-        caller.message(ChatFormat.YELLOW + Translator.translate("modify permission added"));
+        sendTranslatedMessage(caller, ChatFormat.YELLOW, "modify permission added");
     }
 }

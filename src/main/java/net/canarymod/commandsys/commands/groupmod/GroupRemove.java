@@ -1,12 +1,14 @@
 package net.canarymod.commandsys.commands.groupmod;
 
 import net.canarymod.Canary;
-import net.canarymod.Translator;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.Group;
+
+import static net.canarymod.Translator.sendTranslatedMessage;
+import static net.canarymod.Translator.sendTranslatedNotice;
 
 /**
  * Command to remove a group
@@ -20,11 +22,11 @@ public class GroupRemove implements NativeCommand {
 
         Group group = Canary.usersAndGroups().getGroup(args[0]);
         if (group == null || !group.getName().equals(args[0])) {
-            caller.notice(Translator.translateAndFormat("unknown group", args[0]));
+            sendTranslatedNotice(caller, "unknown group", args[0]);
             return;
         }
         if (group.getName().equalsIgnoreCase(Canary.usersAndGroups().getDefaultGroup().getName())) {
-            caller.notice(Translator.translate("group remove default group"));
+            sendTranslatedNotice(caller, "group remove default group");
             return;
         }
         // Fix players that had the said group
@@ -34,6 +36,6 @@ public class GroupRemove implements NativeCommand {
             }
         }
         Canary.usersAndGroups().removeGroup(group);
-        caller.message(ChatFormat.YELLOW + Translator.translateAndFormat("group removed", group.getName()));
+        sendTranslatedMessage(caller, ChatFormat.YELLOW, "group removed", group.getName());
     }
 }

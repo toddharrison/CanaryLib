@@ -1,11 +1,13 @@
 package net.canarymod.commandsys.commands.playermod;
 
 import net.canarymod.Canary;
-import net.canarymod.Translator;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.user.Group;
+
+import static net.canarymod.Translator.sendTranslatedMessage;
+import static net.canarymod.Translator.sendTranslatedNotice;
 
 /**
  * Command to add a player (for permissions, groups, etc.) to the database
@@ -19,7 +21,7 @@ public class PlayerCreate extends PlayermodBase {
 
         Group g = Canary.usersAndGroups().getGroup(args[1]);
         if (g == null || !g.getName().equals(args[1])) {
-            caller.notice(Translator.translateAndFormat("unknown group", args[1]));
+            sendTranslatedNotice(caller, "unknown group", args[0]);
             return;
         }
 
@@ -38,6 +40,6 @@ public class PlayerCreate extends PlayermodBase {
                 target.setGroup(g);
             }
         }
-        caller.message(ChatFormat.YELLOW + Translator.translate("modify group set"));
+        sendTranslatedMessage(caller, ChatFormat.YELLOW, "modify group set");
     }
 }

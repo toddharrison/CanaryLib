@@ -2,12 +2,14 @@ package net.canarymod.commandsys.commands.groupmod;
 
 import net.canarymod.Canary;
 import net.canarymod.ToolBox;
-import net.canarymod.Translator;
 import net.canarymod.api.world.World;
 import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.Group;
+
+import static net.canarymod.Translator.sendTranslatedMessage;
+import static net.canarymod.Translator.sendTranslatedNotice;
 
 /**
  * Command to create a group
@@ -29,18 +31,18 @@ public class GroupCreate implements NativeCommand {
             // will evaluate as the NORMAL dimension.
             World world = ToolBox.parseWorld(args[2]);
             if (world == null) { // Whoops!
-                caller.notice(Translator.translateAndFormat("group unknown world", args[2]));
+                sendTranslatedNotice(caller, "group unknown world", args[2]);
                 return;
             }
             worldName = world.getFqName();
 
             parent = Canary.usersAndGroups().getGroup(args[1]);
             if (parent == null || !parent.getName().equals(args[1])) {
-                caller.notice(Translator.translateAndFormat("group unknown parent", args[1]));
+                sendTranslatedNotice(caller, "group unknown parent", args[1]);
                 return;
             }
             if (!parent.getWorldName().equals(worldName)) {
-                caller.notice(Translator.translateAndFormat("group parent world mismatch", parent.getName(), parent.getWorldName(), worldName));
+                sendTranslatedNotice(caller, "group parent world mismatch", parent.getName(), parent.getWorldName(), worldName);
                 return;
             }
         }
@@ -55,8 +57,8 @@ public class GroupCreate implements NativeCommand {
                 if (worldName == null) {
                     //So that's both null, all is invalid!
                     if (parent == null) { // only if this one last check fails
-                        caller.notice(Translator.translateAndFormat("group unknown world", args[1]));
-                        caller.notice(Translator.translateAndFormat("group unknown parent", args[1]));
+                        sendTranslatedNotice(caller, "group unknown world", args[1]);
+                        sendTranslatedNotice(caller, "group unknown parent", args[1]);
                         return;
                     }
                 }
@@ -64,7 +66,7 @@ public class GroupCreate implements NativeCommand {
         }
 
         if (Canary.usersAndGroups().groupExists(args[0])) {
-            caller.notice(Translator.translateAndFormat("group failed dupe", args[0]));
+            sendTranslatedNotice(caller, "group failed dupe", args[0]);
             return;
         }
         group.setName(args[0]);
@@ -73,10 +75,10 @@ public class GroupCreate implements NativeCommand {
         group.setWorldName(worldName);
         Canary.usersAndGroups().addGroup(group);
         if (parent == null) {
-            caller.message(ChatFormat.YELLOW + Translator.translateAndFormat("group created", group.getName()));
+            sendTranslatedMessage(caller, ChatFormat.YELLOW, "group created", group.getName());
         }
         else {
-            caller.message(ChatFormat.YELLOW + Translator.translateAndFormat("group created parent", group.getName(), parent.getName()));
+            sendTranslatedMessage(caller, ChatFormat.YELLOW, "group created parent", group.getName(), parent.getName());
         }
     }
 }

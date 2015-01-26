@@ -1,5 +1,7 @@
 package net.canarymod;
 
+import net.canarymod.chat.ChatFormat;
+import net.canarymod.chat.MessageReceiver;
 import net.canarymod.config.Configuration;
 import net.visualillusionsent.utils.FileUtils;
 import net.visualillusionsent.utils.LocaleHelper;
@@ -23,8 +25,8 @@ public class Translator extends LocaleHelper {
     private static final String canaryLang = "lang/canary/"; //allow plugins to borrow the lang directory for their lang files
     private static final boolean doUpdate = Configuration.getServerConfig().updateLang();
     private static final String[] locales = new String[]{ // The Default Supported
-                                                                "en_US", "da_DK", "nl_NL", "fi_FI", "fr_FR", "de_DE", "it_IT", "no_NO",
-                                                                "pl_PL", "en_PT", "ru_RU", "es_ES", "sv_SE"
+            "en_US", "da_DK", "nl_NL", "fi_FI", "fr_FR", "de_DE", "it_IT", "no_NO",
+            "pl_PL", "en_PT", "ru_RU", "es_ES", "sv_SE"
     };
     private static final Translator instance;
 
@@ -133,6 +135,74 @@ public class Translator extends LocaleHelper {
      */
     public static boolean nativeCanTranslate(String key) {
         return NativeTranslateBridge.$.nativeCanTranslate(key);
+    }
+
+    /**
+     * Translates a message and sends it as a notice to the given {@link net.canarymod.chat.MessageReceiver}
+     *
+     * @param receiver
+     *         the receiver of the message
+     * @param key
+     *         the key to translate
+     */
+    public static void sendTranslatedNotice(MessageReceiver receiver, String key) {
+        receiver.notice(localTranslate(key, receiver.getLocale()));
+    }
+
+    /**
+     * Translates a message and sends it as a notice to the given {@link net.canarymod.chat.MessageReceiver}
+     *
+     * @param receiver
+     *         the receiver of the message
+     * @param key
+     *         the key to translate
+     * @param args
+     *         the argument objects to use with translation
+     */
+    public static void sendTranslatedNotice(MessageReceiver receiver, String key, Object... args) {
+        receiver.notice(localTranslate(key, receiver.getLocale(), args));
+    }
+
+    /**
+     * Translates a message and sends it to the given {@link net.canarymod.chat.MessageReceiver}
+     *
+     * @param receiver
+     *         the receiver of the message
+     * @param key
+     *         the key to translate
+     */
+    public static void sendTranslatedMessage(MessageReceiver receiver, String key) {
+        receiver.message(localTranslate(key, receiver.getLocale()));
+    }
+
+    /**
+     * Translates a message and sends it to the given {@link net.canarymod.chat.MessageReceiver}
+     *
+     * @param receiver
+     *         the receiver of the message
+     * @param key
+     *         the key to translate
+     * @param args
+     *         the argument objects to use with translation
+     */
+    public static void sendTranslatedMessage(MessageReceiver receiver, String key, Object... args) {
+        receiver.message(localTranslate(key, receiver.getLocale(), args));
+    }
+
+    /**
+     * Translates a message and sends it to the given {@link net.canarymod.chat.MessageReceiver}
+     *
+     * @param receiver
+     *         the receiver of the message
+     * @param messageColor
+     *         the {@link ChatFormat} color to make the message
+     * @param key
+     *         the key to translate
+     * @param args
+     *         the argument objects to use with translation
+     */
+    public static void sendTranslatedMessage(MessageReceiver receiver, ChatFormat messageColor, String key, Object... args) {
+        receiver.message(messageColor.concat(localTranslate(key, receiver.getLocale(), args)));
     }
 
     /**

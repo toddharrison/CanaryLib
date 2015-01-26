@@ -1,6 +1,9 @@
 package net.canarymod.chat;
 
+import net.canarymod.api.CommandBlockLogic;
+import net.canarymod.api.Server;
 import net.canarymod.api.chat.ChatComponent;
+import net.canarymod.api.entity.living.humanoid.Player;
 
 /**
  * Callback interface for commands.
@@ -123,6 +126,12 @@ public interface MessageReceiver {
      * @return receiver type
      */
     ReceiverType getReceiverType();
+
+    Player asPlayer();
+
+    Server asServer();
+
+    CommandBlockLogic asCommandBlock();
 
     /**
      * Gets the locale the MessageReceiver is using in their client. This is in the format of language_region e.g. en_US

@@ -1,10 +1,13 @@
 package net.canarymod.commandsys.commands.player;
 
-import net.canarymod.Translator;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
+import net.canarymod.chat.ReceiverType;
 import net.canarymod.commandsys.NativeCommand;
+
+import static net.canarymod.Translator.sendTranslatedNotice;
+import static net.canarymod.Translator.translate;
 
 /**
  * Command to get your own position (x, y, z and rotation)
@@ -14,19 +17,15 @@ import net.canarymod.commandsys.NativeCommand;
 public class GetPosition implements NativeCommand {
 
     public void execute(MessageReceiver caller, String[] parameters) {
-        if (caller instanceof Player) {
-            player((Player)caller);
+        if (caller.getReceiverType().equals(ReceiverType.PLAYER)) {
+            parse(caller.asPlayer());
         }
         else {
-            console(caller);
+            sendTranslatedNotice(caller, "getpos console", (ChatFormat.OBFUSCATED.toString() + Long.MAX_VALUE + ChatFormat.RESET + "km"));
         }
     }
 
-    private void console(MessageReceiver caller) {
-        caller.notice(Translator.translate("getpos console") + "(" + ChatFormat.OBFUSCATED + String.format("Altitude: %dkm ", Long.MAX_VALUE) + ChatFormat.RESET + ")");
-    }
-
-    private void player(Player player) {
+    private void parse(Player player) {
         player.message(ChatFormat.GOLD + " X: " + ChatFormat.GRAY + player.getX());
         player.message(ChatFormat.GOLD + " Y: " + ChatFormat.GRAY + player.getY());
         player.message(ChatFormat.GOLD + " Z: " + ChatFormat.GRAY + player.getZ());
@@ -38,6 +37,6 @@ public class GetPosition implements NativeCommand {
             degrees += 360.0;
         }
 
-        player.notice(Translator.translate("compass") + " " + Translator.translate(player.getCardinalDirection().toString()) + " (" + (Math.round(degrees * 10) / 10.0) + ")");
+        player.notice(translate("compass") + " " + translate(player.getCardinalDirection().toString()) + " (" + (Math.round(degrees * 10) / 10.0) + ")");
     }
 }

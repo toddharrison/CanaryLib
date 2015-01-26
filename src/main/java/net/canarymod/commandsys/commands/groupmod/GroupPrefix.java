@@ -1,12 +1,14 @@
 package net.canarymod.commandsys.commands.groupmod;
 
 import net.canarymod.Canary;
-import net.canarymod.Translator;
 import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.Group;
 import net.visualillusionsent.utils.StringUtils;
+
+import static net.canarymod.Translator.sendTranslatedMessage;
+import static net.canarymod.Translator.sendTranslatedNotice;
 
 /**
  * Command to change the prefix of a group
@@ -19,7 +21,7 @@ public class GroupPrefix implements NativeCommand {
 
         Group group = Canary.usersAndGroups().getGroup(args[0]);
         if (group == null || !group.getName().equals(args[0])) {
-            caller.notice(Translator.translateAndFormat("unknown group", args[0]));
+            sendTranslatedNotice(caller, "unknown group", args[0]);
             return;
         }
         String prefix = null;
@@ -28,6 +30,6 @@ public class GroupPrefix implements NativeCommand {
         }
         group.setPrefix(prefix);
         Canary.usersAndGroups().updateGroup(group, false);
-        caller.message(ChatFormat.YELLOW + Translator.translate("modify prefix set"));
+        sendTranslatedMessage(caller, ChatFormat.YELLOW, "modify prefix set");
     }
 }

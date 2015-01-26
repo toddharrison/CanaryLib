@@ -1,11 +1,12 @@
 package net.canarymod.commandsys.commands.system.whitelist;
 
-import net.canarymod.Translator;
 import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.config.Configuration;
 import net.visualillusionsent.utils.PropertiesFile;
+
+import static net.canarymod.Translator.sendTranslatedMessage;
 
 /**
  * Whitelist Enable (On) Command
@@ -15,10 +16,10 @@ import net.visualillusionsent.utils.PropertiesFile;
 public class WhitelistEnable implements NativeCommand {
 
     @Override
-    public void execute(MessageReceiver receiver, String[] args) {
+    public void execute(MessageReceiver caller, String[] args) {
         PropertiesFile srvcfg = Configuration.getServerConfig().getFile();
         srvcfg.setBoolean("whitelist-enabled", true);
         srvcfg.save();
-        receiver.message(ChatFormat.YELLOW + Translator.localTranslate("whitelist enabled", receiver.getLocale()));
+        sendTranslatedMessage(caller, ChatFormat.YELLOW, "whitelist enabled");
     }
 }

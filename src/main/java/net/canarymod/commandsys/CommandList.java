@@ -30,31 +30,33 @@ import net.canarymod.commandsys.commands.playermod.PlayerPermissionRemove;
 import net.canarymod.commandsys.commands.playermod.PlayerPrefix;
 import net.canarymod.commandsys.commands.playermod.PlayerRemove;
 import net.canarymod.commandsys.commands.playermod.PlayermodBase;
-import net.canarymod.commandsys.commands.system.BanCommand;
-import net.canarymod.commandsys.commands.system.CanaryModCommand;
 import net.canarymod.commandsys.commands.system.CreateVanilla;
-import net.canarymod.commandsys.commands.system.DeOp;
 import net.canarymod.commandsys.commands.system.HelpCommand;
-import net.canarymod.commandsys.commands.system.IpBanCommand;
 import net.canarymod.commandsys.commands.system.Kick;
 import net.canarymod.commandsys.commands.system.ListPlugins;
 import net.canarymod.commandsys.commands.system.Motd;
 import net.canarymod.commandsys.commands.system.Mute;
-import net.canarymod.commandsys.commands.system.Op;
-import net.canarymod.commandsys.commands.system.OpList;
 import net.canarymod.commandsys.commands.system.PlayerInformation;
 import net.canarymod.commandsys.commands.system.PlayerList;
 import net.canarymod.commandsys.commands.system.PluginCommand;
 import net.canarymod.commandsys.commands.system.ReloadCommand;
-import net.canarymod.commandsys.commands.system.ReservelistCommand;
 import net.canarymod.commandsys.commands.system.StopServer;
-import net.canarymod.commandsys.commands.system.SystemInformation;
-import net.canarymod.commandsys.commands.system.UnbanCommand;
-import net.canarymod.commandsys.commands.system.Uptime;
+import net.canarymod.commandsys.commands.system.bans.BanCommand;
+import net.canarymod.commandsys.commands.system.bans.IpBanCommand;
+import net.canarymod.commandsys.commands.system.bans.UnbanCommand;
+import net.canarymod.commandsys.commands.system.informational.CanaryModCommand;
+import net.canarymod.commandsys.commands.system.informational.SystemInformation;
+import net.canarymod.commandsys.commands.system.informational.Uptime;
 import net.canarymod.commandsys.commands.system.kits.KitCreate;
 import net.canarymod.commandsys.commands.system.kits.KitDelete;
 import net.canarymod.commandsys.commands.system.kits.KitGive;
 import net.canarymod.commandsys.commands.system.kits.KitList;
+import net.canarymod.commandsys.commands.system.operator.DeOp;
+import net.canarymod.commandsys.commands.system.operator.Op;
+import net.canarymod.commandsys.commands.system.operator.OpList;
+import net.canarymod.commandsys.commands.system.reservelist.ReservelistAdd;
+import net.canarymod.commandsys.commands.system.reservelist.ReservelistRemove;
+import net.canarymod.commandsys.commands.system.reservelist.ReservelistShow;
 import net.canarymod.commandsys.commands.system.whitelist.WhitelistAdd;
 import net.canarymod.commandsys.commands.system.whitelist.WhitelistDisable;
 import net.canarymod.commandsys.commands.system.whitelist.WhitelistEnable;
@@ -306,40 +308,57 @@ public class CommandList implements CommandListener {
         temp.put("playermod.group.check", new PlayerGroupCheck());
         temp.put("playermod.group.remove", new PlayerGroupRemove());
 
-        /* system */
+        /* system.bans */
         temp.put("ban", new BanCommand());
-        temp.put("canarymod", new CanaryModCommand());
-        temp.put("createvanilla", new CreateVanilla());
-        temp.put("deop", new DeOp());
-        temp.put("help", new HelpCommand());
         temp.put("ipban", new IpBanCommand());
-        temp.put("kick", new Kick());
+        temp.put("unban", new UnbanCommand());
+
+        /* system.informational */
+        temp.put("canarymod", new CanaryModCommand());
+        temp.put("sysinfo", new SystemInformation());
+        temp.put("uptime", new Uptime());
+
+        /* system.kits */
         temp.put("kit.create", new KitCreate());
         temp.put("kit.delete", new KitDelete());
         temp.put("kit.give", new KitGive());
         temp.put("kit.list", new KitList());
-        temp.put("listplugins", new ListPlugins());
-        temp.put("motd", new Motd());
-        temp.put("mute", new Mute());
+
+        /* system.operator */
+        temp.put("deop", new DeOp());
         temp.put("op", new Op());
         temp.put("oplist", new OpList());
-        temp.put("playerinfo", new PlayerInformation());
-        temp.put("playerlist", new PlayerList());
-        temp.put("enableplugin", new PluginCommand(false, false));
-        temp.put("disableplugin", new PluginCommand(true, false));
-        temp.put("reloadplugin", new PluginCommand(false, true));
-        temp.put("reload", new ReloadCommand());
-        temp.put("reservelist", new ReservelistCommand());
-        temp.put("stop", new StopServer());
-        temp.put("sysinfo", new SystemInformation());
-        temp.put("unban", new UnbanCommand());
-        temp.put("uptime", new Uptime());
+
+        /* system.reservelist */
+        temp.put("reservelist.add", new ReservelistAdd());
+        temp.put("reservelist.remove", new ReservelistRemove());
+        temp.put("reservelist.show", new ReservelistShow());
+
+        /* system.whitelist */
         temp.put("whitelist.add", new WhitelistAdd());
         temp.put("whitelist.remove", new WhitelistRemove());
         temp.put("whitelist.show", new WhitelistShow());
         temp.put("whitelist.enable", new WhitelistEnable());
         temp.put("whitelist.disable", new WhitelistDisable());
         temp.put("whitelist.reload", new WhitelistReload());
+
+        /* system */
+        temp.put("createvanilla", new CreateVanilla());
+
+        temp.put("help", new HelpCommand());
+        temp.put("kick", new Kick());
+        temp.put("listplugins", new ListPlugins());
+        temp.put("motd", new Motd());
+        temp.put("mute", new Mute());
+
+        temp.put("playerinfo", new PlayerInformation());
+        temp.put("playerlist", new PlayerList());
+        temp.put("enableplugin", new PluginCommand(false, false));
+        temp.put("disableplugin", new PluginCommand(true, false));
+        temp.put("reloadplugin", new PluginCommand(false, true));
+        temp.put("reload", new ReloadCommand());
+
+        temp.put("stop", new StopServer());
 
         /* vanilla */
         temp.put("achievement", new Achievement());
@@ -1229,12 +1248,50 @@ public class CommandList implements CommandListener {
             aliases = { "reservelist", "rlist", "rl" },
             description = "reservelist info",
             permissions = { RESERVELIST },
-            toolTip = "/reservelist <add|remove> <playername>",
+            toolTip = "/reservelist <add|remove> <playername> | /reservelist show",
             min = 2,
             version = 2
     )
     public void reservelistCommand(MessageReceiver caller, String[] parameters) {
-        natives.get("reservelist").execute(caller, parameters);
+        Canary.help().getHelp(caller, "reservelist");
+    }
+
+    @Command(
+            aliases = { "add" },
+            description = "reservelist add",
+            permissions = { RESERVELIST },
+            toolTip = "/reservelist add <playername>",
+            helpLookup = "reservelist.add",
+            parent = "reservelist",
+            min = 1
+    )
+    public void reservelistAdd(MessageReceiver caller, String[] parameters) {
+        natives.get("reservelist.add").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = { "remove" },
+            description = "reservelist remove",
+            permissions = { RESERVELIST },
+            toolTip = "/reservelist remove <playername>",
+            helpLookup = "reservelist.remove",
+            parent = "reservelist",
+            min = 1
+    )
+    public void reservelistRemove(MessageReceiver caller, String[] parameters) {
+        natives.get("reservelist.remove").execute(caller, parameters);
+    }
+
+    @Command(
+            aliases = { "show", "list" },
+            description = "reservelist show (list)",
+            permissions = { RESERVELIST },
+            toolTip = "/reservelist show",
+            helpLookup = "reservelist.show",
+            parent = "reservelist"
+    )
+    public void reservelistShow(MessageReceiver caller, String[] parameters) {
+        natives.get("reservelist.show").execute(caller, parameters);
     }
 
     @TabComplete(commands = { "reservelist" })

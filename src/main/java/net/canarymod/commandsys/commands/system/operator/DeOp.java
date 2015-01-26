@@ -1,12 +1,13 @@
-package net.canarymod.commandsys.commands.system;
+package net.canarymod.commandsys.commands.system.operator;
 
 import net.canarymod.Canary;
 import net.canarymod.ToolBox;
-import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.OperatorsProvider;
+
+import static net.canarymod.Translator.sendTranslatedNotice;
 
 /**
  * DeOp Command
@@ -20,11 +21,11 @@ public final class DeOp implements NativeCommand {
         switch (caller.getReceiverType()) {
             case COMMANDBLOCK:
             case COMMANDBLOCKENTITY:
-                caller.notice("Due to security concerns, DeOp command is not allowed from a CommandBlock");
+                sendTranslatedNotice(caller, "op no commandblock");
                 return;
             case PLAYER:
-                if (!opPro.isOpped(((Player)caller))) {
-                    caller.notice("You are not an Operator!");
+                if (caller.asPlayer().isOperator()) {
+                    sendTranslatedNotice(caller, "op not allowed");
                     return;
                 }
         }
@@ -36,11 +37,11 @@ public final class DeOp implements NativeCommand {
                 Canary.getServer().broadcastMessageToOps(ChatFormat.GRAY + "[SERVER] De-opped " + args[0]);
             }
             else {
-                caller.notice("Failed to deop " + args[0]);
+                sendTranslatedNotice(caller, "deop failed", args[0]);
             }
         }
         else {
-            caller.notice(args[0] + " was not an operator.");
+            sendTranslatedNotice(caller, "deop not op", args[0]);
         }
     }
 }

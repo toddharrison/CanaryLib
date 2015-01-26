@@ -10,6 +10,8 @@ import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.kit.Kit;
 import net.canarymod.kit.KitProvider;
 
+import static net.canarymod.Translator.sendTranslatedMessage;
+import static net.canarymod.Translator.sendTranslatedNotice;
 import static net.canarymod.commandsys.CanaryCommandPermissions.KIT$OTHER;
 
 /**
@@ -43,11 +45,11 @@ public final class KitGive implements NativeCommand {
             Result result = doGive(player, kits.getKit(args[0]), false);
             switch (result) {
                 case GIVEN:
-                    player.message(ChatFormat.YELLOW + Translator.translate("kit given"));
+                    sendTranslatedMessage(player, ChatFormat.YELLOW, "kit given");
                 case UNAVAILABLE:
-                    player.notice(Translator.translate("kit unavailable"));
+                    sendTranslatedNotice(player, "kit unavailable");
                 case INVALID:
-                    player.notice(Translator.translateAndFormat("kit invalid", args[1]));
+                    sendTranslatedNotice(player, "kit invalid", args[1]);
             }
         }
         // Give kit to a subject
@@ -61,13 +63,13 @@ public final class KitGive implements NativeCommand {
             Result result = doGive(recipient, kits.getKit(args[0]), false);
             switch (result) {
                 case GIVEN:
-                    recipient.message(ChatFormat.YELLOW + Translator.translateAndFormat("kit given other", player.getName()));
+                    sendTranslatedMessage(recipient, ChatFormat.YELLOW, "kit given other", player.getName());
                 case UNAVAILABLE:
-                    player.notice(Translator.translateAndFormat("kit unavailable other", recipient.getName()));
+                    sendTranslatedNotice(player, "kit unavailable other", recipient.getName());
                 case INVALID:
-                    player.notice(Translator.translateAndFormat("kit invalid", args[0]));
+                    sendTranslatedNotice(player, "kit invalid", args[0]);
                 case NORECEIVER:
-                    player.notice(Translator.translateAndFormat("unknown player", args[1]));
+                    sendTranslatedNotice(player, "unknown player", args[1]);
             }
         }
     }
@@ -83,11 +85,11 @@ public final class KitGive implements NativeCommand {
                     Result result = doGive(recipient, kits.getKit(args[0]), override);
                     switch (result) {
                         case GIVEN:
-                            recipient.message(ChatFormat.YELLOW + Translator.translateAndFormat("kit given other", caller.getName()));
+                            sendTranslatedMessage(recipient, ChatFormat.YELLOW, "kit given other", caller.getName());
                         case UNAVAILABLE:
-                            caller.notice(Translator.translateAndFormat("kit unavailable other", recipient.getName()));
+                            sendTranslatedNotice(caller, "kit unavailable other", recipient.getName());
                         case INVALID:
-                            caller.notice(Translator.translateAndFormat("kit invalid", args[0]));
+                            sendTranslatedNotice(caller, "kit invalid", args[0]);
                     }
                 }
             }
@@ -96,18 +98,18 @@ public final class KitGive implements NativeCommand {
                 Result result = doGive(recipient, kits.getKit(args[0]), override);
                 switch (result) {
                     case GIVEN:
-                        recipient.message(ChatFormat.YELLOW + Translator.translateAndFormat("kit given other", caller.getName()));
+                        sendTranslatedMessage(recipient, ChatFormat.YELLOW, "kit given other", caller.getName());
                     case UNAVAILABLE:
-                        caller.notice(Translator.translateAndFormat("kit unavailable other", recipient.getName()));
+                        sendTranslatedNotice(caller, "kit unavailable other", recipient.getName());
                     case INVALID:
-                        caller.notice(Translator.translateAndFormat("kit invalid", args[0]));
+                        sendTranslatedNotice(caller, "kit invalid", args[0]);
                     case NORECEIVER:
-                        caller.notice(Translator.translateAndFormat("unknown player", args[1]));
+                        sendTranslatedNotice(caller, "unknown player", args[1]);
                 }
             }
         }
         else {
-            caller.notice(Translator.translateAndFormat("usage", "/kit give <name> <player> [override]"));
+            sendTranslatedNotice(caller, "usage", "/kit give <name> <player> [override]");
         }
     }
 

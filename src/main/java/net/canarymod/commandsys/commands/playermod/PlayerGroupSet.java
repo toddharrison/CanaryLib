@@ -8,6 +8,8 @@ import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.user.Group;
 
+import static net.canarymod.Translator.sendTranslatedNotice;
+
 /**
  * Command to set a players group
  *
@@ -20,7 +22,7 @@ public class PlayerGroupSet extends PlayermodBase {
 
         Group group = Canary.usersAndGroups().getGroup(args[1]);
         if (!group.getName().equals(args[1])) { // Incase default group was picked up
-            caller.notice(Translator.translateAndFormat("unknown group", args[1]));
+            sendTranslatedNotice(caller, "unknown group", args[1]);
             return;
         }
 

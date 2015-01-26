@@ -1,9 +1,11 @@
 package net.canarymod.commandsys.commands.system.whitelist;
 
+import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 
 import static net.canarymod.Canary.whitelist;
+import static net.canarymod.Translator.sendTranslatedMessage;
 
 /**
  * Whitelist Remove Command
@@ -13,8 +15,8 @@ import static net.canarymod.Canary.whitelist;
 public class WhitelistReload implements NativeCommand {
 
     @Override
-    public void execute(MessageReceiver receiver, String[] args) {
+    public void execute(MessageReceiver caller, String[] args) {
         whitelist().reload();
-        receiver.notice("Whitelist reloaded."); //TODO Better Message
+        sendTranslatedMessage(caller, ChatFormat.YELLOW, "whitelist reload");
     }
 }

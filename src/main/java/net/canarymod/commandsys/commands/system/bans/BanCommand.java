@@ -1,4 +1,4 @@
-package net.canarymod.commandsys.commands.system;
+package net.canarymod.commandsys.commands.system.bans;
 
 import net.canarymod.Canary;
 import net.canarymod.ToolBox;
@@ -13,6 +13,8 @@ import net.canarymod.hook.player.BanHook;
 import net.visualillusionsent.utils.StringUtils;
 
 import java.util.UUID;
+
+import static net.canarymod.Translator.sendTranslatedNotice;
 
 /**
  * Command to ban players by name
@@ -73,7 +75,7 @@ public class BanCommand implements NativeCommand {
                     ban.setSubject(p.getName());
                     Canary.bans().issueBan(ban);
                     Canary.hooks().callHook(new BanHook(p, p.getIP(), caller, reason, timestamp));
-                    caller.notice(Translator.translateAndFormat("ban banned", p.getName()));
+                    sendTranslatedNotice(caller, "ban banned", p.getName());
                     p.kick(reason);
                 }
             }
@@ -96,7 +98,7 @@ public class BanCommand implements NativeCommand {
                     Canary.bans().issueBan(ban);
 
                     // NOTE: Ban hook cannot be issued here, there is no player instance
-                    caller.notice(Translator.translateAndFormat("ban banned", parameters[0]));
+                    sendTranslatedNotice(caller, "ban banned", parameters[0]);
                 }
             }
         }
@@ -113,7 +115,7 @@ public class BanCommand implements NativeCommand {
         if (isPlayer) {
             Player c = (Player)caller;
             if (!c.getGroup().hasControlOver(ref.getGroup())) {
-                caller.notice(Translator.localTranslate("ban nocontrol", caller.getLocale()));
+                sendTranslatedNotice(caller, "ban nocontrol", caller.getLocale());
                 return true;
             }
         }
@@ -126,7 +128,7 @@ public class BanCommand implements NativeCommand {
         ban.setSubject(ref.getName());
         Canary.bans().issueBan(ban);
         Canary.hooks().callHook(new BanHook(ref, ref.getIP(), caller, reason, timestamp));
-        caller.notice(Translator.translateAndFormat("ban banned", ref.getName()));
+        sendTranslatedNotice(caller, "ban banned", ref.getName());
         if (ref.isOnline() && ref instanceof Player) {
             ((Player)ref).kick(reason);
         }

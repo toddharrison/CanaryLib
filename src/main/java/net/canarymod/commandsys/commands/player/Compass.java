@@ -1,12 +1,11 @@
 package net.canarymod.commandsys.commands.player;
 
-import net.canarymod.Translator;
-import net.canarymod.api.CommandBlockLogic;
-import net.canarymod.api.Server;
-import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.MessageReceiver;
-import net.canarymod.commandsys.CommandException;
+import net.canarymod.chat.ReceiverType;
 import net.canarymod.commandsys.NativeCommand;
+
+import static net.canarymod.Translator.sendTranslatedNotice;
+import static net.canarymod.Translator.translate;
 
 /**
  * Command to get your own rotation (cardinal direction and degrees yaw)
@@ -16,28 +15,17 @@ import net.canarymod.commandsys.NativeCommand;
 public class Compass implements NativeCommand {
 
     public void execute(MessageReceiver caller, String[] parameters) {
-        if ((caller instanceof Server) || (caller instanceof CommandBlockLogic)) {
-            console(caller);
-        }
-        else if (caller instanceof Player) {
-            player((Player)caller);
+        if (caller.getReceiverType().equals(ReceiverType.PLAYER)) {
+            double degrees = (caller.asPlayer().getRotation() - 180) % 360;
+
+            if (degrees < 0) {
+                degrees += 360.0;
+            }
+
+            caller.notice(translate("compass") + " " + translate(caller.asPlayer().getCardinalDirection().toString()) + " (" + (Math.round(degrees * 10) / 10.0) + ")");
         }
         else {
-            throw new CommandException("Unknown MessageReceiver: " + caller.getClass().getSimpleName());
+            sendTranslatedNotice(caller, "compass console");
         }
-    }
-
-    private void console(MessageReceiver caller) {
-        caller.notice(Translator.translate("compass console"));
-    }
-
-    private void player(Player player) {
-        double degrees = (player.getRotation() - 180) % 360;
-
-        if (degrees < 0) {
-            degrees += 360.0;
-        }
-
-        player.notice(Translator.translate("compass") + " " + Translator.translate(player.getCardinalDirection().toString()) + " (" + (Math.round(degrees * 10) / 10.0) + ")");
     }
 }

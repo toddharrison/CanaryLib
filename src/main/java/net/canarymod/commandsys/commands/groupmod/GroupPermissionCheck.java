@@ -8,6 +8,8 @@ import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.permissionsystem.PermissionNode;
 import net.canarymod.user.Group;
 
+import static net.canarymod.Translator.sendTranslatedNotice;
+
 /**
  * Command to check if a group has a permission node
  *
@@ -18,7 +20,7 @@ public class GroupPermissionCheck implements NativeCommand {
     public void execute(MessageReceiver caller, String[] args) {
         Group group = Canary.usersAndGroups().getGroup(args[0]);
         if (group == null || !group.getName().equals(args[0])) {
-            caller.notice(Translator.translateAndFormat("unknown group", args[0]));
+            sendTranslatedNotice(caller, "unknown group", args[0]);
             return;
         }
         PermissionNode node = PermissionNode.fromString(args[1]);
