@@ -192,9 +192,10 @@ public class CommandList implements CommandListener {
         temp.put("warp", new WarpUse());
 
         /* world */
-        temp.put("createworld", new CreateWorldCommand());
-        temp.put("deleteworld", new DeleteWorldCommand());
-        temp.put("loadworld", new LoadWorldCommand());
+        temp.put("world.create", new CreateWorldCommand());
+        temp.put("world.delete", new DeleteWorldCommand());
+        temp.put("world.list", new ListWorldsCommand());
+        temp.put("world.load", new LoadWorldCommand());
         temp.put("mob.clear", new MobClear());
         temp.put("mob.count", new MobCount());
         temp.put("mobspawner.set", new MobSpawnerSet());
@@ -1849,7 +1850,7 @@ public class CommandList implements CommandListener {
             version = 2
     )
     public void createWorld(MessageReceiver caller, String[] args) {
-        natives.get("createworld").execute(caller, args);
+        natives.get("world.create").execute(caller, args);
     }
 
     @Command(
@@ -1862,7 +1863,7 @@ public class CommandList implements CommandListener {
             min = 1
     )
     public void worldCreate(MessageReceiver caller, String[] args) {
-        natives.get("createworld").execute(caller, args);
+        natives.get("world.create").execute(caller, args);
     }
 
     @TabComplete(commands = {"createworld", "world create"})
@@ -1886,7 +1887,7 @@ public class CommandList implements CommandListener {
             version = 2
     )
     public void deleteworld(MessageReceiver caller, String[] args) {
-        natives.get("deleteworld").execute(caller, args);
+        natives.get("world.delete").execute(caller, args);
     }
 
     @Command(
@@ -1899,12 +1900,24 @@ public class CommandList implements CommandListener {
             version = 2
     )
     public void worldDelete(MessageReceiver caller, String[] args) {
-        natives.get("deleteworld").execute(caller, args);
+        natives.get("world.delete").execute(caller, args);
     }
 
     @TabComplete(commands = {"deleteworld", "world delete"})
     public List<String> deleteworldTabComplete(MessageReceiver caller, String[] args) {
         return args.length == 1 ? matchToKnownWorld(args) : null;
+    }
+
+    @Command(
+            aliases = {"list"},
+            description = "lists worlds",
+            permissions = {WORLD$LIST},
+            toolTip = "/world list",
+            parent = "world",
+            version = 2
+    )
+    public void worldList(MessageReceiver caller, String[] args) {
+        natives.get("world.list").execute(caller, args);
     }
 
     @Command(
@@ -1916,7 +1929,7 @@ public class CommandList implements CommandListener {
             version = 2
     )
     public void loadWorld(MessageReceiver caller, String[] args) {
-        natives.get("loadworld").execute(caller, args);
+        natives.get("world.load").execute(caller, args);
     }
 
     @Command(
@@ -1924,11 +1937,12 @@ public class CommandList implements CommandListener {
             description = "loads a world",
             permissions = {WORLD$LOAD},
             toolTip = "/world load <worldName> [dimensionType]",
+            parent = "world",
             min = 1,
             version = 2
     )
     public void worldLoad(MessageReceiver caller, String[] args) {
-        natives.get("loadworld").execute(caller, args);
+        natives.get("world.load").execute(caller, args);
     }
 
     @TabComplete(commands = {"loadworld", "world load"})
