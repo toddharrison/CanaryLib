@@ -9,6 +9,8 @@ import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.hook.player.KickHook;
 import net.visualillusionsent.utils.StringUtils;
 
+import static net.canarymod.Translator.sendTranslatedNotice;
+
 /**
  * Command to kick a player from the server
  *
@@ -17,14 +19,12 @@ import net.visualillusionsent.utils.StringUtils;
 public class Kick implements NativeCommand {
 
     public void execute(MessageReceiver caller, String[] parameters) {
-        boolean isPlayerCommandBlock = caller.getReceiverType() != ReceiverType.SERVER;
-
         Player[] targets = Canary.playerSelector().matchPlayers(caller, parameters[0]);
         Player target = Canary.getServer().matchPlayer(parameters[0]);
         if (targets != null && targets.length > 0) {
             for (Player player : targets) {
-                if (isPlayerCommandBlock) {
-                    Player c = (Player)caller;
+                if (caller.getReceiverType().equals(ReceiverType.PLAYER)) {
+                    Player c = (Player) caller;
                     if (!c.getGroup().hasControlOver(player.getGroup())) {
                         continue;
                     }
@@ -36,15 +36,15 @@ public class Kick implements NativeCommand {
                     }
                     new KickHook(player, caller, reason).call();
                     player.kickNoHook(reason);
-                    caller.notice(Translator.translateAndFormat("kick kicked", player.getName()));
+                    sendTranslatedNotice(caller, "kick kicked", player.getName());
                 }
             }
         }
         else if (target != null) {
-            if (isPlayerCommandBlock) {
-                Player c = (Player)caller;
+            if (caller.getReceiverType().equals(ReceiverType.PLAYER)) {
+                Player c = (Player) caller;
                 if (!c.getGroup().hasControlOver(target.getGroup())) {
-                    caller.notice("nope!"); //TODO Better Message
+                    sendTranslatedNotice(caller, "kick nocontrol");
                     return;
                 }
             }
@@ -54,10 +54,11 @@ public class Kick implements NativeCommand {
             }
             new KickHook(target, caller, reason).call();
             target.kickNoHook(reason);
-            caller.notice(Translator.translateAndFormat("kick kicked", target.getName()));
+            sendTranslatedNotice(caller, "kick kicked", target.getName());
         }
         else {
-            caller.notice(Translator.translate("kick failed") + " " + Translator.translateAndFormat("unknown player", parameters[1]));
+            sendTranslatedNotice(caller, "kick failed");
+            sendTranslatedNotice(caller, "unknown player", parameters[1]);
         }
     }
 }

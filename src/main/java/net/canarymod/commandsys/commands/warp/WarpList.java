@@ -39,7 +39,7 @@ public class WarpList implements NativeCommand {
             }
         }
         else {
-            Player player = (Player)caller;
+            Player player = (Player) caller;
             player.message(ChatFormat.YELLOW + Translator.translate("warps available"));
 
             List<Warp> warps = Canary.warps().getAllWarps();

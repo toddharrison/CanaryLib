@@ -1,12 +1,12 @@
 package net.canarymod.commandsys.commands.warp;
 
 import net.canarymod.Canary;
-import net.canarymod.Translator;
-import net.canarymod.api.Server;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.MessageReceiver;
+import net.canarymod.chat.ReceiverType;
 import net.canarymod.commandsys.NativeCommand;
 
+import static net.canarymod.Translator.sendTranslatedNotice;
 import static net.canarymod.commandsys.CanaryCommandPermissions.HOME$OTHER;
 
 /**
@@ -17,29 +17,22 @@ import static net.canarymod.commandsys.CanaryCommandPermissions.HOME$OTHER;
 public class Home implements NativeCommand {
 
     public void execute(MessageReceiver caller, String[] parameters) {
-        if (caller instanceof Server) {
-            console(caller);
-        }
-        else if (caller instanceof Player) {
-            player((Player)caller, parameters);
+        if (caller.getReceiverType().equals(ReceiverType.PLAYER)) {
+            player(caller.asPlayer(), parameters);
         }
         else {
             others(caller, parameters);
         }
     }
 
-    private void console(MessageReceiver caller) {
-        caller.notice(Translator.translate("home console"));
-    }
-
     // Special behaviour for command blocks, they teleport the given player to their homes
-    private void others(MessageReceiver player, String[] args) {
+    private void others(MessageReceiver caller, String[] args) {
         if (args.length < 1) {
-            Canary.help().getHelp(player, "home");
+            Canary.help().getHelp(caller, "home");
             return;
         }
-        if (player.hasPermission(HOME$OTHER)) {
-            Player[] others = Canary.playerSelector().matchPlayers(player, args[0]);
+        if (caller.hasPermission(HOME$OTHER)) {
+            Player[] others = Canary.playerSelector().matchPlayers(caller, args[0]);
             if (others != null) {
                 for (Player other : others) {
                     if (other != null) {
@@ -47,7 +40,7 @@ public class Home implements NativeCommand {
                             other.teleportTo(other.getHome());
                         }
                         else {
-                            player.notice(Translator.translateAndFormat("no home set other", new Object[]{ other.getName() }));
+                            sendTranslatedNotice(caller, "no home set other", other.getName());
                         }
                     }
                 }
@@ -59,7 +52,7 @@ public class Home implements NativeCommand {
                     target.teleportTo(target.getHome());
                 }
                 else {
-                    player.notice(Translator.translateAndFormat("no home set other", new Object[]{ target.getName() }));
+                    sendTranslatedNotice(caller, "no home set other", target.getName());
                 }
             }
         }
@@ -68,15 +61,15 @@ public class Home implements NativeCommand {
     private void player(Player player, String[] args) {
         if (args == null || args.length == 0) {
             if (player.hasHome()) {
-                player.notice(Translator.translate("home teleport"));
+                sendTranslatedNotice(player, "home teleport");
                 player.teleportTo(player.getHome());
             }
             else {
-                player.notice(Translator.translate("no home set"));
+                sendTranslatedNotice(player, "no home set");
             }
         }
         else {
-            others((MessageReceiver)player, args);
+            others(player, args);
         }
     }
 }

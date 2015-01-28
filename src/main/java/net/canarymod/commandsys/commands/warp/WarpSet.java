@@ -11,10 +11,7 @@ import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.Group;
 import net.canarymod.warp.Warp;
 
-import static net.canarymod.commandsys.CanaryCommandPermissions.WARP$SET$ADMIN;
-import static net.canarymod.commandsys.CanaryCommandPermissions.WARP$SET$GROUP;
-import static net.canarymod.commandsys.CanaryCommandPermissions.WARP$SET$PRIVATE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.WARP$SET$PUBLIC;
+import static net.canarymod.commandsys.CanaryCommandPermissions.*;
 
 /**
  * Command to set a warp (including private and group warps)
@@ -27,7 +24,7 @@ public class WarpSet implements NativeCommand {
             caller.notice(Translator.translate("setwarp console"));
         }
         else {
-            Player player = (Player)caller;
+            Player player = (Player) caller;
             if (Canary.warps().warpExists(args[0]) && !player.hasPermission(WARP$SET$ADMIN)) {
                 player.notice(Translator.translate("setwarp failed"));
             }

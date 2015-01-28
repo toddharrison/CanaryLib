@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static net.canarymod.Canary.log;
 
@@ -202,7 +203,33 @@ public class Translator extends LocaleHelper {
      *         the argument objects to use with translation
      */
     public static void sendTranslatedMessage(MessageReceiver receiver, ChatFormat messageColor, String key, Object... args) {
+        if (messageColor == null) {
+            messageColor = ChatFormat.WHITE;
+        }
         receiver.message(messageColor.concat(localTranslate(key, receiver.getLocale(), args)));
+    }
+
+    /**
+     * @param receiver
+     * @param prefixColor
+     *         the messages starting color
+     * @param messages
+     *         a Map of keys and arguments for translations (arguments may be null)
+     */
+    public static void sendTranslatedMessages(MessageReceiver receiver, ChatFormat prefixColor, Map<String, Object[]> messages) {
+        if (prefixColor == null) {
+            prefixColor = ChatFormat.WHITE;
+        }
+        StringBuilder builder = new StringBuilder(prefixColor.toString());
+        for (Map.Entry<String, Object[]> entry : messages.entrySet()) {
+            if (entry.getValue() != null && entry.getValue().length > 0) {
+                builder.append(localTranslate(entry.getKey(), receiver.getLocale(), entry.getValue()));
+            }
+            else {
+                builder.append(localTranslate(entry.getKey(), receiver.getLocale()));
+            }
+        }
+        receiver.message(builder.toString());
     }
 
     /**

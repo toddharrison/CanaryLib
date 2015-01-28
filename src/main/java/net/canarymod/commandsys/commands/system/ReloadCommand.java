@@ -1,9 +1,10 @@
 package net.canarymod.commandsys.commands.system;
 
 import net.canarymod.Canary;
-import net.canarymod.Translator;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
+
+import static net.canarymod.Translator.sendTranslatedNotice;
 
 /**
  * Command to reload the server (config, perms player data, etc.)
@@ -14,8 +15,8 @@ import net.canarymod.commandsys.NativeCommand;
 public class ReloadCommand implements NativeCommand {
 
     public void execute(MessageReceiver caller, String[] parameters) {
-        caller.notice(Translator.translate("reload reloading"));
+        sendTranslatedNotice(caller, "reload reloading");
         Canary.instance().reload();
-        caller.notice(Translator.translate("reload reloading done"));
+        sendTranslatedNotice(caller, "reload reloading done");
     }
 }

@@ -2,6 +2,7 @@ package net.canarymod.commandsys.commands.vanilla;
 
 import net.canarymod.Translator;
 import net.canarymod.chat.MessageReceiver;
+import net.canarymod.chat.ReceiverType;
 
 import static net.canarymod.commandsys.CanaryCommandPermissions.CLEAR$OTHER;
 
@@ -18,6 +19,9 @@ public final class Clear extends VanillaCommandWrapper {
         if (isNotSelfOrServer(caller, parameters[0]) && !caller.hasPermission(CLEAR$OTHER)) {
             caller.notice(Translator.nativeTranslate("commands.generic.permission"));
             return;
+        }
+        if (parameters.length == 0 && caller.getReceiverType().equals(ReceiverType.PLAYER)) { // Set caller's name as parameter
+            parameters = new String[]{caller.getName()};
         }
         passOn(caller, "clear", parameters);
     }

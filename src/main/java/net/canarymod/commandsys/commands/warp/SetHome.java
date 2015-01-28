@@ -1,12 +1,15 @@
 package net.canarymod.commandsys.commands.warp;
 
 import net.canarymod.Canary;
-import net.canarymod.Translator;
 import net.canarymod.api.PlayerReference;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
+import net.canarymod.chat.ReceiverType;
 import net.canarymod.commandsys.NativeCommand;
+
+import static net.canarymod.Translator.sendTranslatedMessage;
+import static net.canarymod.Translator.sendTranslatedNotice;
 
 /**
  * Command to set your or another players home
@@ -16,16 +19,12 @@ import net.canarymod.commandsys.NativeCommand;
 public class SetHome implements NativeCommand {
 
     public void execute(MessageReceiver caller, String[] parameters) {
-        if (caller instanceof Player) {
-            player((Player)caller, parameters);
+        if (caller.getReceiverType().equals(ReceiverType.PLAYER)) {
+            player(caller.asPlayer(), parameters);
         }
         else {
-            console(caller);
+            sendTranslatedNotice(caller, "home set console");
         }
-    }
-
-    private void console(MessageReceiver caller) {
-        caller.notice("Your home has been set to everywhere.");
     }
 
     private void player(Player player, String[] args) {
@@ -34,17 +33,17 @@ public class SetHome implements NativeCommand {
             if (target != null) {
                 target.setHome(player.getLocation());
                 if (target.isOnline()) {
-                    ((Player)target).message(ChatFormat.YELLOW + "Your home has been set by " + player.getName());
+                    sendTranslatedMessage((Player) target, ChatFormat.YELLOW, "home set by other", player.getName());
                 }
-                player.message(ChatFormat.YELLOW + target.getName() + "'s  home has been set.");
+                sendTranslatedMessage(player, ChatFormat.YELLOW, "home set other", target.getName());
             }
             else {
-                player.notice(Translator.translateAndFormat("unknown player", args[1]));
+                sendTranslatedNotice(player, "unknown player", args[1]);
             }
         }
         else {
             player.setHome(player.getLocation());
-            player.message(ChatFormat.YELLOW + "Your home has been set.");
+            sendTranslatedMessage(player, ChatFormat.YELLOW, "home set");
         }
     }
 }

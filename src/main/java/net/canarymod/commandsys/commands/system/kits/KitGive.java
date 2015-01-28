@@ -25,7 +25,7 @@ public final class KitGive implements NativeCommand {
     @Override
     public void execute(MessageReceiver caller, String[] parameters) {
         if (caller.getReceiverType().equals(ReceiverType.PLAYER)) {
-            asPlayer((Player)caller, parameters);
+            asPlayer((Player) caller, parameters);
         }
         else {
             asServer(caller, parameters);

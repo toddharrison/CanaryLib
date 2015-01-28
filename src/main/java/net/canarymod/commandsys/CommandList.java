@@ -2,45 +2,12 @@ package net.canarymod.commandsys;
 
 import net.canarymod.Canary;
 import net.canarymod.chat.MessageReceiver;
-import net.canarymod.commandsys.commands.groupmod.GroupCheck;
-import net.canarymod.commandsys.commands.groupmod.GroupCreate;
-import net.canarymod.commandsys.commands.groupmod.GroupList;
-import net.canarymod.commandsys.commands.groupmod.GroupParent;
-import net.canarymod.commandsys.commands.groupmod.GroupPermissionAdd;
-import net.canarymod.commandsys.commands.groupmod.GroupPermissionCheck;
-import net.canarymod.commandsys.commands.groupmod.GroupPermissionFlush;
-import net.canarymod.commandsys.commands.groupmod.GroupPermissionList;
-import net.canarymod.commandsys.commands.groupmod.GroupPermissionRemove;
-import net.canarymod.commandsys.commands.groupmod.GroupPrefix;
-import net.canarymod.commandsys.commands.groupmod.GroupRemove;
-import net.canarymod.commandsys.commands.groupmod.GroupRename;
+import net.canarymod.commandsys.commands.groupmod.*;
 import net.canarymod.commandsys.commands.player.Compass;
 import net.canarymod.commandsys.commands.player.GetPosition;
 import net.canarymod.commandsys.commands.player.GodCommand;
-import net.canarymod.commandsys.commands.playermod.PlayerCreate;
-import net.canarymod.commandsys.commands.playermod.PlayerGroupAdd;
-import net.canarymod.commandsys.commands.playermod.PlayerGroupCheck;
-import net.canarymod.commandsys.commands.playermod.PlayerGroupList;
-import net.canarymod.commandsys.commands.playermod.PlayerGroupRemove;
-import net.canarymod.commandsys.commands.playermod.PlayerGroupSet;
-import net.canarymod.commandsys.commands.playermod.PlayerPermissionAdd;
-import net.canarymod.commandsys.commands.playermod.PlayerPermissionCheck;
-import net.canarymod.commandsys.commands.playermod.PlayerPermissionList;
-import net.canarymod.commandsys.commands.playermod.PlayerPermissionRemove;
-import net.canarymod.commandsys.commands.playermod.PlayerPrefix;
-import net.canarymod.commandsys.commands.playermod.PlayerRemove;
-import net.canarymod.commandsys.commands.playermod.PlayermodBase;
-import net.canarymod.commandsys.commands.system.CreateVanilla;
-import net.canarymod.commandsys.commands.system.HelpCommand;
-import net.canarymod.commandsys.commands.system.Kick;
-import net.canarymod.commandsys.commands.system.ListPlugins;
-import net.canarymod.commandsys.commands.system.Motd;
-import net.canarymod.commandsys.commands.system.Mute;
-import net.canarymod.commandsys.commands.system.PlayerInformation;
-import net.canarymod.commandsys.commands.system.PlayerList;
-import net.canarymod.commandsys.commands.system.PluginCommand;
-import net.canarymod.commandsys.commands.system.ReloadCommand;
-import net.canarymod.commandsys.commands.system.StopServer;
+import net.canarymod.commandsys.commands.playermod.*;
+import net.canarymod.commandsys.commands.system.*;
 import net.canarymod.commandsys.commands.system.bans.BanCommand;
 import net.canarymod.commandsys.commands.system.bans.IpBanCommand;
 import net.canarymod.commandsys.commands.system.bans.UnbanCommand;
@@ -57,209 +24,18 @@ import net.canarymod.commandsys.commands.system.operator.OpList;
 import net.canarymod.commandsys.commands.system.reservelist.ReservelistAdd;
 import net.canarymod.commandsys.commands.system.reservelist.ReservelistRemove;
 import net.canarymod.commandsys.commands.system.reservelist.ReservelistShow;
-import net.canarymod.commandsys.commands.system.whitelist.WhitelistAdd;
-import net.canarymod.commandsys.commands.system.whitelist.WhitelistDisable;
-import net.canarymod.commandsys.commands.system.whitelist.WhitelistEnable;
-import net.canarymod.commandsys.commands.system.whitelist.WhitelistReload;
-import net.canarymod.commandsys.commands.system.whitelist.WhitelistRemove;
-import net.canarymod.commandsys.commands.system.whitelist.WhitelistShow;
-import net.canarymod.commandsys.commands.vanilla.Achievement;
-import net.canarymod.commandsys.commands.vanilla.BlockData;
-import net.canarymod.commandsys.commands.vanilla.Broadcast;
-import net.canarymod.commandsys.commands.vanilla.Clear;
-import net.canarymod.commandsys.commands.vanilla.Clone;
-import net.canarymod.commandsys.commands.vanilla.Debug;
-import net.canarymod.commandsys.commands.vanilla.DefaultGameMode;
-import net.canarymod.commandsys.commands.vanilla.DefaultSpawnpoint;
-import net.canarymod.commandsys.commands.vanilla.Difficulty;
-import net.canarymod.commandsys.commands.vanilla.Effect;
-import net.canarymod.commandsys.commands.vanilla.Emote;
-import net.canarymod.commandsys.commands.vanilla.Enchant;
-import net.canarymod.commandsys.commands.vanilla.EntityData;
-import net.canarymod.commandsys.commands.vanilla.Execute;
-import net.canarymod.commandsys.commands.vanilla.Fill;
-import net.canarymod.commandsys.commands.vanilla.GameMode;
-import net.canarymod.commandsys.commands.vanilla.GameRule;
-import net.canarymod.commandsys.commands.vanilla.Give;
-import net.canarymod.commandsys.commands.vanilla.Kill;
-import net.canarymod.commandsys.commands.vanilla.Message;
-import net.canarymod.commandsys.commands.vanilla.MessageRaw;
-import net.canarymod.commandsys.commands.vanilla.Particle;
-import net.canarymod.commandsys.commands.vanilla.PlaySound;
-import net.canarymod.commandsys.commands.vanilla.ReplaceItem;
-import net.canarymod.commandsys.commands.vanilla.SaveAll;
-import net.canarymod.commandsys.commands.vanilla.SaveOff;
-import net.canarymod.commandsys.commands.vanilla.SaveOn;
-import net.canarymod.commandsys.commands.vanilla.Scoreboard;
-import net.canarymod.commandsys.commands.vanilla.SetBlock;
-import net.canarymod.commandsys.commands.vanilla.SpawnPoint;
-import net.canarymod.commandsys.commands.vanilla.SpreadPlayers;
-import net.canarymod.commandsys.commands.vanilla.Stats;
-import net.canarymod.commandsys.commands.vanilla.Summon;
-import net.canarymod.commandsys.commands.vanilla.Teleport;
-import net.canarymod.commandsys.commands.vanilla.TestFor;
-import net.canarymod.commandsys.commands.vanilla.TestForBlock;
-import net.canarymod.commandsys.commands.vanilla.TestForBlocks;
-import net.canarymod.commandsys.commands.vanilla.Time;
-import net.canarymod.commandsys.commands.vanilla.Title;
-import net.canarymod.commandsys.commands.vanilla.ToggleDownfall;
-import net.canarymod.commandsys.commands.vanilla.Trigger;
-import net.canarymod.commandsys.commands.vanilla.Weather;
-import net.canarymod.commandsys.commands.vanilla.WorldBorder;
-import net.canarymod.commandsys.commands.vanilla.XP;
-import net.canarymod.commandsys.commands.warp.Home;
-import net.canarymod.commandsys.commands.warp.SetHome;
-import net.canarymod.commandsys.commands.warp.SpawnCommand;
-import net.canarymod.commandsys.commands.warp.WarpList;
-import net.canarymod.commandsys.commands.warp.WarpRemove;
-import net.canarymod.commandsys.commands.warp.WarpSet;
-import net.canarymod.commandsys.commands.warp.WarpUse;
-import net.canarymod.commandsys.commands.world.CreateWorldCommand;
-import net.canarymod.commandsys.commands.world.DeleteWorldCommand;
-import net.canarymod.commandsys.commands.world.LoadWorldCommand;
-import net.canarymod.commandsys.commands.world.MobClear;
-import net.canarymod.commandsys.commands.world.MobCount;
-import net.canarymod.commandsys.commands.world.MobSpawnerCheck;
-import net.canarymod.commandsys.commands.world.MobSpawnerSet;
+import net.canarymod.commandsys.commands.system.whitelist.*;
+import net.canarymod.commandsys.commands.vanilla.*;
+import net.canarymod.commandsys.commands.warp.*;
+import net.canarymod.commandsys.commands.world.*;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static net.canarymod.commandsys.CanaryCommandPermissions.ACHIEVEMENT;
-import static net.canarymod.commandsys.CanaryCommandPermissions.BAN;
-import static net.canarymod.commandsys.CanaryCommandPermissions.BLOCKDATA;
-import static net.canarymod.commandsys.CanaryCommandPermissions.BROADCAST;
-import static net.canarymod.commandsys.CanaryCommandPermissions.CANARYMOD;
-import static net.canarymod.commandsys.CanaryCommandPermissions.CLEAR;
-import static net.canarymod.commandsys.CanaryCommandPermissions.CLONE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.COMPASS;
-import static net.canarymod.commandsys.CanaryCommandPermissions.CREATEVANILLA;
-import static net.canarymod.commandsys.CanaryCommandPermissions.DEBUG;
-import static net.canarymod.commandsys.CanaryCommandPermissions.DEFAULTGAMEMODE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.DIFFICULTY;
-import static net.canarymod.commandsys.CanaryCommandPermissions.EFFECT;
-import static net.canarymod.commandsys.CanaryCommandPermissions.EMOTE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.ENCHANT;
-import static net.canarymod.commandsys.CanaryCommandPermissions.ENTITYDATA;
-import static net.canarymod.commandsys.CanaryCommandPermissions.EXECUTE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.FILL;
-import static net.canarymod.commandsys.CanaryCommandPermissions.GAMEMODE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.GAMERULE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.GETPOS;
-import static net.canarymod.commandsys.CanaryCommandPermissions.GIVE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.GOD;
-import static net.canarymod.commandsys.CanaryCommandPermissions.GOD$OTHER;
-import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD;
-import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$ADD;
-import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$CHECK;
-import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$LIST;
-import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$PARENT;
-import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$PERMISSIONS;
-import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$PERMISSIONS$ADD;
-import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$PERMISSIONS$CHECK;
-import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$PERMISSIONS$FLUSH;
-import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$PERMISSIONS$LIST;
-import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$PERMISSIONS$REMOVE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$PREFIX;
-import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$REMOVE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.GROUPMOD$RENAME;
-import static net.canarymod.commandsys.CanaryCommandPermissions.HELP;
-import static net.canarymod.commandsys.CanaryCommandPermissions.HOME;
-import static net.canarymod.commandsys.CanaryCommandPermissions.HOME$SET;
-import static net.canarymod.commandsys.CanaryCommandPermissions.IPBAN;
-import static net.canarymod.commandsys.CanaryCommandPermissions.KICK;
-import static net.canarymod.commandsys.CanaryCommandPermissions.KILL;
-import static net.canarymod.commandsys.CanaryCommandPermissions.KILL$OTHER;
-import static net.canarymod.commandsys.CanaryCommandPermissions.KIT;
-import static net.canarymod.commandsys.CanaryCommandPermissions.KIT$CREATE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.KIT$DELETE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.KIT$OTHER;
-import static net.canarymod.commandsys.CanaryCommandPermissions.MESSAGE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.MESSAGERAW;
-import static net.canarymod.commandsys.CanaryCommandPermissions.MOB;
-import static net.canarymod.commandsys.CanaryCommandPermissions.MOB$CLEAR;
-import static net.canarymod.commandsys.CanaryCommandPermissions.MOB$COUNT;
-import static net.canarymod.commandsys.CanaryCommandPermissions.MOBSPAWNER;
-import static net.canarymod.commandsys.CanaryCommandPermissions.MOBSPAWNER$CHECK;
-import static net.canarymod.commandsys.CanaryCommandPermissions.MOBSPAWNER$SET;
-import static net.canarymod.commandsys.CanaryCommandPermissions.MOTD;
-import static net.canarymod.commandsys.CanaryCommandPermissions.MUTE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.PARTICLE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYER$INFO;
-import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYER$LIST;
-import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD;
-import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$ADD;
-import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$GROUP;
-import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$GROUP$ADD;
-import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$GROUP$CHECK;
-import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$GROUP$LIST;
-import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$GROUP$REMOVE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$GROUP$SET;
-import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$PERMISSIONS;
-import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$PERMISSIONS$ADD;
-import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$PERMISSIONS$CHECK;
-import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$PERMISSIONS$LIST;
-import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$PERMISSIONS$REMOVE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$PREFIX;
-import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYERMOD$REMOVE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.PLAYSOUND;
-import static net.canarymod.commandsys.CanaryCommandPermissions.PLUGIN$DISABLE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.PLUGIN$ENABLE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.PLUGIN$LIST;
-import static net.canarymod.commandsys.CanaryCommandPermissions.PLUGIN$RELOAD;
-import static net.canarymod.commandsys.CanaryCommandPermissions.RELOAD;
-import static net.canarymod.commandsys.CanaryCommandPermissions.REPLACEITEM;
-import static net.canarymod.commandsys.CanaryCommandPermissions.RESERVELIST;
-import static net.canarymod.commandsys.CanaryCommandPermissions.SAVE$ALL;
-import static net.canarymod.commandsys.CanaryCommandPermissions.SAVE$OFF;
-import static net.canarymod.commandsys.CanaryCommandPermissions.SAVE$ON;
-import static net.canarymod.commandsys.CanaryCommandPermissions.SCOREBOARD;
-import static net.canarymod.commandsys.CanaryCommandPermissions.SETBLOCK;
-import static net.canarymod.commandsys.CanaryCommandPermissions.SETWORLDSPAWN;
-import static net.canarymod.commandsys.CanaryCommandPermissions.SPAWN;
-import static net.canarymod.commandsys.CanaryCommandPermissions.SPAWNPOINT;
-import static net.canarymod.commandsys.CanaryCommandPermissions.SPREADPLAYERS;
-import static net.canarymod.commandsys.CanaryCommandPermissions.STATS;
-import static net.canarymod.commandsys.CanaryCommandPermissions.STOP;
-import static net.canarymod.commandsys.CanaryCommandPermissions.SUMMON;
-import static net.canarymod.commandsys.CanaryCommandPermissions.SYSINFO;
-import static net.canarymod.commandsys.CanaryCommandPermissions.TELEPORT;
-import static net.canarymod.commandsys.CanaryCommandPermissions.TELEPORT$OTHER;
-import static net.canarymod.commandsys.CanaryCommandPermissions.TESTFOR;
-import static net.canarymod.commandsys.CanaryCommandPermissions.TESTFORBLOCK;
-import static net.canarymod.commandsys.CanaryCommandPermissions.TESTFORBLOCKS;
-import static net.canarymod.commandsys.CanaryCommandPermissions.TIME;
-import static net.canarymod.commandsys.CanaryCommandPermissions.TITLE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.TOGGLEDOWNFALL;
-import static net.canarymod.commandsys.CanaryCommandPermissions.TRIGGER;
-import static net.canarymod.commandsys.CanaryCommandPermissions.UNBAN;
-import static net.canarymod.commandsys.CanaryCommandPermissions.UPTIME;
-import static net.canarymod.commandsys.CanaryCommandPermissions.WARP$LIST;
-import static net.canarymod.commandsys.CanaryCommandPermissions.WARP$REMOVE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.WARP$SET;
-import static net.canarymod.commandsys.CanaryCommandPermissions.WARP$USE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.WEATHER;
-import static net.canarymod.commandsys.CanaryCommandPermissions.WHITELIST;
-import static net.canarymod.commandsys.CanaryCommandPermissions.WHITELIST$ADMIN;
-import static net.canarymod.commandsys.CanaryCommandPermissions.WORLD$CREATE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.WORLD$DELETE;
-import static net.canarymod.commandsys.CanaryCommandPermissions.WORLD$LOAD;
-import static net.canarymod.commandsys.CanaryCommandPermissions.WORLDBORDER;
-import static net.canarymod.commandsys.CanaryCommandPermissions.XP;
-import static net.canarymod.commandsys.TabCompleteHelper.matchTo;
-import static net.canarymod.commandsys.TabCompleteHelper.matchToBannedSubject;
-import static net.canarymod.commandsys.TabCompleteHelper.matchToDimension;
-import static net.canarymod.commandsys.TabCompleteHelper.matchToGroup;
-import static net.canarymod.commandsys.TabCompleteHelper.matchToKitNames;
-import static net.canarymod.commandsys.TabCompleteHelper.matchToKnownPlayer;
-import static net.canarymod.commandsys.TabCompleteHelper.matchToKnownWorld;
-import static net.canarymod.commandsys.TabCompleteHelper.matchToLoadedWorld;
-import static net.canarymod.commandsys.TabCompleteHelper.matchToOnlinePlayer;
-import static net.canarymod.commandsys.TabCompleteHelper.matchToPlayerPermission;
-import static net.canarymod.commandsys.TabCompleteHelper.matchToWarpNames;
-import static net.canarymod.commandsys.TabCompleteHelper.matchToWorldType;
+import static net.canarymod.commandsys.CanaryCommandPermissions.*;
+import static net.canarymod.commandsys.TabCompleteHelper.*;
 
 /**
  * Canary "native" commands
@@ -2053,11 +1829,22 @@ public class CommandList implements CommandListener {
     }
 
     @Command(
+            aliases = {"world"},
+            description = "World base command",
+            permissions = {WORLD},
+            toolTip = "/world <create|load|delete>",
+            version = 2
+    )
+    public void world(MessageReceiver caller, String[] args) {
+        Canary.help().getHelp(caller, "world");
+    }
+
+    @Command(
             aliases = { "createworld" },
             description = "creates a world",
             permissions = { WORLD$CREATE },
             toolTip = "/createworld <name> [seed] [dimensionType] [worldType]",
-            max = 5,
+            max = 4,
             min = 1,
             version = 2
     )
@@ -2065,7 +1852,20 @@ public class CommandList implements CommandListener {
         natives.get("createworld").execute(caller, args);
     }
 
-    @TabComplete(commands = { "createworld" })
+    @Command(
+            aliases = {"create"},
+            description = "creates a world",
+            permissions = {WORLD$CREATE},
+            toolTip = "/world create <name> [seed] [dimensionType] [worldType]",
+            parent = "world",
+            max = 4,
+            min = 1
+    )
+    public void worldCreate(MessageReceiver caller, String[] args) {
+        natives.get("createworld").execute(caller, args);
+    }
+
+    @TabComplete(commands = {"createworld", "world create"})
     public List<String> createWorldTabComplete(MessageReceiver caller, String[] args) {
         switch (args.length) {
             case 3:
@@ -2089,7 +1889,20 @@ public class CommandList implements CommandListener {
         natives.get("deleteworld").execute(caller, args);
     }
 
-    @TabComplete(commands = { "deleteworld" })
+    @Command(
+            aliases = {"delete"},
+            description = "Deletes a world",
+            permissions = {WORLD$DELETE},
+            toolTip = "/world delete <world_fqName>",
+            parent = "world",
+            min = 1,
+            version = 2
+    )
+    public void worldDelete(MessageReceiver caller, String[] args) {
+        natives.get("deleteworld").execute(caller, args);
+    }
+
+    @TabComplete(commands = {"deleteworld", "world delete"})
     public List<String> deleteworldTabComplete(MessageReceiver caller, String[] args) {
         return args.length == 1 ? matchToKnownWorld(args) : null;
     }
@@ -2106,7 +1919,19 @@ public class CommandList implements CommandListener {
         natives.get("loadworld").execute(caller, args);
     }
 
-    @TabComplete(commands = { "loadworld" })
+    @Command(
+            aliases = {"load"},
+            description = "loads a world",
+            permissions = {WORLD$LOAD},
+            toolTip = "/world load <worldName> [dimensionType]",
+            min = 1,
+            version = 2
+    )
+    public void worldLoad(MessageReceiver caller, String[] args) {
+        natives.get("loadworld").execute(caller, args);
+    }
+
+    @TabComplete(commands = {"loadworld", "world load"})
     public List<String> matchWorldNameDimension(MessageReceiver caller, String[] args) {
         return args.length == 1 ? matchToKnownWorld(args)
                 : args.length == 2 ? matchToDimension(args)

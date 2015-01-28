@@ -21,7 +21,7 @@ public class WarpUse implements NativeCommand {
             caller.notice(Translator.translate("warp console"));
         }
         else {
-            Player player = (Player)caller;
+            Player player = (Player) caller;
             Warp target = Canary.warps().getWarp(args[0]);
 
             if (target != null) {

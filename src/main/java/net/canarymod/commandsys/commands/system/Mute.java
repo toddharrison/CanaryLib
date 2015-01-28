@@ -1,11 +1,12 @@
 package net.canarymod.commandsys.commands.system;
 
 import net.canarymod.Canary;
-import net.canarymod.Translator;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.chat.ReceiverType;
 import net.canarymod.commandsys.NativeCommand;
+
+import static net.canarymod.Translator.sendTranslatedNotice;
 
 /**
  * Command to (un)mute a player
@@ -14,48 +15,28 @@ import net.canarymod.commandsys.NativeCommand;
  */
 public class Mute implements NativeCommand {
 
-    public void execute(MessageReceiver caller, String[] parameters) {
-        if (caller.getReceiverType() == ReceiverType.PLAYER) {
-            player((Player)caller, parameters);
-        }
-        else {
-            console(caller, parameters);
-        }
-    }
-
-    private void console(MessageReceiver caller, String[] args) {
+    public void execute(MessageReceiver caller, String[] args) {
         Player target = Canary.getServer().matchPlayer(args[0]);
 
         if (target != null) {
+            if (caller.getReceiverType().equals(ReceiverType.PLAYER)) {
+                Player c = (Player) caller;
+                if (!c.getGroup().hasControlOver(target.getGroup())) {
+                    sendTranslatedNotice(caller, "mute nocontrol");
+                    return;
+                }
+            }
             if (target.isMuted()) {
                 target.setMuted(false);
-                caller.notice(Translator.translateAndFormat("mute unmuted", target.getName()));
+                sendTranslatedNotice(caller, "mute unmuted", target.getName());
             }
             else {
                 target.setMuted(true);
-                caller.notice(Translator.translateAndFormat("mute muted", target.getName()));
+                sendTranslatedNotice(caller, "mute muted", target.getName());
             }
         }
         else {
-            caller.notice(Translator.translateAndFormat("unknown player", args[0]));
-        }
-    }
-
-    private void player(Player player, String[] args) {
-        Player target = Canary.getServer().matchPlayer(args[0]);
-
-        if (target != null) {
-            if (target.isMuted()) {
-                target.setMuted(false);
-                player.notice(Translator.translateAndFormat("mute unmuted", target.getName()));
-            }
-            else {
-                target.setMuted(true);
-                player.notice(Translator.translateAndFormat("mute muted", target.getName()));
-            }
-        }
-        else {
-            player.notice(Translator.translateAndFormat("unknown player", args[0]));
+            sendTranslatedNotice(caller, "unknown player", args[0]);
         }
     }
 }

@@ -139,6 +139,7 @@ public enum CanaryCommandPermissions {
             WARP$SET$PRIVATE = "canary.command.warp.set.private",
             WARP$SET$GROUP = "canary.command.warp.set.group",
             WARP$USE = "canary.command.warp.use",
+            WORLD = "canary.command.world",
             WORLD$CREATE = "canary.command.world.create",
             WORLD$DELETE = "canary.command.world.delete",
             WORLD$LOAD = "canary.commmand.world.load",

@@ -2,7 +2,6 @@ package net.canarymod.commandsys.commands.system;
 
 import net.canarymod.Canary;
 import net.canarymod.ToolBox;
-import net.canarymod.Translator;
 import net.canarymod.api.PlayerReference;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.position.Position;
@@ -17,6 +16,9 @@ import net.canarymod.warp.Warp;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import static net.canarymod.Translator.sendTranslatedMessage;
+import static net.canarymod.Translator.sendTranslatedNotice;
+
 /**
  * Command to view multiple types of info about a player (possible yourself)
  *
@@ -28,7 +30,7 @@ public final class PlayerInformation implements NativeCommand {
     @Override
     public void execute(MessageReceiver caller, String[] args) {
         if (caller.getReceiverType() != ReceiverType.PLAYER && args.length == 0) {
-            caller.notice("You must specify a target player");
+            sendTranslatedNotice(caller, "target not specified");
             return;
         }
 
@@ -37,11 +39,11 @@ public final class PlayerInformation implements NativeCommand {
             subject = Canary.getServer().matchKnownPlayer(args[0]);
         }
         else {
-            subject = (Player)caller;
+            subject = (Player) caller;
         }
 
         if (subject != null) {
-            caller.message(ChatFormat.DARK_GREEN + subject.getName() + "'s info:");
+            caller.message(ChatFormat.DARK_GREEN.concat(subject.getName()).concat("'s info:"));
             sendData(caller, "playerinfo firstjoin", subject.getFirstJoined());
             sendData(caller, "playerinfo lastjoined", subject.getLastJoined());
             sendData(caller, "playerinfo timeplayed", ToolBox.getTimeUntil(subject.getTimePlayed()));
@@ -93,7 +95,7 @@ public final class PlayerInformation implements NativeCommand {
             //
         }
         else {
-            caller.notice(Translator.localTranslate("unknown player", getLocale(caller), args[0]));
+            sendTranslatedNotice(caller, "unknown player", args[0]);
         }
     }
 
@@ -102,18 +104,11 @@ public final class PlayerInformation implements NativeCommand {
         for (int index = 1; index < data.length; index++) {
             gnames.append(data[index].getName());
         }
-        caller.message(ChatFormat.GREEN + Translator.localTranslate(caption, getLocale(caller), ChatFormat.GOLD + gnames.toString()));
+        sendTranslatedMessage(caller, ChatFormat.GREEN, caption, ChatFormat.GOLD.concat(gnames.toString()));
     }
 
     private void sendData(MessageReceiver caller, String caption, Object data) {
-        caller.message(ChatFormat.GREEN + Translator.localTranslate(caption, getLocale(caller), ChatFormat.GOLD + String.valueOf(data)));
-    }
-
-    private String getLocale(MessageReceiver caller) {
-        if (caller.getReceiverType().equals(ReceiverType.PLAYER)) {
-            return ((Player)caller).getLocale();
-        }
-        return "en_US";
+        sendTranslatedMessage(caller, ChatFormat.GREEN, caption, ChatFormat.GOLD.concat(String.valueOf(data)));
     }
 
     public static boolean addInfoAddition(PlayerInfoAddition addition) {
