@@ -9,6 +9,7 @@ import net.canarymod.chat.MessageReceiver;
 import net.canarymod.database.DataAccess;
 import net.canarymod.database.Database;
 import net.canarymod.database.exceptions.DatabaseReadException;
+
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -199,7 +200,6 @@ public class MultiworldPermissionProvider implements PermissionProvider {
         }
         Boolean b = checkCached(permission);
         if (b != null) {
-            Canary.log.debug("Found... Returning as " + b);
             return b;
         }
         String[] path = permission.split("\\.");

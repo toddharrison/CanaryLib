@@ -65,7 +65,7 @@ public class PermissionNode {
      */
     public void setParentNode(PermissionNode parent) {
         if (this.parent != null) {
-            parent.childs.remove(name);
+            this.parent.childs.remove(name);
         }
         this.parent = parent;
         parent.childs.put(name, this);
