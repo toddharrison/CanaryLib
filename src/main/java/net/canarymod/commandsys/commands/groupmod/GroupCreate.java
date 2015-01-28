@@ -41,7 +41,8 @@ public class GroupCreate implements NativeCommand {
                 sendTranslatedNotice(caller, "group unknown parent", args[1]);
                 return;
             }
-            if (!parent.getWorldName().equals(worldName)) {
+
+            if (!worldName.equals(parent.getWorldName())) {
                 sendTranslatedNotice(caller, "group parent world mismatch", parent.getName(), parent.getWorldName(), worldName);
                 return;
             }
