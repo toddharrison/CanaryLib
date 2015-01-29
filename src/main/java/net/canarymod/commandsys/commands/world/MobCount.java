@@ -51,9 +51,7 @@ public final class MobCount extends MobCommand {
                 if (entity instanceof Tameable) {
                     tameCount++;
                 }
-                else {
-                    passivesCount++;
-                }
+                passivesCount++;
             }
             else if (entity.isLiving()) {
                 passivesCount++;

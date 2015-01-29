@@ -228,5 +228,6 @@ world deleted transfer=You have been transferred to the default world due to you
 world delete inprogress=Please wait while the world is removed...
 world delete success=World {0} deleted
 world delete fail=Unable to delete World {0}
+world info notloaded=World is not currently loaded, no further information available
 yes=Yes
 your home=Your Home

@@ -1,6 +1,8 @@
 package net.canarymod.commandsys.commands.world;
 
 import net.canarymod.Canary;
+import net.canarymod.api.entity.Entity;
+import net.canarymod.api.entity.living.animal.Tameable;
 import net.canarymod.api.world.DimensionType;
 import net.canarymod.api.world.World;
 import net.canarymod.api.world.WorldManager;
@@ -59,16 +61,18 @@ public class WorldInfoCommand implements NativeCommand {
 
                     if (manage.worldIsLoaded(worldName, type)) {
                         World world = manage.getWorld(fqName, false);
+                        doEntityCount(caller, world);
                         caller.message(String.format(colorize, "Chunks Loaded", world.getLoadedChunks().size()));
-                        caller.message(String.format(colorize, "Player Count", world.getPlayerList().size()));
-                        // TODO Entity Count breakdown
-
+                        caller.message(String.format(colorize, "Villages Loaded", world.getVillages().size()));
                         caller.message(String.format(colorize, "Total Time", world.getTotalTime()));
                         caller.message(String.format(colorize, "Raw Time", world.getRawTime()));
                         caller.message(String.format(colorize, "Relative Time", world.getRelativeTime()));
+                        caller.message(String.format(colorize, "Spawn", world.getSpawnLocation().toString()));
+                        caller.message(String.format(colorize, "Raining", world.isRaining()));
+                        caller.message(String.format(colorize, "Thundering", world.isThundering()));
                     }
                     else {
-                        caller.notice("World is not currently loaded, no further information available");
+                        sendTranslatedNotice(caller, "world info notloaded");
                     }
                 }
                 else {
@@ -83,5 +87,36 @@ public class WorldInfoCommand implements NativeCommand {
             caller.notice("Failed to find information for '" + parameters[0] + "'. See console for error.");
             Canary.log.error("Error executing command '/world info' for caller '" + caller.getName() + "'", ex);
         }
+    }
+
+    private void doEntityCount(MessageReceiver caller, World world) {
+        int mobCount = 0, passivesCount = 0, utilityCount = 0, tameCount = 0;
+        for (Entity entity : world.getTrackedEntities()) {
+            if (entity.isPlayer()) {
+                continue;
+            }
+
+            if (entity.isMob()) {
+                mobCount++;
+            }
+            else if (entity.isAnimal()) {
+                if (entity instanceof Tameable) {
+                    tameCount++;
+                }
+                passivesCount++;
+            }
+            else if (entity.isLiving()) {
+                passivesCount++;
+            }
+            else {
+                utilityCount++;
+            }
+        }
+        caller.message(String.format(colorize, "Entities Total", world.getTrackedEntities().size()));
+        caller.message(String.format(colorize, "  Monsters", mobCount));
+        caller.message(String.format(colorize, "  Passives", passivesCount));
+        caller.message(String.format(colorize, "    Tame", tameCount));
+        caller.message(String.format(colorize, "  Utility", utilityCount));
+        caller.message(String.format(colorize, "  Players", world.getPlayerList().size()));
     }
 }

@@ -1018,7 +1018,7 @@ public interface World {
      * @param title
      *         the text of the title to show
      * @param subtitle
-     *         the text of the subtile to show; may be {@code null}
+     *         the text of the subtitle to show; may be {@code null}
      */
     void showTitle(ChatComponent title, ChatComponent subtitle);
 }
