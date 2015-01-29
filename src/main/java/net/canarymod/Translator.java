@@ -38,6 +38,7 @@ public class Translator extends LocaleHelper {
 
     private Translator() {
         super(true, canaryLang, Configuration.getServerConfig().getServerLocale());
+        debug_enabled = Configuration.getServerConfig().isDebugMode();
     }
 
     /**
@@ -161,6 +162,7 @@ public class Translator extends LocaleHelper {
      *         the argument objects to use with translation
      */
     public static void sendTranslatedNotice(MessageReceiver receiver, String key, Object... args) {
+        Canary.log.debug("Translation - "+key+": Local{"+localTranslate(key, receiver.getLocale(), args)+"} Raw{"+translateAndFormat(key, args)+"}");
         receiver.notice(localTranslate(key, receiver.getLocale(), args));
     }
 

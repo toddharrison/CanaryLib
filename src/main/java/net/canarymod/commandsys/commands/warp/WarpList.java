@@ -2,17 +2,18 @@ package net.canarymod.commandsys.commands.warp;
 
 import net.canarymod.Canary;
 import net.canarymod.Translator;
-import net.canarymod.api.Server;
 import net.canarymod.api.entity.living.humanoid.Player;
-import net.canarymod.api.world.blocks.CommandBlock;
 import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
+import net.canarymod.chat.ReceiverType;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.warp.Warp;
 
 import java.util.List;
 
 import static net.canarymod.Canary.log;
+import static net.canarymod.Translator.sendTranslatedMessage;
+import static net.canarymod.Translator.sendTranslatedNotice;
 
 /**
  * Command to list all warps
@@ -21,7 +22,7 @@ import static net.canarymod.Canary.log;
  */
 public class WarpList implements NativeCommand {
     public void execute(MessageReceiver caller, String[] parameters) {
-        if (caller instanceof Server || caller instanceof CommandBlock) {
+        if (!caller.getReceiverType().equals(ReceiverType.PLAYER)) {
             caller.notice("**** WARPS ****");
 
             List<Warp> warps = Canary.warps().getAllWarps();
@@ -39,8 +40,8 @@ public class WarpList implements NativeCommand {
             }
         }
         else {
-            Player player = (Player) caller;
-            player.message(ChatFormat.YELLOW + Translator.translate("warps available"));
+            Player player = (Player)caller;
+            sendTranslatedMessage(player, ChatFormat.YELLOW, "warps available");
 
             List<Warp> warps = Canary.warps().getAllWarps();
             StringBuilder warpList = new StringBuilder();
@@ -67,7 +68,7 @@ public class WarpList implements NativeCommand {
                 player.message(warpList.toString().trim());
             }
             else {
-                player.notice(Translator.translate("no warps"));
+                sendTranslatedNotice(player, "no warps");
             }
         }
     }

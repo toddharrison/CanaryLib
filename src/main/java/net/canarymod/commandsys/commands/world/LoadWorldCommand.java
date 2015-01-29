@@ -9,6 +9,8 @@ import net.canarymod.commandsys.NativeCommand;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static net.canarymod.Translator.sendTranslatedNotice;
+
 /**
  * Checks for and loads a World
  *
@@ -22,19 +24,20 @@ public final class LoadWorldCommand implements NativeCommand {
             WorldManager manage = Canary.getServer().getWorldManager();
             String worldName = parameters[0];
             String fqName = parameters[0];
+            String dim = parameters[1].toUpperCase();
             DimensionType type = null;
 
             if (matcher.reset(worldName).matches()) {
-                String dim = worldName.substring(worldName.lastIndexOf('_') + 1);
+                dim = worldName.substring(worldName.lastIndexOf('_') + 1);
                 worldName = worldName.substring(0, worldName.lastIndexOf('_'));
                 type = DimensionType.fromName(dim);
             }
             else if (parameters.length > 1) {
                 if (parameters[1].matches("\\d")) {
-                    type = DimensionType.fromId(Integer.parseInt(parameters[1]));
+                    type = DimensionType.fromId(Integer.parseInt(dim));
                 }
                 else {
-                    type = DimensionType.fromName(parameters[1].toUpperCase());
+                    type = DimensionType.fromName(dim);
                 }
                 fqName = worldName + "_" + type.getName();
             }
@@ -50,15 +53,16 @@ public final class LoadWorldCommand implements NativeCommand {
                     }
                 }
                 else {
-                    caller.notice("World '" + parameters[0] + "' does not exist...");
+                    sendTranslatedNotice(caller, "unknown world", parameters[0]);
                 }
             }
             else {
-                caller.notice("Dimension type is non-existant");
+                sendTranslatedNotice(caller, "unknown dimension", dim);
             }
         }
         catch (Exception ex) {
             caller.notice("Failed to load '" + parameters[0] + "'. See console for error.");
+            Canary.log.error("Error executing command '/world load (/loadworld)' for caller '" + caller.getName() + "'", ex);
         }
     }
 }

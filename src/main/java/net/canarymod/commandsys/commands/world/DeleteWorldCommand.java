@@ -1,7 +1,6 @@
 package net.canarymod.commandsys.commands.world;
 
 import net.canarymod.Canary;
-import net.canarymod.Translator;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.api.world.DimensionType;
 import net.canarymod.api.world.World;
@@ -43,7 +42,7 @@ public class DeleteWorldCommand implements NativeCommand {
                 if (!world.getPlayerList().isEmpty()) {
                     for (Player player : world.getPlayerList()) {
                         player.teleportTo(Canary.getServer().getDefaultWorld().getSpawnLocation());
-                        player.notice(Translator.localTranslate("world deleted transfer", player.getLocale()));
+                        sendTranslatedNotice(player, "world deleted transfer");
                     }
                 }
                 Canary.getServer().getWorldManager().unloadWorld(worldName.replaceAll("_.+", ""), DimensionType.fromName(worldName.replaceAll(".+_", "")), true);
@@ -53,14 +52,13 @@ public class DeleteWorldCommand implements NativeCommand {
             if (attempts <= 10) {
                 attempts++;
                 if (Canary.getServer().getWorldManager().destroyWorld(worldName)) {
-                    caller.notice(Translator.localTranslate("world delete success", caller.getLocale(), worldName));
+                    sendTranslatedNotice(caller, "world delete success", worldName);
                     Canary.getServer().removeSynchronousTask(this);
                     return;
                 }
             }
-            caller.notice(Translator.localTranslate("world delete success", caller.getLocale(), worldName));
+            sendTranslatedNotice(caller, "world delete fail", worldName);
             Canary.getServer().removeSynchronousTask(this);
-            return;
         }
     }
 }

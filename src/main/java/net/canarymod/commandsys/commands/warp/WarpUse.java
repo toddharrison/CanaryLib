@@ -1,14 +1,15 @@
 package net.canarymod.commandsys.commands.warp;
 
 import net.canarymod.Canary;
-import net.canarymod.Translator;
-import net.canarymod.api.Server;
 import net.canarymod.api.entity.living.humanoid.Player;
-import net.canarymod.api.world.blocks.CommandBlock;
 import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
+import net.canarymod.chat.ReceiverType;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.warp.Warp;
+
+import static net.canarymod.Translator.sendTranslatedMessage;
+import static net.canarymod.Translator.sendTranslatedNotice;
 
 /**
  * Command to warp yourself to a warp
@@ -17,24 +18,24 @@ import net.canarymod.warp.Warp;
  */
 public class WarpUse implements NativeCommand {
     public void execute(MessageReceiver caller, String[] args) {
-        if (caller instanceof Server || caller instanceof CommandBlock) {
-            caller.notice(Translator.translate("warp console"));
+        if (!caller.getReceiverType().equals(ReceiverType.PLAYER)) {
+            sendTranslatedNotice(caller, "warp console");
         }
         else {
-            Player player = (Player) caller;
+            Player player = (Player)caller;
             Warp target = Canary.warps().getWarp(args[0]);
 
             if (target != null) {
                 if (target.warp(player)) {
-                    player.message(ChatFormat.YELLOW + Translator.translateAndFormat("warp success", target.getName()));
+                    sendTranslatedMessage(caller, ChatFormat.YELLOW, "warp success", target.getName());
                     return;
                 }
                 else {
-                    player.message(ChatFormat.YELLOW + Translator.translateAndFormat("warp not allowed", target.getName()));
+                    sendTranslatedMessage(caller, ChatFormat.YELLOW, "warp not allowed", target.getName());
                     return;
                 }
             }
-            player.notice(Translator.translateAndFormat("warp unknown", args[0]));
+            sendTranslatedNotice(caller, "warp unknown", args[0]);
         }
     }
 }

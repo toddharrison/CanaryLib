@@ -17,7 +17,7 @@ import static net.canarymod.Translator.sendTranslatedMessage;
 import static net.canarymod.Translator.sendTranslatedNotice;
 
 /**
- * Command to teleport yourself or someoneelse to spawn
+ * Command to teleport yourself or someone else to spawn
  *
  * @author Chris (damagefilter)
  */

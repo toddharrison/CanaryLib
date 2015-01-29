@@ -1,17 +1,20 @@
 package net.canarymod.commandsys.commands.warp;
 
 import net.canarymod.Canary;
-import net.canarymod.Translator;
-import net.canarymod.api.Server;
 import net.canarymod.api.entity.living.humanoid.Player;
-import net.canarymod.api.world.blocks.CommandBlock;
 import net.canarymod.chat.ChatFormat;
 import net.canarymod.chat.MessageReceiver;
+import net.canarymod.chat.ReceiverType;
 import net.canarymod.commandsys.NativeCommand;
 import net.canarymod.user.Group;
 import net.canarymod.warp.Warp;
 
-import static net.canarymod.commandsys.CanaryCommandPermissions.*;
+import static net.canarymod.Translator.sendTranslatedMessage;
+import static net.canarymod.Translator.sendTranslatedNotice;
+import static net.canarymod.commandsys.CanaryCommandPermissions.WARP$SET$ADMIN;
+import static net.canarymod.commandsys.CanaryCommandPermissions.WARP$SET$GROUP;
+import static net.canarymod.commandsys.CanaryCommandPermissions.WARP$SET$PRIVATE;
+import static net.canarymod.commandsys.CanaryCommandPermissions.WARP$SET$PUBLIC;
 
 /**
  * Command to set a warp (including private and group warps)
@@ -20,20 +23,20 @@ import static net.canarymod.commandsys.CanaryCommandPermissions.*;
  */
 public class WarpSet implements NativeCommand {
     public void execute(MessageReceiver caller, String[] args) {
-        if (caller instanceof Server || caller instanceof CommandBlock) {
-            caller.notice(Translator.translate("setwarp console"));
+        if (!caller.getReceiverType().equals(ReceiverType.PLAYER)) {
+            sendTranslatedNotice(caller, "setwarp console");
         }
         else {
-            Player player = (Player) caller;
+            Player player = (Player)caller;
             if (Canary.warps().warpExists(args[0]) && !player.hasPermission(WARP$SET$ADMIN)) {
-                player.notice(Translator.translate("setwarp failed"));
+                sendTranslatedNotice(caller, "setwarp failed");
             }
             // SET PUBLIC WARP
             else if (args.length == 1 && player.hasPermission(WARP$SET$PUBLIC)) {
                 Warp newWarp = new Warp(player.getLocation(), args[0]);
 
                 Canary.warps().addWarp(newWarp);
-                player.message(ChatFormat.YELLOW + Translator.translateAndFormat("setwarp success", args[0]));
+                sendTranslatedMessage(caller, ChatFormat.YELLOW, "setwarp success", args[0]);
             }
             else if (args.length > 2) {
                 // SET GROUP SPECIFIC WARP
@@ -46,14 +49,14 @@ public class WarpSet implements NativeCommand {
                     Warp newWarp = new Warp(player.getLocation(), groups, args[0]);
 
                     Canary.warps().addWarp(newWarp);
-                    player.message(ChatFormat.YELLOW + Translator.translateAndFormat("setwarp success group", args[0]));
+                    sendTranslatedMessage(caller, ChatFormat.YELLOW, "setwarp success group", args[0]);
                 }
                 // SET PRIVATE WARP
                 else if (args[1].equalsIgnoreCase("P") && player.hasPermission(WARP$SET$PRIVATE)) {
                     Warp newWarp = new Warp(player.getLocation(), args[0], args[2], false);
 
                     Canary.warps().addWarp(newWarp);
-                    player.message(ChatFormat.YELLOW + Translator.translateAndFormat("setwarp success private", args[0]));
+                    sendTranslatedMessage(caller, ChatFormat.YELLOW, "setwarp success private", args[0]);
                 }
                 else {
                     Canary.help().getHelp(player, "setwarp");

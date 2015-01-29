@@ -1,11 +1,12 @@
 package net.canarymod.commandsys.commands.world;
 
 import net.canarymod.Canary;
-import net.canarymod.Translator;
 import net.canarymod.api.entity.Entity;
 import net.canarymod.api.entity.living.animal.Tameable;
 import net.canarymod.api.world.World;
 import net.canarymod.chat.MessageReceiver;
+
+import static net.canarymod.Translator.sendTranslatedNotice;
 
 /**
  * Mob count subcommnand
@@ -20,18 +21,18 @@ public final class MobCount extends MobCommand {
             String wrld = args[0];
             if (!wrld.matches("[\\w]+_(?i)(END|NORMAL|NETHER)")) {
                 if (args.length > 1 && !args[1].matches("(?i)(END|NORMAL|NETHER)")) {
-                    caller.notice(Translator.translate("mob worldname"));
+                    sendTranslatedNotice(caller, "mob worldname");
                     return;
                 }
                 wrld += "_" + args[1].toUpperCase();
             }
 
             if (!Canary.getServer().getWorldManager().worldExists(wrld)) {
-                caller.notice(Translator.translateAndFormat("mob worldexsistance", wrld));
+                sendTranslatedNotice(caller, "mob worldexsistance", wrld);
                 return;
             }
             else if (!Canary.getServer().getWorldManager().worldIsLoaded(wrld)) {
-                caller.notice(Translator.translate("mob worldnoload"));
+                sendTranslatedNotice(caller, "mob worldnoload");
                 return;
             }
             world = Canary.getServer().getWorld(wrld);
@@ -61,6 +62,6 @@ public final class MobCount extends MobCommand {
                 utilityCount++;
             }
         }
-        caller.notice(Translator.translateAndFormat("mob count", mobCount, passivesCount, tameCount, utilityCount, (mobCount + passivesCount + tameCount + utilityCount), world.getFqName()));
+        sendTranslatedNotice(caller, "mob count", mobCount, passivesCount, tameCount, utilityCount, (mobCount + passivesCount + tameCount + utilityCount), world.getFqName());
     }
 }

@@ -142,6 +142,7 @@ public enum CanaryCommandPermissions {
             WORLD = "canary.command.world",
             WORLD$CREATE = "canary.command.world.create",
             WORLD$DELETE = "canary.command.world.delete",
+            WORLD$INFO = "canary.command.world.info",
             WORLD$LIST = "canary.command.world.list",
             WORLD$LOAD = "canary.commmand.world.load",
             MOB = "canary.command.mob",

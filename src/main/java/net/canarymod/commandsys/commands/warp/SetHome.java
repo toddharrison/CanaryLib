@@ -33,7 +33,7 @@ public class SetHome implements NativeCommand {
             if (target != null) {
                 target.setHome(player.getLocation());
                 if (target.isOnline()) {
-                    sendTranslatedMessage((Player) target, ChatFormat.YELLOW, "home set by other", player.getName());
+                    sendTranslatedMessage((Player)target, ChatFormat.YELLOW, "home set by other", player.getName());
                 }
                 sendTranslatedMessage(player, ChatFormat.YELLOW, "home set other", target.getName());
             }

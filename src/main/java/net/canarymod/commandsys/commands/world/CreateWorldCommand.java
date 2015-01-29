@@ -7,6 +7,8 @@ import net.canarymod.api.world.WorldType;
 import net.canarymod.chat.MessageReceiver;
 import net.canarymod.commandsys.NativeCommand;
 
+import static net.canarymod.Translator.sendTranslatedNotice;
+
 /**
  * Create World Command
  *
@@ -39,7 +41,7 @@ public final class CreateWorldCommand implements NativeCommand {
                 }
             }
             if (dType == null) {
-                caller.notice("Dimension Type is non-existent");
+                sendTranslatedNotice(caller, "unknown dimension", parameters[2]);
                 return;
             }
             if (parameters.length > 3) {
