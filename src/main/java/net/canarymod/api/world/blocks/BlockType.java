@@ -378,11 +378,12 @@ public final class BlockType {
     public static final BlockType AcaciaDoor = new BlockType(196, 0, "minecraft:acacia_door");
     public static final BlockType DarkOakDoor = new BlockType(197, 0, "minecraft:dark_oak_door");
 
-    private final short id;
-    private final short data;
+    private final Integer id;
+    private final Integer data;
     private final String machineName;
 
     private static HashMap<String, Map<Integer, BlockType>> blockTypes;
+    private static HashMap<Integer, Map<Integer, BlockType>> blocksByIdAndData;
 
     public BlockType(int id, String machineName) {
         this(id, 0, "canarymod:" + machineName);
@@ -408,15 +409,18 @@ public final class BlockType {
     public BlockType(int id, int data, String machineName) {
         if (blockTypes == null) {
             blockTypes = new HashMap<String, Map<Integer, BlockType>>();
+            blocksByIdAndData = new HashMap<Integer, Map<Integer, BlockType>>();
         }
         if (machineName == null) {
             throw new CustomBlockTypeException("BlockType name cannot be null!");
         }
-        this.id = (short)id;
-        this.data = (short)data;
+        this.id = id;
+        this.data = data;
         this.machineName = machineName;
         if (!blockTypes.containsKey(machineName)) {
-            blockTypes.put(machineName, new HashMap<Integer, BlockType>(3));
+            Map<Integer, BlockType> map = new HashMap<Integer, BlockType>(3);
+            blockTypes.put(machineName, map);
+            blocksByIdAndData.put(id, map);
         }
         if (blockTypes.get(machineName).values().contains(this)) {
             throw new CustomBlockTypeException("BlockType '" + machineName + ":" + data + "' already exists!");
@@ -429,7 +433,7 @@ public final class BlockType {
      *
      * @return data
      */
-    public short getData() {
+    public int getData() {
         return data;
     }
 
@@ -438,7 +442,7 @@ public final class BlockType {
      *
      * @return id
      */
-    public short getId() {
+    public int getId() {
         return id;
     }
 
@@ -511,31 +515,24 @@ public final class BlockType {
      * Get the BlockType according to the given ID.
      * This will return null if there is no BlockType with this id.
      *
-     * Warning: This operation, as of Minecraft 1.8 is very expensive and exists for
-     * backwards compatibility only!
-     *
      * @param id
      *         the id
      *
      * @return the associated {@link BlockType} or {@code null}
      */
     public static BlockType fromId(int id) {
-        for (Map<Integer, BlockType> list : blockTypes.values()) {
-            for (BlockType t : list.values()) {
-                if (t.getId() == id) {
-                    return t;
-                }
-            }
+        BlockType blockType = null;
+        final Map<Integer, BlockType> map = blocksByIdAndData.get(id);
+        if (map != null && !map.isEmpty()) {
+            blockType = map.get(0);
         }
-        return null;
+        return blockType;
     }
 
     /**
      * Get the BlockType according to the given ID and Data.
      * This will return null if there is no BlockType with this id and data.
      *
-     * Warning: This operation, as of Minecraft 1.8 is very expensive and exists for
-     * backwards compatibility only!
      * @param id
      *         the id
      * @param data
@@ -544,12 +541,12 @@ public final class BlockType {
      * @return the associated {@link BlockType} or {@code null}
      */
     public static BlockType fromIdAndData(int id, int data) {
-        for (Map<Integer, BlockType> list : blockTypes.values()) {
-            if(list.get(data).getId() == id) {
-                return list.get(data);
-            }
-        }
-        return fromId(id); // if data has bit's set, it won't perfectly equal
+	BlockType blockType = null;
+	final Map<Integer, BlockType> map = blocksByIdAndData.get(id);
+	if (map != null) {
+	    blockType = map.get(data);
+	}
+	return blockType;
     }
 
     /**
@@ -565,7 +562,7 @@ public final class BlockType {
         String temp = name;
         int data = 0;
         if (!blockTypes.containsKey(name)) {
-            if (name.matches(".+:.+:\\d+")) {
+            if (name != null && name.matches(".+:.+:\\d+")) {
                 temp = name.replaceAll(":\\d+", "");
                 try {
                     data = Integer.parseInt(name.replaceAll(".+:.+:", ""));
