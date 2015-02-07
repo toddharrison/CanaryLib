@@ -1,19 +1,19 @@
 package net.canarymod.api.world.blocks;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Test BlockType
- * 
- * @author Todd (Rusli)
  *
+ * @author Todd (Rusli)
  */
 public class BlockTypeTest {
     @Test
     public void testFromString() {
-	BlockType bt = BlockType.fromString("minecraft:dirt");
+        BlockType bt = BlockType.fromString("minecraft:dirt");
         assertEquals("minecraft:dirt", bt.getMachineName());
         assertEquals(3, bt.getId());
         assertEquals(0, bt.getData());
@@ -27,7 +27,7 @@ public class BlockTypeTest {
 
     @Test
     public void testFromStringAndData() {
-	BlockType bt = BlockType.fromStringAndData("minecraft:dirt", 2);
+        BlockType bt = BlockType.fromStringAndData("minecraft:dirt", 2);
         assertEquals("minecraft:dirt", bt.getMachineName());
         assertEquals(3, bt.getId());
         assertEquals(2, bt.getData());
@@ -60,7 +60,7 @@ public class BlockTypeTest {
 
     @Test
     public void testFromIdAndData() {
-	BlockType bt = BlockType.fromIdAndData(3, 2);
+        BlockType bt = BlockType.fromIdAndData(3, 2);
         assertEquals("minecraft:dirt", bt.getMachineName());
         assertEquals(3, bt.getId());
         assertEquals(2, bt.getData());

@@ -9,6 +9,8 @@ import java.util.Map;
  * Static class of BlockTypes
  *
  * @author Chris (damagefilter)
+ * @author Jason (darkdiplomat)
+ * @author Todd (Rusli)
  */
 public final class BlockType {
     public static final BlockType Air = new BlockType(0, 0, "minecraft:air");
@@ -378,12 +380,12 @@ public final class BlockType {
     public static final BlockType AcaciaDoor = new BlockType(196, 0, "minecraft:acacia_door");
     public static final BlockType DarkOakDoor = new BlockType(197, 0, "minecraft:dark_oak_door");
 
+    private static HashMap<String, Map<Integer, BlockType>> blockTypes;
+    private static HashMap<Integer, Map<Integer, BlockType>> blocksByIdAndData;
+
     private final Integer id;
     private final Integer data;
     private final String machineName;
-
-    private static HashMap<String, Map<Integer, BlockType>> blockTypes;
-    private static HashMap<Integer, Map<Integer, BlockType>> blocksByIdAndData;
 
     public BlockType(int id, String machineName) {
         this(id, 0, "canarymod:" + machineName);
@@ -457,28 +459,6 @@ public final class BlockType {
         return machineName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        BlockType blockType = (BlockType) o;
-
-        return data == blockType.data && id == blockType.id && machineName.equals(blockType.machineName);
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (int) id;
-        result = 31 * result + (int) data;
-        result = 31 * result + machineName.hashCode();
-        return result;
-    }
 
     /**
      * Get a custom block type.
@@ -541,12 +521,12 @@ public final class BlockType {
      * @return the associated {@link BlockType} or {@code null}
      */
     public static BlockType fromIdAndData(int id, int data) {
-	BlockType blockType = null;
-	final Map<Integer, BlockType> map = blocksByIdAndData.get(id);
-	if (map != null) {
-	    blockType = map.get(data);
-	}
-	return blockType;
+        BlockType blockType = null;
+        final Map<Integer, BlockType> map = blocksByIdAndData.get(id);
+        if (map != null) {
+            blockType = map.get(data);
+        }
+        return blockType;
     }
 
     /**
@@ -573,7 +553,7 @@ public final class BlockType {
             }
             else {
                 // Perhaps try by adding a namespace
-                temp = "minecraft:"+temp;
+                temp = "minecraft:" + temp;
                 if (!blockTypes.containsKey(temp)) {
                     return null;
                 }
@@ -612,5 +592,36 @@ public final class BlockType {
             list.addAll(blocks.values());
         }
         return list.toArray(new BlockType[list.size()]);
+    }
+
+    /**
+     * Returns a String formatted as "ID:DATA[MACHINENAME]"
+     */
+    @Override
+    public String toString() {
+        return id + ":" + data + "[" + getMachineName() + "]";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        BlockType blockType = (BlockType) o;
+
+        return data == blockType.data && id == blockType.id && machineName.equals(blockType.machineName);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) id;
+        result = 31 * result + (int) data;
+        result = 31 * result + machineName.hashCode();
+        return result;
     }
 }
