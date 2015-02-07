@@ -2,17 +2,9 @@ package net.canarymod.motd;
 
 import net.canarymod.chat.MessageReceiver;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,7 +44,7 @@ public class MessageOfTheDay {
             }
             PrintWriter writer = new PrintWriter(new FileWriter(motd_file));
             writer.println("# (Login) Message of the Day");
-            writer.println("# See forums thread http://forums.canarymod.net/?topic=3619");
+            writer.println("# See forums thread http://canarymod.net/forum/canarymod-board/discussions/motd-variables-3447");
             writer.println("# for the list of default variables");
             writer.println("# or the plugins threads that add-on to the Message Of The Day");
             writer.println("# Lines may be prefixed with {permission:<[node] or ![node] or [node]&[node]&![node]>}");
