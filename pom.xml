@@ -189,7 +189,6 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <finalName>${project.artifactId}-${project.version}${build.number}-shaded</finalName>
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
