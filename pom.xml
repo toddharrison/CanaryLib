@@ -318,7 +318,7 @@
             <dependency>
                 <groupId>com.mchange</groupId>
                 <artifactId>c3p0</artifactId>
-                <version>0.9.2.1</version>
+                <version>0.9.5</version>
                 <scope>compile</scope>
             </dependency>
             <dependency>
@@ -349,7 +349,7 @@
             <dependency>
                 <groupId>org.xerial</groupId>
                 <artifactId>sqlite-jdbc</artifactId>
-                <version>3.7.2</version>
+                <version>3.8.7</version>
                 <scope>runtime</scope>
             </dependency>
             <dependency>
@@ -362,7 +362,7 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.11</version>
+                <version>4.12</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
