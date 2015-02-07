@@ -433,8 +433,8 @@ public final class BlockType {
      *
      * @return data
      */
-    public int getData() {
-        return data;
+    public short getData() {
+        return data.shortValue();
     }
 
     /**
@@ -442,8 +442,8 @@ public final class BlockType {
      *
      * @return id
      */
-    public int getId() {
-        return id;
+    public short getId() {
+        return id.shortValue();
     }
 
     /**
