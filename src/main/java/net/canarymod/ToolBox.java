@@ -15,16 +15,9 @@ import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.TimeZone;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -36,8 +29,8 @@ import java.util.regex.Pattern;
 public class ToolBox {
 
     private static TimeZone tz_GMT = TimeZone.getTimeZone("GMT");
-    private static Pattern uuid = Pattern.compile("[0-9a-f]{8}\\-([0-9a-f]{4}\\-){3}[0-9a-f]{12}");
-    private static Pattern uName = Pattern.compile("[A-Za-z0-9_]{3,16}");
+    private static Matcher uuidMatcher = Pattern.compile("[0-9a-f]{8}\\-([0-9a-f]{4}\\-){3}[0-9a-f]{12}").matcher("");
+    private static Matcher usrMatcher = Pattern.compile("[A-Za-z0-9_]{3,16}").matcher("");
     protected static final PropertiesFile userLookup = new PropertiesFile("uuidreverselookup.cfg");
 
     /**
@@ -458,8 +451,41 @@ public class ToolBox {
         return level * 17 + (mid * (mid - 1) / 2) * 3 + (high * (high - 1) / 2) * 7;
     }
 
+    /**
+     * Checks if a string is a UUID
+     *
+     * @param uuid
+     *         the string uuid
+     *
+     * @return {@code true} if UUID; {@code false} if not
+     */
     public static boolean isUUID(String uuid) {
-        return ToolBox.uuid.matcher(uuid).matches();
+        if (uuid == null) {
+            return false;
+        }
+        return uuidMatcher.reset(uuid).matches();
+    }
+
+    /**
+     * Checks if a given user name is a valid Minecraft Username
+     *
+     * @param username
+     *         the username to check
+     *
+     * @return {@code true} of valid; {@code false} if not
+     */
+    public static boolean isValidUsername(String username) {
+        if (username == null) {
+            return false;
+        }
+        return usrMatcher.reset(username).matches();
+    }
+
+    public static UUID getOfflineUUID(String username) {
+        if (isUUID(username)) {
+            return UUID.fromString(username); // shmuck passed in a UUID so pass it back
+        }
+        return UUID.nameUUIDFromBytes(("OfflinePlayer:" + username).getBytes(Charsets.UTF_8));
     }
 
     /**
@@ -470,11 +496,14 @@ public class ToolBox {
      * @return user's uuid or null if not found/on error
      */
     public static String usernameToUUID(String username) {
-        if (!uName.matcher(username).matches()) {
-            if (uuid.matcher(username).matches()) {
+        if (username == null) {
+            return null;
+        }
+        if (!isValidUsername(username)) {
+            if (isUUID(username)) {
                 return username; // shmuck passed in a UUID so pass it back
             }
-            return null; // username isn't valid, so don't bother checking against the mojang API
+            return getOfflineUUID(username).toString(); // username isn't valid, so don't bother checking against the mojang API
         }
 
         // Make sure the server isn't null, this can happen when called early in server init
@@ -487,7 +516,7 @@ public class ToolBox {
 
         // If offline mode and not doing BungeeCord, don't continue forward with the API checks
         if (!Configuration.getServerConfig().isOnlineMode() && !Configuration.getServerConfig().getBungeecordSupport()) {
-            return UUID.nameUUIDFromBytes(("OfflinePlayer:" + username).getBytes(Charsets.UTF_8)).toString();
+            return getOfflineUUID(username).toString(); // username isn't valid, so don't bother checking against the mojang API
         }
 
         // Check the reverse lookup cache
