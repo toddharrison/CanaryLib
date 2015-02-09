@@ -58,7 +58,7 @@ public class Kick implements NativeCommand {
         }
         else {
             sendTranslatedNotice(caller, "kick failed");
-            sendTranslatedNotice(caller, "unknown player", parameters[1]);
+            sendTranslatedNotice(caller, "unknown player", parameters[0]);
         }
     }
 }
