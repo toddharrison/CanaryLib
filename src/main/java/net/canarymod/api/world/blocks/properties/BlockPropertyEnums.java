@@ -3,8 +3,10 @@ package net.canarymod.api.world.blocks.properties;
 /**
  * The catch-all for the enums in Blocks
  *
+ * @deprecated BlockPropertyEnums is being replaced by helper classes
  * @author Jason (darkdiplomat)
  */
+@Deprecated
 public final class BlockPropertyEnums {
 
     /**
