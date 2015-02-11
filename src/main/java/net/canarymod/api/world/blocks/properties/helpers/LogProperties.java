@@ -2,7 +2,10 @@ package net.canarymod.api.world.blocks.properties.helpers;
 
 import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
+import net.visualillusionsent.utils.Verify;
 
+import static net.canarymod.api.world.blocks.BlockType.AcaciaLeaves;
+import static net.canarymod.api.world.blocks.BlockType.AcaciaLog;
 import static net.canarymod.api.world.blocks.BlockType.OakLog;
 
 /**
@@ -11,8 +14,10 @@ import static net.canarymod.api.world.blocks.BlockType.OakLog;
  * @author Jason Jones (darkdiplomat)
  */
 public final class LogProperties extends WoodProperties {
-    public static final BlockEnumProperty axis = getInstanceFor(OakLog, "axis"),
-            variant = getInstanceFor(OakLog, "variant");
+    public static final BlockEnumProperty
+            axis = getInstanceFor(OakLog, "axis"),
+            variantOld = getInstanceFor(OakLog, "variant"),
+            variantNew = getInstanceFor(AcaciaLog, "variant");
 
     /**
      * Log Axis
@@ -36,6 +41,10 @@ public final class LogProperties extends WoodProperties {
     }
 
     public static Block applyVariant(Block block, Variant value) {
-        return apply(block, variant, value);
+        Verify.notNull(block, "Block block");
+        if (block.getType().getMachineName().equals(AcaciaLeaves.getMachineName())) {
+            return apply(block, variantNew, value);
+        }
+        return apply(block, variantOld, value);
     }
 }

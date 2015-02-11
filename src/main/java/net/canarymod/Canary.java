@@ -14,6 +14,7 @@ import net.canarymod.help.HelpManager;
 import net.canarymod.hook.HookExecutor;
 import net.canarymod.kit.KitProvider;
 import net.canarymod.logger.Logman;
+import net.canarymod.metrics.CanaryMetrics;
 import net.canarymod.motd.MessageOfTheDay;
 import net.canarymod.permissionsystem.PermissionManager;
 import net.canarymod.plugin.PluginManager;
@@ -46,6 +47,7 @@ public abstract class Canary implements TaskOwner {
     public final static Logman log;
     private static boolean latePluginsLoaded, earlyPluginsLoaded;
     private static String jarPath;
+    private static CanaryMetrics metrics;
     protected Server server;
 
     protected BanManager banManager;
@@ -293,6 +295,22 @@ public abstract class Canary implements TaskOwner {
             log.info("Enabling late Plugins...");
             pluginManager().enableLatePlugins();
             latePluginsLoaded = true;
+        }
+
+        // Enable metrics
+        if (metrics == null) {
+            try {
+                log.debug("Starting Metrics...");
+                metrics = new CanaryMetrics(getImplementationTitle(), getImplementationVersion());
+                if (!metrics.start()) {
+                    log.debug("Metrics failed to start, no error thrown (opt-out?)");
+                    return;
+                }
+                log.debug("Metrics started!");
+            }
+            catch (IOException e) {
+                log.debug("Metrics failed to start, Error thrown: ", e);
+            }
         }
     }
 
