@@ -5,22 +5,22 @@ import net.canarymod.api.world.blocks.BlockFace;
 import net.canarymod.api.world.blocks.properties.BlockBooleanProperty;
 import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
 
-import static net.canarymod.api.world.blocks.BlockType.EndPortalFrame;
+import static net.canarymod.api.world.blocks.BlockType.Piston;
 
 /**
- * End Portal Frame properties helper
+ * Piston properties helper
  *
  * @author Jason Jones (darkdiplomat)
  */
-public class EndPortalFrameProperties extends BlockProperties {
-    public static BlockEnumProperty facing = getInstanceFor(EndPortalFrame, "facing");
-    public static BlockBooleanProperty eye = getInstanceFor(EndPortalFrame, "eye");
+public final class PistonProperties extends BlockProperties {
+    public static final BlockEnumProperty facing = getInstanceFor(Piston, "facing");
+    public static final BlockBooleanProperty extended = getInstanceFor(Piston, "extended");
 
     public static Block applyFacing(Block block, BlockFace value) {
         return apply(block, facing, value);
     }
 
-    public static Block applyEye(Block block, boolean value) {
-        return apply(block, eye, value);
+    public static Block applyExtended(Block block, boolean value) {
+        return apply(block, extended, value);
     }
 }

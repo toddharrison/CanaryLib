@@ -13,8 +13,8 @@ import static net.canarymod.api.world.blocks.BlockType.Anvil;
  * @author Jason Jones (darkdiplomat)
  */
 public final class AnvilProperties extends BlockProperties {
-    private static final BlockIntegerProperty damage = getInstanceFor(Anvil, "damage");
-    private static final BlockDirectionProperty facing = getInstanceFor(Anvil, "facing");
+    public static final BlockIntegerProperty damage = getInstanceFor(Anvil, "damage");
+    public static final BlockDirectionProperty facing = getInstanceFor(Anvil, "facing");
 
     /**
      * Applies a {@link net.canarymod.api.world.blocks.BlockFace} facing property to the {@code Anvil}

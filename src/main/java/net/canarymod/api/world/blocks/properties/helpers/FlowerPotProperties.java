@@ -12,8 +12,8 @@ import static net.canarymod.api.world.blocks.BlockType.Flowerpot;
  * @author Jason Jones (darkdiplomat)
  */
 public final class FlowerPotProperties extends BlockProperties {
-    private static final BlockIntegerProperty legacyData = getInstanceFor(Flowerpot, "legacy_data");
-    private static final BlockEnumProperty contents = getInstanceFor(Flowerpot, "contents");
+    public static final BlockIntegerProperty legacyData = getInstanceFor(Flowerpot, "legacy_data");
+    public static final BlockEnumProperty contents = getInstanceFor(Flowerpot, "contents");
 
     /**
      * FlowerPot contents

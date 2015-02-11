@@ -11,7 +11,7 @@ import static net.canarymod.api.world.blocks.BlockType.Soil;
  * @author Jason Jones (darkdiplomat)
  */
 public final class FarmlandProperties extends BlockProperties {
-    private static final BlockIntegerProperty mositure = getInstanceFor(Soil, "mositure");
+    public static final BlockIntegerProperty mositure = getInstanceFor(Soil, "mositure");
 
     public static Block applyMositure(Block block, int value) {
         return apply(block, mositure, value);

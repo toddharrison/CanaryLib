@@ -15,7 +15,7 @@ import static net.canarymod.api.world.blocks.BlockType.WoolWhite;
  * @author Jason Jones (darkdiplomat)
  */
 public final class ColoredBlockProperties extends BlockProperties {
-    private static final BlockEnumProperty color = getInstanceFor(WoolWhite, "color");
+    public static final BlockEnumProperty color = getInstanceFor(WoolWhite, "color");
 
     /**
      * Applies rotation to the {@code Banner}

@@ -11,7 +11,7 @@ import static net.canarymod.api.world.blocks.BlockType.Cauldron;
  * @author Jason Jones (darkdiplomat)
  */
 public final class CauldronProperties extends BlockProperties {
-    private static final BlockIntegerProperty level = getInstanceFor(Cauldron, "level");
+    public static final BlockIntegerProperty level = getInstanceFor(Cauldron, "level");
 
     /**
      * Applies rotation to the {@code Banner}

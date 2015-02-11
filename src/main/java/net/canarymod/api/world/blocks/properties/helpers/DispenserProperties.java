@@ -13,8 +13,8 @@ import static net.canarymod.api.world.blocks.BlockType.Dispenser;
  * @author Jason Jones (darkdiplomat)
  */
 public final class DispenserProperties extends BlockProperties {
-    private static final BlockEnumProperty facing = getInstanceFor(Dispenser, "facing");
-    private static final BlockBooleanProperty triggered = getInstanceFor(Dispenser, "triggered");
+    public static final BlockEnumProperty facing = getInstanceFor(Dispenser, "facing");
+    public static final BlockBooleanProperty triggered = getInstanceFor(Dispenser, "triggered");
 
     /**
      * Applies facing to the {@code Dispsener/Dropper}

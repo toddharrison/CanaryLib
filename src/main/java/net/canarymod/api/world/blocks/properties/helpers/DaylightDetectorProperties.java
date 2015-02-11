@@ -11,7 +11,7 @@ import static net.canarymod.api.world.blocks.BlockType.DaylightSensor;
  * @author Jason Jones (darkdiplomat)
  */
 public final class DaylightDetectorProperties extends BlockProperties {
-    private static final BlockIntegerProperty power = getInstanceFor(DaylightSensor, "power");
+    public static final BlockIntegerProperty power = getInstanceFor(DaylightSensor, "power");
 
     /**
      * Applies whether the {@code CommandBlock} has triggered or not

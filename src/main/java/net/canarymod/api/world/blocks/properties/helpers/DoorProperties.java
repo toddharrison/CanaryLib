@@ -13,12 +13,12 @@ import static net.canarymod.api.world.blocks.BlockType.WoodenDoor;
  * @author Jason Jones (darkdiplomat)
  */
 public final class DoorProperties extends BlockProperties {
-    private static final BlockEnumProperty
+    public static final BlockEnumProperty
             facing = getInstanceFor(WoodenDoor, "facing"),
             hinge = getInstanceFor(WoodenDoor, "hinge"),
             half = getInstanceFor(WoodenDoor, "half");
 
-    private static final BlockBooleanProperty
+    public static final BlockBooleanProperty
             open = getInstanceFor(WoodenDoor, "open"),
             powered = getInstanceFor(WoodenDoor, "powered");
 

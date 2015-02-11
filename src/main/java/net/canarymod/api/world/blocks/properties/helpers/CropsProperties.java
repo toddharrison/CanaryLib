@@ -17,7 +17,7 @@ import static net.canarymod.api.world.blocks.BlockType.Crops;
  * @author Jason Jones (darkdiplomat)
  */
 public final class CropsProperties extends BlockProperties {
-    private static final BlockIntegerProperty age = getInstanceFor(Crops, "age");
+    public static final BlockIntegerProperty age = getInstanceFor(Crops, "age");
 
     /**
      * Applies age to the {@code Crops}

@@ -11,7 +11,7 @@ import static net.canarymod.api.world.blocks.BlockType.Cactus;
  * @author Jason Jones (darkdiplomat)
  */
 public final class CactusProperties extends BlockProperties {
-    private static final BlockIntegerProperty age = getInstanceFor(Cactus, "age");
+    public static final BlockIntegerProperty age = getInstanceFor(Cactus, "age");
 
     /**
      * Applies age to the {@code Cactus}

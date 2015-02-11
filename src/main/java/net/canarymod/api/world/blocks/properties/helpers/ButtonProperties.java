@@ -13,8 +13,8 @@ import static net.canarymod.api.world.blocks.BlockType.WoodenButton;
  * @author Jason Jones (darkdiplomat)
  */
 public final class ButtonProperties extends BlockProperties {
-    private static final BlockDirectionProperty facing = getInstanceFor(WoodenButton, "facing");
-    private static final BlockBooleanProperty powered = getInstanceFor(WoodenButton, "powered");
+    public static final BlockDirectionProperty facing = getInstanceFor(WoodenButton, "facing");
+    public static final BlockBooleanProperty powered = getInstanceFor(WoodenButton, "powered");
 
     /**
      * Applies {@link net.canarymod.api.world.blocks.BlockFace} facing to the {@code Button}

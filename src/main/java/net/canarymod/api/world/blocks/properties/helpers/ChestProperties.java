@@ -12,7 +12,7 @@ import static net.canarymod.api.world.blocks.BlockType.Chest;
  * @author Jason Jones (darkdiplomat)
  */
 public final class ChestProperties extends BlockProperties {
-    private static final BlockDirectionProperty facing = getInstanceFor(Chest, "facing");
+    public static final BlockDirectionProperty facing = getInstanceFor(Chest, "facing");
 
     /**
      * Applies rotation to the {@code Banner}

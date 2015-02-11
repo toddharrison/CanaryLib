@@ -11,7 +11,7 @@ import static net.canarymod.api.world.blocks.BlockType.Poppy;
  * @author Jason Jones (darkdiplomat)
  */
 public final class FlowerProperties extends BlockProperties {
-    private static final BlockEnumProperty type = getInstanceFor(Poppy, "type");
+    public static final BlockEnumProperty type = getInstanceFor(Poppy, "type");
 
     /**
      * Flower types

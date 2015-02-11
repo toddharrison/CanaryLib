@@ -12,8 +12,8 @@ import static net.canarymod.api.world.blocks.BlockType.FireBlock;
  * @author Jason Jones (darkdiplomat)
  */
 public final class FireProperties extends BlockProperties {
-    private static final BlockIntegerProperty age = getInstanceFor(FireBlock, "age");
-    private static final BlockBooleanProperty
+    public static final BlockIntegerProperty age = getInstanceFor(FireBlock, "age");
+    public static final BlockBooleanProperty
             alt = getInstanceFor(FireBlock, "alt"),
             north = getInstanceFor(FireBlock, "north"),
             east = getInstanceFor(FireBlock, "east"),
@@ -43,5 +43,9 @@ public final class FireProperties extends BlockProperties {
 
     public static Block applyWest(Block block, boolean value) {
         return apply(block, west, value);
+    }
+
+    public static Block applyUpper(Block block, int value) {
+        return apply(block, upper, value);
     }
 }

@@ -18,7 +18,7 @@ import static net.canarymod.api.world.blocks.BlockType.DoubleGrass;
  * @author Jason Jones (darkdiplomat)
  */
 public final class DoublePlantProperties extends BlockProperties {
-    private static final BlockEnumProperty
+    public static final BlockEnumProperty
             variant = getInstanceFor(DoubleGrass, "variant"),
             half = getInstanceFor(DoubleGrass, "half");
 

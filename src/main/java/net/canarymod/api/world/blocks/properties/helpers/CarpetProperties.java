@@ -12,7 +12,7 @@ import static net.canarymod.api.world.blocks.BlockType.WhiteCarpet;
  * @author Jason Jones (darkdiplomat)
  */
 public final class CarpetProperties extends BlockProperties {
-    private static final BlockEnumProperty color = getInstanceFor(WhiteCarpet, "color");
+    public static final BlockEnumProperty color = getInstanceFor(WhiteCarpet, "color");
 
     /**
      * Applies color to the {@code Carpet}

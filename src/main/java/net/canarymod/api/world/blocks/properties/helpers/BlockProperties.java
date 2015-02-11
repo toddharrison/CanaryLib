@@ -16,7 +16,7 @@ public abstract class BlockProperties {
         return Canary.factory().getObjectFactory().getPropertyInstance(type, property);
     }
 
-    static Block apply(Block block, BlockProperty property, Comparable value) throws IllegalArgumentException {
+    public static Block apply(Block block, BlockProperty property, Comparable value) throws IllegalArgumentException {
         block.setPropertyValue(property, value);
         return block;
     }

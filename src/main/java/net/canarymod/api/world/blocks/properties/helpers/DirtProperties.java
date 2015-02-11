@@ -12,8 +12,8 @@ import static net.canarymod.api.world.blocks.BlockType.Dirt;
  * @author Jason Jones (darkdiplomat)
  */
 public final class DirtProperties extends BlockProperties {
-    private static final BlockEnumProperty variant = getInstanceFor(Dirt, "variant");
-    private static final BlockBooleanProperty snowy = getInstanceFor(Dirt, "snowy");
+    public static final BlockEnumProperty variant = getInstanceFor(Dirt, "variant");
+    public static final BlockBooleanProperty snowy = getInstanceFor(Dirt, "snowy");
 
     /**
      * Dirt variants

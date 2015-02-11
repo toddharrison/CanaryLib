@@ -13,8 +13,8 @@ import static net.canarymod.api.world.blocks.BlockType.StandingBanner;
  * @author Jason Jones (darkdiplomat)
  */
 public final class BannerProperties extends BlockProperties {
-    private static final BlockIntegerProperty rotation = getInstanceFor(StandingBanner, "rotation");
-    private static final BlockDirectionProperty facing = getInstanceFor(StandingBanner, "facing");
+    public static final BlockIntegerProperty rotation = getInstanceFor(StandingBanner, "rotation");
+    public static final BlockDirectionProperty facing = getInstanceFor(StandingBanner, "facing");
 
     /**
      * Rotation helper

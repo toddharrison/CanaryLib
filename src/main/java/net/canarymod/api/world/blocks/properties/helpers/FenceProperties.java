@@ -11,7 +11,7 @@ import static net.canarymod.api.world.blocks.BlockType.Fence;
  * @author Jason Jones (darkdiplomat)
  */
 public final class FenceProperties extends BlockProperties {
-    private static final BlockBooleanProperty
+    public static final BlockBooleanProperty
             north = getInstanceFor(Fence, "north"),
             east = getInstanceFor(Fence, "east"),
             south = getInstanceFor(Fence, "south"),
