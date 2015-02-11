@@ -1,8 +1,9 @@
 package net.canarymod.api.world.blocks.properties.helpers;
 
 import net.canarymod.api.world.blocks.Block;
-import net.canarymod.api.world.blocks.BlockType;
 import net.canarymod.api.world.blocks.properties.BlockIntegerProperty;
+
+import static net.canarymod.api.world.blocks.BlockType.DaylightSensor;
 
 /**
  * Daylight Detector properties helper
@@ -10,7 +11,7 @@ import net.canarymod.api.world.blocks.properties.BlockIntegerProperty;
  * @author Jason Jones (darkdiplomat)
  */
 public final class DaylightDetectorProperties extends BlockProperties {
-    private static final BlockIntegerProperty power = getInstanceFor(BlockType.DaylightSensor, "power");
+    private static final BlockIntegerProperty power = getInstanceFor(DaylightSensor, "power");
 
     /**
      * Applies whether the {@code CommandBlock} has triggered or not

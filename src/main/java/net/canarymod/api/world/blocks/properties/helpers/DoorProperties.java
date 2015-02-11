@@ -2,9 +2,10 @@ package net.canarymod.api.world.blocks.properties.helpers;
 
 import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.blocks.BlockFace;
-import net.canarymod.api.world.blocks.BlockType;
 import net.canarymod.api.world.blocks.properties.BlockBooleanProperty;
 import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
+
+import static net.canarymod.api.world.blocks.BlockType.WoodenDoor;
 
 /**
  * Door properties helper
@@ -12,11 +13,14 @@ import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
  * @author Jason Jones (darkdiplomat)
  */
 public final class DoorProperties extends BlockProperties {
-    private static final BlockEnumProperty facing = getInstanceFor(BlockType.WoodenDoor, "facing");
-    private static final BlockBooleanProperty open = getInstanceFor(BlockType.WoodenDoor, "open");
-    private static final BlockEnumProperty hinge = getInstanceFor(BlockType.WoodenDoor, "hinge");
-    private static final BlockBooleanProperty powered = getInstanceFor(BlockType.WoodenDoor, "powered");
-    private static final BlockEnumProperty half = getInstanceFor(BlockType.WoodenDoor, "half");
+    private static final BlockEnumProperty
+            facing = getInstanceFor(WoodenDoor, "facing"),
+            hinge = getInstanceFor(WoodenDoor, "hinge"),
+            half = getInstanceFor(WoodenDoor, "half");
+
+    private static final BlockBooleanProperty
+            open = getInstanceFor(WoodenDoor, "open"),
+            powered = getInstanceFor(WoodenDoor, "powered");
 
     public enum Half {
         UPPER,

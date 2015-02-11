@@ -1,8 +1,9 @@
 package net.canarymod.api.world.blocks.properties.helpers;
 
 import net.canarymod.api.world.blocks.Block;
-import net.canarymod.api.world.blocks.BlockType;
 import net.canarymod.api.world.blocks.properties.BlockBooleanProperty;
+
+import static net.canarymod.api.world.blocks.BlockType.CommandBlock;
 
 /**
  * Command Block properties helper
@@ -10,7 +11,7 @@ import net.canarymod.api.world.blocks.properties.BlockBooleanProperty;
  * @author Jason Jones (darkdiplomat)
  */
 public final class CommandBlockProperties extends BlockProperties {
-    private static final BlockBooleanProperty triggered = getInstanceFor(BlockType.CommandBlock, "triggered");
+    private static final BlockBooleanProperty triggered = getInstanceFor(CommandBlock, "triggered");
 
     /**
      * Applies whether the {@code CommandBlock} has triggered or not

@@ -1,9 +1,10 @@
 package net.canarymod.api.world.blocks.properties.helpers;
 
 import net.canarymod.api.world.blocks.Block;
-import net.canarymod.api.world.blocks.BlockType;
 import net.canarymod.api.world.blocks.properties.BlockBooleanProperty;
 import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
+
+import static net.canarymod.api.world.blocks.BlockType.Dirt;
 
 /**
  * Dirt properties helper
@@ -11,9 +12,14 @@ import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
  * @author Jason Jones (darkdiplomat)
  */
 public final class DirtProperties extends BlockProperties {
-    private static final BlockEnumProperty variant = getInstanceFor(BlockType.Dirt, "variant");
-    private static final BlockBooleanProperty snowy = getInstanceFor(BlockType.Dirt, "snowy");
+    private static final BlockEnumProperty variant = getInstanceFor(Dirt, "variant");
+    private static final BlockBooleanProperty snowy = getInstanceFor(Dirt, "snowy");
 
+    /**
+     * Dirt variants
+     *
+     * @author Jason Jones (darkdiplomat)
+     */
     public enum Variant {
         DIRT,
         COARSE_DIRT,
@@ -27,10 +33,40 @@ public final class DirtProperties extends BlockProperties {
         }
     }
 
+    /**
+     * Applies variant to the {@code Dirt}
+     *
+     * @param block
+     *         the {@link net.canarymod.api.world.blocks.Block} to be modified
+     * @param value
+     *         the {@link net.canarymod.api.world.blocks.properties.helpers.DirtProperties.Variant} value to apply
+     *
+     * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
+     *
+     * @throws java.lang.NullPointerException
+     *         Should {@code block} or {@code value} be null
+     * @throws java.lang.IllegalArgumentException
+     *         Should an invalid property be applied
+     */
     public static Block applyVariant(Block block, Variant value) {
         return apply(block, variant, value);
     }
 
+    /**
+     * Applies whether the {@code Dirt} is snowy
+     *
+     * @param block
+     *         the {@link net.canarymod.api.world.blocks.Block} to be modified
+     * @param value
+     *         the {@code boolean} value to apply
+     *
+     * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
+     *
+     * @throws java.lang.NullPointerException
+     *         Should {@code block} or {@code value} be null
+     * @throws java.lang.IllegalArgumentException
+     *         Should an invalid property be applied
+     */
     public static Block applySnowy(Block block, boolean value) {
         return apply(block, snowy, value);
     }

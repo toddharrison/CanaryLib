@@ -2,8 +2,9 @@ package net.canarymod.api.world.blocks.properties.helpers;
 
 import net.canarymod.api.DyeColor;
 import net.canarymod.api.world.blocks.Block;
-import net.canarymod.api.world.blocks.BlockType;
 import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
+
+import static net.canarymod.api.world.blocks.BlockType.WhiteCarpet;
 
 /**
  * Carpet properties helper
@@ -11,7 +12,7 @@ import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
  * @author Jason Jones (darkdiplomat)
  */
 public final class CarpetProperties extends BlockProperties {
-    private static final BlockEnumProperty color = getInstanceFor(BlockType.WhiteCarpet, "color");
+    private static final BlockEnumProperty color = getInstanceFor(WhiteCarpet, "color");
 
     /**
      * Applies color to the {@code Carpet}

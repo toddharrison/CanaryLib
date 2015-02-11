@@ -2,8 +2,9 @@ package net.canarymod.api.world.blocks.properties.helpers;
 
 import net.canarymod.api.DyeColor;
 import net.canarymod.api.world.blocks.Block;
-import net.canarymod.api.world.blocks.BlockType;
 import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
+
+import static net.canarymod.api.world.blocks.BlockType.WoolWhite;
 
 /**
  * Colored Block properties helper<br/>
@@ -14,7 +15,7 @@ import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
  * @author Jason Jones (darkdiplomat)
  */
 public final class ColoredBlockProperties extends BlockProperties {
-    private static final BlockEnumProperty color = getInstanceFor(BlockType.WoolWhite, "color");
+    private static final BlockEnumProperty color = getInstanceFor(WoolWhite, "color");
 
     /**
      * Applies rotation to the {@code Banner}

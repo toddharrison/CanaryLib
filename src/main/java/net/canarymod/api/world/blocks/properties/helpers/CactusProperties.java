@@ -1,8 +1,9 @@
 package net.canarymod.api.world.blocks.properties.helpers;
 
 import net.canarymod.api.world.blocks.Block;
-import net.canarymod.api.world.blocks.BlockType;
 import net.canarymod.api.world.blocks.properties.BlockIntegerProperty;
+
+import static net.canarymod.api.world.blocks.BlockType.Cactus;
 
 /**
  * Cactus properties helper
@@ -10,7 +11,7 @@ import net.canarymod.api.world.blocks.properties.BlockIntegerProperty;
  * @author Jason Jones (darkdiplomat)
  */
 public final class CactusProperties extends BlockProperties {
-    private static final BlockIntegerProperty age = getInstanceFor(BlockType.Cactus, "age");
+    private static final BlockIntegerProperty age = getInstanceFor(Cactus, "age");
 
     /**
      * Applies age to the {@code Cactus}

@@ -2,8 +2,9 @@ package net.canarymod.api.world.blocks.properties.helpers;
 
 import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.blocks.BlockFace;
-import net.canarymod.api.world.blocks.BlockType;
 import net.canarymod.api.world.blocks.properties.BlockDirectionProperty;
+
+import static net.canarymod.api.world.blocks.BlockType.Chest;
 
 /**
  * Chest properties helper
@@ -11,7 +12,7 @@ import net.canarymod.api.world.blocks.properties.BlockDirectionProperty;
  * @author Jason Jones (darkdiplomat)
  */
 public final class ChestProperties extends BlockProperties {
-    private static final BlockDirectionProperty facing = getInstanceFor(BlockType.Chest, "facing");
+    private static final BlockDirectionProperty facing = getInstanceFor(Chest, "facing");
 
     /**
      * Applies rotation to the {@code Banner}

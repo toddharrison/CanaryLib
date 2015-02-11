@@ -1,9 +1,10 @@
 package net.canarymod.api.world.blocks.properties.helpers;
 
 import net.canarymod.api.world.blocks.Block;
-import net.canarymod.api.world.blocks.BlockType;
 import net.canarymod.api.world.blocks.properties.BlockBooleanProperty;
 import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
+
+import static net.canarymod.api.world.blocks.BlockType.BedBlock;
 
 /**
  * Bed properties helper
@@ -11,8 +12,8 @@ import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
  * @author Jason Jones (darkdiplomat)
  */
 public final class BedProperties extends BlockProperties {
-    private static final BlockEnumProperty part = getInstanceFor(BlockType.BedBlock, "part");
-    private static final BlockBooleanProperty occupied = getInstanceFor(BlockType.BedBlock, "facing");
+    private static final BlockEnumProperty part = getInstanceFor(BedBlock, "part");
+    private static final BlockBooleanProperty occupied = getInstanceFor(BedBlock, "occupied");
 
     /**
      * Bed half

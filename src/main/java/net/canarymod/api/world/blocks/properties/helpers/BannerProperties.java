@@ -2,9 +2,10 @@ package net.canarymod.api.world.blocks.properties.helpers;
 
 import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.blocks.BlockFace;
-import net.canarymod.api.world.blocks.BlockType;
 import net.canarymod.api.world.blocks.properties.BlockDirectionProperty;
 import net.canarymod.api.world.blocks.properties.BlockIntegerProperty;
+
+import static net.canarymod.api.world.blocks.BlockType.StandingBanner;
 
 /**
  * Banner properties helper
@@ -12,8 +13,8 @@ import net.canarymod.api.world.blocks.properties.BlockIntegerProperty;
  * @author Jason Jones (darkdiplomat)
  */
 public final class BannerProperties extends BlockProperties {
-    private static final BlockIntegerProperty rotation = getInstanceFor(BlockType.StandingBanner, "rotation");
-    private static final BlockDirectionProperty facing = getInstanceFor(BlockType.StandingBanner, "facing");
+    private static final BlockIntegerProperty rotation = getInstanceFor(StandingBanner, "rotation");
+    private static final BlockDirectionProperty facing = getInstanceFor(StandingBanner, "facing");
 
     /**
      * Rotation helper

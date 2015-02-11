@@ -1,8 +1,9 @@
 package net.canarymod.api.world.blocks.properties.helpers;
 
 import net.canarymod.api.world.blocks.Block;
-import net.canarymod.api.world.blocks.BlockType;
 import net.canarymod.api.world.blocks.properties.BlockIntegerProperty;
+
+import static net.canarymod.api.world.blocks.BlockType.Cake;
 
 /**
  * Cake properties helper
@@ -10,7 +11,7 @@ import net.canarymod.api.world.blocks.properties.BlockIntegerProperty;
  * @author Jason Jones (darkdiplomat)
  */
 public final class CakeProperties extends BlockProperties {
-    private static final BlockIntegerProperty bites = getInstanceFor(BlockType.Cake, "bites");
+    private static final BlockIntegerProperty bites = getInstanceFor(Cake, "bites");
 
     /**
      * Applies bites to the {@code Cake}

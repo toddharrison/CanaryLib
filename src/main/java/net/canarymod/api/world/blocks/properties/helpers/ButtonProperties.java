@@ -2,9 +2,10 @@ package net.canarymod.api.world.blocks.properties.helpers;
 
 import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.blocks.BlockFace;
-import net.canarymod.api.world.blocks.BlockType;
 import net.canarymod.api.world.blocks.properties.BlockBooleanProperty;
 import net.canarymod.api.world.blocks.properties.BlockDirectionProperty;
+
+import static net.canarymod.api.world.blocks.BlockType.WoodenButton;
 
 /**
  * Button properties helper
@@ -12,8 +13,8 @@ import net.canarymod.api.world.blocks.properties.BlockDirectionProperty;
  * @author Jason Jones (darkdiplomat)
  */
 public final class ButtonProperties extends BlockProperties {
-    private static final BlockDirectionProperty facing = getInstanceFor(BlockType.WoodenButton, "facing");
-    private static final BlockBooleanProperty powered = getInstanceFor(BlockType.WoodenButton, "powered");
+    private static final BlockDirectionProperty facing = getInstanceFor(WoodenButton, "facing");
+    private static final BlockBooleanProperty powered = getInstanceFor(WoodenButton, "powered");
 
     /**
      * Applies {@link net.canarymod.api.world.blocks.BlockFace} facing to the {@code Button}

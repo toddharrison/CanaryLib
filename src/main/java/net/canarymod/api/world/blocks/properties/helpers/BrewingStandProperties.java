@@ -1,8 +1,9 @@
 package net.canarymod.api.world.blocks.properties.helpers;
 
 import net.canarymod.api.world.blocks.Block;
-import net.canarymod.api.world.blocks.BlockType;
 import net.canarymod.api.world.blocks.properties.BlockBooleanProperty;
+
+import static net.canarymod.api.world.blocks.BlockType.BrewingStand;
 
 /**
  * Brewing Stand properties helper
@@ -10,9 +11,10 @@ import net.canarymod.api.world.blocks.properties.BlockBooleanProperty;
  * @author Jason Jones (darkdiplomat)
  */
 public final class BrewingStandProperties extends BlockProperties {
-    private static final BlockBooleanProperty hasBottle0 = getInstanceFor(BlockType.BrewingStand, "has_bottle_0");
-    private static final BlockBooleanProperty hasBottle1 = getInstanceFor(BlockType.BrewingStand, "has_bottle_1");
-    private static final BlockBooleanProperty hasBottle2 = getInstanceFor(BlockType.BrewingStand, "has_bottle_2");
+    private static final BlockBooleanProperty
+            hasBottle0 = getInstanceFor(BrewingStand, "has_bottle_0"),
+            hasBottle1 = getInstanceFor(BrewingStand, "has_bottle_1"),
+            hasBottle2 = getInstanceFor(BrewingStand, "has_bottle_2");
 
     /**
      * Applies whether the {@code Brewing Stand}'s slot 0 is occupied or not

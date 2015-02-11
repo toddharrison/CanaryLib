@@ -1,8 +1,9 @@
 package net.canarymod.api.world.blocks.properties.helpers;
 
 import net.canarymod.api.world.blocks.Block;
-import net.canarymod.api.world.blocks.BlockType;
 import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
+
+import static net.canarymod.api.world.blocks.BlockType.DoubleGrass;
 
 /**
  * Double Plant properties helper<br/>
@@ -17,8 +18,9 @@ import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
  * @author Jason Jones (darkdiplomat)
  */
 public final class DoublePlantProperties extends BlockProperties {
-    private static final BlockEnumProperty variant = getInstanceFor(BlockType.DoubleGrass, "variant");
-    private static final BlockEnumProperty half = getInstanceFor(BlockType.DoubleGrass, "half");
+    private static final BlockEnumProperty
+            variant = getInstanceFor(DoubleGrass, "variant"),
+            half = getInstanceFor(DoubleGrass, "half");
 
     public enum Half {
         UPPER,
