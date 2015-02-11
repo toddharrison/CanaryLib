@@ -17,30 +17,6 @@ public final class BannerProperties extends BlockProperties {
     public static final BlockDirectionProperty facing = getInstanceFor(StandingBanner, "facing");
 
     /**
-     * Rotation helper
-     *
-     * @author Jason Jones (darkdiplomat)
-     */
-    public enum Rotation {
-        SOUTH,
-        SOUTHBYSOUTHWEST,
-        SOUTHWEST,
-        WESTBYSOUTHWEST,
-        WEST,
-        WESTBYNORTHWEST,
-        NORTHWEST,
-        NORTHBYNORTHWEST,
-        NORTH,
-        NORTHBYNORTHEAST,
-        NORTHEAST,
-        EASTBYNORTHEAST,
-        EAST,
-        EASTBYSOUTHEAST,
-        SOUTHEAST,
-        SOUTHBYSOUTHEAST
-    }
-
-    /**
      * Applies a {@link net.canarymod.api.world.blocks.BlockFace} facing to the {@code Banner (Wall Banner)}
      *
      * @param block
@@ -84,7 +60,7 @@ public final class BannerProperties extends BlockProperties {
      * @param block
      *         the {@link net.canarymod.api.world.blocks.Block} to be modified
      * @param value
-     *         the {@link net.canarymod.api.world.blocks.properties.helpers.BannerProperties.Rotation} value to apply
+     *         the {@link net.canarymod.api.world.blocks.properties.helpers.BlockProperties.Rotation} value to apply
      *
      * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
      *
@@ -93,7 +69,7 @@ public final class BannerProperties extends BlockProperties {
      * @throws java.lang.IllegalArgumentException
      *         Should an invalid property be applied
      */
-    public static Block applyRoation(Block block, Rotation value) {
+    public static Block applyRotation(Block block, Rotation value) {
         return applyRotation(block, value.ordinal());
     }
 }

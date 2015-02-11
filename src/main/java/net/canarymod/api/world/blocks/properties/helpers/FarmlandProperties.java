@@ -16,5 +16,4 @@ public final class FarmlandProperties extends BlockProperties {
     public static Block applyMositure(Block block, int value) {
         return apply(block, mositure, value);
     }
-
 }
