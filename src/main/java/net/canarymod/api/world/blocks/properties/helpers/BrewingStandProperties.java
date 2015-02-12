@@ -11,6 +11,10 @@ import static net.canarymod.api.world.blocks.BlockType.BrewingStand;
  * @author Jason Jones (darkdiplomat)
  */
 public final class BrewingStandProperties extends BlockProperties {
+
+    /**
+     * Brewing Stand bottle properties, Values: true, false
+     */
     public static final BlockBooleanProperty
             hasBottle0 = getInstanceFor(BrewingStand, "has_bottle_0"),
             hasBottle1 = getInstanceFor(BrewingStand, "has_bottle_1"),

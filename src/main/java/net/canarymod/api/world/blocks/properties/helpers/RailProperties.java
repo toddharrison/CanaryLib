@@ -1,10 +1,10 @@
 package net.canarymod.api.world.blocks.properties.helpers;
 
 import net.canarymod.api.world.blocks.Block;
-import net.canarymod.api.world.blocks.properties.BlockBooleanProperty;
 import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
 import net.visualillusionsent.utils.Verify;
 
+import static net.canarymod.api.world.blocks.BlockType.ActivatorRail;
 import static net.canarymod.api.world.blocks.BlockType.DetectorRail;
 import static net.canarymod.api.world.blocks.BlockType.PoweredRail;
 import static net.canarymod.api.world.blocks.BlockType.Rail;
@@ -14,14 +14,11 @@ import static net.canarymod.api.world.blocks.BlockType.Rail;
  *
  * @author Jason Jones (darkdiplomat)
  */
-public final class RailProperties extends BlockProperties {
+public abstract class RailProperties extends BlockProperties {
     public static final BlockEnumProperty
             shapeNormalRail = getInstanceFor(Rail, "shape"),
             shapePoweredRail = getInstanceFor(PoweredRail, "shape"),
             shapeDetectorRail = getInstanceFor(DetectorRail, "shape");
-    public static final BlockBooleanProperty
-            poweredPoweredRail = getInstanceFor(PoweredRail, "powered"),
-            poweredDectectorRail = getInstanceFor(DetectorRail, "powered");
 
     /**
      * Rail directions
@@ -48,7 +45,7 @@ public final class RailProperties extends BlockProperties {
 
     public static Block applyShape(Block block, Direction value) {
         Verify.notNull(block, "Block block");
-        if (block.getType().equals(PoweredRail)) {
+        if (block.getType().equals(PoweredRail) || block.getType().equals(ActivatorRail)) {
             return apply(block, shapePoweredRail, value);
         }
         else if (block.getType().equals(DetectorRail)) {
@@ -56,16 +53,6 @@ public final class RailProperties extends BlockProperties {
         }
         else {
             return apply(block, shapeNormalRail, value);
-        }
-    }
-
-    public static Block applyPowered(Block block, boolean value) {
-        Verify.notNull(block, "Block block");
-        if (block.getType().equals(PoweredRail)) {
-            return apply(block, poweredPoweredRail, value);
-        }
-        else {
-            return apply(block, poweredDectectorRail, value);
         }
     }
 }

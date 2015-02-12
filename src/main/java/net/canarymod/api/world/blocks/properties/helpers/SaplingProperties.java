@@ -19,6 +19,21 @@ public final class SaplingProperties extends WoodProperties {
         return apply(block, type, value);
     }
 
+    /**
+     * Applies stage to the {@code Sapling}
+     *
+     * @param block
+     *         the {@link net.canarymod.api.world.blocks.Block} to be modified
+     * @param value
+     *         the {@code int} value to apply
+     *
+     * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
+     *
+     * @throws java.lang.NullPointerException
+     *         Should {@code block} or {@code value} be null
+     * @throws java.lang.IllegalArgumentException
+     *         Should an invalid property be applied
+     */
     public static Block applyStage(Block block, int value) {
         return apply(block, stage, value);
     }

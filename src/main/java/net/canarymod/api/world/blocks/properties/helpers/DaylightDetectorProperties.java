@@ -11,6 +11,10 @@ import static net.canarymod.api.world.blocks.BlockType.DaylightSensor;
  * @author Jason Jones (darkdiplomat)
  */
 public final class DaylightDetectorProperties extends BlockProperties {
+
+    /**
+     * Daylight Detector power property, Values: 0 - 15
+     */
     public static final BlockIntegerProperty power = getInstanceFor(DaylightSensor, "power");
 
     /**
@@ -19,7 +23,7 @@ public final class DaylightDetectorProperties extends BlockProperties {
      * @param block
      *         the {@link net.canarymod.api.world.blocks.Block} to be modified
      * @param value
-     *         the {@code int} value to apply (0 - 15)
+     *         the {@code int} value to apply
      *
      * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
      *

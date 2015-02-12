@@ -6,15 +6,19 @@ import net.canarymod.api.world.blocks.properties.BlockIntegerProperty;
 import static net.canarymod.api.world.blocks.BlockType.CocoaPlant;
 
 /**
- * Cocoa properties helper
+ * CocoaPlant properties helper
  *
  * @author Jason Jones (darkdiplomat)
  */
 public final class CocoaPlantProperties extends DirectionalBlockProperties {
+
+    /**
+     * CocoaPlant age property, Values: 0 - 2
+     */
     public static final BlockIntegerProperty age = getInstanceFor(CocoaPlant, "age");
 
     /**
-     * Applies rotation to the {@code Banner}
+     * Applies age to the {@code CocoaPlant}
      *
      * @param block
      *         the {@link net.canarymod.api.world.blocks.Block} to be modified

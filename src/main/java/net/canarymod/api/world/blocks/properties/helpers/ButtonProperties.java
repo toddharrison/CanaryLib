@@ -13,7 +13,14 @@ import static net.canarymod.api.world.blocks.BlockType.WoodenButton;
  * @author Jason Jones (darkdiplomat)
  */
 public final class ButtonProperties extends BlockProperties {
+    /**
+     * Button facing property, Values: {@link net.canarymod.api.world.blocks.BlockFace} (Excluding TOP)
+     */
     public static final BlockDirectionProperty facing = getInstanceFor(WoodenButton, "facing");
+
+    /**
+     * Button powered property (which could mean pressed in), Values: true, false
+     */
     public static final BlockBooleanProperty powered = getInstanceFor(WoodenButton, "powered");
 
     /**
@@ -41,7 +48,7 @@ public final class ButtonProperties extends BlockProperties {
      * @param block
      *         the {@link net.canarymod.api.world.blocks.Block} to be modified
      * @param value
-     *         the {@code int} value to apply
+     *         the {@code boolean} value to apply
      *
      * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
      *

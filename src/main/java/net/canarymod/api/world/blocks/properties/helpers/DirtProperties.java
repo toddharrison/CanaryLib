@@ -12,7 +12,15 @@ import static net.canarymod.api.world.blocks.BlockType.Dirt;
  * @author Jason Jones (darkdiplomat)
  */
 public final class DirtProperties extends BlockProperties {
+
+    /**
+     * Dirt variant property, Values: {@link net.canarymod.api.world.blocks.properties.helpers.DirtProperties.Variant}
+     */
     public static final BlockEnumProperty variant = getInstanceFor(Dirt, "variant");
+
+    /**
+     * Dirt snowy property, Values: true, false
+     */
     public static final BlockBooleanProperty snowy = getInstanceFor(Dirt, "snowy");
 
     /**

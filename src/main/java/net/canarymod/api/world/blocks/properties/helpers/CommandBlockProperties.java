@@ -11,6 +11,10 @@ import static net.canarymod.api.world.blocks.BlockType.CommandBlock;
  * @author Jason Jones (darkdiplomat)
  */
 public final class CommandBlockProperties extends BlockProperties {
+
+    /**
+     * Command Block triggered property, Values: true, false
+     */
     public static final BlockBooleanProperty triggered = getInstanceFor(CommandBlock, "triggered");
 
     /**

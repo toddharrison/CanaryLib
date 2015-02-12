@@ -15,6 +15,10 @@ import static net.canarymod.api.world.blocks.BlockType.PistonHead;
  * @author Jason Jones (darkdiplomat)
  */
 public final class PistonHeadProperties extends BlockProperties {
+
+    /**
+     * Piston Head facing property, Values: {@link net.canarymod.api.world.blocks.BlockFace}
+     */
     public static final BlockDirectionProperty facing = getInstanceFor(PistonHead, "facing");
     public static final BlockEnumProperty type = getInstanceFor(PistonHead, "type");
     public static final BlockBooleanProperty short_ = getInstanceFor(PistonHead, "short");
@@ -36,6 +40,21 @@ public final class PistonHeadProperties extends BlockProperties {
         }
     }
 
+    /**
+     * Applies a {@link net.canarymod.api.world.blocks.BlockFace} facing property to the {@code Piston Head}
+     *
+     * @param block
+     *         the {@link net.canarymod.api.world.blocks.Block} to be modified
+     * @param value
+     *         the {@link net.canarymod.api.world.blocks.BlockFace} value to apply
+     *
+     * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
+     *
+     * @throws java.lang.NullPointerException
+     *         Should {@code block} or {@code value} be null
+     * @throws java.lang.IllegalArgumentException
+     *         Should an invalid property be applied
+     */
     public static Block applyFacing(Block block, BlockFace value) {
         return apply(block, facing, value);
     }
@@ -44,6 +63,21 @@ public final class PistonHeadProperties extends BlockProperties {
         return apply(block, type, value);
     }
 
+    /**
+     * Applies whether the {@code Piston Head} arm is shorter than usual (by 4 pixels)
+     *
+     * @param block
+     *         the {@link net.canarymod.api.world.blocks.Block} to be modified
+     * @param value
+     *         the {@code boolean} value to apply
+     *
+     * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
+     *
+     * @throws java.lang.NullPointerException
+     *         Should {@code block} or {@code value} be null
+     * @throws java.lang.IllegalArgumentException
+     *         Should an invalid property be applied
+     */
     public static Block applyShort(Block block, boolean value) {
         return apply(block, short_, value);
     }

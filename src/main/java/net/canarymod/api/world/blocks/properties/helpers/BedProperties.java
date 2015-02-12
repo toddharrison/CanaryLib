@@ -12,7 +12,15 @@ import static net.canarymod.api.world.blocks.BlockType.BedBlock;
  * @author Jason Jones (darkdiplomat)
  */
 public final class BedProperties extends DirectionalBlockProperties {
+
+    /**
+     * Bed part property, Values: {@link net.canarymod.api.world.blocks.properties.helpers.BedProperties.Half}
+     */
     public static final BlockEnumProperty part = getInstanceFor(BedBlock, "part");
+
+    /**
+     * Bed occupied property, Values: true, false
+     */
     public static final BlockBooleanProperty occupied = getInstanceFor(BedBlock, "occupied");
 
     /**
@@ -57,7 +65,7 @@ public final class BedProperties extends DirectionalBlockProperties {
      * @param block
      *         the {@link net.canarymod.api.world.blocks.Block} to be modified
      * @param value
-     *         the {@code int} value to apply
+     *         the {@code boolean} value to apply
      *
      * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
      *

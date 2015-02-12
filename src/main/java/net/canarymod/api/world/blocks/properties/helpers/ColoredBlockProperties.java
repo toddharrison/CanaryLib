@@ -15,10 +15,14 @@ import static net.canarymod.api.world.blocks.BlockType.WoolWhite;
  * @author Jason Jones (darkdiplomat)
  */
 public final class ColoredBlockProperties extends BlockProperties {
+
+    /**
+     * Colored Block color property, Values: {@link net.canarymod.api.DyeColor} (excluding CUSTOM)
+     */
     public static final BlockEnumProperty color = getInstanceFor(WoolWhite, "color");
 
     /**
-     * Applies rotation to the {@code Banner}
+     * Applies color to the {@code Carpet}
      *
      * @param block
      *         the {@link net.canarymod.api.world.blocks.Block} to be modified

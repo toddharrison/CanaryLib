@@ -11,6 +11,9 @@ import static net.canarymod.api.world.blocks.BlockType.Cake;
  * @author Jason Jones (darkdiplomat)
  */
 public final class CakeProperties extends BlockProperties {
+    /**
+     * Cake bites property, Values: 0 - 6
+     */
     public static final BlockIntegerProperty bites = getInstanceFor(Cake, "bites");
 
     /**

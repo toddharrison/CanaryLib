@@ -17,6 +17,10 @@ import static net.canarymod.api.world.blocks.BlockType.Crops;
  * @author Jason Jones (darkdiplomat)
  */
 public final class CropsProperties extends BlockProperties {
+
+    /**
+     * Crops age property, Values: 0 - 7
+     */
     public static final BlockIntegerProperty age = getInstanceFor(Crops, "age");
 
     /**
@@ -25,7 +29,7 @@ public final class CropsProperties extends BlockProperties {
      * @param block
      *         the {@link net.canarymod.api.world.blocks.Block} to be modified
      * @param value
-     *         the {@code int} value to apply (0 - 7)
+     *         the {@code int} value to apply
      *
      * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
      *

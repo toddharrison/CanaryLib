@@ -13,6 +13,10 @@ import static net.canarymod.api.world.blocks.BlockType.CobbleStair;
  * @author Jason Jones (darkdiplomat)
  */
 public final class StairsProperties extends BlockProperties {
+
+    /**
+     * Stairs facing property, Values: {@link net.canarymod.api.world.blocks.BlockFace}
+     */
     public static final BlockDirectionProperty facing = getInstanceFor(CobbleStair, "facing");
     public static final BlockEnumProperty
             half = getInstanceFor(CobbleStair, "half"),
@@ -51,6 +55,21 @@ public final class StairsProperties extends BlockProperties {
         }
     }
 
+    /**
+     * Applies a {@link net.canarymod.api.world.blocks.BlockFace} facing property to the {@code Stairs}
+     *
+     * @param block
+     *         the {@link net.canarymod.api.world.blocks.Block} to be modified
+     * @param value
+     *         the {@link net.canarymod.api.world.blocks.BlockFace} value to apply
+     *
+     * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
+     *
+     * @throws java.lang.NullPointerException
+     *         Should {@code block} or {@code value} be null
+     * @throws java.lang.IllegalArgumentException
+     *         Should an invalid property be applied
+     */
     public static Block applyFacing(Block block, BlockFace value) {
         return apply(block, facing, value);
     }

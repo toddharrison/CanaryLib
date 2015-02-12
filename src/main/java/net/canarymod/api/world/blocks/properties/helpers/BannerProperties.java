@@ -13,7 +13,15 @@ import static net.canarymod.api.world.blocks.BlockType.StandingBanner;
  * @author Jason Jones (darkdiplomat)
  */
 public final class BannerProperties extends BlockProperties {
+
+    /**
+     * Banner rotation property, Value: 0 - 15
+     */
     public static final BlockIntegerProperty rotation = getInstanceFor(StandingBanner, "rotation");
+
+    /**
+     * Anvil facing property, Values: {@link net.canarymod.api.world.blocks.BlockFace} (Excluding TOP & BOTTOM)
+     */
     public static final BlockDirectionProperty facing = getInstanceFor(StandingBanner, "facing");
 
     /**
@@ -41,7 +49,7 @@ public final class BannerProperties extends BlockProperties {
      * @param block
      *         the {@link net.canarymod.api.world.blocks.Block} to be modified
      * @param value
-     *         the {@code int} value to apply (0 - 15)
+     *         the {@code int} value to apply
      *
      * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
      *

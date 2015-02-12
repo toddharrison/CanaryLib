@@ -13,7 +13,15 @@ import static net.canarymod.api.world.blocks.BlockType.Anvil;
  * @author Jason Jones (darkdiplomat)
  */
 public final class AnvilProperties extends BlockProperties {
+
+    /**
+     * Anvil damage property, Values: 0 - 2
+     */
     public static final BlockIntegerProperty damage = getInstanceFor(Anvil, "damage");
+
+    /**
+     * Anvil facing property, Values: {@link net.canarymod.api.world.blocks.BlockFace} (Excluding TOP & BOTTOM)
+     */
     public static final BlockDirectionProperty facing = getInstanceFor(Anvil, "facing");
 
     /**
@@ -41,7 +49,7 @@ public final class AnvilProperties extends BlockProperties {
      * @param block
      *         the {@link net.canarymod.api.world.blocks.Block} to be modified
      * @param value
-     *         the {@code int} value to apply (0 - 2)
+     *         the {@code int} value to apply
      *
      * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
      *
