@@ -3,7 +3,7 @@ package net.canarymod.api.world.blocks.properties.helpers;
 import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.blocks.BlockFace;
 import net.canarymod.api.world.blocks.properties.BlockBooleanProperty;
-import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
+import net.canarymod.api.world.blocks.properties.BlockDirectionProperty;
 
 import static net.canarymod.api.world.blocks.BlockType.EndPortalFrame;
 
@@ -13,7 +13,7 @@ import static net.canarymod.api.world.blocks.BlockType.EndPortalFrame;
  * @author Jason Jones (darkdiplomat)
  */
 public class EndPortalFrameProperties extends BlockProperties {
-    public static BlockEnumProperty facing = getInstanceFor(EndPortalFrame, "facing");
+    public static BlockDirectionProperty facing = getInstanceFor(EndPortalFrame, "facing");
     public static BlockBooleanProperty eye = getInstanceFor(EndPortalFrame, "eye");
 
     public static Block applyFacing(Block block, BlockFace value) {

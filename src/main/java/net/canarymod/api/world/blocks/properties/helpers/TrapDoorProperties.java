@@ -3,6 +3,7 @@ package net.canarymod.api.world.blocks.properties.helpers;
 import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.blocks.BlockFace;
 import net.canarymod.api.world.blocks.properties.BlockBooleanProperty;
+import net.canarymod.api.world.blocks.properties.BlockDirectionProperty;
 import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
 
 import static net.canarymod.api.world.blocks.BlockType.Trapdoor;
@@ -13,9 +14,8 @@ import static net.canarymod.api.world.blocks.BlockType.Trapdoor;
  * @author Jason Jones (darkdiplomat)
  */
 public final class TrapDoorProperties extends BlockProperties {
-    public static final BlockEnumProperty
-            facing = getInstanceFor(Trapdoor, "facing"),
-            half = getInstanceFor(Trapdoor, "half");
+    public static final BlockDirectionProperty facing = getInstanceFor(Trapdoor, "facing");
+    public static final BlockEnumProperty half = getInstanceFor(Trapdoor, "half");
     public static final BlockBooleanProperty open = getInstanceFor(Trapdoor, "open");
 
     /**

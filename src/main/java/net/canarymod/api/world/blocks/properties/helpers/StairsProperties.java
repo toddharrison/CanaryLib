@@ -2,6 +2,7 @@ package net.canarymod.api.world.blocks.properties.helpers;
 
 import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.blocks.BlockFace;
+import net.canarymod.api.world.blocks.properties.BlockDirectionProperty;
 import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
 
 import static net.canarymod.api.world.blocks.BlockType.CobbleStair;
@@ -12,8 +13,8 @@ import static net.canarymod.api.world.blocks.BlockType.CobbleStair;
  * @author Jason Jones (darkdiplomat)
  */
 public final class StairsProperties extends BlockProperties {
+    public static final BlockDirectionProperty facing = getInstanceFor(CobbleStair, "facing");
     public static final BlockEnumProperty
-            facing = getInstanceFor(CobbleStair, "facing"),
             half = getInstanceFor(CobbleStair, "half"),
             shape = getInstanceFor(CobbleStair, "shape");
 

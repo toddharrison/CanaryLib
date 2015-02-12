@@ -3,7 +3,7 @@ package net.canarymod.api.world.blocks.properties.helpers;
 import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.blocks.BlockFace;
 import net.canarymod.api.world.blocks.properties.BlockBooleanProperty;
-import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
+import net.canarymod.api.world.blocks.properties.BlockDirectionProperty;
 
 import static net.canarymod.api.world.blocks.BlockType.Dispenser;
 
@@ -13,7 +13,7 @@ import static net.canarymod.api.world.blocks.BlockType.Dispenser;
  * @author Jason Jones (darkdiplomat)
  */
 public final class DispenserProperties extends BlockProperties {
-    public static final BlockEnumProperty facing = getInstanceFor(Dispenser, "facing");
+    public static final BlockDirectionProperty facing = getInstanceFor(Dispenser, "facing");
     public static final BlockBooleanProperty triggered = getInstanceFor(Dispenser, "triggered");
 
     /**

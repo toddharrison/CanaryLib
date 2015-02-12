@@ -3,6 +3,7 @@ package net.canarymod.api.world.blocks.properties.helpers;
 import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.blocks.BlockFace;
 import net.canarymod.api.world.blocks.properties.BlockBooleanProperty;
+import net.canarymod.api.world.blocks.properties.BlockDirectionProperty;
 import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
 
 import static net.canarymod.api.world.blocks.BlockType.WoodenDoor;
@@ -13,8 +14,8 @@ import static net.canarymod.api.world.blocks.BlockType.WoodenDoor;
  * @author Jason Jones (darkdiplomat)
  */
 public final class DoorProperties extends BlockProperties {
+    public static final BlockDirectionProperty facing = getInstanceFor(WoodenDoor, "facing");
     public static final BlockEnumProperty
-            facing = getInstanceFor(WoodenDoor, "facing"),
             hinge = getInstanceFor(WoodenDoor, "hinge"),
             half = getInstanceFor(WoodenDoor, "half");
 
