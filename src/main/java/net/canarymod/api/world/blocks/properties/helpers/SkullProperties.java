@@ -18,6 +18,10 @@ public final class SkullProperties extends BlockProperties {
      * Skull facing property, Values: {@link net.canarymod.api.world.blocks.BlockFace}
      */
     public static final BlockEnumProperty facing = getInstanceFor(SkeletonHead, "facing");
+
+    /**
+     * Skull nodrop property, Values: true, false
+     */
     public static final BlockBooleanProperty noDrop = getInstanceFor(SkeletonHead, "nodrop");
 
     /**

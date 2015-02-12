@@ -11,6 +11,10 @@ import static net.canarymod.api.world.blocks.BlockType.Reed;
  * @author Jason Jones (darkdiplomat)
  */
 public final class ReedProperties extends BlockProperties {
+
+    /**
+     * Reed age property, Values: 0 - 15
+     */
     public static final BlockIntegerProperty age = getInstanceFor(Reed, "age");
 
     /**

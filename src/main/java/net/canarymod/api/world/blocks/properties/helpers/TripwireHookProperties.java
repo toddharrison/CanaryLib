@@ -18,10 +18,21 @@ public final class TripwireHookProperties extends BlockProperties {
      * Tripwire Hook facing property, Values: {@link net.canarymod.api.world.blocks.BlockFace} (Excluding TOP & BOTTOM)
      */
     public static final BlockDirectionProperty facing = getInstanceFor(TripwireHook, "facing");
-    public static final BlockBooleanProperty
-            powered = getInstanceFor(TripwireHook, "powered"),
-            attached = getInstanceFor(TripwireHook, "attached"),
-            suspended = getInstanceFor(TripwireHook, "suspended");
+
+    /**
+     * Tripwire Hook powered property, Values: true, false
+     */
+    public static final BlockBooleanProperty powered = getInstanceFor(TripwireHook, "powered");
+
+    /**
+     * Tripwire Hook attached property, Values: true, false
+     */
+    public static final BlockBooleanProperty attached = getInstanceFor(TripwireHook, "attached");
+
+    /**
+     * Tripwire Hook suspended property, Values: true, false
+     */
+    public static final BlockBooleanProperty suspended = getInstanceFor(TripwireHook, "suspended");
 
     /**
      * Applies a {@link net.canarymod.api.world.blocks.BlockFace} facing property to the {@code Tripwire}

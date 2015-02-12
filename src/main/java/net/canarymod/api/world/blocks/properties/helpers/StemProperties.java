@@ -18,6 +18,10 @@ public final class StemProperties extends BlockProperties {
      * Stem facing property, Values: {@link net.canarymod.api.world.blocks.BlockFace} (Excluding BOTTOM)
      */
     public static final BlockDirectionProperty facing = getInstanceFor(MelonStem, "facing");
+
+    /**
+     * Stem age property, Values: 0 - 7
+     */
     public static final BlockIntegerProperty age = getInstanceFor(MelonStem, "age");
 
     /**

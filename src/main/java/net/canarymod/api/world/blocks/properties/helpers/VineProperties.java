@@ -11,12 +11,31 @@ import static net.canarymod.api.world.blocks.BlockType.Vines;
  * @author Jason Jones (darkdiplomat)
  */
 public final class VineProperties extends BlockProperties {
-    public static final BlockBooleanProperty
-            up = getInstanceFor(Vines, "up"),
-            north = getInstanceFor(Vines, "north"),
-            east = getInstanceFor(Vines, "east"),
-            south = getInstanceFor(Vines, "south"),
-            west = getInstanceFor(Vines, "west");
+
+    /**
+     * Vine up property, Values: true, false
+     */
+    public static final BlockBooleanProperty up = getInstanceFor(Vines, "up");
+
+    /**
+     * Vine north property, Values: true, false
+     */
+    public static final BlockBooleanProperty north = getInstanceFor(Vines, "north");
+
+    /**
+     * Vine east property, Values: true, false
+     */
+    public static final BlockBooleanProperty east = getInstanceFor(Vines, "east");
+
+    /**
+     * Vine south property, Values: true, false
+     */
+    public static final BlockBooleanProperty south = getInstanceFor(Vines, "south");
+
+    /**
+     * Vine west property, Values: true, false
+     */
+    public static final BlockBooleanProperty west = getInstanceFor(Vines, "west");
 
     /**
      * Applies whether the {@code Vine} texture is applied up or not

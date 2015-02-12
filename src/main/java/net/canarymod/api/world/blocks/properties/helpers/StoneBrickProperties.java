@@ -11,10 +11,16 @@ import static net.canarymod.api.world.blocks.BlockType.StoneBrick;
  * @author Jason Jones (darkdiplomat)
  */
 public final class StoneBrickProperties extends BlockProperties {
+
+    /**
+     * Stone Brick variant property, Values: {@link net.canarymod.api.world.blocks.properties.helpers.StoneBrickProperties.Variant}
+     */
     public static final BlockEnumProperty variant = getInstanceFor(StoneBrick, "variant");
 
     /**
-     * StoneBricks types
+     * Stone Brick variants
+     *
+     * @author Jason Jones (darkdiplomat)
      */
     public enum Variant {
         DEFAULT,
@@ -29,6 +35,22 @@ public final class StoneBrickProperties extends BlockProperties {
             return values()[ordinal];
         }
     }
+
+    /**
+     * Applies variant to the {@code Stone Brick}
+     *
+     * @param block
+     *         the {@link net.canarymod.api.world.blocks.Block} to be modified
+     * @param value
+     *         the {@link net.canarymod.api.world.blocks.properties.helpers.StoneBrickProperties.Variant} value to apply
+     *
+     * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
+     *
+     * @throws java.lang.NullPointerException
+     *         Should {@code block} or {@code value} be null
+     * @throws java.lang.IllegalArgumentException
+     *         Should an invalid property be applied
+     */
 
     public static Block applyVariant(Block block, Variant value) {
         return apply(block, variant, value);

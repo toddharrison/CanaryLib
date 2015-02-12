@@ -14,10 +14,14 @@ import static net.canarymod.api.world.blocks.BlockType.LightWeightedPressurePlat
  * @author Jason Jones (darkdiplomat)
  */
 public final class WeightedPressurePlateProperties extends BlockProperties {
+
+    /**
+     * Weighted Pressure Plate powered property, Values: 0 - 15
+     */
     public static final BlockIntegerProperty powered = getInstanceFor(LightWeightedPressurePlate, "powered");
 
     /**
-     * Applies powered to the {@code Cake}
+     * Applies powered to the {@code Weighted Pressure Plate}
      *
      * @param block
      *         the {@link net.canarymod.api.world.blocks.Block} to be modified

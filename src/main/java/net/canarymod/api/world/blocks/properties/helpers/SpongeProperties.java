@@ -11,6 +11,10 @@ import static net.canarymod.api.world.blocks.BlockType.Sponge;
  * @author Jason Jones (darkdiplomat)
  */
 public final class SpongeProperties extends BlockProperties {
+
+    /**
+     * Sponge wet property, Values: true, false
+     */
     public static final BlockBooleanProperty wet = getInstanceFor(Sponge, "wet");
 
     /**

@@ -12,16 +12,41 @@ import static net.canarymod.api.world.blocks.BlockType.CobblestoneWall;
  * @author Jason Jones (darkdiplomat)
  */
 public final class WallProperties extends BlockProperties {
-    public static final BlockBooleanProperty
-            up = getInstanceFor(CobblestoneWall, "up"),
-            north = getInstanceFor(CobblestoneWall, "north"),
-            east = getInstanceFor(CobblestoneWall, "east"),
-            south = getInstanceFor(CobblestoneWall, "south"),
-            west = getInstanceFor(CobblestoneWall, "west");
+
+    /**
+     * Wall up property, Values: true, false
+     */
+    public static final BlockBooleanProperty up = getInstanceFor(CobblestoneWall, "up");
+
+    /**
+     * Wall north property, Values: true, false
+     */
+    public static final BlockBooleanProperty north = getInstanceFor(CobblestoneWall, "north");
+
+    /**
+     * Wall east property, Values: true, false
+     */
+    public static final BlockBooleanProperty east = getInstanceFor(CobblestoneWall, "east");
+
+    /**
+     * Wall south property, Values: true, false
+     */
+    public static final BlockBooleanProperty south = getInstanceFor(CobblestoneWall, "south");
+
+    /**
+     * Wall west property, Values: true, false
+     */
+    public static final BlockBooleanProperty west = getInstanceFor(CobblestoneWall, "west");
+
+    /**
+     * Wall variant property, Values: {@link net.canarymod.api.world.blocks.properties.helpers.WallProperties.Variant}
+     */
     public static final BlockEnumProperty variant = getInstanceFor(CobblestoneWall, "variant");
 
     /**
      * Wall variants
+     *
+     * @author Jason Jones (darkdiplomat)
      */
     public enum Variant {
         NORMAL,
@@ -130,6 +155,21 @@ public final class WallProperties extends BlockProperties {
         return apply(block, west, value);
     }
 
+    /**
+     * Applies variant to the {@code Wall}
+     *
+     * @param block
+     *         the {@link net.canarymod.api.world.blocks.Block} to be modified
+     * @param value
+     *         the {@link net.canarymod.api.world.blocks.properties.helpers.WallProperties.Variant} value to apply
+     *
+     * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
+     *
+     * @throws java.lang.NullPointerException
+     *         Should {@code block} or {@code value} be null
+     * @throws java.lang.IllegalArgumentException
+     *         Should an invalid property be applied
+     */
     public static Block applyVariant(Block block, Variant value) {
         return apply(block, variant, value);
     }

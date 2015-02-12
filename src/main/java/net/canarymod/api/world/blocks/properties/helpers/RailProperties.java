@@ -15,10 +15,21 @@ import static net.canarymod.api.world.blocks.BlockType.Rail;
  * @author Jason Jones (darkdiplomat)
  */
 public abstract class RailProperties extends BlockProperties {
-    public static final BlockEnumProperty
-            shapeNormalRail = getInstanceFor(Rail, "shape"),
-            shapePoweredRail = getInstanceFor(PoweredRail, "shape"),
-            shapeDetectorRail = getInstanceFor(DetectorRail, "shape");
+
+    /**
+     * Normal Rail shape property, Values: {@link net.canarymod.api.world.blocks.properties.helpers.RailProperties.Direction}
+     */
+    public static final BlockEnumProperty shapeNormalRail = getInstanceFor(Rail, "shape");
+
+    /**
+     * Powered and Activator Rail shape property, Values: {@link net.canarymod.api.world.blocks.properties.helpers.RailProperties.Direction}
+     */
+    public static final BlockEnumProperty shapePoweredRail = getInstanceFor(PoweredRail, "shape");
+
+    /**
+     * Detector Rail shape property, Values: {@link net.canarymod.api.world.blocks.properties.helpers.RailProperties.Direction}
+     */
+    public static final BlockEnumProperty shapeDetectorRail = getInstanceFor(DetectorRail, "shape");
 
     /**
      * Rail directions
@@ -43,6 +54,21 @@ public abstract class RailProperties extends BlockProperties {
         }
     }
 
+    /**
+     * Applies shape to the {@code Rail}
+     *
+     * @param block
+     *         the {@link net.canarymod.api.world.blocks.Block} to be modified
+     * @param value
+     *         the {@link net.canarymod.api.world.blocks.properties.helpers.StairsProperties.Shape} value to apply
+     *
+     * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
+     *
+     * @throws java.lang.NullPointerException
+     *         Should {@code block} or {@code value} be null
+     * @throws java.lang.IllegalArgumentException
+     *         Should an invalid property be applied
+     */
     public static Block applyShape(Block block, Direction value) {
         Verify.notNull(block, "Block block");
         if (block.getType().equals(PoweredRail) || block.getType().equals(ActivatorRail)) {

@@ -11,6 +11,10 @@ import static net.canarymod.api.world.blocks.BlockType.QuartzBlock;
  * @author Jason Jones (darkdiplomat)
  */
 public final class QuartzProperties extends BlockProperties {
+
+    /**
+     * Quartz variant property, Values: {@link net.canarymod.api.world.blocks.properties.helpers.QuartzProperties.Variant}
+     */
     public static final BlockEnumProperty variant = getInstanceFor(QuartzBlock, "variant");
 
     /**
@@ -31,6 +35,21 @@ public final class QuartzProperties extends BlockProperties {
         }
     }
 
+    /**
+     * Applies variant to the {@code Quartz}
+     *
+     * @param block
+     *         the {@link net.canarymod.api.world.blocks.Block} to be modified
+     * @param value
+     *         the {@link net.canarymod.api.world.blocks.properties.helpers.QuartzProperties.Variant} value to apply
+     *
+     * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
+     *
+     * @throws java.lang.NullPointerException
+     *         Should {@code block} or {@code value} be null
+     * @throws java.lang.IllegalArgumentException
+     *         Should an invalid property be applied
+     */
     public static Block applyVariant(Block block, Variant value) {
         return apply(block, variant, value);
     }

@@ -18,9 +18,15 @@ import static net.canarymod.api.world.blocks.BlockType.PoweredRail;
  */
 public final class RailPoweredProperties extends RailProperties {
 
-    public static final BlockBooleanProperty
-            poweredPoweredRail = getInstanceFor(PoweredRail, "powered"),
-            poweredDectectorRail = getInstanceFor(DetectorRail, "powered");
+    /**
+     * Powered and Activator Rail powered property, Values: true, false
+     */
+    public static final BlockBooleanProperty poweredPoweredRail = getInstanceFor(PoweredRail, "powered");
+
+    /**
+     * Detector Rail powered property, Values: true, false
+     */
+    public static final BlockBooleanProperty poweredDectectorRail = getInstanceFor(DetectorRail, "powered");
 
     /**
      * Applies whether the {@code Rail} is powered or not

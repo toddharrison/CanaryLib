@@ -11,6 +11,10 @@ import static net.canarymod.api.world.blocks.BlockType.Snow;
  * @author Jason Jones (darkdiplomat)
  */
 public final class SnowProperties extends BlockProperties {
+
+    /**
+     * Snow layers property, Values: 1 - 8
+     */
     public static final BlockIntegerProperty layers = getInstanceFor(Snow, "layers");
 
     /**

@@ -19,7 +19,15 @@ public final class TrapDoorProperties extends BlockProperties {
      * TrapDoor facing property, Values: {@link net.canarymod.api.world.blocks.BlockFace} (Excluding TOP & BOTTOM)
      */
     public static final BlockDirectionProperty facing = getInstanceFor(Trapdoor, "facing");
+
+    /**
+     * TrapDoor half property, Values: {@link net.canarymod.api.world.blocks.properties.helpers.TrapDoorProperties.Half}
+     */
     public static final BlockEnumProperty half = getInstanceFor(Trapdoor, "half");
+
+    /**
+     * TrapDoor open property, Values: true, false
+     */
     public static final BlockBooleanProperty open = getInstanceFor(Trapdoor, "open");
 
     /**
@@ -56,12 +64,27 @@ public final class TrapDoorProperties extends BlockProperties {
         return apply(block, facing, value);
     }
 
+    /**
+     * Applies half to the {@code TrapDoor}
+     *
+     * @param block
+     *         the {@link net.canarymod.api.world.blocks.Block} to be modified
+     * @param value
+     *         the {@link net.canarymod.api.world.blocks.properties.helpers.TrapDoorProperties.Half} value to apply
+     *
+     * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
+     *
+     * @throws java.lang.NullPointerException
+     *         Should {@code block} or {@code value} be null
+     * @throws java.lang.IllegalArgumentException
+     *         Should an invalid property be applied
+     */
     public static Block applyHalf(Block block, Half value) {
         return apply(block, half, value);
     }
 
     /**
-     * Applies whether the {@code Trap Door} is open or not
+     * Applies whether the {@code TrapDoor} is open or not
      *
      * @param block
      *         the {@link net.canarymod.api.world.blocks.Block} to be modified

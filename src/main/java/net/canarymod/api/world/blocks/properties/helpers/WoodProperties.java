@@ -8,7 +8,9 @@ package net.canarymod.api.world.blocks.properties.helpers;
 public abstract class WoodProperties extends BlockProperties {
 
     /**
-     * Covers Log, Planks, Leaves, WoodSlab
+     * Wood variants
+     *
+     * @author Jason Jones (darkdiplomat)
      */
     public enum Variant {
         OAK,

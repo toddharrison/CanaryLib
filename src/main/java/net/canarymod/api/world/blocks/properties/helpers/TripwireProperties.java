@@ -11,15 +11,46 @@ import static net.canarymod.api.world.blocks.BlockType.Tripwire;
  * @author Jason Jones (darkdiplomat)
  */
 public final class TripwireProperties extends BlockProperties {
-    public static final BlockBooleanProperty
-            powered = getInstanceFor(Tripwire, "powered"),
-            suspended = getInstanceFor(Tripwire, "suspended"),
-            attached = getInstanceFor(Tripwire, "attached"),
-            disarmed = getInstanceFor(Tripwire, "disarmed"),
-            north = getInstanceFor(Tripwire, "north"),
-            east = getInstanceFor(Tripwire, "east"),
-            south = getInstanceFor(Tripwire, "south"),
-            west = getInstanceFor(Tripwire, "west");
+
+    /**
+     * Tripwire powered property, Values: true, false
+     */
+    public static final BlockBooleanProperty powered = getInstanceFor(Tripwire, "powered");
+
+    /**
+     * Tripwire suspended property, Values: true, false
+     */
+    public static final BlockBooleanProperty suspended = getInstanceFor(Tripwire, "suspended");
+
+    /**
+     * Tripwire attached property, Values: true, false
+     */
+    public static final BlockBooleanProperty attached = getInstanceFor(Tripwire, "attached");
+
+    /**
+     * Tripwire disarmed property, Values: true, false
+     */
+    public static final BlockBooleanProperty disarmed = getInstanceFor(Tripwire, "disarmed");
+
+    /**
+     * Tripwire north property, Values: true, false
+     */
+    public static final BlockBooleanProperty north = getInstanceFor(Tripwire, "north");
+
+    /**
+     * Tripwire east property, Values: true, false
+     */
+    public static final BlockBooleanProperty east = getInstanceFor(Tripwire, "east");
+
+    /**
+     * Tripwire south property, Values: true, false
+     */
+    public static final BlockBooleanProperty south = getInstanceFor(Tripwire, "south");
+
+    /**
+     * Tripwire west property, Values: true, false
+     */
+    public static final BlockBooleanProperty west = getInstanceFor(Tripwire, "west");
 
     /**
      * Applies whether the {@code Tripwire} is powered or not

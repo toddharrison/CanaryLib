@@ -11,6 +11,10 @@ import static net.canarymod.api.world.blocks.BlockType.Tnt;
  * @author Jason Jones (darkdiplomat)
  */
 public final class TNTProperties extends BlockProperties {
+
+    /**
+     * TNT explode property, Values: true, false
+     */
     public static final BlockBooleanProperty explode = getInstanceFor(Tnt, "explode");
 
     /**
