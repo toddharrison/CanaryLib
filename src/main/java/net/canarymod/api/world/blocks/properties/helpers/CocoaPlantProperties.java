@@ -10,7 +10,7 @@ import static net.canarymod.api.world.blocks.BlockType.CocoaPlant;
  *
  * @author Jason Jones (darkdiplomat)
  */
-public final class CocoaPlantProperties extends BlockProperties {
+public final class CocoaPlantProperties extends DirectionalBlockProperties {
     public static final BlockIntegerProperty age = getInstanceFor(CocoaPlant, "age");
 
     /**

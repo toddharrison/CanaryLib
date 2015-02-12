@@ -11,7 +11,7 @@ import static net.canarymod.api.world.blocks.BlockType.BedBlock;
  *
  * @author Jason Jones (darkdiplomat)
  */
-public final class BedProperties extends BlockProperties {
+public final class BedProperties extends DirectionalBlockProperties {
     public static final BlockEnumProperty part = getInstanceFor(BedBlock, "part");
     public static final BlockBooleanProperty occupied = getInstanceFor(BedBlock, "occupied");
 
