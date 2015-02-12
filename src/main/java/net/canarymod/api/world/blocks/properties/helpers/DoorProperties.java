@@ -20,19 +20,25 @@ public final class DoorProperties extends BlockProperties {
      */
     public static final BlockDirectionProperty facing = getInstanceFor(WoodenDoor, "facing");
 
-    public static final BlockEnumProperty
-            /**
-             * Door hinge position property
-             */
-            hinge = getInstanceFor(WoodenDoor, "hinge"),
     /**
-     * Door half property
+     * Door hinge position property, Values: {@link net.canarymod.api.world.blocks.properties.helpers.DoorProperties.HingePosition}
      */
-    half = getInstanceFor(WoodenDoor, "half");
+    public static final BlockEnumProperty hinge = getInstanceFor(WoodenDoor, "hinge");
 
-    public static final BlockBooleanProperty
-            open = getInstanceFor(WoodenDoor, "open"),
-            powered = getInstanceFor(WoodenDoor, "powered");
+    /**
+     * Door half property, Values: {@link net.canarymod.api.world.blocks.properties.helpers.DoorProperties.Half}
+     */
+    public static final BlockEnumProperty half = getInstanceFor(WoodenDoor, "half");
+
+    /**
+     * Door open property, Values: true, false
+     */
+    public static final BlockBooleanProperty open = getInstanceFor(WoodenDoor, "open");
+
+    /**
+     * Door powered property, Values: true, false
+     */
+    public static final BlockBooleanProperty powered = getInstanceFor(WoodenDoor, "powered");
 
     /**
      * Door halves

@@ -19,6 +19,10 @@ public final class PistonProperties extends BlockProperties {
      * Piston facing property, Values: {@link net.canarymod.api.world.blocks.BlockFace}
      */
     public static final BlockDirectionProperty facing = getInstanceFor(Piston, "facing");
+
+    /**
+     * Piston extended property, Values: true, false
+     */
     public static final BlockBooleanProperty extended = getInstanceFor(Piston, "extended");
 
     /**

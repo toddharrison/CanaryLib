@@ -11,6 +11,10 @@ import static net.canarymod.api.world.blocks.BlockType.Jukebox;
  * @author Jason Jones (darkdiplomat)
  */
 public final class JukeboxProperties extends BlockProperties {
+
+    /**
+     * Jukebox has_record property, Values: true, false
+     */
     public final static BlockBooleanProperty hasRecord = getInstanceFor(Jukebox, "has_record");
 
     /**

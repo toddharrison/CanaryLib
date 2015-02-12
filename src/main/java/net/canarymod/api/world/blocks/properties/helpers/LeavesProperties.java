@@ -14,12 +14,34 @@ import static net.canarymod.api.world.blocks.BlockType.OakLeaves;
  * @author Jason Jones (darkdiplomat)
  */
 public final class LeavesProperties extends WoodProperties {
-    public static final BlockBooleanProperty
-            decayable = getInstanceFor(OakLeaves, "decayable"),
-            checkDecay = getInstanceFor(OakLeaves, "check_decay");
-    public static final BlockEnumProperty
-            variantOld = getInstanceFor(OakLeaves, "variant"),
-            variantNew = getInstanceFor(AcaciaLeaves, "variant");
+
+    /**
+     * Leaves decayable property, Values: true, false
+     */
+    public static final BlockBooleanProperty decayable = getInstanceFor(OakLeaves, "decayable");
+
+    /**
+     * Leaves check_decay property, Values: true, false
+     */
+    public static final BlockBooleanProperty checkDecay = getInstanceFor(OakLeaves, "check_decay");
+
+    /**
+     * (Old) Leaves variant property, Values {@link net.canarymod.api.world.blocks.properties.helpers.WoodProperties.Variant}<br/>
+     * Applies to:<br/>
+     * <ul>Oak</ul>
+     * <ul>Spruce</ul>
+     * <ul>Birch</ul>
+     * <ul>Jungle</ul>
+     */
+    public static final BlockEnumProperty variantOld = getInstanceFor(OakLeaves, "variant");
+
+    /**
+     * (New) Leaves variant property, Values {@link net.canarymod.api.world.blocks.properties.helpers.WoodProperties.Variant}<br/>
+     * Applies to:<br/>
+     * <ul>Acacia</ul>
+     * <ul>Dark Oak</ul>
+     */
+    public static final BlockEnumProperty variantNew = getInstanceFor(AcaciaLeaves, "variant");
 
     /**
      * Applies whether the {@code Leaves} is decayable or not
@@ -59,6 +81,21 @@ public final class LeavesProperties extends WoodProperties {
         return apply(block, checkDecay, value);
     }
 
+    /**
+     * Applies variant to the {@code Leaves}
+     *
+     * @param block
+     *         the {@link net.canarymod.api.world.blocks.Block} to be modified
+     * @param value
+     *         the {@link net.canarymod.api.world.blocks.properties.helpers.WoodProperties.Variant} value to apply
+     *
+     * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
+     *
+     * @throws java.lang.NullPointerException
+     *         Should {@code block} or {@code value} be null
+     * @throws java.lang.IllegalArgumentException
+     *         Should an invalid property be applied
+     */
     public static Block applyVariant(Block block, Variant value) {
         Verify.notNull(block, "Block block");
         if (block.getType().getMachineName().equals(AcaciaLeaves.getMachineName())) {

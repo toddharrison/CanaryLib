@@ -11,10 +11,14 @@ import static net.canarymod.api.world.blocks.BlockType.Soil;
  * @author Jason Jones (darkdiplomat)
  */
 public final class FarmlandProperties extends BlockProperties {
-    public static final BlockIntegerProperty mositure = getInstanceFor(Soil, "mositure");
 
     /**
-     * Applies mositure to the {@code Farmland}
+     * Farmland moisture property, Values: 0 - 7
+     */
+    public static final BlockIntegerProperty moisture = getInstanceFor(Soil, "moisture");
+
+    /**
+     * Applies moisture to the {@code Farmland}
      *
      * @param block
      *         the {@link net.canarymod.api.world.blocks.Block} to be modified
@@ -29,6 +33,6 @@ public final class FarmlandProperties extends BlockProperties {
      *         Should an invalid property be applied
      */
     public static Block applyMositure(Block block, int value) {
-        return apply(block, mositure, value);
+        return apply(block, moisture, value);
     }
 }

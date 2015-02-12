@@ -18,10 +18,22 @@ import static net.canarymod.api.world.blocks.BlockType.DoubleGrass;
  * @author Jason Jones (darkdiplomat)
  */
 public final class DoublePlantProperties extends BlockProperties {
-    public static final BlockEnumProperty
-            variant = getInstanceFor(DoubleGrass, "variant"),
-            half = getInstanceFor(DoubleGrass, "half");
 
+    /**
+     * Double Plant variant property, Values: {@link net.canarymod.api.world.blocks.properties.helpers.DoublePlantProperties.Variant}
+     */
+    public static final BlockEnumProperty variant = getInstanceFor(DoubleGrass, "variant");
+
+    /**
+     * Double Plant half property, Values: {@link net.canarymod.api.world.blocks.properties.helpers.DoublePlantProperties.Half}
+     */
+    public static final BlockEnumProperty half = getInstanceFor(DoubleGrass, "half");
+
+    /**
+     * Double Plant halves
+     *
+     * @author Jason Jones (darkdiplomat)
+     */
     public enum Half {
         UPPER,
         LOWER;
@@ -35,7 +47,9 @@ public final class DoublePlantProperties extends BlockProperties {
     }
 
     /**
-     * Variant
+     * Double Plant variants
+     *
+     * @author Jason Jones (darkdiplomat)
      */
     public enum Variant {
         SUNFLOWER,
@@ -53,10 +67,40 @@ public final class DoublePlantProperties extends BlockProperties {
         }
     }
 
+    /**
+     * Applies variant to the {@code Double Plant}
+     *
+     * @param block
+     *         the {@link net.canarymod.api.world.blocks.Block} to be modified
+     * @param value
+     *         the {@link net.canarymod.api.world.blocks.properties.helpers.DoublePlantProperties.Variant} value to apply
+     *
+     * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
+     *
+     * @throws java.lang.NullPointerException
+     *         Should {@code block} or {@code value} be null
+     * @throws java.lang.IllegalArgumentException
+     *         Should an invalid property be applied
+     */
     public static Block applyVariant(Block block, Variant value) {
         return apply(block, variant, value);
     }
 
+    /**
+     * Applies half to the {@code Double Plant}
+     *
+     * @param block
+     *         the {@link net.canarymod.api.world.blocks.Block} to be modified
+     * @param value
+     *         the {@link net.canarymod.api.world.blocks.properties.helpers.DoublePlantProperties.Half} value to apply
+     *
+     * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
+     *
+     * @throws java.lang.NullPointerException
+     *         Should {@code block} or {@code value} be null
+     * @throws java.lang.IllegalArgumentException
+     *         Should an invalid property be applied
+     */
     public static Block applyHalf(Block block, Half value) {
         return apply(block, half, value);
     }

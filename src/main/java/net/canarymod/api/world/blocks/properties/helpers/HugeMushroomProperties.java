@@ -11,6 +11,10 @@ import static net.canarymod.api.world.blocks.BlockType.HugeBrownMushroom;
  * @author Jason Jones (darkdiplomat)
  */
 public final class HugeMushroomProperties extends BlockProperties {
+
+    /**
+     * Huge Mushroom variant property, Values: {@link net.canarymod.api.world.blocks.properties.helpers.HugeMushroomProperties.Variant}
+     */
     public static final BlockEnumProperty variant = getInstanceFor(HugeBrownMushroom, "variant");
 
     /**

@@ -11,11 +11,26 @@ import static net.canarymod.api.world.blocks.BlockType.Fence;
  * @author Jason Jones (darkdiplomat)
  */
 public final class FenceProperties extends BlockProperties {
-    public static final BlockBooleanProperty
-            north = getInstanceFor(Fence, "north"),
-            east = getInstanceFor(Fence, "east"),
-            south = getInstanceFor(Fence, "south"),
-            west = getInstanceFor(Fence, "west");
+
+    /**
+     * Fence north property, Values: true, false
+     */
+    public static final BlockBooleanProperty north = getInstanceFor(Fence, "north");
+
+    /**
+     * Fence east property, Values: true, false
+     */
+    public static final BlockBooleanProperty east = getInstanceFor(Fence, "east");
+
+    /**
+     * Fence south property, Values: true, false
+     */
+    public static final BlockBooleanProperty south = getInstanceFor(Fence, "south");
+
+    /**
+     * Fence west property, Values: true, false
+     */
+    public static final BlockBooleanProperty west = getInstanceFor(Fence, "west");
 
     /**
      * Applies whether the {@code Fence} is connected north or not

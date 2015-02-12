@@ -11,6 +11,10 @@ import static net.canarymod.api.world.blocks.BlockType.NetherWart;
  * @author Jason Jones (darkdiplomat)
  */
 public final class NetherWartProperties extends BlockProperties {
+
+    /**
+     * NetherWart age property, Values: 0 - 3
+     */
     public static final BlockIntegerProperty age = getInstanceFor(NetherWart, "age");
 
     /**

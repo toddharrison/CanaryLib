@@ -12,15 +12,41 @@ import static net.canarymod.api.world.blocks.BlockType.FireBlock;
  * @author Jason Jones (darkdiplomat)
  */
 public final class FireProperties extends BlockProperties {
-    public static final BlockIntegerProperty
-            age = getInstanceFor(FireBlock, "age"),
-            upper = getInstanceFor(FireBlock, "upper");
-    public static final BlockBooleanProperty
-            alt = getInstanceFor(FireBlock, "alt"),
-            north = getInstanceFor(FireBlock, "north"),
-            east = getInstanceFor(FireBlock, "east"),
-            south = getInstanceFor(FireBlock, "south"),
-            west = getInstanceFor(FireBlock, "west");
+
+    /**
+     * Fire age property, Values: 0 - 15
+     */
+    public static final BlockIntegerProperty age = getInstanceFor(FireBlock, "age");
+
+    /**
+     * Fire upper property, Values: 0 - 2
+     */
+    public static final BlockIntegerProperty upper = getInstanceFor(FireBlock, "upper");
+
+    /**
+     * Fire alt property, Values: true, false
+     */
+    public static final BlockBooleanProperty alt = getInstanceFor(FireBlock, "alt");
+
+    /**
+     * Fire north property, Values: true, false
+     */
+    public static final BlockBooleanProperty north = getInstanceFor(FireBlock, "north");
+
+    /**
+     * Fire east property, Values: true, false
+     */
+    public static final BlockBooleanProperty east = getInstanceFor(FireBlock, "east");
+
+    /**
+     * Fire south property, Values: true, false
+     */
+    public static final BlockBooleanProperty south = getInstanceFor(FireBlock, "south");
+
+    /**
+     * Fire west property, Values: true, false
+     */
+    public static final BlockBooleanProperty west = getInstanceFor(FireBlock, "west");
 
     /**
      * Applies age to the {@code Fire}

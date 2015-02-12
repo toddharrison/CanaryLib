@@ -20,7 +20,15 @@ public final class PistonHeadProperties extends BlockProperties {
      * Piston Head facing property, Values: {@link net.canarymod.api.world.blocks.BlockFace}
      */
     public static final BlockDirectionProperty facing = getInstanceFor(PistonHead, "facing");
+
+    /**
+     * Piston Head type property, Values: {@link net.canarymod.api.world.blocks.properties.helpers.PistonHeadProperties.Type}
+     */
     public static final BlockEnumProperty type = getInstanceFor(PistonHead, "type");
+
+    /**
+     * Piston Head short property, Values: true, false
+     */
     public static final BlockBooleanProperty short_ = getInstanceFor(PistonHead, "short");
 
     /**
@@ -59,6 +67,21 @@ public final class PistonHeadProperties extends BlockProperties {
         return apply(block, facing, value);
     }
 
+    /**
+     * Applies type to the {@code Piston Head}
+     *
+     * @param block
+     *         the {@link net.canarymod.api.world.blocks.Block} to be modified
+     * @param value
+     *         the {@link net.canarymod.api.world.blocks.properties.helpers.PistonHeadProperties.Type} value to apply
+     *
+     * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
+     *
+     * @throws java.lang.NullPointerException
+     *         Should {@code block} or {@code value} be null
+     * @throws java.lang.IllegalArgumentException
+     *         Should an invalid property be applied
+     */
     public static Block applyType(Block block, Type value) {
         return apply(block, type, value);
     }

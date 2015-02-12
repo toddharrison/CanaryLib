@@ -14,6 +14,10 @@ import static net.canarymod.api.world.blocks.BlockType.Water;
  * @author Jason Jones (darkdiplomat)
  */
 public final class LiquidProperties extends BlockProperties {
+
+    /**
+     * Liquid level property, Values: 0 - 15
+     */
     public static final BlockIntegerProperty level = getInstanceFor(Water, "level");
 
     /**

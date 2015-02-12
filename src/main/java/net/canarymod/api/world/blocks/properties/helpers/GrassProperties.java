@@ -11,6 +11,10 @@ import static net.canarymod.api.world.blocks.BlockType.Grass;
  * @author Jason Jones (darkdiplomat)
  */
 public final class GrassProperties extends BlockProperties {
+
+    /**
+     * Grass snowy property, Values: true, false
+     */
     public static final BlockBooleanProperty snowy = getInstanceFor(Grass, "snowy");
 
     /**

@@ -11,10 +11,21 @@ import static net.canarymod.api.world.blocks.BlockType.FenceGate;
  * @author Jason Jones (darkdiplomat)
  */
 public final class FenceGateProperties extends DirectionalBlockProperties {
-    public static final BlockBooleanProperty
-            open = getInstanceFor(FenceGate, "open"),
-            powered = getInstanceFor(FenceGate, "powered"),
-            inWall = getInstanceFor(FenceGate, "in_wall");
+
+    /**
+     * Fence Gate open property, Values: true, false
+     */
+    public static final BlockBooleanProperty open = getInstanceFor(FenceGate, "open");
+
+    /**
+     * Fence Gate powered property, Values: true, false
+     */
+    public static final BlockBooleanProperty powered = getInstanceFor(FenceGate, "powered");
+
+    /**
+     * Fence Gate in_wall property, Values: true, false
+     */
+    public static final BlockBooleanProperty inWall = getInstanceFor(FenceGate, "in_wall");
 
     /**
      * Applies whether the {@code Fence Gate} is open or not

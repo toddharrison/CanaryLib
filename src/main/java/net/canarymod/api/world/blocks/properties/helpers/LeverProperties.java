@@ -12,7 +12,15 @@ import static net.canarymod.api.world.blocks.BlockType.Lever;
  * @author Jason Jones (darkdiplomat)
  */
 public final class LeverProperties extends BlockProperties {
+
+    /**
+     * Lever facing property, Values: {@link net.canarymod.api.world.blocks.properties.helpers.LeverProperties.Orientation}
+     */
     public static final BlockEnumProperty facing = getInstanceFor(Lever, "facing");
+
+    /**
+     * Lever powered property, Values: true, false
+     */
     public static final BlockBooleanProperty powered = getInstanceFor(Lever, "powered");
 
     /**

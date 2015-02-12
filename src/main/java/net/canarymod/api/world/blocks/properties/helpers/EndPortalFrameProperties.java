@@ -18,6 +18,10 @@ public class EndPortalFrameProperties extends BlockProperties {
      * End Portal Frame facing property, Values: {@link net.canarymod.api.world.blocks.BlockFace} (Excluding TOP & BOTTOM)
      */
     public static BlockDirectionProperty facing = getInstanceFor(EndPortalFrame, "facing");
+
+    /**
+     * End Portal Frame eye property, Values: true, false
+     */
     public static BlockBooleanProperty eye = getInstanceFor(EndPortalFrame, "eye");
 
     /**

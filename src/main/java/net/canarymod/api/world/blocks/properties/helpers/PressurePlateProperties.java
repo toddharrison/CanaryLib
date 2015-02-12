@@ -14,6 +14,10 @@ import static net.canarymod.api.world.blocks.BlockType.WoodPlate;
  * @author Jason Jones (darkdiplomat)
  */
 public final class PressurePlateProperties extends BlockProperties {
+
+    /**
+     * Pressure Plate powered property, Values: true, false
+     */
     public static final BlockBooleanProperty powered = getInstanceFor(WoodPlate, "powered");
 
     /**
