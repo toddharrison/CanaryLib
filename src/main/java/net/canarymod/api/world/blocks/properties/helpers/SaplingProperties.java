@@ -11,7 +11,7 @@ import static net.canarymod.api.world.blocks.BlockType.OakSapling;
  *
  * @author Jason Jones (darkdiplomat)
  */
-public final class SaplingProperties extends WoodProperties {
+public final class SaplingProperties extends BlockProperties implements WoodProperties {
 
     /**
      * Sapling type property, Values: {@link net.canarymod.api.world.blocks.properties.helpers.WoodProperties.Variant}
