@@ -11,7 +11,7 @@ import static net.canarymod.api.world.blocks.BlockType.RedstoneRepeaterOff;
  *
  * @author Jason Jones (darkdiplomat)
  */
-public class RedstoneRepeaterProperties extends BlockProperties {
+public class RedstoneRepeaterProperties extends DirectionalBlockProperties {
 
     /**
      * Redstone Repeater locked property, Values: true, false

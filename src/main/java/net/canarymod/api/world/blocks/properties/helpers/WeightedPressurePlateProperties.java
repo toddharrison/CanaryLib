@@ -16,12 +16,12 @@ import static net.canarymod.api.world.blocks.BlockType.LightWeightedPressurePlat
 public final class WeightedPressurePlateProperties extends BlockProperties {
 
     /**
-     * Weighted Pressure Plate powered property, Values: 0 - 15
+     * Weighted Pressure Plate power property, Values: 0 - 15
      */
-    public static final BlockIntegerProperty powered = getInstanceFor(LightWeightedPressurePlate, "powered");
+    public static final BlockIntegerProperty power = getInstanceFor(LightWeightedPressurePlate, "power");
 
     /**
-     * Applies powered to the {@code Weighted Pressure Plate}
+     * Applies power to the {@code Weighted Pressure Plate}
      *
      * @param block
      *         the {@link net.canarymod.api.world.blocks.Block} to be modified
@@ -35,7 +35,7 @@ public final class WeightedPressurePlateProperties extends BlockProperties {
      * @throws java.lang.IllegalArgumentException
      *         Should an invalid property be applied
      */
-    public static Block applyPowered(Block block, int value) {
-        return apply(block, powered, value);
+    public static Block applyPower(Block block, int value) {
+        return apply(block, power, value);
     }
 }

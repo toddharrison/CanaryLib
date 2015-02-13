@@ -45,7 +45,22 @@ public final class HugeMushroomProperties extends BlockProperties {
         }
     }
 
-    public Block applyVariant(Block block, Variant value) {
+    /**
+     * Applies variant to the {@code Huge Mushroom}
+     *
+     * @param block
+     *         the {@link net.canarymod.api.world.blocks.Block} to be modified
+     * @param value
+     *         the {@link net.canarymod.api.world.blocks.properties.helpers.HugeMushroomProperties.Variant} value to apply
+     *
+     * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
+     *
+     * @throws java.lang.NullPointerException
+     *         Should {@code block} or {@code value} be null
+     * @throws java.lang.IllegalArgumentException
+     *         Should an invalid property be applied
+     */
+    public static Block applyVariant(Block block, Variant value) {
         return apply(block, variant, value);
     }
 }

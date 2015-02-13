@@ -11,7 +11,7 @@ import static net.canarymod.api.world.blocks.BlockType.RedstoneComparator;
  *
  * @author Jason Jones (darkdiplomat)
  */
-public final class RedstoneComparatorProperties extends BlockProperties {
+public final class RedstoneComparatorProperties extends DirectionalBlockProperties {
 
     /**
      * Redstone Comparator powered property, Values: true, false

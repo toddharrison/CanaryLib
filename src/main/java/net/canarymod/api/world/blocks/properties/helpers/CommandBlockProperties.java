@@ -32,7 +32,7 @@ public final class CommandBlockProperties extends BlockProperties {
      * @throws java.lang.IllegalArgumentException
      *         Should an invalid property be applied
      */
-    public static Block apply(Block block, boolean value) {
+    public static Block applyTriggered(Block block, boolean value) {
         return apply(block, triggered, value);
     }
 }

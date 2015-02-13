@@ -14,6 +14,8 @@ import static net.canarymod.api.world.blocks.BlockType.BedBlock;
  * <ul>FenceGate</ul>
  * <ul>Pumpkin</ul>
  * <ul>Jack-o-Lantern</ul>
+ * <ul>Redstone Comparator</ul>
+ * <ul>Redstone Repeater</ul>
  *
  * @author Jason Jones (darkdiplomat)
  */
