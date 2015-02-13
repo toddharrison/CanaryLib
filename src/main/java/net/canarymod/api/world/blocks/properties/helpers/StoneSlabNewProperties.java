@@ -10,12 +10,7 @@ import static net.canarymod.api.world.blocks.BlockType.RedSandstoneSlab;
  *
  * @author Jason Jones (darkdiplomat)
  */
-public final class StoneSlabNewProperties extends SlabProperties {
-
-    /**
-     * New Stone Slab seamless property, Values: true, false
-     */
-    public static final BlockEnumProperty seamless = getInstanceFor(RedSandstoneSlab, "seamless");
+public abstract class StoneSlabNewProperties extends SlabProperties {
 
     /**
      * New Stone Slab variant property, Values: {@link net.canarymod.api.world.blocks.properties.helpers.StoneSlabNewProperties.Variant}
@@ -36,25 +31,6 @@ public final class StoneSlabNewProperties extends SlabProperties {
             }
             return values()[ordinal];
         }
-    }
-
-    /**
-     * Applies whether the {@code Stone Slab} is seamless or not
-     *
-     * @param block
-     *         the {@link net.canarymod.api.world.blocks.Block} to be modified
-     * @param value
-     *         the {@code boolean} value to apply
-     *
-     * @return the Block with adjusted state (NOTE: Original Block object is also modified, using the return is unnecessary)
-     *
-     * @throws java.lang.NullPointerException
-     *         Should {@code block} or {@code value} be null
-     * @throws java.lang.IllegalArgumentException
-     *         Should an invalid property be applied
-     */
-    public static Block applySeamless(Block block, boolean value) {
-        return apply(block, seamless, value);
     }
 
     /**
