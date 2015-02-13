@@ -3,7 +3,7 @@ package net.canarymod.api.world.blocks.properties.helpers;
 import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
 
-import static net.canarymod.api.world.blocks.BlockType.OakWood;
+import static net.canarymod.api.world.blocks.BlockType.OakPlanks;
 
 /**
  * Planks properties helper
@@ -15,7 +15,7 @@ public final class PlanksProperties extends BlockProperties implements WoodPrope
     /**
      * Planks variant property, Values: {@link net.canarymod.api.world.blocks.properties.helpers.WoodProperties.Variant}
      */
-    public static final BlockEnumProperty variant = getInstanceFor(OakWood, "variant");
+    public static final BlockEnumProperty variant = getInstanceFor(OakPlanks, "variant");
 
     /**
      * Applies variant to the {@code Planks}

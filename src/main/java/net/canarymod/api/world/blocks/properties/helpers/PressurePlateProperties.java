@@ -3,7 +3,7 @@ package net.canarymod.api.world.blocks.properties.helpers;
 import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.blocks.properties.BlockBooleanProperty;
 
-import static net.canarymod.api.world.blocks.BlockType.WoodPlate;
+import static net.canarymod.api.world.blocks.BlockType.WoodenPressurePlate;
 
 /**
  * Pressure Plate properties helper<br/>
@@ -18,7 +18,7 @@ public final class PressurePlateProperties extends BlockProperties {
     /**
      * Pressure Plate powered property, Values: true, false
      */
-    public static final BlockBooleanProperty powered = getInstanceFor(WoodPlate, "powered");
+    public static final BlockBooleanProperty powered = getInstanceFor(WoodenPressurePlate, "powered");
 
     /**
      * Applies whether the {@code Pressure Plate} is powered or not

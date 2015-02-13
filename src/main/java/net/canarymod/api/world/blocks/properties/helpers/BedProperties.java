@@ -4,7 +4,7 @@ import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.blocks.properties.BlockBooleanProperty;
 import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
 
-import static net.canarymod.api.world.blocks.BlockType.BedBlock;
+import static net.canarymod.api.world.blocks.BlockType.Bed;
 
 /**
  * Bed properties helper
@@ -16,12 +16,12 @@ public final class BedProperties extends DirectionalBlockProperties {
     /**
      * Bed part property, Values: {@link net.canarymod.api.world.blocks.properties.helpers.BedProperties.Half}
      */
-    public static final BlockEnumProperty part = getInstanceFor(BedBlock, "part");
+    public static final BlockEnumProperty part = getInstanceFor(Bed, "part");
 
     /**
      * Bed occupied property, Values: true, false
      */
-    public static final BlockBooleanProperty occupied = getInstanceFor(BedBlock, "occupied");
+    public static final BlockBooleanProperty occupied = getInstanceFor(Bed, "occupied");
 
     /**
      * Bed half

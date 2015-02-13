@@ -26,12 +26,42 @@ public final class BlockType {
     public static final BlockType CoarseDirt = new BlockType(3, 1, "minecraft:dirt");
     public static final BlockType Podzol = new BlockType(3, 2, "minecraft:dirt");
     public static final BlockType Cobble = new BlockType(4, 0, "minecraft:cobblestone");
-    public static final BlockType OakWood = new BlockType(5, 0, "minecraft:planks");
-    public static final BlockType SpruceWood = new BlockType(5, 1, "minecraft:planks");
-    public static final BlockType BirchWood = new BlockType(5, 2, "minecraft:planks");
-    public static final BlockType JungleWood = new BlockType(5, 3, "minecraft:planks");
-    public static final BlockType AcaciaWood = new BlockType(5, 4, "minecraft:planks");
-    public static final BlockType DarkOakWood = new BlockType(5, 5, "minecraft:planks");
+    public static final BlockType OakPlanks = new BlockType(5, 0, "minecraft:planks");
+    public static final BlockType SprucePlanks = new BlockType(5, 1, "minecraft:planks");
+    public static final BlockType BirchPlanks = new BlockType(5, 2, "minecraft:planks");
+    public static final BlockType JunglePlanks = new BlockType(5, 3, "minecraft:planks");
+    public static final BlockType AcaciaPlanks = new BlockType(5, 4, "minecraft:planks");
+    public static final BlockType DarkOakPlanks = new BlockType(5, 5, "minecraft:planks");
+    /**
+     * @deprecated Being replaced by {@link OakPlanks}
+     */
+    @Deprecated
+    public static final BlockType OakWood = OakPlanks;
+    /**
+     * @deprecated Being replaced by {@link SprucePlanks}
+     */
+    @Deprecated
+    public static final BlockType SpruceWood = SprucePlanks;
+    /**
+     * @deprecated Being replaced by {@link BirchPlanks}
+     */
+    @Deprecated
+    public static final BlockType BirchWood = BirchPlanks;
+    /**
+     * @deprecated Being replaced by {@link JunglePlanks}
+     */
+    @Deprecated
+    public static final BlockType JungleWood = JunglePlanks;
+    /**
+     * @deprecated Being replaced by {@link AcaciaPlanks}
+     */
+    @Deprecated
+    public static final BlockType AcaciaWood = AcaciaPlanks;
+    /**
+     * @deprecated Being replaced by {@link DarkOakPlanks}
+     */
+    @Deprecated
+    public static final BlockType DarkOakWood = DarkOakPlanks;
     public static final BlockType OakSapling = new BlockType(6, 0, "minecraft:sapling");
     public static final BlockType SpruceSapling = new BlockType(6, 1, "minecraft:sapling");
     public static final BlockType BirchSapling = new BlockType(6, 2, "minecraft:sapling");
@@ -50,49 +80,159 @@ public final class BlockType {
     public static final BlockType IronOre = new BlockType(15, 0, "minecraft:iron_ore");
     public static final BlockType CoalOre = new BlockType(16, 0, "minecraft:coal_ore");
     public static final BlockType OakLog = new BlockType(17, 0, "minecraft:log");
-    public static final BlockType PineLog = new BlockType(17, 1, "minecraft:log");
+    public static final BlockType SpruceLog = new BlockType(17, 1, "minecraft:log");
+    /**
+     * @deprecated Being replaced by {@link SpruceLog}
+     */
+    @Deprecated
+    public static final BlockType PineLog = SpruceLog;
     public static final BlockType BirchLog = new BlockType(17, 2, "minecraft:log");
     public static final BlockType JungleLog = new BlockType(17, 3, "minecraft:log");
     public static final BlockType OakLeaves = new BlockType(18, 0, "minecraft:leaves");
-    public static final BlockType PineLeaves = new BlockType(18, 1, "minecraft:leaves");
+    public static final BlockType SpruceLeaves = new BlockType(18, 1, "minecraft:leaves");
+    /**
+     * @deprecated Being replaced by {@link SpruceLeaves}
+     */
+    @Deprecated
+    public static final BlockType PineLeaves = SpruceLeaves;
     public static final BlockType BirchLeaves = new BlockType(18, 2, "minecraft:leaves");
     public static final BlockType JungleLeaves = new BlockType(18, 3, "minecraft:leaves");
     public static final BlockType Sponge = new BlockType(19, 0, "minecraft:sponge");
     public static final BlockType Glass = new BlockType(20, 0, "minecraft:glass");
-    public static final BlockType LapislazuliOre = new BlockType(21, 0, "minecraft:lapis_ore");
+    public static final BlockType LapisOre = new BlockType(21, 0, "minecraft:lapis_ore");
+    /**
+     * @deprecated Being replaced by {@link LapisOre}
+     */
+    @Deprecated
+    public static final BlockType LapislazuliOre = LapisOre;
     public static final BlockType LapisBlock = new BlockType(22, 0, "minecraft:lapis_block");
     public static final BlockType Dispenser = new BlockType(23, 0, "minecraft:dispenser");
     public static final BlockType Sandstone = new BlockType(24, 0, "minecraft:sandstone");
     public static final BlockType SandstoneOrnate = new BlockType(24, 1, "minecraft:sandstone");
-    public static final BlockType SandstoneBlank = new BlockType(24, 2, "minecraft:sandstone");
+    public static final BlockType SandstoneSmooth = new BlockType(24, 2, "minecraft:sandstone");
+    /**
+     * @deprecated Being replaced by {@link SandstoneSmooth}
+     */
+    @Deprecated
+    public static final BlockType SandstoneBlank = SandstoneSmooth;
     public static final BlockType NoteBlock = new BlockType(25, 0, "minecraft:noteblock");
-    public static final BlockType BedBlock = new BlockType(26, 0, "minecraft:bed");
+    public static final BlockType Bed = new BlockType(26, 0, "minecraft:bed");
+    /**
+     * @deprecated Being replaced by {@link Bed}
+     */
+    @Deprecated
+    public static final BlockType BedBlock = Bed;
     public static final BlockType PoweredRail = new BlockType(27, 0, "minecraft:golden_rail");
     public static final BlockType DetectorRail = new BlockType(28, 0, "minecraft:detector_rail");
     public static final BlockType StickyPiston = new BlockType(29, 0, "minecraft:sticky_piston");
-    public static final BlockType SpiderWeb = new BlockType(30, 0, "minecraft:web");
+    public static final BlockType Web = new BlockType(30, 0, "minecraft:web");
+    /**
+     * @deprecated Being replaced by {@link Web}
+     */
+    @Deprecated
+    public static final BlockType SpiderWeb = Web;
     public static final BlockType Shrub = new BlockType(31, 0, "minecraft:tallgrass");
     public static final BlockType TallGrass = new BlockType(31, 1, "minecraft:tallgrass");
     public static final BlockType Fern = new BlockType(31, 2, "minecraft:tallgrass");
     public static final BlockType DeadBush = new BlockType(32, 0, "minecraft:deadbush");
     public static final BlockType Piston = new BlockType(33, 0, "minecraft:piston");
     public static final BlockType PistonHead = new BlockType(34, 0, "minecraft:piston_head");
-    public static final BlockType WoolWhite = new BlockType(35, 0, "minecraft:wool");
-    public static final BlockType WoolOrange = new BlockType(35, 1, "minecraft:wool");
-    public static final BlockType WoolMagenta = new BlockType(35, 2, "minecraft:wool");
-    public static final BlockType WoolLightBlue = new BlockType(35, 3, "minecraft:wool");
-    public static final BlockType WoolYellow = new BlockType(35, 4, "minecraft:wool");
-    public static final BlockType WoolLightGreen = new BlockType(35, 5, "minecraft:wool");
-    public static final BlockType WoolPink = new BlockType(35, 6, "minecraft:wool");
-    public static final BlockType WoolGray = new BlockType(35, 7, "minecraft:wool");
-    public static final BlockType WoolLightGray = new BlockType(35, 8, "minecraft:wool");
-    public static final BlockType WoolCyan = new BlockType(35, 9, "minecraft:wool");
-    public static final BlockType WoolPurple = new BlockType(35, 10, "minecraft:wool");
-    public static final BlockType WoolBlue = new BlockType(35, 11, "minecraft:wool");
-    public static final BlockType WoolBrown = new BlockType(35, 12, "minecraft:wool");
-    public static final BlockType WoolDarkGreen = new BlockType(35, 13, "minecraft:wool");
-    public static final BlockType WoolRed = new BlockType(35, 14, "minecraft:wool");
-    public static final BlockType WoolBlack = new BlockType(35, 15, "minecraft:wool");
+    public static final BlockType WhiteWool = new BlockType(35, 0, "minecraft:wool");
+    public static final BlockType OrangeWool = new BlockType(35, 1, "minecraft:wool");
+    public static final BlockType MagentaWool = new BlockType(35, 2, "minecraft:wool");
+    public static final BlockType LightBlueWool = new BlockType(35, 3, "minecraft:wool");
+    public static final BlockType YellowWool = new BlockType(35, 4, "minecraft:wool");
+    public static final BlockType LimeWool = new BlockType(35, 5, "minecraft:wool");
+    public static final BlockType PinkWool = new BlockType(35, 6, "minecraft:wool");
+    public static final BlockType GrayWool = new BlockType(35, 7, "minecraft:wool");
+    public static final BlockType LightGrayWool = new BlockType(35, 8, "minecraft:wool");
+    public static final BlockType CyanWool = new BlockType(35, 9, "minecraft:wool");
+    public static final BlockType PurpleWool = new BlockType(35, 10, "minecraft:wool");
+    public static final BlockType BlueWool = new BlockType(35, 11, "minecraft:wool");
+    public static final BlockType BrownWool = new BlockType(35, 12, "minecraft:wool");
+    public static final BlockType GreenWool = new BlockType(35, 13, "minecraft:wool");
+    public static final BlockType RedWool = new BlockType(35, 14, "minecraft:wool");
+    public static final BlockType BlackWool = new BlockType(35, 15, "minecraft:wool");
+    /**
+     * @deprecated Being replaced by {@link WhiteWool}
+     */
+    @Deprecated
+    public static final BlockType WoolWhite = WhiteWool;
+    /**
+     * @deprecated Being replaced by {@link OrangeWool}
+     */
+    @Deprecated
+    public static final BlockType WoolOrange = OrangeWool;
+    /**
+     * @deprecated Being replaced by {@link MagentaWool}
+     */
+    @Deprecated
+    public static final BlockType WoolMagenta = MagentaWool;
+    /**
+     * @deprecated Being replaced by {@link LightBlueWool}
+     */
+    @Deprecated
+    public static final BlockType WoolLightBlue = LightBlueWool;
+    /**
+     * @deprecated Being replaced by {@link YellowWool}
+     */
+    @Deprecated
+    public static final BlockType WoolYellow = YellowWool;
+    /**
+     * @deprecated Being replaced by {@link LimeWool}
+     */
+    @Deprecated
+    public static final BlockType WoolLightGreen = LimeWool;
+    /**
+     * @deprecated Being replaced by {@link LimeWool}
+     */
+    @Deprecated
+    public static final BlockType WoolPink = PinkWool;
+    /**
+     * @deprecated Being replaced by {@link GrayWool}
+     */
+    @Deprecated
+    public static final BlockType WoolGray = GrayWool;
+    /**
+     * @deprecated Being replaced by {@link LightGrayWool}
+     */
+    @Deprecated
+    public static final BlockType WoolLightGray = LightGrayWool;
+    /**
+     * @deprecated Being replaced by {@link CyanWool}
+     */
+    @Deprecated
+    public static final BlockType WoolCyan = CyanWool;
+    /**
+     * @deprecated Being replaced by {@link PurpleWool}
+     */
+    @Deprecated
+    public static final BlockType WoolPurple = PurpleWool;
+    /**
+     * @deprecated Being replaced by {@link BlueWool}
+     */
+    @Deprecated
+    public static final BlockType WoolBlue = BlueWool;
+    /**
+     * @deprecated Being replaced by {@link BrownWool}
+     */
+    @Deprecated
+    public static final BlockType WoolBrown = BrownWool;
+    /**
+     * @deprecated Being replaced by {@link GreenWool}
+     */
+    @Deprecated
+    public static final BlockType WoolDarkGreen = GreenWool;
+    /**
+     * @deprecated Being replaced by {@link RedWool}
+     */
+    @Deprecated
+    public static final BlockType WoolRed = RedWool;
+    /**
+     * @deprecated Being replaced by {@link BlackWool}
+     */
+    @Deprecated
+    public static final BlockType WoolBlack = BlackWool;
     public static final BlockType PistonExtended = new BlockType(36, 0, "minecraft:piston_extension");
     public static final BlockType Dandelion = new BlockType(37, 0, "minecraft:yellow_flower");
     public static final BlockType Poppy = new BlockType(38, 0, "minecraft:red_flower");
@@ -129,7 +269,12 @@ public final class BlockType {
     public static final BlockType StoneSlab = new BlockType(44, 10, "minecraft:stone_slab");
     public static final BlockType SandStoneSlab = new BlockType(44, 11, "minecraft:stone_slab");
     public static final BlockType BrickBlock = new BlockType(45, 0, "minecraft:brick_block");
-    public static final BlockType Tnt = new BlockType(46, 0, "minecraft:tnt");
+    public static final BlockType TNT = new BlockType(46, 0, "minecraft:tnt");
+    /**
+     * @deprecated Being replaced by {@link TNT}
+     */
+    @Deprecated
+    public static final BlockType Tnt = TNT;
     public static final BlockType Bookshelf = new BlockType(47, 0, "minecraft:bookshelf");
     public static final BlockType MossyCobble = new BlockType(48, 0, "minecraft:mossy_cobblestone");
     public static final BlockType Obsidian = new BlockType(49, 0, "minecraft:obsidian");
@@ -142,20 +287,46 @@ public final class BlockType {
     public static final BlockType DiamondOre = new BlockType(56, 0, "minecraft:diamond_ore");
     public static final BlockType DiamondBlock = new BlockType(57, 0, "minecraft:diamond_block");
     public static final BlockType Workbench = new BlockType(58, 0, "minecraft:crafting_table");
-    public static final BlockType Crops = new BlockType(59, 0, "minecraft:wheat");
-    public static final BlockType Soil = new BlockType(60, 0, "minecraft:farmland");
+    public static final BlockType Wheat = new BlockType(59, 0, "minecraft:wheat");
+    /**
+     * @deprecated Being replaced by {@link Wheat}
+     */
+    @Deprecated
+    public static final BlockType Crops = Wheat;
+    public static final BlockType Farmland = new BlockType(60, 0, "minecraft:farmland");
+    /**
+     * @deprecated Being replaced by {@link Farmland}
+     */
+    @Deprecated
+    public static final BlockType Soil = Farmland;
     public static final BlockType Furnace = new BlockType(61, 0, "minecraft:furnace");
     public static final BlockType BurningFurnace = new BlockType(62, 0, "minecraft:lit_furnace");
-    public static final BlockType SignPost = new BlockType(63, 0, "minecraft:standing_sign");
+    public static final BlockType StandingSign = new BlockType(63, 0, "minecraft:standing_sign");
+    /**
+     * @deprecated Being replaced by {@link StandingSign}
+     */
+    @Deprecated
+    public static final BlockType SignPost = StandingSign;
     public static final BlockType WoodenDoor = new BlockType(64, 0, "minecraft:wooden_door");
+    public static final BlockType OakDoor = WoodenDoor; // Dual Mapping for simplicity
     public static final BlockType Ladder = new BlockType(65, 0, "minecraft:ladder");
     public static final BlockType Rail = new BlockType(66, 0, "minecraft:rail");
     public static final BlockType CobbleStair = new BlockType(67, 0, "minecraft:stone_stairs");
     public static final BlockType WallSign = new BlockType(68, 0, "minecraft:wall_sign");
     public static final BlockType Lever = new BlockType(69, 0, "minecraft:lever");
-    public static final BlockType StonePlate = new BlockType(70, 0, "minecraft:stone_pressure_plate");
+    public static final BlockType StonePressurePlate = new BlockType(70, 0, "minecraft:stone_pressure_plate");
+    /**
+     * @deprecated Being replaced by {@link StonePressurePlate}
+     */
+    @Deprecated
+    public static final BlockType StonePlate = StonePressurePlate;
     public static final BlockType IronDoor = new BlockType(71, 0, "minecraft:iron_door");
-    public static final BlockType WoodPlate = new BlockType(72, 0, "minecraft:wooden_pressure_plate");
+    public static final BlockType WoodenPressurePlate = new BlockType(72, 0, "minecraft:wooden_pressure_plate");
+    /**
+     * @deprecated Being replaced by {@link WoodenPressurePlate}
+     */
+    @Deprecated
+    public static final BlockType WoodPlate = WoodenPressurePlate;
     public static final BlockType RedstoneOre = new BlockType(73, 0, "minecraft:redstone_ore");
     public static final BlockType GlowingRedstoneOre = new BlockType(74, 0, "minecraft:lit_redstone_ore");
     public static final BlockType RedstoneTorchOff = new BlockType(75, 0, "minecraft:unlit_redstone_torch");

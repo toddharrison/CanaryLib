@@ -4,7 +4,7 @@ import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.blocks.BlockFace;
 import net.canarymod.api.world.blocks.properties.BlockDirectionProperty;
 
-import static net.canarymod.api.world.blocks.BlockType.BedBlock;
+import static net.canarymod.api.world.blocks.BlockType.Bed;
 
 /**
  * Direction Block properties helper<br/>
@@ -24,7 +24,7 @@ public abstract class DirectionalBlockProperties extends BlockProperties {
     /**
      * Directional facing property, Values: {@link net.canarymod.api.world.blocks.BlockFace} (Excluding TOP & BOTTOM)
      */
-    public static final BlockDirectionProperty facing = getInstanceFor(BedBlock, "facing");
+    public static final BlockDirectionProperty facing = getInstanceFor(Bed, "facing");
 
     /**
      * Applies a {@link net.canarymod.api.world.blocks.BlockFace} facing property to the {@code DirectionalBlock}

@@ -3,7 +3,7 @@ package net.canarymod.api.world.blocks.properties.helpers;
 import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.blocks.properties.BlockBooleanProperty;
 
-import static net.canarymod.api.world.blocks.BlockType.Tnt;
+import static net.canarymod.api.world.blocks.BlockType.TNT;
 
 /**
  * TNT properties helper
@@ -15,7 +15,7 @@ public final class TNTProperties extends BlockProperties {
     /**
      * TNT explode property, Values: true, false
      */
-    public static final BlockBooleanProperty explode = getInstanceFor(Tnt, "explode");
+    public static final BlockBooleanProperty explode = getInstanceFor(TNT, "explode");
 
     /**
      * Applies whether the {@code TNT} is to explode or not

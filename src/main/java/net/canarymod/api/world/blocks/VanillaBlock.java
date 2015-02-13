@@ -1,103 +1,109 @@
 package net.canarymod.api.world.blocks;
 
+import com.google.common.collect.HashBiMap;
 
-public enum MinecraftBlocks {
+/**
+ * An enumeration of "vanilla" Minecraft blocks
+ *
+ * @author Jason Jones (darkdiplomat)
+ */
+public enum VanillaBlock {
 
-    AIR("minecraft:air"),
-    STONE("minecraft:stone:0"),
-    GRANITE("minecraft:stone:1"),
-    POLISHEDGRANITE("minecraft:stone:2"),
-    DIORITE("minecraft:stone:3"),
-    POLISHEDDIORITE("minecraft:stone:4"),
-    ANDESITE("minecraft:stone:5"),
-    POLISHEDANDESITE("minecraft:stone:6"),
+    AIR("air"),
+    STONE("stone:0"),
+    GRANITE("stone:1"),
+    POLISHEDGRANITE("stone:2"),
+    DIORITE("stone:3"),
+    POLISHEDDIORITE("stone:4"),
+    ANDESITE("stone:5"),
+    POLISHEDANDESITE("stone:6"),
+    GRASS("grass"),
+    DIRT("dirt:0"),
+    COARSEDIRT("dirt:1"),
+    PODZOL("dirt:2"),
+    COBBLE("cobblestone"),
+    OAKPLANKS("planks:0"),
+    SPRUCEPLANKS("planks:1"),
+    BIRCHPLANKS("planks:2"),
+    JUNGLEPLANKS("planks:3"),
+    ACACIAPLANKS("planks:4"),
+    DARKOAKPLANKS("planks:5"),
+    OAKSAPLING("sapling:0"),
+    SPRUCESAPLING("sapling:1"),
+    BIRCHSAPLING("sapling:2"),
+    JUNGLESAPLING("sapling:3"),
+    ACACIASAPLING("sapling:4"),
+    DARKOAKSAPLING("sapling:5"),
+    BEDROCK("bedrock"),
+    FLOWINGWATER("flowing_water"),
+    WATER("water"),
+    FLOWINGLAVA("flowing_lava"),
+    LAVA("lava"),
+    SAND("sand:0"),
+    REDSAND("sand:1"),
+    GRAVEL("gravel"),
+    GOLDORE("gold_ore"),
+    IRONORE("iron_ore"),
+    COALORE("coal_ore"),
+    OAKLOG("log:0"),
+    SPRUCELOG("log:1"),
+    BIRCHLOG("log:2"),
+    JUNGLELOG("log:3"),
+    OAKLEAVES("leaves:0"),
+    SPRUCELEAVES("leaves:1"),
+    BIRCHLEAVES("leaves:2"),
+    JUNGLELEAVES("leaves:3"),
+    SPONGE("sponge"),
+    GLASS("glass"),
+    LAPISORE("lapis_ore"),
+    LAPISBLOCK("lapis_block"),
+    DISPENSER("dispenser"),
+    SANDSTONE("sandstone:0"),
+    SANDSTONEORNATE("sandstone:1"),
+    SANDSTONESMOOTH("sandstone:2"),
+    NOTEBLOCK("noteblock"),
+    BED("bed"),
+    POWEREDRAIL("golden_rail"),
+    DETECTORRAIL("detector_rail"),
+    STICKYPISTON("sticky_piston"),
+    WEB("web"),
+    SHRUB("tallgrass:0"), // Dead Bush?
+    TALLGRASS("tallgrass:1"),
+    FERN("tallgrass:2"),
+    DEADBUSH("deadbush"),
+    PISTON("piston"),
+    PISTONHEAD("piston_head"),
+    WHITEWOOL("wool:0"),
+    ORANGEWOOL("wool:1"),
+    MAGENTAWOOL("wool:2"),
+    LIGHTBLUEWOOL("wool:3"),
+    YELLOWOOL("wool:4"),
+    LIMEWOOL("wool:5"),
+    PINKWOOL("wool:6"),
+    GRAYWOOL("wool:7"),
+    LIGHTGRAYWOOL("wool:8"), // Internally its labeled "silver" but thats not really common naming
+    CYANWOOL("wool:9"),
+    PURPLEWOOL("wool:10"),
+    BLUEWOOL("wool:11"),
+    BROWNWOOL("wool:12"),
+    GREENWOOL("wool:13"),
+    REDWOOL("wool:14"),
+    BLACKWOOL("wool:15"),
+    PISTONEXTENSION("piston_extension"),
+    DANDELION("yellow_flower"),
+    POPPY("red_flower:0"),
+    BLUEORCHID("red_flower:1"),
+    ALLIUM("red_flower:2"),
+    AZUREBLUET("red_flower:3"),
+    REDTULIP("red_flower:4"),
+    ORANGETULIP("red_flower:5"),
+    WHITETULIP("red_flower:6"),
+    PINKTULIP("red_flower:7"),
+    OXEYEDAISY("red_flower:8"),
+    BROWNMUSHROOM("brown_mushroom"),
+    REDMUSHROOM("red_mushroom"),
 
     /*
-    public static final BlockType Grass = new BlockType(2, 0, "minecraft:grass");
-    public static final BlockType Dirt = new BlockType(3, 0, "minecraft:dirt");
-    public static final BlockType CoarseDirt = new BlockType(3, 1, "minecraft:dirt");
-    public static final BlockType Podzol = new BlockType(3, 2, "minecraft:dirt");
-    public static final BlockType Cobble = new BlockType(4, 0, "minecraft:cobblestone");
-    public static final BlockType OakWood = new BlockType(5, 0, "minecraft:planks");
-    public static final BlockType SpruceWood = new BlockType(5, 1, "minecraft:planks");
-    public static final BlockType BirchWood = new BlockType(5, 2, "minecraft:planks");
-    public static final BlockType JungleWood = new BlockType(5, 3, "minecraft:planks");
-    public static final BlockType AcaciaWood = new BlockType(5, 4, "minecraft:planks");
-    public static final BlockType DarkOakWood = new BlockType(5, 5, "minecraft:planks");
-    public static final BlockType OakSapling = new BlockType(6, 0, "minecraft:sapling");
-    public static final BlockType SpruceSapling = new BlockType(6, 1, "minecraft:sapling");
-    public static final BlockType BirchSapling = new BlockType(6, 2, "minecraft:sapling");
-    public static final BlockType JungleSapling = new BlockType(6, 3, "minecraft:sapling");
-    public static final BlockType AcaciaSapling = new BlockType(6, 4, "minecraft:sapling");
-    public static final BlockType DarkOakSapling = new BlockType(6, 5, "minecraft:sapling");
-    public static final BlockType Bedrock = new BlockType(7, 0, "minecraft:bedrock");
-    public static final BlockType WaterFlowing = new BlockType(8, 0, "minecraft:flowing_water");
-    public static final BlockType Water = new BlockType(9, 0, "minecraft:water");
-    public static final BlockType LavaFlowing = new BlockType(10, 0, "minecraft:flowing_lava");
-    public static final BlockType Lava = new BlockType(11, 0, "minecraft:lava");
-    public static final BlockType Sand = new BlockType(12, 0, "minecraft:sand");
-    public static final BlockType RedSand = new BlockType(12, 1, "minecraft:sand");
-    public static final BlockType Gravel = new BlockType(13, 0, "minecraft:gravel");
-    public static final BlockType GoldOre = new BlockType(14, 0, "minecraft:gold_ore");
-    public static final BlockType IronOre = new BlockType(15, 0, "minecraft:iron_ore");
-    public static final BlockType CoalOre = new BlockType(16, 0, "minecraft:coal_ore");
-    public static final BlockType OakLog = new BlockType(17, 0, "minecraft:log");
-    public static final BlockType PineLog = new BlockType(17, 1, "minecraft:log");
-    public static final BlockType BirchLog = new BlockType(17, 2, "minecraft:log");
-    public static final BlockType JungleLog = new BlockType(17, 3, "minecraft:log");
-    public static final BlockType OakLeaves = new BlockType(18, 0, "minecraft:leaves");
-    public static final BlockType PineLeaves = new BlockType(18, 1, "minecraft:leaves");
-    public static final BlockType BirchLeaves = new BlockType(18, 2, "minecraft:leaves");
-    public static final BlockType JungleLeaves = new BlockType(18, 3, "minecraft:leaves");
-    public static final BlockType Sponge = new BlockType(19, 0, "minecraft:sponge");
-    public static final BlockType Glass = new BlockType(20, 0, "minecraft:glass");
-    public static final BlockType LapislazuliOre = new BlockType(21, 0, "minecraft:lapis_ore");
-    public static final BlockType LapisBlock = new BlockType(22, 0, "minecraft:lapis_block");
-    public static final BlockType Dispenser = new BlockType(23, 0, "minecraft:dispenser");
-    public static final BlockType Sandstone = new BlockType(24, 0, "minecraft:sandstone");
-    public static final BlockType SandstoneOrnate = new BlockType(24, 1, "minecraft:sandstone");
-    public static final BlockType SandstoneBlank = new BlockType(24, 2, "minecraft:sandstone");
-    public static final BlockType NoteBlock = new BlockType(25, 0, "minecraft:noteblock");
-    public static final BlockType BedBlock = new BlockType(26, 0, "minecraft:bed");
-    public static final BlockType PoweredRail = new BlockType(27, 0, "minecraft:golden_rail");
-    public static final BlockType DetectorRail = new BlockType(28, 0, "minecraft:detector_rail");
-    public static final BlockType StickyPiston = new BlockType(29, 0, "minecraft:sticky_piston");
-    public static final BlockType SpiderWeb = new BlockType(30, 0, "minecraft:web");
-    public static final BlockType Shrub = new BlockType(31, 0, "minecraft:tallgrass");
-    public static final BlockType TallGrass = new BlockType(31, 1, "minecraft:tallgrass");
-    public static final BlockType Fern = new BlockType(31, 2, "minecraft:tallgrass");
-    public static final BlockType DeadBush = new BlockType(32, 0, "minecraft:deadbush");
-    public static final BlockType Piston = new BlockType(33, 0, "minecraft:piston");
-    public static final BlockType PistonHead = new BlockType(34, 0, "minecraft:piston_head");
-    public static final BlockType WoolWhite = new BlockType(35, 0, "minecraft:wool");
-    public static final BlockType WoolOrange = new BlockType(35, 1, "minecraft:wool");
-    public static final BlockType WoolMagenta = new BlockType(35, 2, "minecraft:wool");
-    public static final BlockType WoolLightBlue = new BlockType(35, 3, "minecraft:wool");
-    public static final BlockType WoolYellow = new BlockType(35, 4, "minecraft:wool");
-    public static final BlockType WoolLightGreen = new BlockType(35, 5, "minecraft:wool");
-    public static final BlockType WoolPink = new BlockType(35, 6, "minecraft:wool");
-    public static final BlockType WoolGray = new BlockType(35, 7, "minecraft:wool");
-    public static final BlockType WoolLightGray = new BlockType(35, 8, "minecraft:wool");
-    public static final BlockType WoolCyan = new BlockType(35, 9, "minecraft:wool");
-    public static final BlockType WoolPurple = new BlockType(35, 10, "minecraft:wool");
-    public static final BlockType WoolBlue = new BlockType(35, 11, "minecraft:wool");
-    public static final BlockType WoolBrown = new BlockType(35, 12, "minecraft:wool");
-    public static final BlockType WoolDarkGreen = new BlockType(35, 13, "minecraft:wool");
-    public static final BlockType WoolRed = new BlockType(35, 14, "minecraft:wool");
-    public static final BlockType WoolBlack = new BlockType(35, 15, "minecraft:wool");
-    public static final BlockType PistonExtended = new BlockType(36, 0, "minecraft:piston_extension");
-    public static final BlockType Dandelion = new BlockType(37, 0, "minecraft:yellow_flower");
-    public static final BlockType Poppy = new BlockType(38, 0, "minecraft:red_flower");
-    public static final BlockType BlueOrchid = new BlockType(38, 1, "minecraft:red_flower");
-    public static final BlockType Allium = new BlockType(38, 2, "minecraft:red_flower");
-    public static final BlockType AzureBluet = new BlockType(38, 3, "minecraft:red_flower");
-    public static final BlockType RedTulip = new BlockType(38, 4, "minecraft:red_flower");
-    public static final BlockType OrangeTulip = new BlockType(38, 5, "minecraft:red_flower");
-    public static final BlockType WhiteTulip = new BlockType(38, 6, "minecraft:red_flower");
-    public static final BlockType PinkTulip = new BlockType(38, 7, "minecraft:red_flower");
-    public static final BlockType OxeyeDaisy = new BlockType(38, 8, "minecraft:red_flower");
-    public static final BlockType BrownMushroom = new BlockType(39, 0, "minecraft:brown_mushroom");
-    public static final BlockType RedMushroom = new BlockType(40, 0, "minecraft:red_mushroom");
     public static final BlockType GoldBlock = new BlockType(41, 0, "minecraft:gold_block");
     public static final BlockType IronBlock = new BlockType(42, 0, "minecraft:iron_block");
     public static final BlockType DoubleOrnateStoneSlab = new BlockType(43, 0, "minecraft:double_stone_slab");
@@ -373,19 +379,59 @@ public enum MinecraftBlocks {
     public static final BlockType DarkOakDoor = new BlockType(197, 0, "minecraft:dark_oak_door");
     */
 
-    NULL("");
+    /**
+     * All NON-VANILLA blocks safety translation
+     */
+    NULL("NULL");
 
     private final String mapping;
 
-    private MinecraftBlocks(String mapping) {
-        this.mapping = mapping;
+    private VanillaBlock(String mapping) {
+        this.mapping = "minecraft:".concat(mapping);
     }
 
+    /**
+     * Gets the matching {@link net.canarymod.api.world.blocks.BlockType} for the {@code VanillaBlock}
+     *
+     * @return matching {@code VanillaBlock} or {@code null} if not match is found
+     */
     public BlockType getType() {
-        return BlockType.fromString(mapping);
+        if (this.equals(NULL)) {
+            return null;
+        }
+        return mappings.inverse().get(this);
     }
 
-    public static MinecraftBlocks enumerate(BlockType type) {
-        return NULL;
+    /**
+     * Converts a {@link net.canarymod.api.world.blocks.BlockType} to a {@code VanillaBlocks}
+     *
+     * @param type
+     *         the {@link net.canarymod.api.world.blocks.BlockType} to convert
+     *
+     * @return the matching {@code VanillaBlock}
+     */
+    public static VanillaBlock enumerate(BlockType type) {
+        if (type == null) {
+            return NULL;
+        }
+        VanillaBlock match = mappings.get(type);
+        return match == null ? NULL : match;
+    }
+
+    /**
+     * Mapping of BlockType to VanillaBlocks
+     */
+    private static final HashBiMap<BlockType, VanillaBlock> mappings = HashBiMap.create();
+
+    /**
+     * Initialize map
+     */
+    static {
+        for (VanillaBlock value : values()) {
+            if (value.equals(NULL)) {
+                continue;
+            }
+            mappings.put(BlockType.fromString(value.mapping), value);
+        }
     }
 }

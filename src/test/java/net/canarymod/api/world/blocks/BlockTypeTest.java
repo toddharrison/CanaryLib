@@ -26,6 +26,42 @@ public class BlockTypeTest {
     }
 
     @Test
+    public void testFromStringDataAppended() {
+        BlockType btd = BlockType.fromString("minecraft:stone:1");
+        assertEquals(BlockType.Granite, btd);
+        assertEquals("minecraft:stone", btd.getMachineName());
+        assertEquals(1, btd.getId());
+        assertEquals(1, btd.getData());
+    }
+
+    @Test
+    public void testDeprecatedTypes() {
+        BlockType depbt = BlockType.fromString("minecraft:planks:0");
+        assertEquals(BlockType.OakPlanks, depbt);
+        assertEquals(BlockType.OakWood, depbt);
+
+        depbt = BlockType.fromString("minecraft:planks:1");
+        assertEquals(BlockType.SprucePlanks, depbt);
+        assertEquals(BlockType.SpruceWood, depbt);
+
+        depbt = BlockType.fromString("minecraft:planks:2");
+        assertEquals(BlockType.BirchPlanks, depbt);
+        assertEquals(BlockType.BirchWood, depbt);
+
+        depbt = BlockType.fromString("minecraft:planks:3");
+        assertEquals(BlockType.JunglePlanks, depbt);
+        assertEquals(BlockType.JungleWood, depbt);
+
+        depbt = BlockType.fromString("minecraft:planks:4");
+        assertEquals(BlockType.AcaciaPlanks, depbt);
+        assertEquals(BlockType.AcaciaWood, depbt);
+
+        depbt = BlockType.fromString("minecraft:planks:5");
+        assertEquals(BlockType.DarkOakPlanks, depbt);
+        assertEquals(BlockType.DarkOakWood, depbt);
+    }
+
+    @Test
     public void testFromStringAndData() {
         BlockType bt = BlockType.fromStringAndData("minecraft:dirt", 2);
         assertEquals("minecraft:dirt", bt.getMachineName());

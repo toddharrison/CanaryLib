@@ -4,7 +4,7 @@ import net.canarymod.api.DyeColor;
 import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
 
-import static net.canarymod.api.world.blocks.BlockType.WoolWhite;
+import static net.canarymod.api.world.blocks.BlockType.WhiteWool;
 
 /**
  * Colored Block properties helper<br/>
@@ -19,7 +19,7 @@ public final class ColoredBlockProperties extends BlockProperties {
     /**
      * Colored Block color property, Values: {@link net.canarymod.api.DyeColor} (excluding CUSTOM)
      */
-    public static final BlockEnumProperty color = getInstanceFor(WoolWhite, "color");
+    public static final BlockEnumProperty color = getInstanceFor(WhiteWool, "color");
 
     /**
      * Applies color to the {@code Colored Block}

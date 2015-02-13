@@ -3,7 +3,7 @@ package net.canarymod.api.world.blocks.properties.helpers;
 import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.blocks.properties.BlockIntegerProperty;
 
-import static net.canarymod.api.world.blocks.BlockType.SignPost;
+import static net.canarymod.api.world.blocks.BlockType.StandingSign;
 
 /**
  * Standing Sign properties helper
@@ -15,7 +15,7 @@ public final class StandingSignProperties extends BlockProperties {
     /**
      * Standing Sign rotation property, Values: 0 - 15
      */
-    public static final BlockIntegerProperty rotation = getInstanceFor(SignPost, "rotation");
+    public static final BlockIntegerProperty rotation = getInstanceFor(StandingSign, "rotation");
 
     /**
      * Applies rotation to the {@code Standing Sign}

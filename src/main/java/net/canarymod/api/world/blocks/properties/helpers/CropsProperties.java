@@ -3,7 +3,7 @@ package net.canarymod.api.world.blocks.properties.helpers;
 import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.blocks.properties.BlockIntegerProperty;
 
-import static net.canarymod.api.world.blocks.BlockType.Crops;
+import static net.canarymod.api.world.blocks.BlockType.Wheat;
 
 /**
  * Crops properties helper<br/>
@@ -21,7 +21,7 @@ public final class CropsProperties extends BlockProperties {
     /**
      * Crops age property, Values: 0 - 7
      */
-    public static final BlockIntegerProperty age = getInstanceFor(Crops, "age");
+    public static final BlockIntegerProperty age = getInstanceFor(Wheat, "age");
 
     /**
      * Applies age to the {@code Crops}

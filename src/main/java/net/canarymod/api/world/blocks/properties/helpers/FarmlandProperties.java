@@ -3,7 +3,7 @@ package net.canarymod.api.world.blocks.properties.helpers;
 import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.blocks.properties.BlockIntegerProperty;
 
-import static net.canarymod.api.world.blocks.BlockType.Soil;
+import static net.canarymod.api.world.blocks.BlockType.Farmland;
 
 /**
  * Farmland properties helper
@@ -15,7 +15,7 @@ public final class FarmlandProperties extends BlockProperties {
     /**
      * Farmland moisture property, Values: 0 - 7
      */
-    public static final BlockIntegerProperty moisture = getInstanceFor(Soil, "moisture");
+    public static final BlockIntegerProperty moisture = getInstanceFor(Farmland, "moisture");
 
     /**
      * Applies moisture to the {@code Farmland}
