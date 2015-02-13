@@ -248,26 +248,59 @@ public final class BlockType {
     public static final BlockType RedMushroom = new BlockType(40, 0, "minecraft:red_mushroom");
     public static final BlockType GoldBlock = new BlockType(41, 0, "minecraft:gold_block");
     public static final BlockType IronBlock = new BlockType(42, 0, "minecraft:iron_block");
-    public static final BlockType DoubleOrnateStoneSlab = new BlockType(43, 0, "minecraft:double_stone_slab");
-    public static final BlockType DoubleSandStoneTrimSlab = new BlockType(43, 1, "minecraft:double_stone_slab");
+    /**
+     * No longer seamless, see {@link net.canarymod.api.world.blocks.properties.helpers.DoubleStoneSlabProperties}
+     */
+    public static final BlockType DoubleStoneSlab = new BlockType(43, 0, "minecraft:double_stone_slab");
+    /**
+     * No longer seamless, see {@link net.canarymod.api.world.blocks.properties.helpers.DoubleStoneSlabProperties}
+     */
+    public static final BlockType DoubleSandStoneSlab = new BlockType(43, 1, "minecraft:double_stone_slab");
     public static final BlockType DoubleWoodSlab = new BlockType(43, 2, "minecraft:double_stone_slab");
     public static final BlockType DoubleCobbleSlab = new BlockType(43, 3, "minecraft:double_stone_slab");
-    public static final BlockType DoubleBrickBlockSlab = new BlockType(43, 4, "minecraft:double_stone_slab");
+    public static final BlockType DoubleBrickSlab = new BlockType(43, 4, "minecraft:double_stone_slab");
     public static final BlockType DoubleStoneBricksSlab = new BlockType(43, 5, "minecraft:double_stone_slab");
     public static final BlockType DoubleNetherBrickSlab = new BlockType(43, 6, "minecraft:double_stone_slab");
-    public static final BlockType DoubleQuartzSlab = new BlockType(43, 9, "minecraft:double_stone_slab");
-    public static final BlockType DoubleStoneSlab = new BlockType(43, 8, "minecraft:double_stone_slab");
-    public static final BlockType DoubleSandStoneSlab = new BlockType(43, 11, "minecraft:double_stone_slab");
-    public static final BlockType OrnateStoneSlab = new BlockType(44, 0, "minecraft:stone_slab");
-    public static final BlockType SandStoneTrimSlab = new BlockType(44, 1, "minecraft:stone_slab");
+    public static final BlockType DoubleQuartzSlab = new BlockType(43, 7, "minecraft:double_stone_slab");
+    /**
+     * @deprecated Being replaced by {@link DoubleStoneSlab}
+     */
+    @Deprecated
+    public static final BlockType DoubleOrnateStoneSlab = DoubleStoneSlab;
+    /**
+     * @deprecated Being replaced by {@link DoubleSandStoneSlab}
+     */
+    @Deprecated
+    public static final BlockType DoubleSandStoneTrimSlab = DoubleSandStoneSlab;
+    /**
+     * @deprecated Being replaced by {@link DoubleBricksSlab}
+     */
+    @Deprecated
+    public static final BlockType DoubleBrickBlockSlab = DoubleBrickSlab;
+    public static final BlockType StoneSlab = new BlockType(44, 0, "minecraft:stone_slab");
+    public static final BlockType SandStoneSlab = new BlockType(44, 1, "minecraft:stone_slab");
     public static final BlockType WoodSlab = new BlockType(44, 2, "minecraft:stone_slab");
     public static final BlockType CobbleSlab = new BlockType(44, 3, "minecraft:stone_slab");
-    public static final BlockType BrickBlockSlab = new BlockType(44, 4, "minecraft:stone_slab");
+    public static final BlockType BrickSlab = new BlockType(44, 4, "minecraft:stone_slab");
     public static final BlockType StoneBricksSlab = new BlockType(44, 5, "minecraft:stone_slab");
     public static final BlockType NetherBricksSlab = new BlockType(44, 6, "minecraft:stone_slab");
     public static final BlockType QuartzSlab = new BlockType(44, 7, "minecraft:stone_slab");
-    public static final BlockType StoneSlab = new BlockType(44, 10, "minecraft:stone_slab");
-    public static final BlockType SandStoneSlab = new BlockType(44, 11, "minecraft:stone_slab");
+    /**
+     * @deprecated Being replaced by {@link StoneSlab}
+     */
+    @Deprecated
+    public static final BlockType OrnateStoneSlab = StoneSlab;
+    /**
+     * @deprecated Being replaced by {@link SandStoneSlab}
+     */
+    @Deprecated
+    public static final BlockType SandStoneTrimSlab = SandStoneSlab;
+    /**
+     * @deprecated Being replaced by {@link BrickSlab}
+     */
+    @Deprecated
+    public static final BlockType BrickBlockSlab = BrickSlab;
+
     public static final BlockType BrickBlock = new BlockType(45, 0, "minecraft:brick_block");
     public static final BlockType TNT = new BlockType(46, 0, "minecraft:tnt");
     /**

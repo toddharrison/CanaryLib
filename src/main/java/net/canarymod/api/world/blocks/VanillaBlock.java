@@ -102,20 +102,19 @@ public enum VanillaBlock {
     OXEYEDAISY("red_flower:8"),
     BROWNMUSHROOM("brown_mushroom"),
     REDMUSHROOM("red_mushroom"),
+    GOLDBLOCK("gold_block"),
+    IRONBLOCK("iron_block"),
+    DOUBLESTONESLAB("double_stone_slab:0"),
+    DOUBLESANDSTONESLAB("double_stone_slab:1"),
+    DOUBLEWOODSLAB("double_stone_slab:2"),
+    DOUBLECOBBLESLAB("double_stone_slab:3"),
+    DOUBLEBRICKSLAB("double_stone_slab:4"),
+    DOUBLESTONEBRICKSLAB("double_stone_slab:5"),
+    DOUBLENETHERBRICKSLAB("double_stone_slab:6"),
+    DOUBLEQUARTZSLAB("double_stone_slab:7"),
 
     /*
-    public static final BlockType GoldBlock = new BlockType(41, 0, "minecraft:gold_block");
-    public static final BlockType IronBlock = new BlockType(42, 0, "minecraft:iron_block");
-    public static final BlockType DoubleOrnateStoneSlab = new BlockType(43, 0, "minecraft:double_stone_slab");
-    public static final BlockType DoubleSandStoneTrimSlab = new BlockType(43, 1, "minecraft:double_stone_slab");
-    public static final BlockType DoubleWoodSlab = new BlockType(43, 2, "minecraft:double_stone_slab");
-    public static final BlockType DoubleCobbleSlab = new BlockType(43, 3, "minecraft:double_stone_slab");
-    public static final BlockType DoubleBrickBlockSlab = new BlockType(43, 4, "minecraft:double_stone_slab");
-    public static final BlockType DoubleStoneBricksSlab = new BlockType(43, 5, "minecraft:double_stone_slab");
-    public static final BlockType DoubleNetherBrickSlab = new BlockType(43, 6, "minecraft:double_stone_slab");
-    public static final BlockType DoubleQuartzSlab = new BlockType(43, 9, "minecraft:double_stone_slab");
-    public static final BlockType DoubleStoneSlab = new BlockType(43, 8, "minecraft:double_stone_slab");
-    public static final BlockType DoubleSandStoneSlab = new BlockType(43, 11, "minecraft:double_stone_slab");
+
     public static final BlockType OrnateStoneSlab = new BlockType(44, 0, "minecraft:stone_slab");
     public static final BlockType SandStoneTrimSlab = new BlockType(44, 1, "minecraft:stone_slab");
     public static final BlockType WoodSlab = new BlockType(44, 2, "minecraft:stone_slab");
@@ -126,6 +125,7 @@ public enum VanillaBlock {
     public static final BlockType QuartzSlab = new BlockType(44, 7, "minecraft:stone_slab");
     public static final BlockType StoneSlab = new BlockType(44, 10, "minecraft:stone_slab");
     public static final BlockType SandStoneSlab = new BlockType(44, 11, "minecraft:stone_slab");
+
     public static final BlockType BrickBlock = new BlockType(45, 0, "minecraft:brick_block");
     public static final BlockType Tnt = new BlockType(46, 0, "minecraft:tnt");
     public static final BlockType Bookshelf = new BlockType(47, 0, "minecraft:bookshelf");
