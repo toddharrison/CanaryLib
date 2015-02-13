@@ -10,7 +10,7 @@ import static net.canarymod.api.world.blocks.BlockType.OakWood;
  *
  * @author Jason Jones (darkdiplomat)
  */
-public final class PlanksProperties extends WoodProperties {
+public final class PlanksProperties extends BlockProperties implements WoodProperties {
 
     /**
      * Planks variant property, Values: {@link net.canarymod.api.world.blocks.properties.helpers.WoodProperties.Variant}

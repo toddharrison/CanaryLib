@@ -77,7 +77,7 @@ public final class FlowerPotProperties extends BlockProperties {
      * @throws java.lang.IllegalArgumentException
      *         Should an invalid property be applied
      */
-    public Block applyLegacyData(Block block, int value) {
+    public static Block applyLegacyData(Block block, int value) {
         return apply(block, legacyData, value);
     }
 
@@ -96,7 +96,7 @@ public final class FlowerPotProperties extends BlockProperties {
      * @throws java.lang.IllegalArgumentException
      *         Should an invalid property be applied
      */
-    public Block applyContents(Block block, Contents value) {
+    public static Block applyContents(Block block, Contents value) {
         return apply(block, contents, value);
     }
 }

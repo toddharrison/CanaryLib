@@ -10,7 +10,7 @@ import static net.canarymod.api.world.blocks.BlockType.OakWoodSlab;
  *
  * @author Jason Jones (darkdiplomat)
  */
-public final class WoodSlabProperties extends SlabProperties {
+public final class WoodSlabProperties extends SlabProperties implements WoodProperties {
 
     /**
      * Wood Slab variant property, Values: {@link net.canarymod.api.world.blocks.properties.helpers.WoodProperties.Variant}
@@ -32,7 +32,7 @@ public final class WoodSlabProperties extends SlabProperties {
      * @throws java.lang.IllegalArgumentException
      *         Should an invalid property be applied
      */
-    public static Block applyVariant(Block block, WoodProperties.Variant value) {
+    public static Block applyVariant(Block block, Variant value) {
         return apply(block, variant, value);
     }
 }

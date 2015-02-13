@@ -22,7 +22,7 @@ public final class ColoredBlockProperties extends BlockProperties {
     public static final BlockEnumProperty color = getInstanceFor(WoolWhite, "color");
 
     /**
-     * Applies color to the {@code Carpet}
+     * Applies color to the {@code Colored Block}
      *
      * @param block
      *         the {@link net.canarymod.api.world.blocks.Block} to be modified

@@ -5,7 +5,7 @@ package net.canarymod.api.world.blocks.properties.helpers;
  *
  * @author Jason Jones (darkdiplomat)
  */
-public abstract class WoodProperties extends BlockProperties {
+public interface WoodProperties {
 
     /**
      * Wood variants

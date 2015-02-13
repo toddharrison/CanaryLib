@@ -13,7 +13,7 @@ import static net.canarymod.api.world.blocks.BlockType.OakLeaves;
  *
  * @author Jason Jones (darkdiplomat)
  */
-public final class LeavesProperties extends WoodProperties {
+public final class LeavesProperties extends BlockProperties implements WoodProperties {
 
     /**
      * Leaves decayable property, Values: true, false

@@ -4,9 +4,7 @@ import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
 import net.visualillusionsent.utils.Verify;
 
-import static net.canarymod.api.world.blocks.BlockType.AcaciaLeaves;
-import static net.canarymod.api.world.blocks.BlockType.AcaciaLog;
-import static net.canarymod.api.world.blocks.BlockType.OakLog;
+import static net.canarymod.api.world.blocks.BlockType.*;
 
 /**
  * Log properties helper<p/>
@@ -14,7 +12,7 @@ import static net.canarymod.api.world.blocks.BlockType.OakLog;
  *
  * @author Jason Jones (darkdiplomat)
  */
-public final class LogProperties extends RotatedPillarProperties {
+public final class LogProperties extends RotatedPillarProperties implements WoodProperties {
 
     /**
      * Log axis property, Values: {@link net.canarymod.api.world.blocks.properties.helpers.LogProperties.Axis}
@@ -92,7 +90,7 @@ public final class LogProperties extends RotatedPillarProperties {
      * @throws java.lang.IllegalArgumentException
      *         Should an invalid property be applied
      */
-    public static Block applyVariant(Block block, WoodProperties.Variant value) {
+    public static Block applyVariant(Block block, Variant value) {
         Verify.notNull(block, "Block block");
         if (block.getType().getMachineName().equals(AcaciaLeaves.getMachineName())) {
             return apply(block, variantNew, value);
