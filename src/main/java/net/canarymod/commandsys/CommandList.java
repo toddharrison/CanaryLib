@@ -197,6 +197,7 @@ public class CommandList implements CommandListener {
         temp.put("world.info", new WorldInfoCommand());
         temp.put("world.list", new ListWorldsCommand());
         temp.put("world.load", new LoadWorldCommand());
+        temp.put("world.unload", new UnloadWorldCommand());
         temp.put("mob.clear", new MobClear());
         temp.put("mob.count", new MobCount());
         temp.put("mobspawner.set", new MobSpawnerSet());
@@ -1942,7 +1943,32 @@ public class CommandList implements CommandListener {
         natives.get("world.load").execute(caller, args);
     }
 
-    @TabComplete(commands = {"loadworld", "world load"})
+    @Command(
+            aliases = {"unloadworld"},
+            description = "unloads a world",
+            permissions = {WORLD$LOAD},
+            toolTip = "/unloadworld <worldName> [dimensionType]",
+            min = 1,
+            version = 2
+    )
+    public void unloadWorld(MessageReceiver caller, String[] args) {
+        natives.get("world.unload").execute(caller, args);
+    }
+
+    @Command(
+            aliases = {"unload"},
+            description = "unloads a world",
+            permissions = {WORLD$LOAD},
+            toolTip = "/world unload <worldName> [dimensionType]",
+            parent = "world",
+            min = 1,
+            version = 2
+    )
+    public void worldUnload(MessageReceiver caller, String[] args) {
+        natives.get("world.unload").execute(caller, args);
+    }
+
+    @TabComplete(commands = {"loadworld", "world load", "unloadworld", "world unload"})
     public List<String> matchWorldNameDimension(MessageReceiver caller, String[] args) {
         return args.length == 1 ? matchToKnownWorld(args)
                 : args.length == 2 ? matchToDimension(args)

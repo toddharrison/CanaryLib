@@ -12,11 +12,11 @@ import java.util.regex.Pattern;
 import static net.canarymod.Translator.sendTranslatedNotice;
 
 /**
- * Checks for and loads a World
+ * Checks for and unloads a World
  *
- * @author Jason (darkdiplomat)
+ * @author Jason Jones (darkdiplomat)
  */
-public final class LoadWorldCommand implements NativeCommand {
+public final class UnloadWorldCommand implements NativeCommand {
     private final Matcher matcher = Pattern.compile(".+_\\w+").matcher("");
 
     public final void execute(MessageReceiver caller, String[] parameters) {
@@ -44,12 +44,12 @@ public final class LoadWorldCommand implements NativeCommand {
 
             if (type != null) {
                 if (manage.worldExists(fqName)) {
-                    if (!manage.worldIsLoaded(worldName, type)) {
-                        manage.loadWorld(worldName, type);
-                        caller.notice("World Loaded!");
+                    if (manage.worldIsLoaded(worldName, type)) {
+                        manage.unloadWorld(worldName, type, true);
+                        caller.notice("World Unloaded!");
                     }
                     else {
-                        caller.notice("World was already loaded...");
+                        caller.notice("World wasn't loaded...");
                     }
                 }
                 else {
@@ -61,8 +61,8 @@ public final class LoadWorldCommand implements NativeCommand {
             }
         }
         catch (Exception ex) {
-            caller.notice("Failed to load '" + parameters[0] + "'. See console for error.");
-            Canary.log.error("Error executing command '/world load (/loadworld)' for caller '" + caller.getName() + "'", ex);
+            caller.notice("Failed to unload '" + parameters[0] + "'. See console for error.");
+            Canary.log.error("Error executing command '/world unload (/unloadworld)' for caller '" + caller.getName() + "'", ex);
         }
     }
 }
