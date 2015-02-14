@@ -667,8 +667,8 @@ public final class BlockType {
     @Deprecated
     public static final BlockType RedSandstoneBlank = RedSandstoneSmooth;
     public static final BlockType RedSandstoneStairs = new BlockType(180, 0, "minecraft:red_sandstone_stairs");
-    public static final BlockType RedSandstoneSlab = new BlockType(181, 0, "minecraft:stone_slab2");
-    public static final BlockType DoubleRedSandstoneSlab = new BlockType(182, 0, "minecraft:double_stone_slab2");
+    public static final BlockType DoubleRedSandstoneSlab = new BlockType(181, 0, "minecraft:double_stone_slab2");
+    public static final BlockType RedSandstoneSlab = new BlockType(182, 0, "minecraft:stone_slab2");
     public static final BlockType SpruceFenceGate = new BlockType(183, 0, "minecraft:spruce_fence_gate");
     public static final BlockType BirchFenceGate = new BlockType(184, 0, "minecraft:birch_fence_gate");
     public static final BlockType JungleFenceGate = new BlockType(185, 0, "minecraft:jungle_fence_gate");
