@@ -5,8 +5,7 @@ import net.canarymod.api.world.blocks.properties.BlockBooleanProperty;
 import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
 import net.visualillusionsent.utils.Verify;
 
-import static net.canarymod.api.world.blocks.BlockType.AcaciaLeaves;
-import static net.canarymod.api.world.blocks.BlockType.OakLeaves;
+import static net.canarymod.api.world.blocks.BlockType.*;
 
 /**
  * Leaves properties helper
@@ -98,7 +97,7 @@ public final class LeavesProperties extends BlockProperties implements WoodPrope
      */
     public static Block applyVariant(Block block, Variant value) {
         Verify.notNull(block, "Block block");
-        if (block.getType().getMachineName().equals(AcaciaLeaves.getMachineName())) {
+        if (block.getType().matches(AcaciaLeaves, DarkOakLeaves)) {
             return apply(block, variantNew, value);
         }
         return apply(block, variantOld, value);

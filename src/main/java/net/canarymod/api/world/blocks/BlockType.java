@@ -300,8 +300,8 @@ public final class BlockType {
      */
     @Deprecated
     public static final BlockType BrickBlockSlab = BrickSlab;
-
-    public static final BlockType BrickBlock = new BlockType(45, 0, "minecraft:brick_block");
+    public static final BlockType Bricks = new BlockType(45, 0, "minecraft:brick_block");
+    public static final BlockType BrickBlock = Bricks;
     public static final BlockType TNT = new BlockType(46, 0, "minecraft:tnt");
     /**
      * @deprecated Being replaced by {@link TNT}
@@ -314,7 +314,12 @@ public final class BlockType {
     public static final BlockType Torch = new BlockType(50, 0, "minecraft:torch");
     public static final BlockType FireBlock = new BlockType(51, 0, "minecraft:fire");
     public static final BlockType MobSpawner = new BlockType(52, 0, "minecraft:mob_spawner");
-    public static final BlockType WoodenStair = new BlockType(53, 0, "minecraft:oak_stairs");
+    public static final BlockType OakStairs = new BlockType(53, 0, "minecraft:oak_stairs");
+    /**
+     * @deprecated Being replaced by {@link OakStairs}
+     */
+    @Deprecated
+    public static final BlockType WoodenStair = OakStairs;
     public static final BlockType Chest = new BlockType(54, 0, "minecraft:chest");
     public static final BlockType RedstoneWire = new BlockType(55, 0, "minecraft:redstone_wire");
     public static final BlockType DiamondOre = new BlockType(56, 0, "minecraft:diamond_ore");
@@ -344,7 +349,12 @@ public final class BlockType {
     public static final BlockType OakDoor = WoodenDoor; // Dual Mapping for simplicity
     public static final BlockType Ladder = new BlockType(65, 0, "minecraft:ladder");
     public static final BlockType Rail = new BlockType(66, 0, "minecraft:rail");
-    public static final BlockType CobbleStair = new BlockType(67, 0, "minecraft:stone_stairs");
+    public static final BlockType StoneStairs = new BlockType(67, 0, "minecraft:stone_stairs");
+    /**
+     * @deprecated Being replaced by {@link StoneStairs}
+     */
+    @Deprecated
+    public static final BlockType CobbleStair = StoneStairs;
     public static final BlockType WallSign = new BlockType(68, 0, "minecraft:wall_sign");
     public static final BlockType Lever = new BlockType(69, 0, "minecraft:lever");
     public static final BlockType StonePressurePlate = new BlockType(70, 0, "minecraft:stone_pressure_plate");
@@ -663,6 +673,28 @@ public final class BlockType {
         return machineName;
     }
 
+
+    /**
+     * Checks BlockType for a given set of possible matches
+     *
+     * @param tests
+     *         the types to check against
+     *
+     * @return {@code true} if matches on of the give types; {@code false} if no match at all
+     */
+    public boolean matches(BlockType... tests) {
+        if (tests == null || tests.length < 1) {
+            return false;
+        }
+
+        for (BlockType test : tests) {
+            if (test != null && test.equals(this)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     /**
      * Get a custom block type.

@@ -112,121 +112,117 @@ public enum VanillaBlock {
     DOUBLESTONEBRICKSLAB("double_stone_slab:5"),
     DOUBLENETHERBRICKSLAB("double_stone_slab:6"),
     DOUBLEQUARTZSLAB("double_stone_slab:7"),
+    STONESLAB("stone_slab:0"),
+    SANDSTONESLAB("stone_slab:1"),
+    WOODSLAB("stone_slab:2"),
+    COBBLESLAB("stone_slab:3"),
+    BRICKSLAB("stone_slab:4"),
+    STONEBRICKSSLAB("stone_slab:5"),
+    NETHERBRICKSSLAB("stone_slab:6"),
+    QUARTZSLAB("stone_slab:7"),
+    BRICKS("brick_block"),
+    TNT("tnt"),
+    BOOKSHELF("bookshelf"),
+    MOSSYCOBBLE("mossy_cobblestone"),
+    OBSIDIAN("obsidian"),
+    TORCH("torch"),
+    FIRE("fire"),
+    MOBSPAWNER("mob_spawner"),
+    OAKSTAIRS("oak_stairs"),
+    CHEST("chest"),
+    REDSTONEWIRE("redstone_wire"),
+    DIAMONDORE("diamond_ore"),
+    DIAMONDBLOCK("diamond_block"),
+    WORKBENCH("crafting_table"),
+    WHEAT("wheat"),
+    FARMLAND("farmland"),
+    FURNACE("furnace"),
+    LITFURNACE("lit_furnace"),
+    STANDINGSIGN("standing_sign"),
+    WOODENDOOR("wooden_door"),
+    LADDER("ladder"),
+    RAIL("rail"),
+    STONESTAIRS("stone_stairs"),
+    WALLSIGN("wall_sign"),
+    LEVER("lever"),
+    STONEPRESSUREPLATE("stone_pressure_plate"),
+    IRONDOOR("iron_door"),
+    WOODENPRESSUREPLATE("wooden_pressure_plate"),
+    REDSTONEORE("redstone_ore"),
+    LITREDSTONEORE("lit_redstone_ore"),
+    UNLITREDSTONETORCH("unlite_redstone_torch"),
+    REDSTONETORCH("redstone_torch"),
+    STONEBUTTON("stone_button"),
+    SNOWLAYER("snow_layer"),
+    ICE("ice"),
+    SNOW("snow"),
+    CACTUS("cactus"),
+    CLAY("clay"),
+    REED("reeds"),
+    JUKEBOX("jukebox"),
+    FENCE("fence"),
+    PUMPKIN("pumpkin"),
+    NETHERRACK("netherrack"),
+    SOULSAND("soul_sand"),
+    GLOWSTONE("glowstone"),
+    PORTAL("portal"),
+    JACKOLANTERN("lit_pumpkin"),
+    CAKE("cake"),
+    REDSTONEREPEATEROFF("unpowered_repeater"),
+    REDSTONEREPEATERON("powered_repeater"),
+    WHITESTAINEDGLASS("stained_glass:0"),
+    ORANGESTAINEDGLASS("stained_glass:1"),
+    MAGENTASTAINEDGLASS("stained_glass:2"),
+    LIGHTBLUESTAINEDGLASS("stained_glass:3"),
+    YELLOWSTAINEDGLASS("stained_glass:4"),
+    LIMESTAINEDGLASS("stained_glass:5"),
+    PINKSTAINEDGLASS("stained_glass:6"),
+    GRAYSTAINEDGLASS("stained_glass:7"),
+    LIGHTGRAYSTAINEDGLASS("stained_glass:8"),
+    CYANSTAINEDGLASS("stained_glass:9"),
+    PURPLESTAINEDGLASS("stained_glass:10"),
+    BLUESTAINEDGLASS("stained_glass:11"),
+    BROWNSTAINEDGLASS("stained_glass:12"),
+    GREENSTAINEDGLASS("stained_glass:13"),
+    REDSTAINEDGLASS("stained_glass:14"),
+    BLACKSTAINEDGLASS("stained_glass:15"),
+    TRAPDOOR("trapdoor"),
+    STONEMONSTEREGG("monster_egg:0"),
+    COBBLEMONSTEREGG("monster_egg:1"),
+    STONEBRICKMONSTEREGG("monster_egg:2"),
+    MOSSYSTONEBRICKMONSTEREGG("monster_egg:3"),
+    CRACKEDSTONEBRICKMONSTEREGG("monster_egg:4"),
+    ORNATESTONEBRICKMONSTEREGG("monster_egg:5"),
+    STONEBRICK("stonebrick:0"),
+    MOSSYSTONEBRICK("stonebrick:1"),
+    CRACKEDSTONEBRICK("stonebrick:2"),
+    ORNATESTONEBRICK("stonebrick:3"),
+    HUGEBROWNMUSHROOM("brown_mushroom_block"),
+    HUGEREDMUSHROOM("red_mushroom_block"),
+    IRONBARS("iron_bars"),
+    GLASSPANE("glass_pane"),
+    MELON("melon_block"),
+    PUMPKINSTEM("pumpkin_stem"),
+    MELONSTEM("melon_stem"),
+    VINE("vine"),
+    FENCEGATE("fence_gate"),
+    BRICKSTAIRS("brick_stairs"),
+    STONEBRICKSTAIRS("stone_brick_stairs"),
+    MYCELIUM("mycelium"),
+    LILYPAD("waterlily"),
+    NETHERBRICK("nether_brick"),
+    NETHERBRICKFENCE("nether_brick_fence"),
+    NETHERBRICKSTAIRS("nether_brick_stairs"),
+    NETHERWART("nether_wart"),
+    ENCHANTMENTTABLE("enchanting_table"),
+    BREWINGSTAND("brewing_stand"),
+    CAULDRON("cauldron"),
+    ENDPORTAL("end_portal"),
+    ENDPORTALFRAME("end_portal_frame"),
+    ENDSTONE("end_stone"),
+    ENDERDRAGONEGG("dragon_egg"),
 
     /*
-
-    public static final BlockType OrnateStoneSlab = new BlockType(44, 0, "minecraft:stone_slab");
-    public static final BlockType SandStoneTrimSlab = new BlockType(44, 1, "minecraft:stone_slab");
-    public static final BlockType WoodSlab = new BlockType(44, 2, "minecraft:stone_slab");
-    public static final BlockType CobbleSlab = new BlockType(44, 3, "minecraft:stone_slab");
-    public static final BlockType BrickBlockSlab = new BlockType(44, 4, "minecraft:stone_slab");
-    public static final BlockType StoneBricksSlab = new BlockType(44, 5, "minecraft:stone_slab");
-    public static final BlockType NetherBricksSlab = new BlockType(44, 6, "minecraft:stone_slab");
-    public static final BlockType QuartzSlab = new BlockType(44, 7, "minecraft:stone_slab");
-    public static final BlockType StoneSlab = new BlockType(44, 10, "minecraft:stone_slab");
-    public static final BlockType SandStoneSlab = new BlockType(44, 11, "minecraft:stone_slab");
-
-    public static final BlockType BrickBlock = new BlockType(45, 0, "minecraft:brick_block");
-    public static final BlockType Tnt = new BlockType(46, 0, "minecraft:tnt");
-    public static final BlockType Bookshelf = new BlockType(47, 0, "minecraft:bookshelf");
-    public static final BlockType MossyCobble = new BlockType(48, 0, "minecraft:mossy_cobblestone");
-    public static final BlockType Obsidian = new BlockType(49, 0, "minecraft:obsidian");
-    public static final BlockType Torch = new BlockType(50, 0, "minecraft:torch");
-    public static final BlockType FireBlock = new BlockType(51, 0, "minecraft:fire");
-    public static final BlockType MobSpawner = new BlockType(52, 0, "minecraft:mob_spawner");
-    public static final BlockType WoodenStair = new BlockType(53, 0, "minecraft:oak_stairs");
-    public static final BlockType Chest = new BlockType(54, 0, "minecraft:chest");
-    public static final BlockType RedstoneWire = new BlockType(55, 0, "minecraft:redstone_wire");
-    public static final BlockType DiamondOre = new BlockType(56, 0, "minecraft:diamond_ore");
-    public static final BlockType DiamondBlock = new BlockType(57, 0, "minecraft:diamond_block");
-    public static final BlockType Workbench = new BlockType(58, 0, "minecraft:crafting_table");
-    public static final BlockType Crops = new BlockType(59, 0, "minecraft:wheat");
-    public static final BlockType Soil = new BlockType(60, 0, "minecraft:farmland");
-    public static final BlockType Furnace = new BlockType(61, 0, "minecraft:furnace");
-    public static final BlockType BurningFurnace = new BlockType(62, 0, "minecraft:lit_furnace");
-    public static final BlockType SignPost = new BlockType(63, 0, "minecraft:standing_sign");
-    public static final BlockType WoodenDoor = new BlockType(64, 0, "minecraft:wooden_door");
-    public static final BlockType Ladder = new BlockType(65, 0, "minecraft:ladder");
-    public static final BlockType Rail = new BlockType(66, 0, "minecraft:rail");
-    public static final BlockType CobbleStair = new BlockType(67, 0, "minecraft:stone_stairs");
-    public static final BlockType WallSign = new BlockType(68, 0, "minecraft:wall_sign");
-    public static final BlockType Lever = new BlockType(69, 0, "minecraft:lever");
-    public static final BlockType StonePlate = new BlockType(70, 0, "minecraft:stone_pressure_plate");
-    public static final BlockType IronDoor = new BlockType(71, 0, "minecraft:iron_door");
-    public static final BlockType WoodPlate = new BlockType(72, 0, "minecraft:wooden_pressure_plate");
-    public static final BlockType RedstoneOre = new BlockType(73, 0, "minecraft:redstone_ore");
-    public static final BlockType GlowingRedstoneOre = new BlockType(74, 0, "minecraft:lit_redstone_ore");
-    public static final BlockType RedstoneTorchOff = new BlockType(75, 0, "minecraft:unlit_redstone_torch");
-    public static final BlockType RedstoneTorchOn = new BlockType(76, 0, "minecraft:redstone_torch");
-    public static final BlockType StoneButton = new BlockType(77, 0, "minecraft:stone_button");
-    public static final BlockType Snow = new BlockType(78, 0, "minecraft:snow_layer");
-    public static final BlockType Ice = new BlockType(79, 0, "minecraft:ice");
-    public static final BlockType SnowBlock = new BlockType(80, 0, "minecraft:snow");
-    public static final BlockType Cactus = new BlockType(81, 0, "minecraft:cactus");
-    public static final BlockType Clay = new BlockType(82, 0, "minecraft:clay");
-    public static final BlockType Reed = new BlockType(83, 0, "minecraft:reeds");
-    public static final BlockType Jukebox = new BlockType(84, 0, "minecraft:jukebox");
-    public static final BlockType Fence = new BlockType(85, 0, "minecraft:fence");
-    public static final BlockType Pumpkin = new BlockType(86, 0, "minecraft:pumpkin");
-    public static final BlockType Netherrack = new BlockType(87, 0, "minecraft:netherrack");
-    public static final BlockType SoulSand = new BlockType(88, 0, "minecraft:soul_sand");
-    public static final BlockType GlowStone = new BlockType(89, 0, "minecraft:glowstone");
-    public static final BlockType Portal = new BlockType(90, 0, "minecraft:portal");
-    public static final BlockType JackOLantern = new BlockType(91, 0, "minecraft:lit_pumpkin");
-    public static final BlockType Cake = new BlockType(92, 0, "minecraft:cake");
-    public static final BlockType RedstoneRepeaterOff = new BlockType(93, 0, "minecraft:unpowered_repeater");
-    public static final BlockType RedstoneRepeaterOn = new BlockType(94, 0, "minecraft:powered_repeater");
-    public static final BlockType WhiteGlass = new BlockType(95, 0, "minecraft:stained_glass");
-    public static final BlockType OrangeGlass = new BlockType(95, 1, "minecraft:stained_glass");
-    public static final BlockType MagentaGlass = new BlockType(95, 2, "minecraft:stained_glass");
-    public static final BlockType LightBlueGlass = new BlockType(95, 3, "minecraft:stained_glass");
-    public static final BlockType YellowGlass = new BlockType(95, 4, "minecraft:stained_glass");
-    public static final BlockType LimeGlass = new BlockType(95, 5, "minecraft:stained_glass");
-    public static final BlockType PinkGlass = new BlockType(95, 6, "minecraft:stained_glass");
-    public static final BlockType GrayGlass = new BlockType(95, 7, "minecraft:stained_glass");
-    public static final BlockType LightGrayGlass = new BlockType(95, 8, "minecraft:stained_glass");
-    public static final BlockType CyanGlass = new BlockType(95, 9, "minecraft:stained_glass");
-    public static final BlockType PurpleGlass = new BlockType(95, 10, "minecraft:stained_glass");
-    public static final BlockType BlueGlass = new BlockType(95, 11, "minecraft:stained_glass");
-    public static final BlockType BrownGlass = new BlockType(95, 12, "minecraft:stained_glass");
-    public static final BlockType GreenGlass = new BlockType(95, 13, "minecraft:stained_glass");
-    public static final BlockType RedGlass = new BlockType(95, 14, "minecraft:stained_glass");
-    public static final BlockType BlackGlass = new BlockType(95, 15, "minecraft:stained_glass");
-    public static final BlockType Trapdoor = new BlockType(96, 0, "minecraft:trapdoor");
-    public static final BlockType StoneSilverFishBlock = new BlockType(97, 0, "minecraft:monster_egg");
-    public static final BlockType CobbleSilverFishBlock = new BlockType(97, 1, "minecraft:monster_egg");
-    public static final BlockType StoneBrickSilverFishBlock = new BlockType(97, 2, "minecraft:monster_egg");
-    public static final BlockType MossyBrickSilverFishBlock = new BlockType(97, 3, "minecraft:monster_egg");
-    public static final BlockType CrackedSilverFishBlock = new BlockType(97, 4, "minecraft:monster_egg");
-    public static final BlockType OrnateSilverFishBlock = new BlockType(97, 5, "minecraft:monster_egg");
-    public static final BlockType StoneBrick = new BlockType(98, 0, "minecraft:stonebrick");
-    public static final BlockType MossyStoneBrick = new BlockType(98, 1, "minecraft:stonebrick");
-    public static final BlockType CrackedStoneBrick = new BlockType(98, 2, "minecraft:stonebrick");
-    public static final BlockType OrnateStoneBrick = new BlockType(98, 3, "minecraft:stonebrick");
-    public static final BlockType HugeBrownMushroom = new BlockType(99, 0, "minecraft:brown_mushroom_block");
-    public static final BlockType HugeRedMushroom = new BlockType(100, 0, "minecraft:red_mushroom_block");
-    public static final BlockType IronBars = new BlockType(101, 0, "minecraft:iron_bars");
-    public static final BlockType GlassPane = new BlockType(102, 0, "minecraft:glass_pane");
-    public static final BlockType Melon = new BlockType(103, 0, "minecraft:melon_block");
-    public static final BlockType PumpkinStem = new BlockType(104, 0, "minecraft:pumpkin_stem");
-    public static final BlockType MelonStem = new BlockType(105, 0, "minecraft:melon_stem");
-    public static final BlockType Vines = new BlockType(106, 0, "minecraft:vine");
-    public static final BlockType FenceGate = new BlockType(107, 0, "minecraft:fence_gate");
-    public static final BlockType BrickStair = new BlockType(108, 0, "minecraft:brick_stairs");
-    public static final BlockType StoneBrickStair = new BlockType(109, 0, "minecraft:stone_brick_stairs");
-    public static final BlockType Mycelium = new BlockType(110, 0, "minecraft:mycelium");
-    public static final BlockType Lilypad = new BlockType(111, 0, "minecraft:waterlily");
-    public static final BlockType NetherBrick = new BlockType(112, 0, "minecraft:nether_brick");
-    public static final BlockType NetherBrickFence = new BlockType(113, 0, "minecraft:nether_brick_fence");
-    public static final BlockType NetherBrickStair = new BlockType(114, 0, "minecraft:nether_brick_stairs");
-    public static final BlockType NetherWart = new BlockType(115, 0, "minecraft:nether_wart");
-    public static final BlockType EnchantmentTable = new BlockType(116, 0, "minecraft:enchanting_table");
-    public static final BlockType BrewingStand = new BlockType(117, 0, "minecraft:brewing_stand");
-    public static final BlockType Cauldron = new BlockType(118, 0, "minecraft:cauldron");
-    public static final BlockType EndPortal = new BlockType(119, 0, "minecraft:end_portal");
-    public static final BlockType EndPortalFrame = new BlockType(120, 0, "minecraft:end_portal_frame");
-    public static final BlockType EndStone = new BlockType(121, 0, "minecraft:end_stone");
-    public static final BlockType EnderDragonEgg = new BlockType(122, 0, "minecraft:dragon_egg");
     public static final BlockType RedstoneLampOff = new BlockType(123, 0, "minecraft:redstone_lamp");
     public static final BlockType RedstoneLampOn = new BlockType(124, 0, "minecraft:lit_redstone_lamp");
     public static final BlockType DoubleOakWoodSlab = new BlockType(125, 0, "minecraft:double_wooden_slab");

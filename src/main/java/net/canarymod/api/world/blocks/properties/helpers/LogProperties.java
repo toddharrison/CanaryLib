@@ -92,7 +92,7 @@ public final class LogProperties extends RotatedPillarProperties implements Wood
      */
     public static Block applyVariant(Block block, Variant value) {
         Verify.notNull(block, "Block block");
-        if (block.getType().getMachineName().equals(AcaciaLeaves.getMachineName())) {
+        if (block.getType().matches(AcaciaLog, DarkOakLog)) {
             return apply(block, variantNew, value);
         }
         return apply(block, variantOld, value);
