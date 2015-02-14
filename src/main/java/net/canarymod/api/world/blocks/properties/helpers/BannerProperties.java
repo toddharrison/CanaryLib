@@ -6,6 +6,7 @@ import net.canarymod.api.world.blocks.properties.BlockDirectionProperty;
 import net.canarymod.api.world.blocks.properties.BlockIntegerProperty;
 
 import static net.canarymod.api.world.blocks.BlockType.StandingBanner;
+import static net.canarymod.api.world.blocks.BlockType.WallBanner;
 
 /**
  * Banner properties helper
@@ -22,7 +23,7 @@ public final class BannerProperties extends BlockProperties {
     /**
      * Anvil facing property, Values: {@link net.canarymod.api.world.blocks.BlockFace} (Excluding TOP & BOTTOM)
      */
-    public static final BlockDirectionProperty facing = getInstanceFor(StandingBanner, "facing");
+    public static final BlockDirectionProperty facing = getInstanceFor(WallBanner, "facing");
 
     /**
      * Applies a {@link net.canarymod.api.world.blocks.BlockFace} facing to the {@code Banner (Wall Banner)}
