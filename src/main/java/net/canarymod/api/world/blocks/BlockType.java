@@ -108,7 +108,12 @@ public final class BlockType {
     public static final BlockType LapisBlock = new BlockType(22, 0, "minecraft:lapis_block");
     public static final BlockType Dispenser = new BlockType(23, 0, "minecraft:dispenser");
     public static final BlockType Sandstone = new BlockType(24, 0, "minecraft:sandstone");
-    public static final BlockType SandstoneOrnate = new BlockType(24, 1, "minecraft:sandstone");
+    public static final BlockType SandstoneChiseled = new BlockType(24, 1, "minecraft:sandstone");
+    /**
+     * @deprecated Being replaced by {@link SandstoneChiseled}
+     */
+    @Deprecated
+    public static final BlockType SandstoneOrnate = SandstoneChiseled;
     public static final BlockType SandstoneSmooth = new BlockType(24, 2, "minecraft:sandstone");
     /**
      * @deprecated Being replaced by {@link SandstoneSmooth}
@@ -414,11 +419,21 @@ public final class BlockType {
     public static final BlockType StoneBrickSilverFishBlock = new BlockType(97, 2, "minecraft:monster_egg");
     public static final BlockType MossyBrickSilverFishBlock = new BlockType(97, 3, "minecraft:monster_egg");
     public static final BlockType CrackedSilverFishBlock = new BlockType(97, 4, "minecraft:monster_egg");
-    public static final BlockType OrnateSilverFishBlock = new BlockType(97, 5, "minecraft:monster_egg");
+    public static final BlockType ChiseledSilverFishBlock = new BlockType(97, 5, "minecraft:monster_egg");
+    /**
+     * @deprecated Being replaced by {@link ChiseledSilverFishBlock}
+     */
+    @Deprecated
+    public static final BlockType OrnateSilverFishBlock = ChiseledSilverFishBlock;
     public static final BlockType StoneBrick = new BlockType(98, 0, "minecraft:stonebrick");
     public static final BlockType MossyStoneBrick = new BlockType(98, 1, "minecraft:stonebrick");
     public static final BlockType CrackedStoneBrick = new BlockType(98, 2, "minecraft:stonebrick");
-    public static final BlockType OrnateStoneBrick = new BlockType(98, 3, "minecraft:stonebrick");
+    public static final BlockType ChiseledStoneBrick = new BlockType(98, 3, "minecraft:stonebrick");
+    /**
+     * @deprecated Being replaced by {@link ChiseledStoneBrick}
+     */
+    @Deprecated
+    public static final BlockType OrnateStoneBrick = ChiseledStoneBrick;
     public static final BlockType HugeBrownMushroom = new BlockType(99, 0, "minecraft:brown_mushroom_block");
     public static final BlockType HugeRedMushroom = new BlockType(100, 0, "minecraft:red_mushroom_block");
     public static final BlockType IronBars = new BlockType(101, 0, "minecraft:iron_bars");
@@ -428,13 +443,28 @@ public final class BlockType {
     public static final BlockType MelonStem = new BlockType(105, 0, "minecraft:melon_stem");
     public static final BlockType Vines = new BlockType(106, 0, "minecraft:vine");
     public static final BlockType FenceGate = new BlockType(107, 0, "minecraft:fence_gate");
-    public static final BlockType BrickStair = new BlockType(108, 0, "minecraft:brick_stairs");
-    public static final BlockType StoneBrickStair = new BlockType(109, 0, "minecraft:stone_brick_stairs");
+    public static final BlockType BrickStairs = new BlockType(108, 0, "minecraft:brick_stairs");
+    /**
+     * @deprecated Being replaced by {@link BrickStairs}
+     */
+    @Deprecated
+    public static final BlockType BrickStair = BrickStairs;
+    public static final BlockType StoneBrickStairs = new BlockType(109, 0, "minecraft:stone_brick_stairs");
+    /**
+     * @deprecated Being replaced by {@link StoneBrickStairs}
+     */
+    @Deprecated
+    public static final BlockType StoneBrickStair = StoneBrickStairs;
     public static final BlockType Mycelium = new BlockType(110, 0, "minecraft:mycelium");
     public static final BlockType Lilypad = new BlockType(111, 0, "minecraft:waterlily");
     public static final BlockType NetherBrick = new BlockType(112, 0, "minecraft:nether_brick");
     public static final BlockType NetherBrickFence = new BlockType(113, 0, "minecraft:nether_brick_fence");
-    public static final BlockType NetherBrickStair = new BlockType(114, 0, "minecraft:nether_brick_stairs");
+    public static final BlockType NetherBrickStairs = new BlockType(114, 0, "minecraft:nether_brick_stairs");
+    /**
+     * @deprecated Being replaced by {@link NetherBrickStairs}
+     */
+    @Deprecated
+    public static final BlockType NetherBrickStair = NetherBrickStairs;
     public static final BlockType NetherWart = new BlockType(115, 0, "minecraft:nether_wart");
     public static final BlockType EnchantmentTable = new BlockType(116, 0, "minecraft:enchanting_table");
     public static final BlockType BrewingStand = new BlockType(117, 0, "minecraft:brewing_stand");
@@ -458,15 +488,35 @@ public final class BlockType {
     public static final BlockType AcaciaWoodSlab = new BlockType(126, 4, "minecraft:wooden_slab");
     public static final BlockType DarkOakWoodSlab = new BlockType(126, 5, "minecraft:wooden_slab");
     public static final BlockType CocoaPlant = new BlockType(127, 0, "minecraft:cocoa");
-    public static final BlockType SandstoneStair = new BlockType(128, 0, "minecraft:sandstone_stairs");
+    public static final BlockType SandstoneStairs = new BlockType(128, 0, "minecraft:sandstone_stairs");
+    /**
+     * @deprecated Being replaced by {@link SandstoneStairs}
+     */
+    @Deprecated
+    public static final BlockType SandstoneStair = SandstoneStairs;
     public static final BlockType EmeraldOre = new BlockType(129, 0, "minecraft:emerald_ore");
     public static final BlockType EnderChest = new BlockType(130, 0, "minecraft:ender_chest");
     public static final BlockType TripwireHook = new BlockType(131, 0, "minecraft:tripwire_hook");
     public static final BlockType Tripwire = new BlockType(132, 0, "minecraft:tripwire");
     public static final BlockType EmeraldBlock = new BlockType(133, 0, "minecraft:emerald_block");
-    public static final BlockType PineWoodStair = new BlockType(134, 0, "minecraft:spruce_stairs");
-    public static final BlockType BirchWoodStair = new BlockType(135, 0, "minecraft:birch_stairs");
-    public static final BlockType JungleWoodStair = new BlockType(136, 0, "minecraft:jungle_stairs");
+    public static final BlockType SpruceStairs = new BlockType(134, 0, "minecraft:spruce_stairs");
+    public static final BlockType BirchStairs = new BlockType(135, 0, "minecraft:birch_stairs");
+    public static final BlockType JungleStairs = new BlockType(136, 0, "minecraft:jungle_stairs");
+    /**
+     * @deprecated Being replaced by {@link SpruceStairs}
+     */
+    @Deprecated
+    public static final BlockType PineWoodStair = SpruceStairs;
+    /**
+     * @deprecated Being replaced by {@link BirchStairs}
+     */
+    @Deprecated
+    public static final BlockType BirchWoodStair = BirchStairs;
+    /**
+     * @deprecated Being replaced by {@link JungleStairs}
+     */
+    @Deprecated
+    public static final BlockType JungleWoodStair = JungleStairs;
     public static final BlockType CommandBlock = new BlockType(137, 0, "minecraft:command_block");
     public static final BlockType Beacon = new BlockType(138, 0, "minecraft:beacon");
     public static final BlockType CobblestoneWall = new BlockType(139, 0, "minecraft:cobblestone_wall");
@@ -475,11 +525,32 @@ public final class BlockType {
     public static final BlockType Carrots = new BlockType(141, 0, "minecraft:carrots");
     public static final BlockType Potatoes = new BlockType(142, 0, "minecraft:potatoes");
     public static final BlockType WoodenButton = new BlockType(143, 0, "minecraft:wooden_button");
-    public static final BlockType SkeletonHead = new BlockType(144, 0, "minecraft:skull");
-    public static final BlockType WitherSkeletonHead = new BlockType(144, 1, "minecraft:skull");
-    public static final BlockType ZombieHead = new BlockType(144, 2, "minecraft:skull");
-    public static final BlockType HumanHead = new BlockType(144, 3, "minecraft:skull");
-    public static final BlockType CreeperHead = new BlockType(144, 4, "minecraft:skull");
+    public static final BlockType Skull = new BlockType(144, 0, "minecraft:skull");
+    /**
+     * @deprecated Variation are stored with the TileEntity, use {@link Skull} instead
+     */
+    @Deprecated
+    public static final BlockType SkeletonHead = Skull;
+    /**
+     * @deprecated Variation are stored with the TileEntity, use {@link Skull} instead
+     */
+    @Deprecated
+    public static final BlockType WitherSkeletonHead = Skull;
+    /**
+     * @deprecated Variation are stored with the TileEntity, use {@link Skull} instead
+     */
+    @Deprecated
+    public static final BlockType ZombieHead = Skull;
+    /**
+     * @deprecated Variation are stored with the TileEntity, use {@link Skull} instead
+     */
+    @Deprecated
+    public static final BlockType HumanHead = Skull;
+    /**
+     * @deprecated Variation are stored with the TileEntity, use {@link Skull} instead
+     */
+    @Deprecated
+    public static final BlockType CreeperHead = Skull;
     public static final BlockType Anvil = new BlockType(145, 0, "minecraft:anvil");
     public static final BlockType TrappedChest = new BlockType(146, 0, "minecraft:trapped_chest");
     public static final BlockType LightWeightedPressurePlate = new BlockType(147, 0, "minecraft:light_weighted_pressure_plate");
@@ -488,10 +559,20 @@ public final class BlockType {
     public static final BlockType RedstoneComparatorPowered = new BlockType(150, 0, "minecraft:powered_comparator");
     public static final BlockType DaylightSensor = new BlockType(151, 0, "minecraft:daylight_detector");
     public static final BlockType RedstoneBlock = new BlockType(152, 0, "minecraft:redstone_block");
-    public static final BlockType NetherQuartzOre = new BlockType(153, 0, "minecraft:quartz_ore");
+    public static final BlockType QuartzOre = new BlockType(153, 0, "minecraft:quartz_ore");
+    /**
+     * @deprecated Being replaced by {@link QuartzOre}
+     */
+    @Deprecated
+    public static final BlockType NetherQuartzOre = QuartzOre;
     public static final BlockType Hopper = new BlockType(154, 0, "minecraft:hopper");
     public static final BlockType QuartzBlock = new BlockType(155, 0, "minecraft:quartz_block");
-    public static final BlockType OrnateQuartzBlock = new BlockType(155, 1, "minecraft:quartz_block");
+    public static final BlockType ChiseledQuartzBlock = new BlockType(155, 1, "minecraft:quartz_block");
+    /**
+     * @deprecated Being replaced by {@link ChiseledQuartzBlock}
+     */
+    @Deprecated
+    public static final BlockType OrnateQuartzBlock = ChiseledQuartzBlock;
     public static final BlockType QuartzPillarVertical = new BlockType(155, 2, "minecraft:quartz_block");
     public static final BlockType QuartzPillarHorizontal = new BlockType(155, 3, "minecraft:quartz_block");
     public static final BlockType QuartzPillarCap = new BlockType(155, 4, "minecraft:quartz_block");
@@ -542,7 +623,7 @@ public final class BlockType {
     public static final BlockType Prismarine = new BlockType(168, 0, "minecraft:prismarine");
     public static final BlockType PrismarineBricks = new BlockType(168, 1, "minecraft:prismarine");
     public static final BlockType DarkPrismarine = new BlockType(168, 2, "minecraft:prismarine");
-    public static final BlockType SeaLanturn = new BlockType(169, 0, "minecraft:sea_lantern");
+    public static final BlockType SeaLantern = new BlockType(169, 0, "minecraft:sea_lantern");
     public static final BlockType HayBale = new BlockType(170, 0, "minecraft:hay_block");
     public static final BlockType WhiteCarpet = new BlockType(171, 0, "minecraft:carpet");
     public static final BlockType OrangeCarpet = new BlockType(171, 1, "minecraft:carpet");
@@ -573,8 +654,18 @@ public final class BlockType {
     public static final BlockType WallBanner = new BlockType(177, 0, "minecraft:wall_banner");
     public static final BlockType DaylightSensorInverted = new BlockType(178, 0, "minecraft:daylight_detector_inverted");
     public static final BlockType RedSandstone = new BlockType(179, 0, "minecraft:red_sandstone");
-    public static final BlockType RedSandstoneOrnate = new BlockType(179, 1, "minecraft:red_sandstone");
-    public static final BlockType RedSandstoneBlank = new BlockType(179, 2, "minecraft:red_sandstone");
+    public static final BlockType RedSandstoneChiseled = new BlockType(179, 1, "minecraft:red_sandstone");
+    public static final BlockType RedSandstoneSmooth = new BlockType(179, 2, "minecraft:red_sandstone");
+    /**
+     * @deprecated Being replaced by {@link RedSandstoneChiseled}
+     */
+    @Deprecated
+    public static final BlockType RedSandstoneOrnate = RedSandstoneChiseled;
+    /**
+     * @deprecated Being replaced by {@link RedSandstoneChiseled}
+     */
+    @Deprecated
+    public static final BlockType RedSandstoneBlank = RedSandstoneSmooth;
     public static final BlockType RedSandstoneStairs = new BlockType(180, 0, "minecraft:red_sandstone_stairs");
     public static final BlockType RedSandstoneSlab = new BlockType(181, 0, "minecraft:stone_slab2");
     public static final BlockType DoubleRedSandstoneSlab = new BlockType(182, 0, "minecraft:double_stone_slab2");

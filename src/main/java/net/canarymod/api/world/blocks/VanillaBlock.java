@@ -59,7 +59,7 @@ public enum VanillaBlock {
     LAPISBLOCK("lapis_block"),
     DISPENSER("dispenser"),
     SANDSTONE("sandstone:0"),
-    SANDSTONEORNATE("sandstone:1"),
+    SANDSTONECHISELED("sandstone:1"),
     SANDSTONESMOOTH("sandstone:2"),
     NOTEBLOCK("noteblock"),
     BED("bed"),
@@ -81,7 +81,7 @@ public enum VanillaBlock {
     LIMEWOOL("wool:5"),
     PINKWOOL("wool:6"),
     GRAYWOOL("wool:7"),
-    LIGHTGRAYWOOL("wool:8"), // Internally its labeled "silver" but thats not really common naming
+    LIGHTGRAYWOOL("wool:8"),
     CYANWOOL("wool:9"),
     PURPLEWOOL("wool:10"),
     BLUEWOOL("wool:11"),
@@ -150,7 +150,7 @@ public enum VanillaBlock {
     WOODENPRESSUREPLATE("wooden_pressure_plate"),
     REDSTONEORE("redstone_ore"),
     LITREDSTONEORE("lit_redstone_ore"),
-    UNLITREDSTONETORCH("unlite_redstone_torch"),
+    UNLITREDSTONETORCH("unlit_redstone_torch"),
     REDSTONETORCH("redstone_torch"),
     STONEBUTTON("stone_button"),
     SNOWLAYER("snow_layer"),
@@ -192,11 +192,11 @@ public enum VanillaBlock {
     STONEBRICKMONSTEREGG("monster_egg:2"),
     MOSSYSTONEBRICKMONSTEREGG("monster_egg:3"),
     CRACKEDSTONEBRICKMONSTEREGG("monster_egg:4"),
-    ORNATESTONEBRICKMONSTEREGG("monster_egg:5"),
+    CHISELEDSTONEBRICKMONSTEREGG("monster_egg:5"),
     STONEBRICK("stonebrick:0"),
     MOSSYSTONEBRICK("stonebrick:1"),
     CRACKEDSTONEBRICK("stonebrick:2"),
-    ORNATESTONEBRICK("stonebrick:3"),
+    CHISELEDSTONEBRICK("stonebrick:3"),
     HUGEBROWNMUSHROOM("brown_mushroom_block"),
     HUGEREDMUSHROOM("red_mushroom_block"),
     IRONBARS("iron_bars"),
@@ -221,159 +221,152 @@ public enum VanillaBlock {
     ENDPORTALFRAME("end_portal_frame"),
     ENDSTONE("end_stone"),
     ENDERDRAGONEGG("dragon_egg"),
-
-    /*
-    public static final BlockType RedstoneLampOff = new BlockType(123, 0, "minecraft:redstone_lamp");
-    public static final BlockType RedstoneLampOn = new BlockType(124, 0, "minecraft:lit_redstone_lamp");
-    public static final BlockType DoubleOakWoodSlab = new BlockType(125, 0, "minecraft:double_wooden_slab");
-    public static final BlockType DoubleSpruceWoodSlab = new BlockType(125, 1, "minecraft:double_wooden_slab");
-    public static final BlockType DoubleBirchWoodSlab = new BlockType(125, 2, "minecraft:double_wooden_slab");
-    public static final BlockType DoubleJungleWoodSlab = new BlockType(125, 3, "minecraft:double_wooden_slab");
-    public static final BlockType DoubleAcaciaWoodSlab = new BlockType(125, 4, "minecraft:double_wooden_slab");
-    public static final BlockType DoubleDarkOakWoodSlab = new BlockType(125, 5, "minecraft:double_wooden_slab");
-    public static final BlockType OakWoodSlab = new BlockType(126, 0, "minecraft:wooden_slab");
-    public static final BlockType SpruceWoodSlab = new BlockType(126, 1, "minecraft:wooden_slab");
-    public static final BlockType BirchWoodSlab = new BlockType(126, 2, "minecraft:wooden_slab");
-    public static final BlockType JungleWoodSlab = new BlockType(126, 3, "minecraft:wooden_slab");
-    public static final BlockType AcaciaWoodSlab = new BlockType(126, 4, "minecraft:wooden_slab");
-    public static final BlockType DarkOakWoodSlab = new BlockType(126, 5, "minecraft:wooden_slab");
-    public static final BlockType CocoaPlant = new BlockType(127, 0, "minecraft:cocoa");
-    public static final BlockType SandstoneStair = new BlockType(128, 0, "minecraft:sandstone_stairs");
-    public static final BlockType EmeraldOre = new BlockType(129, 0, "minecraft:emerald_ore");
-    public static final BlockType EnderChest = new BlockType(130, 0, "minecraft:ender_chest");
-    public static final BlockType TripwireHook = new BlockType(131, 0, "minecraft:tripwire_hook");
-    public static final BlockType Tripwire = new BlockType(132, 0, "minecraft:tripwire");
-    public static final BlockType EmeraldBlock = new BlockType(133, 0, "minecraft:emerald_block");
-    public static final BlockType PineWoodStair = new BlockType(134, 0, "minecraft:spruce_stairs");
-    public static final BlockType BirchWoodStair = new BlockType(135, 0, "minecraft:birch_stairs");
-    public static final BlockType JungleWoodStair = new BlockType(136, 0, "minecraft:jungle_stairs");
-    public static final BlockType CommandBlock = new BlockType(137, 0, "minecraft:command_block");
-    public static final BlockType Beacon = new BlockType(138, 0, "minecraft:beacon");
-    public static final BlockType CobblestoneWall = new BlockType(139, 0, "minecraft:cobblestone_wall");
-    public static final BlockType MossyCobbleWall = new BlockType(139, 1, "minecraft:cobblestone_wall");
-    public static final BlockType Flowerpot = new BlockType(140, 0, "minecraft:flower_pot");
-    public static final BlockType Carrots = new BlockType(141, 0, "minecraft:carrots");
-    public static final BlockType Potatoes = new BlockType(142, 0, "minecraft:potatoes");
-    public static final BlockType WoodenButton = new BlockType(143, 0, "minecraft:wooden_button");
-    public static final BlockType SkeletonHead = new BlockType(144, 0, "minecraft:skull");
-    public static final BlockType WitherSkeletonHead = new BlockType(144, 1, "minecraft:skull");
-    public static final BlockType ZombieHead = new BlockType(144, 2, "minecraft:skull");
-    public static final BlockType HumanHead = new BlockType(144, 3, "minecraft:skull");
-    public static final BlockType CreeperHead = new BlockType(144, 4, "minecraft:skull");
-    public static final BlockType Anvil = new BlockType(145, 0, "minecraft:anvil");
-    public static final BlockType TrappedChest = new BlockType(146, 0, "minecraft:trapped_chest");
-    public static final BlockType LightWeightedPressurePlate = new BlockType(147, 0, "minecraft:light_weighted_pressure_plate");
-    public static final BlockType HeavyWeightedPressurePlate = new BlockType(148, 0, "minecraft:heavy_weighted_pressure_plate");
-    public static final BlockType RedstoneComparator = new BlockType(149, 0, "minecraft:unpowered_comparator");
-    public static final BlockType RedstoneComparatorPowered = new BlockType(150, 0, "minecraft:powered_comparator");
-    public static final BlockType DaylightSensor = new BlockType(151, 0, "minecraft:daylight_detector");
-    public static final BlockType RedstoneBlock = new BlockType(152, 0, "minecraft:redstone_block");
-    public static final BlockType NetherQuartzOre = new BlockType(153, 0, "minecraft:quartz_ore");
-    public static final BlockType Hopper = new BlockType(154, 0, "minecraft:hopper");
-    public static final BlockType QuartzBlock = new BlockType(155, 0, "minecraft:quartz_block");
-    public static final BlockType OrnateQuartzBlock = new BlockType(155, 1, "minecraft:quartz_block");
-    public static final BlockType QuartzPillarVertical = new BlockType(155, 2, "minecraft:quartz_block");
-    public static final BlockType QuartzPillarHorizontal = new BlockType(155, 3, "minecraft:quartz_block");
-    public static final BlockType QuartzPillarCap = new BlockType(155, 4, "minecraft:quartz_block");
-    public static final BlockType QuartzStairs = new BlockType(156, 0, "minecraft:quartz_stairs");
-    public static final BlockType ActivatorRail = new BlockType(157, 0, "minecraft:activator_rail");
-    public static final BlockType Dropper = new BlockType(158, 0, "minecraft:dropper");
-    public static final BlockType WhiteStainedClay = new BlockType(159, 0, "minecraft:stained_hardened_clay");
-    public static final BlockType OrangeStainedClay = new BlockType(159, 1, "minecraft:stained_hardened_clay");
-    public static final BlockType MagentaStainedClay = new BlockType(159, 2, "minecraft:stained_hardened_clay");
-    public static final BlockType LightBlueStainedClay = new BlockType(159, 3, "minecraft:stained_hardened_clay");
-    public static final BlockType YellowStainedClay = new BlockType(159, 4, "minecraft:stained_hardened_clay");
-    public static final BlockType LimeStainedClay = new BlockType(159, 5, "minecraft:stained_hardened_clay");
-    public static final BlockType PinkStainedClay = new BlockType(159, 6, "minecraft:stained_hardened_clay");
-    public static final BlockType GrayStainedClay = new BlockType(159, 7, "minecraft:stained_hardened_clay");
-    public static final BlockType LightGrayStainedClay = new BlockType(159, 8, "minecraft:stained_hardened_clay");
-    public static final BlockType CyanStainedClay = new BlockType(159, 9, "minecraft:stained_hardened_clay");
-    public static final BlockType PurpleStainedClay = new BlockType(159, 10, "minecraft:stained_hardened_clay");
-    public static final BlockType BlueStainedClay = new BlockType(159, 11, "minecraft:stained_hardened_clay");
-    public static final BlockType BrownStainedClay = new BlockType(159, 12, "minecraft:stained_hardened_clay");
-    public static final BlockType GreenStainedClay = new BlockType(159, 13, "minecraft:stained_hardened_clay");
-    public static final BlockType RedStainedClay = new BlockType(159, 14, "minecraft:stained_hardened_clay");
-    public static final BlockType BlackStainedClay = new BlockType(159, 15, "minecraft:stained_hardened_clay");
-    public static final BlockType WhiteGlassPane = new BlockType(160, 0, "minecraft:stained_glass_pane");
-    public static final BlockType OrangeGlassPane = new BlockType(160, 1, "minecraft:stained_glass_pane");
-    public static final BlockType MagentaGlassPane = new BlockType(160, 2, "minecraft:stained_glass_pane");
-    public static final BlockType LightBlueGlassPane = new BlockType(160, 3, "minecraft:stained_glass_pane");
-    public static final BlockType YellowGlassPane = new BlockType(160, 4, "minecraft:stained_glass_pane");
-    public static final BlockType LimeGlassPane = new BlockType(160, 5, "minecraft:stained_glass_pane");
-    public static final BlockType PinkGlassPane = new BlockType(160, 6, "minecraft:stained_glass_pane");
-    public static final BlockType GrayGlassPane = new BlockType(160, 7, "minecraft:stained_glass_pane");
-    public static final BlockType LightGrayGlassPane = new BlockType(160, 8, "minecraft:stained_glass_pane");
-    public static final BlockType CyanGlassPane = new BlockType(160, 9, "minecraft:stained_glass_pane");
-    public static final BlockType PurpleGlassPane = new BlockType(160, 10, "minecraft:stained_glass_pane");
-    public static final BlockType BlueGlassPane = new BlockType(160, 11, "minecraft:stained_glass_pane");
-    public static final BlockType BrownGlassPane = new BlockType(160, 12, "minecraft:stained_glass_pane");
-    public static final BlockType GreenGlassPane = new BlockType(160, 13, "minecraft:stained_glass_pane");
-    public static final BlockType RedGlassPane = new BlockType(160, 14, "minecraft:stained_glass_pane");
-    public static final BlockType BlackGlassPane = new BlockType(160, 15, "minecraft:stained_glass_pane");
-    public static final BlockType AcaciaLeaves = new BlockType(161, 0, "minecraft:leaves2");
-    public static final BlockType DarkOakLeaves = new BlockType(161, 1, "minecraft:leaves2");
-    public static final BlockType AcaciaLog = new BlockType(162, 0, "minecraft:log2");
-    public static final BlockType DarkOakLog = new BlockType(162, 1, "minecraft:log2");
-    public static final BlockType AcaciaStairs = new BlockType(163, 0, "minecraft:acacia_stairs");
-    public static final BlockType DarkOakStairs = new BlockType(164, 0, "minecraft:dark_oak_stairs");
-    public static final BlockType SlimeBlock = new BlockType(165, 0, "minecraft:slime");
-    public static final BlockType Barrier = new BlockType(166, 0, "minecraft:barrier");
-    public static final BlockType IronTrapDoor = new BlockType(167, 0, "minecraft:iron_trapdoor");
-    public static final BlockType Prismarine = new BlockType(168, 0, "minecraft:prismarine");
-    public static final BlockType PrismarineBricks = new BlockType(168, 1, "minecraft:prismarine");
-    public static final BlockType DarkPrismarine = new BlockType(168, 2, "minecraft:prismarine");
-    public static final BlockType SeaLanturn = new BlockType(169, 0, "minecraft:sea_lantern");
-    public static final BlockType HayBale = new BlockType(170, 0, "minecraft:hay_block");
-    public static final BlockType WhiteCarpet = new BlockType(171, 0, "minecraft:carpet");
-    public static final BlockType OrangeCarpet = new BlockType(171, 1, "minecraft:carpet");
-    public static final BlockType MagentaCarpet = new BlockType(171, 2, "minecraft:carpet");
-    public static final BlockType LightBlueCarpet = new BlockType(171, 3, "minecraft:carpet");
-    public static final BlockType YellowCarpet = new BlockType(171, 4, "minecraft:carpet");
-    public static final BlockType LimeCarpet = new BlockType(171, 5, "minecraft:carpet");
-    public static final BlockType PinkCarpet = new BlockType(171, 6, "minecraft:carpet");
-    public static final BlockType GrayCarpet = new BlockType(171, 7, "minecraft:carpet");
-    public static final BlockType LightGrayCarpet = new BlockType(171, 8, "minecraft:carpet");
-    public static final BlockType CyanCarpet = new BlockType(171, 9, "minecraft:carpet");
-    public static final BlockType PurpleCarpet = new BlockType(171, 10, "minecraft:carpet");
-    public static final BlockType BlueCarpet = new BlockType(171, 11, "minecraft:carpet");
-    public static final BlockType BrownCarpet = new BlockType(171, 12, "minecraft:carpet");
-    public static final BlockType GreenCarpet = new BlockType(171, 13, "minecraft:carpet");
-    public static final BlockType RedCarpet = new BlockType(171, 14, "minecraft:carpet");
-    public static final BlockType BlackCarpet = new BlockType(171, 15, "minecraft:carpet");
-    public static final BlockType HardenedClay = new BlockType(172, 0, "minecraft:hardened_clay");
-    public static final BlockType CoalBlock = new BlockType(173, 0, "minecraft:coal_block");
-    public static final BlockType PackedIce = new BlockType(174, 0, "minecraft:packed_ice");
-    public static final BlockType Sunflower = new BlockType(175, 0, "minecraft:double_plant");
-    public static final BlockType Lilac = new BlockType(175, 1, "minecraft:double_plant");
-    public static final BlockType DoubleGrass = new BlockType(175, 2, "minecraft:double_plant");
-    public static final BlockType LargeFern = new BlockType(175, 3, "minecraft:double_plant");
-    public static final BlockType RoseBush = new BlockType(175, 4, "minecraft:double_plant");
-    public static final BlockType Peony = new BlockType(175, 5, "minecraft:double_plant");
-    public static final BlockType StandingBanner = new BlockType(176, 0, "minecraft:standing_banner");
-    public static final BlockType WallBanner = new BlockType(177, 0, "minecraft:wall_banner");
-    public static final BlockType DaylightSensorInverted = new BlockType(178, 0, "minecraft:daylight_detector_inverted");
-    public static final BlockType RedSandstone = new BlockType(179, 0, "minecraft:red_sandstone");
-    public static final BlockType RedSandstoneOrnate = new BlockType(179, 1, "minecraft:red_sandstone");
-    public static final BlockType RedSandstoneBlank = new BlockType(179, 2, "minecraft:red_sandstone");
-    public static final BlockType RedSandstoneStairs = new BlockType(180, 0, "minecraft:red_sandstone_stairs");
-    public static final BlockType RedSandstoneSlab = new BlockType(181, 0, "minecraft:stone_slab2");
-    public static final BlockType DoubleRedSandstoneSlab = new BlockType(182, 0, "minecraft:double_stone_slab2");
-    public static final BlockType SpruceFenceGate = new BlockType(183, 0, "minecraft:spruce_fence_gate");
-    public static final BlockType BirchFenceGate = new BlockType(184, 0, "minecraft:birch_fence_gate");
-    public static final BlockType JungleFenceGate = new BlockType(185, 0, "minecraft:jungle_fence_gate");
-    public static final BlockType DarkOakFenceGate = new BlockType(186, 0, "minecraft:dark_oak_fence_gate");
-    public static final BlockType AcaciaFenceGate = new BlockType(187, 0, "minecraft:acacia_fence_gate");
-    public static final BlockType SpruceFence = new BlockType(188, 0, "minecraft:spruce_fence");
-    public static final BlockType BirchFence = new BlockType(189, 0, "minecraft:birch_fence");
-    public static final BlockType JungleFence = new BlockType(190, 0, "minecraft:jungle_fence");
-    public static final BlockType DarkOakFence = new BlockType(191, 0, "minecraft:dark_oak_fence");
-    public static final BlockType AcaciaFence = new BlockType(192, 0, "minecraft:acacia_fence");
-    public static final BlockType SpruceDoor = new BlockType(193, 0, "minecraft:spruce_door");
-    public static final BlockType BirchDoor = new BlockType(194, 0, "minecraft:birch_door");
-    public static final BlockType JungleDoor = new BlockType(195, 0, "minecraft:jungle_door");
-    public static final BlockType AcaciaDoor = new BlockType(196, 0, "minecraft:acacia_door");
-    public static final BlockType DarkOakDoor = new BlockType(197, 0, "minecraft:dark_oak_door");
-    */
+    REDSTONELAMP("redstone_lamp"),
+    LITREDSTONELAMP("lit_redstone_lamp"),
+    DOUBLEOAKWOODSLAB("double_wooden_slab:0"),
+    DOUBLESPRUCEWOODSLAB("double_wooden_slab:1"),
+    DOUBLEBIRCHWOODSLAB("double_wooden_slab:2"),
+    DOUBLEJUNGLEWOODSLAB("double_wooden_slab:3"),
+    DOUBLEACACIAWOODSLAB("double_wooden_slab:4"),
+    DOUBLEDARKOAKWOODSLAB("double_wooden_slab:5"),
+    OAKWOODSLAB("wooden_slab:0"),
+    SPRUCEWOODSLAB("wooden_slab:1"),
+    BIRCHWOODSLAB("wooden_slab:2"),
+    JUNGLEWOODSLAB("wooden_slab:3"),
+    ACACIAWOODSLAB("wooden_slab:4"),
+    DARKOAKWOODSLAB("wooden_slab:5"),
+    COCOA("cocoa"),
+    SANDSTONESTAIRS("sandstone_stairs"),
+    EMERALDORE("emerald_ore"),
+    ENDERCHEST("ender_chest"),
+    TRIPWIREHOOK("tripwire_hook"),
+    TRIPWIRE("tripwire"),
+    EMERALDBLOCK("emerald_block"),
+    SPRUCESTAIRS("spruce_stairs"),
+    BIRCHSTAIRS("birch_stairs"),
+    JUNGLESTAIRS("jungle_stairs"),
+    COMMANDBLOCK("command_block"),
+    BEACON("beacon"),
+    COBBLESTONEWALL("cobblestone_wall:0"),
+    MOSSYCOBBLESTONEWALL("cobblestone_wall:1"),
+    FLOWERPOT("flower_pot"),
+    CARROTS("carrots"),
+    POTATOES("potatoes"),
+    WOODENBUTTON("wooden_button"),
+    SKULL("skull"),
+    ANVIL("anvil"),
+    TRAPPEDCHEST("trapped_chest"),
+    LIGHTWEIGHTEDPRESSUREPLATE("light_weighted_pressure_plate"),
+    HEAVEWEIGHTEDPRESSUREPLATE("heavy_weighted_pressure_plate"),
+    REDSTONECOMPARATOR("unpowered_comparator"),
+    REDSTONECOMPARATORPOWERED("powered_comparator"),
+    DAYLIGHTDETECTOR("daylight_detector"),
+    REDSTONEBLOCK("redstone_block"),
+    QUARTZORE("quartz_ore"),
+    HOPPER("hopper"),
+    QUARTZBLOCK("quartz_block:0"),
+    QUARTZBLOCKCHISELED("quartz_block:1"),
+    QUARTZPILLARVERTICAL("quartz_block:2"),
+    QUARTZPILLARHORIZONTAL("quartz_block:3"),
+    QUARTZPILLARCAP("quartz_block:4"),
+    QUARTZSTAIRS("quartz_stairs"),
+    ACTIVATORRAIL("activator_rail"),
+    DROPPER("dropper"),
+    WHITESTAINEDCLAY("stained_hardened_clay:0"),
+    ORANGESTAINEDCLAY("stained_hardened_clay:1"),
+    MAGENTASTAINEDCLAY("stained_hardened_clay:2"),
+    LIGHTBLUESTAINEDCLAY("stained_hardened_clay:3"),
+    YELLOWSTAINEDCLAY("stained_hardened_clay:4"),
+    LIMESTAINEDCLAY("stained_hardened_clay:5"),
+    PINKSTAINEDCLAY("stained_hardened_clay:6"),
+    GRAYSTAINEDCLAY("stained_hardened_clay:7"),
+    LIGHTGRAYSTAINEDCLAY("stained_hardened_clay:8"),
+    CYANSTAINEDCLAY("stained_hardened_clay:9"),
+    PURPLESTAINEDCLAY("stained_hardened_clay:10"),
+    BLUESTAINEDCLAY("stained_hardened_clay:11"),
+    BROWNSTAINEDCLAY("stained_hardened_clay:12"),
+    GREENSTAINEDCLAY("stained_hardened_clay:13"),
+    REDSTAINEDCLAY("stained_hardened_clay:14"),
+    BLACKSTAINEDCLAY("stained_hardened_clay:15"),
+    WHITEGLASSPANE("stained_glass_pane:0"),
+    ORANAGEGLASSPANE("stained_glass_pane:1"),
+    MAGENTAGLASSPANE("stained_glass_pane:2"),
+    LIGHTBLUEGLASSPANE("stained_glass_pane:3"),
+    YELLOWGLASSPANE("stained_glass_pane:4"),
+    LIMEGLASSPANE("stained_glass_pane:5"),
+    PINKGLASSPANE("stained_glass_pane:6"),
+    GRAYGLASSPANE("stained_glass_pane:7"),
+    LIGHTGRAYGLASSPANE("stained_glass_pane:8"),
+    CYANGLASSPANE("stained_glass_pane:9"),
+    PURPLEGLASSPANE("stained_glass_pane:10"),
+    BLUEGLASSPANE("stained_glass_pane:11"),
+    BROWNGLASSPANE("stained_glass_pane:12"),
+    GREENGLASSPANE("stained_glass_pane:13"),
+    REDGLASSPANE("stained_glass_pane:14"),
+    BLACKGLASSPANE("stained_glass_pane:15"),
+    ACACIALEAVES("leaves2:0"),
+    DARKOAKLEAVES("leaves2:1"),
+    ACACIALOG("log2:0"),
+    DARKOAKLOG("log2:1"),
+    ACACIASTAIRS("acacia_stairs"),
+    DARKOAKSTAIRS("dark_oak_stairs"),
+    SLIME("slime"),
+    BARRIER("barrier"),
+    IRONTRAPDOOR("iron_trapdoor"),
+    PRISMARINE("prismarine:0"),
+    PRISMARINEBRICKS("prismarine:1"),
+    DARKPRISMARINE("prismarine:2"),
+    SEALANTERN("sea_lantern"),
+    HAYBALE("hay_block"),
+    WHITECARPET("carpet:0"),
+    ORANGECARPET("carpet:1"),
+    MAGENTACARPET("carpet:2"),
+    LIGHTBLUECARPET("carpet:3"),
+    YELLOWCARPET("carpet:4"),
+    LIMECARPET("carpet:5"),
+    PINKCARPET("carpet:6"),
+    GRAYCARPET("carpet:7"),
+    LIGHTGRAYCARPET("carpet:8"),
+    CYANCARPET("carpet:9"),
+    PURPLECARPET("carpet:10"),
+    BLUECARPET("carpet:11"),
+    BROWNCARPET("carpet:12"),
+    GREENCARPET("carpet:13"),
+    REDCARPET("carpet:14"),
+    BLACKCARPET("carpet:15"),
+    HARDENEDCLAY("hardened_clay"),
+    COALBLOCK("coal_block"),
+    PACKEDICE("packed_ice"),
+    SUNFLOWER("double_plant:0"),
+    LILAC("double_plant:1"),
+    DOUBLEGRASS("double_plant:2"),
+    LARGEFERN("double_plant:3"),
+    ROSEBUSH("double_plant:4"),
+    PEONY("double_plant:5"),
+    STANDINGBANNER("standing_banner"),
+    WALLBANNER("wall_banner"),
+    DAYLIGHTDETECTEDINVERTED("daylight_detector_inverted"),
+    REDSANDSTONE("red_sandstone:0"),
+    REDSANDSTONECHISELED("red_sandstone:1"),
+    REDSANDSTONESMOOTH("red_sandstone:2"),
+    REDSANDSTONESTAIRS("red_sandstone_stairs"),
+    REDSANDSTONESLAB("stone_slab2:0"),
+    DOUBLEREDSANDSTONESLAB("double_stone_slab2:0"),
+    SPRUCEFENCEGATE("spruce_fence_gate"),
+    BIRCHFENCEGATE("birch_fence_gate"),
+    JUNGLEFENCEGATE("jungle_fence_gate"),
+    DARKOAKFENCEGATE("dark_oak_fence_gate"),
+    ACACIAFENCEGATE("acacia_fence_gate"),
+    SPRUCEFENCE("spruce_fence"),
+    BIRCHFENCE("birch_fence"),
+    JUNGLEFENCE("jungle_fence"),
+    DARKOAKFENCE("dark_oak_fence"),
+    ACACIAFENCE("acacia_fence"),
+    SPRUCEDOOR("spruce_door"),
+    BIRCHDOOR("birch_door"),
+    JUNGLEDOOR("jungle_door"),
+    ACACIADOOR("acacia_door"),
+    DARKOAKDOOR("dark_oak_door"),
 
     /**
      * All NON-VANILLA blocks safety translation
