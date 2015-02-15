@@ -1024,7 +1024,7 @@ public class CommandList implements CommandListener {
             description = "reservelist add",
             permissions = { RESERVELIST },
             toolTip = "/reservelist add <playername>",
-            helpLookup = "reservelist.add",
+            helpLookup = "reservelist add",
             min = 1
     )
     public void reservelistAdd(MessageReceiver caller, String[] parameters) {
@@ -1037,7 +1037,7 @@ public class CommandList implements CommandListener {
             description = "reservelist remove",
             permissions = { RESERVELIST },
             toolTip = "/reservelist remove <playername>",
-            helpLookup = "reservelist.remove",
+            helpLookup = "reservelist remove",
             min = 1
     )
     public void reservelistRemove(MessageReceiver caller, String[] parameters) {
@@ -1050,7 +1050,7 @@ public class CommandList implements CommandListener {
             description = "reservelist show (list)",
             permissions = { RESERVELIST },
             toolTip = "/reservelist show",
-            helpLookup = "reservelist.show"
+            helpLookup = "reservelist show"
     )
     public void reservelistShow(MessageReceiver caller, String[] parameters) {
         natives.get("reservelist.show").execute(caller, parameters);
@@ -1840,10 +1840,11 @@ public class CommandList implements CommandListener {
 
     @Command(
             aliases = {"create"},
+            parent = "world",
             description = "creates a world",
             permissions = {WORLD$CREATE},
             toolTip = "/world create <name> [seed] [dimensionType] [worldType]",
-            parent = "world",
+            helpLookup = "world create",
             max = 4,
             min = 1
     )
@@ -1877,10 +1878,11 @@ public class CommandList implements CommandListener {
 
     @Command(
             aliases = {"delete"},
+            parent = "world",
             description = "Deletes a world",
             permissions = {WORLD$DELETE},
             toolTip = "/world delete <world_fqName>",
-            parent = "world",
+            helpLookup = "world delete",
             min = 1,
             version = 2
     )
@@ -1895,10 +1897,11 @@ public class CommandList implements CommandListener {
 
     @Command(
             aliases = { "info" },
+            parent = "world",
             description = "Displays information about a world",
             permissions = { WORLD$INFO },
             toolTip = "/world info <world_fqName>",
-            parent = "world",
+            helpLookup = "world info",
             min = 1,
             version = 2
     )
@@ -1908,10 +1911,11 @@ public class CommandList implements CommandListener {
 
     @Command(
             aliases = {"list"},
+            parent = "world",
             description = "lists worlds",
             permissions = {WORLD$LIST},
             toolTip = "/world list",
-            parent = "world",
+            helpLookup = "world list",
             version = 2
     )
     public void worldList(MessageReceiver caller, String[] args) {
@@ -1932,10 +1936,11 @@ public class CommandList implements CommandListener {
 
     @Command(
             aliases = {"load"},
+            parent = "world",
             description = "loads a world",
             permissions = {WORLD$LOAD},
             toolTip = "/world load <worldName> [dimensionType]",
-            parent = "world",
+            helpLookup = "world load",
             min = 1,
             version = 2
     )
@@ -1957,10 +1962,11 @@ public class CommandList implements CommandListener {
 
     @Command(
             aliases = {"unload"},
+            parent = "world",
             description = "unloads a world",
             permissions = {WORLD$LOAD},
             toolTip = "/world unload <worldName> [dimensionType]",
-            parent = "world",
+            helpLookup = "world unload",
             min = 1,
             version = 2
     )
