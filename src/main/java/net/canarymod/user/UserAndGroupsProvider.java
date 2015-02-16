@@ -1,5 +1,6 @@
 package net.canarymod.user;
 
+import com.google.common.collect.BiMap;
 import net.canarymod.Canary;
 import net.canarymod.ToolBox;
 import net.canarymod.api.OfflinePlayer;
@@ -16,10 +17,11 @@ import static net.canarymod.Canary.log;
 /**
  * Access to the backbone for users and groups
  *
- * @author Chris (damagefilter)
+ * @author Chris Ksoll (damagefilter)
+ * @author Jason Jones (darkdiplomat)
  */
 public class UserAndGroupsProvider {
-    private List<Group> groups;
+    private BiMap<String, Group> groups;
     private Map<String, String[]> playerData;
     private BackboneGroups backboneGroups;
     private BackboneUsers backboneUsers;
@@ -33,7 +35,6 @@ public class UserAndGroupsProvider {
         backboneUsers = new BackboneUsers();
         initGroups();
         initPlayers();
-
     }
 
     private void initGroups() {
@@ -44,11 +45,11 @@ public class UserAndGroupsProvider {
             groups = backboneGroups.loadGroups();
         }
 
-        for (Group g : this.groups) {
+        for (Group g : this.groups.values()) {
             g.setPermissionProvider(Canary.permissionManager().getGroupsProvider(g.getName(), g.getWorldName()));
         }
         // find default group
-        for (Group g : groups) {
+        for (Group g : groups.values()) {
             if (g.isDefaultGroup()) {
                 defaultGroup = g;
                 break;
@@ -73,13 +74,15 @@ public class UserAndGroupsProvider {
      * @param g
      */
     public void addGroup(Group g) {
-        if (groupExists(g.getName())) {
-            backboneGroups.updateGroup(g);
+        synchronized (groups) {
+            if (groupExists(g.getName())) {
+                backboneGroups.updateGroup(g);
+            }
+            else {
+                backboneGroups.addGroup(g);
+            }
+            groups.put(g.getName(), g);
         }
-        else {
-            backboneGroups.addGroup(g);
-        }
-        groups.add(g);
     }
 
     /**
@@ -89,22 +92,24 @@ public class UserAndGroupsProvider {
      *         the group to remove
      */
     public void removeGroup(Group g) {
-        // Move children up to the next parent
-        try {
-            List<Group> childs = new ArrayList<Group>();
-            childs.addAll(g.getChildren());
-//            Collections.copy(childs, g.getChildren());
+        synchronized (groups) {
+            // Move children up to the next parent
+            try {
+                List<Group> childs = new ArrayList<Group>();
+                childs.addAll(g.getChildren());
+                //            Collections.copy(childs, g.getChildren());
 
-            for (Group child : childs) {
-                child.setParent(g.getParent());
-                this.updateGroup(child, false);
+                for (Group child : childs) {
+                    child.setParent(g.getParent());
+                    this.updateGroup(child, false);
+                }
+                // Now we can safely remove the group
+                backboneGroups.removeGroup(g);
+                groups.inverse().remove(g);
             }
-            // Now we can safely remove the group
-            backboneGroups.removeGroup(g);
-            groups.remove(g);
-        }
-        catch (Exception e) {
-            log.error(e.getMessage(), e);
+            catch (Exception e) {
+                log.error(e.getMessage(), e);
+            }
         }
     }
 
@@ -117,11 +122,16 @@ public class UserAndGroupsProvider {
      *         the new name
      */
     public void renameGroup(Group group, String newName) {
-        groups.remove(group);
-        backboneGroups.renameGroup(group, newName);
-        groups.add(group);
-        for (Group g : groups) {
-            updateGroup(g, true);
+        synchronized (groups) {
+            groups.inverse().remove(group);
+            backboneGroups.renameGroup(group, newName);
+            groups.put(newName, group);
+
+            for (Group g : groups.values()) { // Just update those who need it
+                if (g.hasParent() && g.getParent().equals(group)) {
+                    updateGroup(g, false);
+                }
+            }
         }
     }
 
@@ -130,15 +140,12 @@ public class UserAndGroupsProvider {
      *
      * @param name
      *
-     * @return
+     * @return {@code true} if exists; {@code false} if not
      */
     public boolean groupExists(String name) {
-        for (Group g : groups) {
-            if (g.getName().equals(name)) {
-                return true;
-            }
+        synchronized (groups) {
+            return groups.containsKey(name);
         }
-        return false;
     }
 
     /**
@@ -149,13 +156,17 @@ public class UserAndGroupsProvider {
      * @return
      */
     public boolean groupExists(Group g) {
-        return groups.contains(g);
+        synchronized (groups) {
+            return groups.containsValue(g);
+        }
     }
 
     /**
      * Check if there is a set of data present for the given player UUID
      *
-     * @param uuid the players UUID
+     * @param uuid
+     *         the players UUID
+     *
      * @return true if there is a set of data present, false otherwise
      */
     public boolean playerExists(String uuid) {
@@ -170,7 +181,7 @@ public class UserAndGroupsProvider {
     public Group[] getGroups() {
         Group[] grp = new Group[groups.size()];
 
-        return groups.toArray(grp);
+        return groups.values().toArray(grp);
     }
 
     /**
@@ -179,12 +190,7 @@ public class UserAndGroupsProvider {
      * @return group names
      */
     public String[] getGroupNames() {
-        String[] grpNames = new String[groups.size()];
-        int index = 0;
-        for (Group grp : groups) {
-            grpNames[index++] = grp.getName();
-        }
-        return grpNames;
+        return groups.keySet().toArray(new String[groups.size()]);
     }
 
     /**
@@ -192,15 +198,15 @@ public class UserAndGroupsProvider {
      *
      * @param name
      *
-     * @return
+     * @return the group with the assigned name; or {@code defaultGroup} if no group with assigned name is found
      */
     public Group getGroup(String name) {
         if (name == null || name.isEmpty()) {
             return defaultGroup;
         }
-        for (Group g : groups) {
-            if (g.getName().equals(name)) {
-                return g;
+        synchronized (groups) {
+            if (groups.containsKey(name)) {
+                return groups.get(name);
             }
         }
         return defaultGroup;
@@ -243,7 +249,7 @@ public class UserAndGroupsProvider {
      * @return
      */
     public String[] getPlayers() {
-        String[] retT = { };
+        String[] retT = {};
 
         return backboneUsers.loadUsers().keySet().toArray(retT);
     }
@@ -279,11 +285,12 @@ public class UserAndGroupsProvider {
         String uuid = ToolBox.isUUID(name) ? name : ToolBox.usernameToUUID(name);
         backboneUsers.addUser(uuid, group);
         if (uuid == null) {
-            log.warn("Player " + name + " already exists. Skipping!");
+            log.error("Was unable to get a UUID for Player: " + name + ". Skipping!");
             return;
         }
         if (playerData.containsKey(uuid)) {
-            
+            log.warn("Player " + name + " already exists. Skipping!");
+            return;
         }
         String[] content = new String[3];
         content[0] = null;
@@ -323,7 +330,8 @@ public class UserAndGroupsProvider {
     /**
      * Remove permissions and other data for this player from uuid
      *
-     * @param uuid UUID for the player
+     * @param uuid
+     *         UUID for the player
      */
     public void removeUserData(String uuid) {
         backboneUsers.removeUser(uuid);
@@ -361,12 +369,14 @@ public class UserAndGroupsProvider {
     public Group[] getModuleGroupsForPlayer(String uuid) {
         return backboneUsers.getModularGroups(uuid);
     }
-    
+
     /**
      * Refreshes a players local instance if they are online with any updates
      * performed here.
-     * 
-     * @param uuid the players uuid
+     *
+     * @param uuid
+     *         the players uuid
+     *
      * @return true if the player was online, false otherwise.
      */
     private boolean refreshPlayerInstance(String uuid) {
