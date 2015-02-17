@@ -227,7 +227,7 @@ public class PermissionNode {
         // as other paths may require them to remain granted.
 
         // If this nodes value is false but new value is true, grant this node
-        if (!getValue() && value) {
+        if ((!this.getValue() && value) && !this.isWildcard()) {
             setValue(true);
         }
         if (index >= path.length) {
@@ -248,22 +248,22 @@ public class PermissionNode {
      * @return true if permission on this path is granted, false otherwise
      */
     public boolean resolveToValue(String[] path, int index) {
-        boolean hasWildcardChild = hasChildNode("*");
+        boolean hasWildcardChild = this.hasChildNode("*");
 
         // If this is denied and it's not a wildcard, exit.
         // Wildcards specify no direct path thus subsequent nodes may be allowed
-        if (!this.getValue() && !isWildcard()) {
+        if (!this.getValue() && !this.isWildcard()) {
             return false;
         }
-        // That means this is the final node
+        // Found final node
         if (index >= path.length) {
             return this.getValue();
         }
         // Check explicit permission
-        if (hasChildNode(path[index])) {
-            return getChildNode(path[index]).resolveToValue(path, ++index);
+        if (this.hasChildNode(path[index])) {
+            return this.getChildNode(path[index]).resolveToValue(path, ++index);
         }
-        // Check implicit permission
+        // Check implicit permission via wildcards
         else if (hasWildcardChild) {
             return getChildNode("*").getValue();
         }
