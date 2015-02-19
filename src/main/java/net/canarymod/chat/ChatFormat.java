@@ -92,6 +92,15 @@ public enum ChatFormat {
         }
     }
 
+    public final String concat(ChatFormat format) {
+        if (this == MARKER) {
+            return stringValue().concat(format.toString());
+        }
+        else {
+            return toString().concat(format.toString());
+        }
+    }
+
     /**
      * Returns the char value of the {@code ChatFormat}
      *
