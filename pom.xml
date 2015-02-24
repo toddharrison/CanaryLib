@@ -9,7 +9,7 @@
     <groupId>net.canarymod</groupId>
     <artifactId>CanaryLib</artifactId>
     <packaging>jar</packaging>
-    <version>1.2.0-SNAPSHOT</version>
+    <version>1.2.0</version>
     <name>CanaryLib</name>
     <url>http://www.canarymod.net</url>
     <inceptionYear>2012</inceptionYear>
@@ -32,10 +32,8 @@
         <guava>15.0</guava>
         <authlib>1.5.17</authlib>
         <jsonSimple>1.1.1</jsonSimple>
-
         <sqlite>3.8.7</sqlite>
         <mysql>5.1.34</mysql>
-
         <junit>4.12</junit>
     </properties>
 
