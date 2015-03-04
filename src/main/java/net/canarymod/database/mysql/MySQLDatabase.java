@@ -128,6 +128,10 @@ public class MySQLDatabase extends Database {
                     Column column;
                     while (it.hasNext()) {
                         column = it.next();
+                        if (column.columnName().equals("id")) {
+                            // Don't update it
+                            continue;
+                        }
                         if (column.isList()) {
                             rs.updateObject(column.columnName(), this.getString((List<?>) columns.get(column)));
                         }
