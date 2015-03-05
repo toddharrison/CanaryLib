@@ -2,9 +2,17 @@ package net.canarymod.motd;
 
 import net.canarymod.chat.MessageReceiver;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,8 +55,8 @@ public class MessageOfTheDay {
             writer.println("# See forums thread http://canarymod.net/forum/canarymod-board/discussions/motd-variables-3447");
             writer.println("# for the list of default variables");
             writer.println("# or the plugins threads that add-on to the Message Of The Day");
-            writer.println("# Lines may be prefixed with {permission:<[node] or ![node] or [node]&[node]&![node]>}");
-            writer.println("# Examples: {permission:canary.super.administor} {permission:canary.world.build&!canary.super.administrator}");
+            writer.println("# Lines may be prefixed with {permissions:<[node] or ![node] or [node]&[node]&![node]>}");
+            writer.println("# Examples: {permissions:canary.super.administor} {permissions:canary.world.build&!canary.super.administrator}");
             writer.println("# # # # #");
             writer.flush();
             writer.close();
@@ -133,12 +141,12 @@ public class MessageOfTheDay {
     /**
      * Registers a new {@link MessageOfTheDayListener} to be used with the MessageOfTheDay
      *
-     * @param listner
+     * @param listener
      *         the {@link MessageOfTheDayListener} to be added
      * @param owner
      *         the {@link MOTDOwner} (either the server or a plugin)
      * @param force
-     *         {@code true} to override existing keys if existant; {@code false} to error out on duplicate keys (recommended)
+     *         {@code true} to override existing keys if existent; {@code false} to error out on duplicate keys (recommended)
      */
     public void registerMOTDListener(final MessageOfTheDayListener listener, final MOTDOwner owner, final boolean force) {
         Method[] methods = listener.getClass().getDeclaredMethods();
