@@ -1,4 +1,4 @@
-package net.canarymod.hook.entity;
+package net.canarymod.hook.player;
 
 import net.canarymod.MathHelp;
 import net.canarymod.api.entity.hanging.ItemFrame;

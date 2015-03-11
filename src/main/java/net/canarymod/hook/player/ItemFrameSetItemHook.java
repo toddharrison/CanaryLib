@@ -1,4 +1,4 @@
-package net.canarymod.hook.entity;
+package net.canarymod.hook.player;
 
 import net.canarymod.api.entity.hanging.ItemFrame;
 import net.canarymod.api.entity.living.humanoid.Player;
@@ -46,5 +46,10 @@ public final class ItemFrameSetItemHook extends CancelableHook {
      */
     public Item getItem() {
         return item;
+    }
+
+    @Override
+    public final String toString() {
+        return String.format("%s[Player=%s, ItemFrame=%s, Item=%s]", getHookName(), player, itemFrame, item);
     }
 }
