@@ -187,7 +187,7 @@ public class BackboneUsers extends Backbone {
         try {
             HashMap<String, Object> filter = new HashMap<String, Object>();
             filter.put("uuid", player.getUUIDString());
-            filter.put("name", player.getName());
+            // filter.put("name", player.getName()); // Can't update a name if its filtered in...
             Database.get().update(data, filter);
         }
         catch (DatabaseWriteException e) {

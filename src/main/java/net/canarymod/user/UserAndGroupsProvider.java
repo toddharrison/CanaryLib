@@ -4,11 +4,16 @@ import com.google.common.collect.BiMap;
 import net.canarymod.Canary;
 import net.canarymod.ToolBox;
 import net.canarymod.api.OfflinePlayer;
+import net.canarymod.api.PlayerReference;
 import net.canarymod.api.entity.living.humanoid.Player;
 import net.canarymod.backbone.BackboneGroups;
 import net.canarymod.backbone.BackboneUsers;
+import net.canarymod.backbone.PlayerDataAccess;
+import net.canarymod.database.Database;
+import net.canarymod.database.exceptions.DatabaseWriteException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -172,6 +177,29 @@ public class UserAndGroupsProvider {
     public boolean playerExists(String uuid) {
         return playerData.containsKey(uuid);
     }
+
+    /**
+     * Checks if a {@link net.canarymod.api.PlayerReference} has changed names compared to the database
+     *
+     * @param reference
+     *         the {@link net.canarymod.api.PlayerReference} to check
+     *
+     * @return {@code true} if the name is different in the database; {@code false} if not
+     */
+    public boolean nameChanged(PlayerReference reference) {
+        PlayerDataAccess data = new PlayerDataAccess();
+        try {
+            HashMap<String, Object> filter = new HashMap<String, Object>();
+            filter.put("uuid", reference.getUUIDString());
+            Database.get().update(data, filter);
+        }
+        catch (DatabaseWriteException e) {
+            log.error(e.getMessage(), e);
+            return false; // It either broke, or they don't exist
+        }
+        return !reference.getName().equals(data.name);
+    }
+
 
     /**
      * Return array of all existent groups
