@@ -78,13 +78,6 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
     NetServerHandler getNetServerHandler();
 
     /**
-     * Get player enderchest inventory
-     *
-     * @return enderchest inventory
-     */
-    Inventory getEnderChestInventory();
-
-    /**
      * Teleport to this location with specified cause
      * <p/>
      * If other Teleport methods are called, cause default to PLUGIN
@@ -125,22 +118,6 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      * @return the ping
      */
     int getPing();
-
-    /**
-     * Gets a {@link PlayerListEntry} for the Player
-     * <p/>
-     * The initially set name is {@link Player#getDisplayName()}
-     *
-     * @param shown
-     *         whether it should be shown by default
-     *
-     * @return {@link PlayerListEntry} for the Player
-     *
-     * @see PlayerListEntry
-     * @deprecated Use {@link #getPlayerListData(net.canarymod.api.PlayerListAction)} instead
-     */
-    @Deprecated
-    PlayerListEntry getPlayerListEntry(boolean shown);
 
     /**
      * Gets a {@link net.canarymod.api.PlayerListData} for the Player

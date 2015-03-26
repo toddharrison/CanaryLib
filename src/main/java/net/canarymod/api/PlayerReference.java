@@ -1,5 +1,8 @@
 package net.canarymod.api;
 
+import net.canarymod.api.inventory.EnderChestInventory;
+import net.canarymod.api.inventory.Inventory;
+import net.canarymod.api.inventory.PlayerInventory;
 import net.canarymod.api.statistics.Achievement;
 import net.canarymod.api.statistics.Achievements;
 import net.canarymod.api.statistics.Stat;
@@ -593,4 +596,20 @@ public interface PlayerReference {
      *         the {@link net.canarymod.api.statistics.Achievements} to be awarded
      */
     void awardAchievement(Achievements achievement);
+
+    /**
+     * Get player inventory
+     *
+     * @return inventory
+     */
+    PlayerInventory getInventory();
+
+    /**
+     * Get player enderchest inventory.
+     * NOTE: An offline player will throw an exception with {@link EnderChestInventory#getInventoryOwner()} due to null reference.
+     *
+     * @return enderchest inventory
+     */
+    Inventory getEnderChestInventory();
+
 }
