@@ -4,7 +4,6 @@ import com.mojang.authlib.GameProfile;
 import net.canarymod.api.NetServerHandler;
 import net.canarymod.api.PlayerListAction;
 import net.canarymod.api.PlayerListData;
-import net.canarymod.api.PlayerListEntry;
 import net.canarymod.api.PlayerReference;
 import net.canarymod.api.chat.ChatComponent;
 import net.canarymod.api.inventory.Inventory;
@@ -130,19 +129,6 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      * @see net.canarymod.api.PlayerListAction
      */
     PlayerListData getPlayerListData(PlayerListAction action);
-
-    /**
-     * Sends a {@link PlayerListEntry} to the Player
-     * <p/>
-     * NOTE: The server needs to have PlayerList enabled in the configuration
-     *
-     * @param plentry
-     *         the {@link PlayerListEntry} to send
-     *
-     * @see PlayerListEntry
-     * @deprecated use {@link #sendPlayerListData(PlayerListData)} instead
-     */
-    void sendPlayerListEntry(PlayerListEntry plentry);
 
     /**
      * Sends a {@link net.canarymod.api.PlayerListData} to the Player

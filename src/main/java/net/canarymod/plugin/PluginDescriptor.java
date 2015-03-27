@@ -6,6 +6,8 @@ import net.visualillusionsent.utils.PropertiesFile;
 import net.visualillusionsent.utils.UtilityException;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 
 /**
  * Describes information about a plugin, including meta information and start/stop/load information.
@@ -32,8 +34,21 @@ public class PluginDescriptor {
         try {
             reloadInf();
         }
-        catch (UtilityException e) {
-            throw new InvalidPluginException("Unable to load INF file", e);
+        catch (UtilityException uex) {
+            File pluginFile = new File(path);
+            // Is it another API's plugin?
+            if (pluginFile.isFile()) { // Bukkit didn't support directories afaik
+                if (pluginFile.getName().matches(".+\\.jar$")) { // Bukkit didn't support zip extension afaik
+                    try {
+                        new URL("jar:file:".concat(path).concat("!/plugin.yml")); // If not IOException, there is a plugin.yml
+                        throw new InvalidPluginException("Bukkit Plugins are not natively supported. Please remove '" + pluginFile.getName() + "' from your plugins directory.");
+                    }
+                    catch (IOException ioex) {
+                        // Thrown if plugin.yml is non-existent. ignoring...
+                    }
+                }
+            }
+            throw new InvalidPluginException("Unable to load INF file", uex);
         }
         currentState = PluginState.KNOWN;
     }
