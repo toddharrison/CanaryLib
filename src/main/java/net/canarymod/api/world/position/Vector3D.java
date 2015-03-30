@@ -6,7 +6,7 @@ import net.canarymod.CanaryDeserializeException;
  * A Vector3D represents a point ins in the 3D space.
  * That can be a block or a player coodinate
  *
- * @author chris, Toble_Miner
+ * @author chris, Tobias (Toble_Miner)
  */
 public class Vector3D extends Position {
     /** This is the nullvector (0,0,0) */
