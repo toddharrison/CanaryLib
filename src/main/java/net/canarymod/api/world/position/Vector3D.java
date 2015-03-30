@@ -6,7 +6,7 @@ import net.canarymod.CanaryDeserializeException;
  * A Vector3D represents a point ins in the 3D space.
  * That can be a block or a player coodinate
  *
- * @author chris
+ * @author chris, Tobias (Toble_Miner)
  */
 public class Vector3D extends Position {
     /** This is the nullvector (0,0,0) */
@@ -184,6 +184,17 @@ public class Vector3D extends Position {
      */
     public Vector3D multiply(double scalar) {
         return new Vector3D(this.x * scalar, this.y * scalar, this.z * scalar);
+    }
+
+    /**
+     * Calculates the dot product of this vector with another
+     *
+     * @param v Vector
+     *
+     * @return dot product
+     */
+    public double dot(Vector3D v) {
+        return this.x * v.x + this.y * v.y + this.z * v.z;
     }
 
     /**
