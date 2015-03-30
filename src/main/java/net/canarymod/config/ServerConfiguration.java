@@ -97,6 +97,10 @@ public class ServerConfiguration implements ConfigurationContainer {
         cfg.setComments("default-world-name", "Name of the default loaded world");
         cfg.getInt("default-world-size", 29999984);
         cfg.setComments("default-world-size", "This sets the maximum possible size in blocks, expressed as a radius, that the world border can obtain.");
+        cfg.getBoolean("flight-kick", true);
+        cfg.setComments("flight-kick", "Enables kicking players who are floating too long.");
+        cfg.getInt("flight-detect-ticks", 80);
+        cfg.setComments("flight-detect-ticks", "The number of ticks a player may float before triggering flight-kick or flight-alert.");
         //cfg.getBoolean("logging", false); //REMOVED
         if (cfg.containsKey("logging")) { // Remove old key
             cfg.removeKey("logging");
