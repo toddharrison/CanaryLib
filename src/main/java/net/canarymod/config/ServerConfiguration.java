@@ -303,6 +303,24 @@ public class ServerConfiguration implements ConfigurationContainer {
     }
 
     /**
+     * Checks if players will be kicked when floating too long.
+     *
+     * @return {@code true} if kick enabled; {@code false} if not
+     */
+    public boolean isFlightKickEnabled() {
+        return cfg.getBoolean("flight-kick", true);
+    }
+
+    /**
+     * Gets the number of ticks a Player is allowed to float before triggering the anti-flying
+     *
+     * @return the number of ticks
+     */
+    public int getFlightDetectTicks() {
+        return cfg.getInt("flight-detect-ticks", 80);
+    }
+
+    /**
      * Gets the Level of message to log
      *
      * @return logger level
