@@ -29,7 +29,7 @@ public class WarpDataAccess extends LocationDataAccess {
 
     /** Owner of this warp. */
     @Column(columnName = "owner", dataType = DataType.STRING)
-    public String owner;
+    public String owner; // Converting to UUID
 
     /** groups that can use this warp. */
     @Column(columnName = "groups", dataType = DataType.STRING, isList = true)

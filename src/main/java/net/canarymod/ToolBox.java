@@ -15,7 +15,15 @@ import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.TimeZone;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -557,6 +565,7 @@ public class ToolBox {
         }
         catch (Exception ex) {
             Canary.log.warn("Failed to translate Username into a UUID");
+            Canary.log.debug("Debugging Stacktrace of failed UUID lookup", ex);
         }
         if (uuid != null && !uuid.contains("-")) {
             // Add the hyphens back in
@@ -593,7 +602,7 @@ public class ToolBox {
             return true; // re-verify
         }
 
-        // 3 days seems legit
-        return time == 0 || TimeUnit.MILLISECONDS.toDays(time) + 3 < TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis());
+        // 24 Hour look ups
+        return time == 0 || TimeUnit.MILLISECONDS.toDays(time) + 1 < TimeUnit.MILLISECONDS.toDays(System.currentTimeMillis());
     }
 }
