@@ -109,7 +109,7 @@ public class BackboneWarps extends Backbone {
         try {
             HashMap<String, Object> filter = new HashMap<String, Object>();
             filter.put("name", warp.getName());
-            filter.put("location", warp.getLocation().toString());
+            // filter.put("location", warp.getLocation().toString()); // Location is a bad filter
             Database.get().remove(schema, filter);
         }
         catch (DatabaseWriteException e) {
