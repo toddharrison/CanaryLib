@@ -42,7 +42,7 @@ public final class ItemFrameSetItemHook extends CancelableHook {
     /**
      * Gets the {@link net.canarymod.api.inventory.Item} being placed into the {@link net.canarymod.api.entity.hanging.ItemFrame}
      *
-     * @return the item
+     * @return the item or {@code null} if the item is being removed from the frame
      */
     public Item getItem() {
         return item;
