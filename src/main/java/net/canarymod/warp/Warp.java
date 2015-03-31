@@ -107,7 +107,7 @@ public class Warp {
      */
     public boolean canWarp(Player player) {
         if (owner != null) {
-            return player.getName().equals(owner) || (player.isAdmin() || player.hasPermission("canary.command.warp.admin"));
+            return isOwner(player) || (player.isAdmin() || player.hasPermission("canary.command.warp.admin"));
         }
         else if (allowedGroups != null) {
             for (Group gr : allowedGroups) {
@@ -216,6 +216,10 @@ public class Warp {
      */
     public boolean isPlayerHome() {
         return isPlayerHome;
+    }
+
+    public boolean isOwner(Player player) {
+        return owner != null && (owner.equals(player.getName()) || owner.equals(player.getUUIDString()));
     }
 
     public final String toString() {
