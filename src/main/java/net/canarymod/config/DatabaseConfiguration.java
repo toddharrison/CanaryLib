@@ -1,6 +1,5 @@
 package net.canarymod.config;
 
-import net.canarymod.database.JdbcConnectionManager;
 import net.visualillusionsent.utils.PropertiesFile;
 
 import java.io.File;
@@ -132,13 +131,7 @@ public class DatabaseConfiguration implements ConfigurationContainer {
      */
     public String getDatabaseUrl(String driver) {
         int port = getDatabasePort();
-        if (driver.equals(JdbcConnectionManager.Type.SQLITE.getIdentifier())) {
-            return "jdbc:" + driver + ":db/" + getDatabaseName() + ".db";
-        }
-        else {
-            return "jdbc:" + driver + "://" + getDatabaseHost() + ((port == 0) ? "" : (":" + port)) + "/" + getDatabaseName();
-        }
-
+        return "jdbc:" + driver + "://" + getDatabaseHost() + ((port == 0) ? "" : (":" + port)) + "/" + getDatabaseName();
     }
 
     /**
