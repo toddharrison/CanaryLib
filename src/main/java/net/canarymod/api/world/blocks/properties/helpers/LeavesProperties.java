@@ -5,7 +5,9 @@ import net.canarymod.api.world.blocks.properties.BlockBooleanProperty;
 import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
 import net.visualillusionsent.utils.Verify;
 
-import static net.canarymod.api.world.blocks.BlockType.*;
+import static net.canarymod.api.world.blocks.BlockType.AcaciaLeaves;
+import static net.canarymod.api.world.blocks.BlockType.DarkOakLeaves;
+import static net.canarymod.api.world.blocks.BlockType.OakLeaves;
 
 /**
  * Leaves properties helper

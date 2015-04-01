@@ -110,7 +110,6 @@ public class JdbcConnectionManager {
             catch (SQLException e) {
                 throw new DatabaseAccessException("Unable to instantiate Connection Pool!", e);
             }
-
         }
         return instance;
     }

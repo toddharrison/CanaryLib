@@ -29,7 +29,7 @@ public class ServerConfiguration implements ConfigurationContainer {
 
         // For control panels still tweaking the server.properties file only...
         PropertiesFile servCfgTemp = null;
-        if(panelSupport){
+        if (panelSupport) {
             // Only initialize the file if we need to read from it
             servCfgTemp = new PropertiesFile("server.properties");
         }
@@ -339,7 +339,7 @@ public class ServerConfiguration implements ConfigurationContainer {
      * @return max players
      */
     public int getMaxPlayers() {
-        if(panelSupport){
+        if (panelSupport) {
             return servCfg.getInt("max-players", 20);
         }
         return cfg.getInt("max-players", 20);
@@ -363,7 +363,7 @@ public class ServerConfiguration implements ConfigurationContainer {
      * @return {@code true} if online mode is enabled; {@code false} if not
      */
     public boolean isOnlineMode() {
-        if(panelSupport){
+        if (panelSupport) {
             return servCfg.getBoolean("online-mode", true);
         }
         return cfg.getBoolean("online-mode", true);
@@ -431,7 +431,7 @@ public class ServerConfiguration implements ConfigurationContainer {
      * @return {@code true} if enabled; {@code false} if not
      */
     public boolean isQueryEnabled() {
-        if(panelSupport){
+        if (panelSupport) {
             return servCfg.getBoolean("enable-query", false);
         }
         return cfg.getBoolean("query-enabled", false);
@@ -443,7 +443,7 @@ public class ServerConfiguration implements ConfigurationContainer {
      * @return query port
      */
     public int getQueryPort() {
-        if(panelSupport){
+        if (panelSupport) {
             return servCfg.getInt("query.port", 25570);
         }
         return cfg.getInt("query-port", 25565);
@@ -518,7 +518,7 @@ public class ServerConfiguration implements ConfigurationContainer {
      * @return server ip
      */
     public String getBindIp() {
-        if(panelSupport){
+        if (panelSupport) {
             return servCfg.getString("server-ip", "");
         }
         return cfg.getString("server-ip", "");
@@ -530,7 +530,7 @@ public class ServerConfiguration implements ConfigurationContainer {
      * @return port
      */
     public int getPort() {
-        if(panelSupport){
+        if (panelSupport) {
             return servCfg.getInt("server-port", 25565);
         }
         return cfg.getInt("server-port", 25565);

@@ -75,5 +75,4 @@ public final class RedstoneComparatorProperties extends DirectionalBlockProperti
     public static Block applyMode(Block block, Mode value) {
         return apply(block, mode, value);
     }
-
 }

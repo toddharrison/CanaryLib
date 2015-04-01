@@ -156,7 +156,7 @@ public class BackboneWarps extends Backbone {
         try {
             Database.get().loadAll(schema, daos, new HashMap<String, Object>());
             for (DataAccess dao : daos) {
-                WarpDataAccess data = (WarpDataAccess) dao;
+                WarpDataAccess data = (WarpDataAccess)dao;
                 Group[] groups = makeGroupArray(data.groups);
                 String owner = ToolBox.stringToNull(data.owner);
                 String name = data.name;

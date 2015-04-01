@@ -29,7 +29,7 @@ public enum BlockFace {
      * @return the face byte value
      */
     public byte getByte() {
-        return (byte) ordinal();
+        return (byte)ordinal();
     }
 
     public Axis getAxis() {

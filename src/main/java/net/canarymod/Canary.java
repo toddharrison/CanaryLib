@@ -285,7 +285,6 @@ public abstract class Canary implements TaskOwner {
         instance.server = server;
     }
 
-
     /**
      * Enables all late plugins.
      * That means: All plugins that require sub systems to be functioning, such as warps.

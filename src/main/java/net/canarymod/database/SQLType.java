@@ -73,7 +73,6 @@ public final class SQLType {
     }
 
     static {
-        registerSQLDriver("mysql", "com.mysql.jdbc.Driver");
         registerSQLDriver("sqlite", "org.sqlite.JDBC", false);
     }
 }

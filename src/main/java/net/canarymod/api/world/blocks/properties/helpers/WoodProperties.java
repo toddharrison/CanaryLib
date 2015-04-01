@@ -12,7 +12,7 @@ public interface WoodProperties {
      *
      * @author Jason Jones (darkdiplomat)
      */
-    public enum Variant {
+    enum Variant {
         OAK,
         SPRUCE,
         BIRCH,

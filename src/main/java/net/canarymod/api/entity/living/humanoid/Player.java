@@ -385,6 +385,4 @@ public interface Player extends Human, MessageReceiver, PlayerReference {
      *         the text of the subtile to show; may be {@code null}
      */
     void showTitle(ChatComponent title, ChatComponent subtitle);
-
-
 }

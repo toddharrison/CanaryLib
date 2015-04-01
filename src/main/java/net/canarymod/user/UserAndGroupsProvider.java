@@ -200,7 +200,6 @@ public class UserAndGroupsProvider {
         return !reference.getName().equals(data.name);
     }
 
-
     /**
      * Return array of all existent groups
      *

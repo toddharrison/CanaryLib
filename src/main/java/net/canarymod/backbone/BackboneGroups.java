@@ -89,7 +89,6 @@ public class BackboneGroups extends Backbone {
         catch (DatabaseWriteException e) {
             log.error(e.getMessage(), e);
         }
-
     }
 
     public void renameGroup(Group subject, String newname) {
@@ -132,7 +131,6 @@ public class BackboneGroups extends Backbone {
         catch (DatabaseWriteException e) {
             log.error(e.getMessage(), e);
         }
-
     }
 
     private Group loadParents(String parent, BiMap<String, Group> existingGroups) {
@@ -202,7 +200,7 @@ public class BackboneGroups extends Backbone {
         try {
             Database.get().loadAll(schema, dataList, new HashMap<String, Object>());
             for (DataAccess da : dataList) {
-                GroupDataAccess data = (GroupDataAccess) da;
+                GroupDataAccess data = (GroupDataAccess)da;
                 if (groups.containsKey(data.name)) {
                     continue;
                 }
@@ -226,7 +224,9 @@ public class BackboneGroups extends Backbone {
         return groups;
     }
 
-    /** Creates a set of default groups and puts them into the database */
+    /**
+     * Creates a set of default groups and puts them into the database
+     */
     public static void createDefaults() {
         GroupDataAccess visitors = new GroupDataAccess();
         GroupDataAccess players = new GroupDataAccess();

@@ -115,5 +115,4 @@ public interface ObjectFactory {
     Chunk newChunk(World world, int x, int z);
 
     <T extends BlockProperty> T getPropertyInstance(BlockType blockType, String propertyName);
-
 }

@@ -75,7 +75,9 @@ public final class ServerTaskManager {
         }
     }
 
-    /** Internal method called to run the tasks or decrease timers. */
+    /**
+     * Internal method called to run the tasks or decrease timers.
+     */
     public static void runTasks() {
         if ($.tasks.isEmpty()) {
             // No tasks? no execution needed

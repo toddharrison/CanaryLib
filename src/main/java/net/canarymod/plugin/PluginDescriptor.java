@@ -93,7 +93,6 @@ public class PluginDescriptor {
         }
     }
 
-
     public PropertiesFile getCanaryInf() {
         return canaryInf;
     }
@@ -133,7 +132,8 @@ public class PluginDescriptor {
     /**
      * DO NOT CALL THIS METHOD. It is for internal use only.
      *
-     * @param plugin Current plugin object
+     * @param plugin
+     *         Current plugin object
      */
     public void setPlugin(Plugin plugin) {
         this.plugin = plugin;
@@ -146,7 +146,8 @@ public class PluginDescriptor {
     /**
      * DO NOT CALL THIS METHOD. It is for internal use only.
      *
-     * @param state New plugin state
+     * @param state
+     *         New plugin state
      */
     public void setCurrentState(PluginState state) {
         this.currentState = state;

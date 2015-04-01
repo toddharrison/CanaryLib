@@ -764,7 +764,6 @@ public final class BlockType {
         return machineName;
     }
 
-
     /**
      * Checks BlockType for a given set of possible matches
      *
@@ -938,16 +937,15 @@ public final class BlockType {
             return false;
         }
 
-        BlockType blockType = (BlockType) o;
+        BlockType blockType = (BlockType)o;
 
         return data == blockType.data && id == blockType.id && machineName.equals(blockType.machineName);
-
     }
 
     @Override
     public int hashCode() {
-        int result = (int) id;
-        result = 31 * result + (int) data;
+        int result = (int)id;
+        result = 31 * result + (int)data;
         result = 31 * result + machineName.hashCode();
         return result;
     }

@@ -611,5 +611,4 @@ public interface PlayerReference {
      * @return enderchest inventory
      */
     Inventory getEnderChestInventory();
-
 }

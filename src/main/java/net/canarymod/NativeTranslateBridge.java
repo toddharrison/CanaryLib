@@ -13,5 +13,4 @@ abstract class NativeTranslateBridge {
     abstract String nativeTranslate(String key, Object... args);
 
     abstract boolean nativeCanTranslate(String key);
-
 }

@@ -75,7 +75,9 @@ public abstract class ServerTask {
         return owner;
     }
 
-    /** Execution method. Override and insert your logic here. */
+    /**
+     * Execution method. Override and insert your logic here.
+     */
     public abstract void run();
 
     /**
@@ -85,7 +87,9 @@ public abstract class ServerTask {
     public void onReset() {
     }
 
-    /** Internal use method to decrease the delay */
+    /**
+     * Internal use method to decrease the delay
+     */
     final void decrementDelay() {
         --delay;
     }
@@ -99,7 +103,9 @@ public abstract class ServerTask {
         return delay <= 0;
     }
 
-    /** Internal use method to reset the delay on continuous tasks */
+    /**
+     * Internal use method to reset the delay on continuous tasks
+     */
     final void reset() {
         this.delay = this.schedule;
         this.onReset();

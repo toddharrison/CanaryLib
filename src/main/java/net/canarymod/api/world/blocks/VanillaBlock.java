@@ -67,7 +67,8 @@ public enum VanillaBlock {
     DETECTORRAIL("detector_rail"),
     STICKYPISTON("sticky_piston"),
     WEB("web"),
-    SHRUB("tallgrass:0"), // Dead Bush?
+    SHRUB("tallgrass:0"),
+    // Dead Bush?
     TALLGRASS("tallgrass:1"),
     FERN("tallgrass:2"),
     DEADBUSH("deadbush"),
@@ -375,7 +376,7 @@ public enum VanillaBlock {
 
     private final String mapping;
 
-    private VanillaBlock(String mapping) {
+    VanillaBlock(String mapping) {
         this.mapping = "minecraft:".concat(mapping);
     }
 

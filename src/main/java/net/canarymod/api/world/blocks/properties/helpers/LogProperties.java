@@ -4,7 +4,9 @@ import net.canarymod.api.world.blocks.Block;
 import net.canarymod.api.world.blocks.properties.BlockEnumProperty;
 import net.visualillusionsent.utils.Verify;
 
-import static net.canarymod.api.world.blocks.BlockType.*;
+import static net.canarymod.api.world.blocks.BlockType.AcaciaLog;
+import static net.canarymod.api.world.blocks.BlockType.DarkOakLog;
+import static net.canarymod.api.world.blocks.BlockType.OakLog;
 
 /**
  * Log properties helper<p/>

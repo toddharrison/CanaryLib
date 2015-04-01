@@ -21,7 +21,8 @@ public final class PortalDestroyHook extends CancelableHook {
     /**
      * Constructs a new PortalDestroyHook
      *
-     * @param blocks the {@link Block} set the make up the portal
+     * @param blocks
+     *         the {@link Block} set the make up the portal
      */
     public PortalDestroyHook(Block[][] blocks, Position pos, World world) {
         this.blocks = blocks;

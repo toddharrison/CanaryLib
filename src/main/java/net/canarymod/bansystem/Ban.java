@@ -104,6 +104,7 @@ public class Ban {
      * with a date formatter if you need to.
      *
      * @return UNIX timestamp
+     *
      * @deprecated Use {@link Ban#getExpiration} instead
      */
     @Deprecated
@@ -188,10 +189,10 @@ public class Ban {
     public void setBanningPlayer(String banningPlayer) {
         this.moderator = banningPlayer;
     }
-    
+
     /**
      * Gets the UUID of the user for this ban.
-     * 
+     *
      * @return UUID of user
      */
     public String getUUID() {
@@ -201,11 +202,11 @@ public class Ban {
         }
         return this.uuid;
     }
-    
+
     /**
      * Sets the UUID for the ban on this user
-     * 
-     * @param uuid 
+     *
+     * @param uuid
      */
     public void setUUID(String uuid) {
         this.uuid = uuid;

@@ -145,33 +145,39 @@ public class Location extends Vector3D {
         this.dimension = dimension;
     }
 
-    /** Check if this object is equal to another one */
+    /**
+     * Check if this object is equal to another one
+     */
     @Override
     public boolean equals(Object other) {
         if (!(other instanceof Location)) {
             return false;
         }
         else {
-            Location l = (Location) other;
+            Location l = (Location)other;
 
             return ((l.x == x) && (l.y == y) && (l.z == z) && (l.dimension == dimension) && (l.pitch == pitch) && (l.rotation == rotation) && (l.world.equals(world)));
         }
     }
 
-    /** Return a hashcode for this object */
+    /**
+     * Return a hashcode for this object
+     */
     @Override
     public int hashCode() {
         int hash = 5;
 
-        hash = (int) (hash + x);
-        hash = (int) (hash + y);
-        hash = (int) (hash + z);
-        hash = (int) (hash + pitch);
-        hash = (int) (hash + rotation);
+        hash = (int)(hash + x);
+        hash = (int)(hash + y);
+        hash = (int)(hash + z);
+        hash = (int)(hash + pitch);
+        hash = (int)(hash + rotation);
         return hash;
     }
 
-    /** @return the world */
+    /**
+     * @return the world
+     */
     public String getWorldName() {
         return cachedWorld.getName();
     }
@@ -336,7 +342,7 @@ public class Location extends Vector3D {
 
     @Override
     public Location clone() throws CloneNotSupportedException {
-        return (Location) super.clone();
+        return (Location)super.clone();
     }
 
     public Location copy() {

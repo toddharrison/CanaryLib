@@ -39,7 +39,7 @@ public class DatabaseLoader {
                 String dbName = inf.getString("database-name");
                 Class<?> dbClass = ploader.loadClass(mainclass);
 
-                Database db = (Database) dbClass.newInstance();
+                Database db = (Database)dbClass.newInstance();
                 if (db != null) {
                     Database.Type.registerDatabase(dbName, db);
                 }

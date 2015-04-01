@@ -173,7 +173,7 @@ public class MessageOfTheDay {
             MOTDParser motdp = new MOTDParser(meta.key(), owner) {
                 @Override
                 String parse(MessageReceiver msgrec) throws Exception {
-                    return (String) method.invoke(listener, new Object[]{ msgrec });
+                    return (String)method.invoke(listener, new Object[]{ msgrec });
                 }
             };
 

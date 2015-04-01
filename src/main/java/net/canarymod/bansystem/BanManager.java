@@ -279,7 +279,7 @@ public class BanManager {
      * @return an Array of {@link Ban}(s)
      */
     public Ban[] getAllBans() {
-        Ban[] retT = { };
+        Ban[] retT = {};
 
         return bans.toArray(retT);
     }
@@ -317,7 +317,9 @@ public class BanManager {
         return seconds;
     }
 
-    /** Reloads the bans from datasource */
+    /**
+     * Reloads the bans from datasource
+     */
     public void reload() {
         bans.clear();
         bans = backbone.loadBans();

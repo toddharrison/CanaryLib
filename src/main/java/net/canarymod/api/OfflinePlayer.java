@@ -24,5 +24,4 @@ public interface OfflinePlayer extends PlayerReference {
      * <b>Important:</b> This will only apply if the player is not online!
      */
     void save();
-
 }
