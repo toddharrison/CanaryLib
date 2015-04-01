@@ -10,7 +10,7 @@ import net.canarymod.backbone.BackboneGroups;
 import net.canarymod.backbone.BackboneUsers;
 import net.canarymod.backbone.PlayerDataAccess;
 import net.canarymod.database.Database;
-import net.canarymod.database.exceptions.DatabaseWriteException;
+import net.canarymod.database.exceptions.DatabaseReadException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -191,9 +191,9 @@ public class UserAndGroupsProvider {
         try {
             HashMap<String, Object> filter = new HashMap<String, Object>();
             filter.put("uuid", reference.getUUIDString());
-            Database.get().update(data, filter);
+            Database.get().load(data, filter);
         }
-        catch (DatabaseWriteException e) {
+        catch (DatabaseReadException e) {
             log.error(e.getMessage(), e);
             return false; // It either broke, or they don't exist
         }
