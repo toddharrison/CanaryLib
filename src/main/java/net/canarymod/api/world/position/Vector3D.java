@@ -205,6 +205,17 @@ public class Vector3D extends Position {
     }
 
     /**
+     * Calculates the angle between this vector and another
+     * @param v Vector
+     *
+     * @return angle between vectors
+     */
+    public double angle(Vector3D v) {
+        return Math.acos(this.dot(v) / (this.getMagnitude() * v.getMagnitude()));
+    }
+
+
+    /**
      * Get the length (or magnitude) of this vector
      *
      * @return
