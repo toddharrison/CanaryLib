@@ -1,5 +1,6 @@
 package net.canarymod.api.entity;
 
+import net.canarymod.api.BoundingBox;
 import net.canarymod.api.entity.living.Golem;
 import net.canarymod.api.inventory.Item;
 import net.canarymod.api.nbt.BaseTag;
@@ -709,4 +710,6 @@ public interface Entity {
      * @return a list of nearby entities filtered by the given classes
      */
     List<Entity> getNearbyEntities(Vector3D vector, EntityType... filter);
+
+    BoundingBox getBoundingBox();
 }
