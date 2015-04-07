@@ -1,11 +1,53 @@
 package net.canarymod.api;
 
 /**
- * (Axis-Alligned) Bounding Box wrapper
+ * (Axis-Aligned) Bounding Box wrapper
  *
  * @author Jason Jones (darkdiplomat)
  */
 public interface BoundingBox {
+
+    /**
+     * Gets the minimum X
+     *
+     * @return minimum X
+     */
+    double getMinX();
+
+    /**
+     * Gets the minimum Y
+     *
+     * @return minimum Y
+     */
+    double getMinY();
+
+    /**
+     * Gets the minimum Z
+     *
+     * @return minimum Z
+     */
+    double getMinZ();
+
+    /**
+     * Gets the maximum X
+     *
+     * @return maximum X
+     */
+    double getMaxX();
+
+    /**
+     * Gets the maximum Y
+     *
+     * @return maximum Y
+     */
+    double getMaxY();
+
+    /**
+     * Gets the maximum Z
+     *
+     * @return maximum Z
+     */
+    double getMaxZ();
 
     /**
      * Adds the coordinates to the bounding box extending it if the point lies outside the current ranges.
