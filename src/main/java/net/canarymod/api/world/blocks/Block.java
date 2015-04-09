@@ -394,4 +394,12 @@ public interface Block {
      * @return {@link net.canarymod.api.world.blocks.BlockBase}
      */
     BlockBase getBlockBase();
+
+    /**
+     * Returns the Mojang string of the BlockState implementation<br/>
+     * If any properties are applied to a state, they are serialized in the returned string
+     *
+     * @return state to String
+     */
+    String stateToString();
 }
