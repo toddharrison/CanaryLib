@@ -325,4 +325,34 @@ public interface LivingBase extends Entity {
      * @return The Entity in this entity is looking at or null if none in range.
      */
     Entity getTargetLookingAt(int searchRadius);
+
+    /**
+     * Gets whether the Entity drops loot or not
+     *
+     * @return {@code true} if drops loot; {@code false} if not
+     */
+    boolean lootDrop();
+
+    /**
+     * Sets whether the Entity drops loot or not
+     *
+     * @param lootDrop
+     *         {@code true} if drops loot; {@code false} if not
+     */
+    void setLootDrop(boolean lootDrop);
+
+    /**
+     * Gets whether the Entity drops xp or not
+     *
+     * @return {@code true} if drops xp; {@code false} if not
+     */
+    boolean xpDrop();
+
+    /**
+     * Sets whether the Entity drops xp or not
+     *
+     * @param xpDrop
+     *         {@code true} if drops xp; {@code false} if not
+     */
+    void setXPDrop(boolean xpDrop);
 }

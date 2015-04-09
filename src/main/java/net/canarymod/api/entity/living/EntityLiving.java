@@ -192,7 +192,7 @@ public interface EntityLiving extends LivingBase {
     AIManager getAITaskManager();
 
     /**
-     * Returns the AIManager for this entity. <br>
+     * Returns the targeting AIManager for this entity. <br>
      * <b>NOTE:</b> This manager is for AI that is target based. Like moving to
      * a Location or finding an entity to attack.
      *
