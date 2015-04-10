@@ -7,7 +7,7 @@ import net.visualillusionsent.utils.UtilityException;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.util.zip.ZipFile;
 
 /**
  * Describes information about a plugin, including meta information and start/stop/load information.
@@ -35,19 +35,6 @@ public class PluginDescriptor {
             reloadInf();
         }
         catch (UtilityException uex) {
-            File pluginFile = new File(path);
-            // Is it another API's plugin?
-            if (pluginFile.isFile()) { // Bukkit didn't support directories afaik
-                if (pluginFile.getName().matches(".+\\.jar$")) { // Bukkit didn't support zip extension afaik
-                    try {
-                        new URL("jar:file:".concat(path).concat("!/plugin.yml")); // If not IOException, there is a plugin.yml
-                        throw new InvalidPluginException("Bukkit Plugins are not natively supported. Please remove '" + pluginFile.getName() + "' from your plugins directory.");
-                    }
-                    catch (IOException ioex) {
-                        // Thrown if plugin.yml is non-existent. ignoring...
-                    }
-                }
-            }
             throw new InvalidPluginException("Unable to load INF file", uex);
         }
         currentState = PluginState.KNOWN;
@@ -82,6 +69,19 @@ public class PluginDescriptor {
     private void findAndLoadCanaryInf() throws InvalidPluginException {
         File pluginFile = new File(path);
         if (pluginFile.isFile() && pluginFile.getName().matches(".+\\.(jar|zip)$")) {
+            try {
+                ZipFile zip = new ZipFile(path);
+                if (zip.getEntry("Canary.inf") == null) {
+                    if (zip.getEntry("plugin.yml") != null) {
+                        throw new InvalidPluginException("Bukkit Plugins are not natively supported. Please remove '" + pluginFile.getName() + "' from your plugins directory.");
+                    }
+                    throw new InvalidPluginException("I don't know where to find a Canary.inf in " + path);
+                }
+            }
+            catch (IOException ioex) {
+                throw new InvalidPluginException("Oops, something exploded while checking " + path, ioex);
+            }
+
             canaryInf = new PropertiesFile(pluginFile.getAbsolutePath(), "Canary.inf");
         }
         else if (pluginFile.isDirectory()) {
