@@ -33,7 +33,9 @@ import net.visualillusionsent.utils.JarUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLClassLoader;
 import java.util.HashMap;
+import java.util.jar.Manifest;
 
 /**
  * The interface to the brains of the bird! AKA Utils
@@ -458,6 +460,18 @@ public abstract class Canary implements TaskOwner {
      */
     public static String getImplementationTitle() {
         return Canary.class.getPackage().getImplementationTitle();
+    }
+
+    public static long getBuildNumber() {
+        URLClassLoader cl = (URLClassLoader)Canary.class.getClassLoader();
+        try {
+            Manifest manifest = new Manifest(cl.findResource("META-INF/MANIFEST.MF").openStream());
+            String build = manifest.getMainAttributes().getValue("Build");
+            return Long.parseLong(build);
+        }
+        catch (Exception ex) {
+            return 0;
+        }
     }
 
     /**
