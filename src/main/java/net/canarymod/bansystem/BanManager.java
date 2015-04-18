@@ -204,7 +204,7 @@ public class BanManager {
     /**
      * Gets a {@link Ban} for a given player's uuid
      *
-     * @param player
+     * @param uuid
      *         the uuid of the player
      *
      * @return the Ban if exists; {@code null} otherwise
@@ -282,6 +282,26 @@ public class BanManager {
         Ban[] retT = {};
 
         return bans.toArray(retT);
+    }
+
+    /**
+     * Get all bans of a certain BanType
+     *
+     * @param banType The BanType the ban will be sorted by
+     *
+     * @return an Array of {@link Ban}(s)
+     */
+    public Ban[] getAllBans(BanType banType) {
+        List<Ban> typeBans = new ArrayList<Ban>();
+
+        for (Ban b : bans) {
+            if (b.getBanType() == banType) {
+                typeBans.add(b);
+            }
+        }
+
+        Ban[] retT = {};
+        return typeBans.toArray(retT);
     }
 
     /**
