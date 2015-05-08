@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<!-- Exemplary. Actually this is not used since we're not relying on hibernate specifics at any point. -->
+<hibernate-configuration>
+    <session-factory>
+    </session-factory>
+</hibernate-configuration>

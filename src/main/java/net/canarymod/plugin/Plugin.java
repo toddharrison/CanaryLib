@@ -334,6 +334,15 @@ public abstract class Plugin implements CommandOwner, TaskOwner, MOTDOwner {
     }
 
     /**
+     * Returns all database entities provided by this plugin
+     * by their class instance. (MyEntity.class)
+     *
+     * @return the provided database entities
+     */
+    public Class<?>[] getDatabaseEntities() {
+        return null;
+    }
+    /**
      * {@inheritDoc}
      */
     @Override

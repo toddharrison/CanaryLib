@@ -1,0 +1,30 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+             version="2.0">
+    <persistence-unit name="canary_default" transaction-type="RESOURCE_LOCAL">
+        <!--<non-jta-data-source>java:/DefaultDS</non-jta-data-source>-->
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <!--<jta-data-source>java:/DefaultDS</jta-data-source>-->
+        <!--<mapping-file>ormap.xml</mapping-file>-->
+        <!-- These are the default CanaryMod entities. They will be loaded automatically so they always exist. -->
+        <class>net.canarymod.database.entity.User</class>
+        <class>net.canarymod.database.entity.Group</class>
+        <class>net.canarymod.database.entity.Permission</class>
+        <class>net.canarymod.database.entity.Warp</class>
+        <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+        <validation-mode>CALLBACK</validation-mode>
+        <properties>
+            <!-- These are all specified via the db configuration. This here serves as example and reference. -->
+            <!--<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>-->
+            <!--<property name="javax.persistence.jdbc.user" value="user"/>-->
+            <!--<property name="javax.persistence.jdbc.password" value="supersecret"/>-->
+            <!--<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/some_database"/>-->
+            <!--<property name="javax.persistence.jdbc.dialect" value="org.hibernate.dialect.MySQLDialect" />-->
+            <!--<property name="javax.persistence.validation.mode" value="ddl"/>-->
+            <!-- cache configuration -->
+            <!--<property name="hibernate.ejb.classcache.org.hibernate.ejb.test.Item" value="read-write"/>-->
+            <!--<property name="hibernate.ejb.collectioncache.org.hibernate.ejb.test.Item.distributors" value="read-write, RegionName"/>-->
+        </properties>
+    </persistence-unit>
+</persistence>
