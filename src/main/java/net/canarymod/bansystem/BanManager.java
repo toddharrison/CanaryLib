@@ -1,7 +1,7 @@
 package net.canarymod.bansystem;
 
 import net.canarymod.ToolBox;
-import net.canarymod.api.entity.living.humanoid.Player;
+import net.canarymod.api.PlayerReference;
 import net.canarymod.backbone.BackboneBans;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class BanManager {
      * @param reason
      *         the reason for the ban
      */
-    public void issueBan(Player player, String reason) {
+    public void issueBan(PlayerReference player, String reason) {
         Ban ban = new Ban(player, reason, false);
 
         bans.add(ban);
@@ -53,7 +53,7 @@ public class BanManager {
      * Issue a temporary ban.
      *
      * @param player
-     *         the {@link Player} being banned
+     *         the {@link PlayerReference} being banned
      * @param reason
      *         the reason for the ban
      * @param time
@@ -61,7 +61,7 @@ public class BanManager {
      *         Example: /ban player Being incredibly stupid 5 HOURS If you
      *         put nothing as time unit, it will evaluate as HOURS!
      */
-    public void issueBan(Player player, String reason, String time) {
+    public void issueBan(PlayerReference player, String reason, String time) {
         long timeToAdd;
 
         try {
@@ -81,11 +81,11 @@ public class BanManager {
      * Ban player by IP
      *
      * @param player
-     *         the {@link Player} who's IP is being banned
+     *         the {@link PlayerReference} who's IP is being banned
      * @param reason
      *         the reason for the ban
      */
-    public void issueIpBan(Player player, String reason) {
+    public void issueIpBan(PlayerReference player, String reason) {
         Ban ban = new Ban(player, reason, true);
 
         bans.add(ban);
@@ -96,7 +96,7 @@ public class BanManager {
      * Issue an IP Ban with the given amount of time
      *
      * @param player
-     *         the {@link Player} who's IP is being banned
+     *         the {@link PlayerReference} who's IP is being banned
      * @param reason
      *         the reason for the ban
      * @param time
@@ -104,7 +104,7 @@ public class BanManager {
      *         Example: /ban player Being incredibly stupid 5 HOURS If you
      *         put nothing as time unit, it will evaluate as HOURS!
      */
-    public void issueIpBan(Player player, String reason, String time) {
+    public void issueIpBan(PlayerReference player, String reason, String time) {
         long timeToAdd = 0L;
 
         try {
@@ -119,7 +119,7 @@ public class BanManager {
         backbone.addBan(ban);
     }
 
-    public void issueIpBan(Player player, String reason, long bantime) {
+    public void issueIpBan(PlayerReference player, String reason, long bantime) {
 
         Ban ban = new Ban(player, reason, ToolBox.getUnixTimestamp() + bantime, false);
 
@@ -253,9 +253,9 @@ public class BanManager {
      * Unban this player (this will NOT work with IPBans!)
      *
      * @param player
-     *         the {@link Player} to unban
+     *         the {@link PlayerReference} to unban
      */
-    public void unban(Player player) {
+    public void unban(PlayerReference player) {
         Ban test = null;
 
         for (Ban b : bans) {
