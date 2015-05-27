@@ -48,10 +48,31 @@ public abstract class ServerTask {
      *         if owner is null
      */
     public ServerTask(TaskOwner owner, long delay, boolean continuous) {
+        this(owner, delay, delay, continuous);
+    }
+
+    /**
+     * Constructs either a one-time use or continuous ServerTask
+     *
+     * @param owner
+     *         the {@link TaskOwner} of the task, typically a {@link Plugin}
+     * @param delay
+     *         the delay before executing. Set to 0 or less to run within the next Server tick<br>
+     *         If delay is 0 or less, the task will run with each server tick
+     * @param schedule
+     *         the delay before each execution if the task is continuous
+     *         If delay is 0 or less, the task will run with each server tick
+     * @param continuous
+     *         {@code true} for continuous; {@code false} for one-time use
+     *
+     * @throws IllegalArgumentException
+     *         if owner is null
+     */
+    public ServerTask(TaskOwner owner, long delay, long schedule, boolean continuous) {
         if (owner == null) {
             throw new IllegalArgumentException("A ServerTask requires an owner.");
         }
-        this.schedule = delay;
+        this.schedule = schedule;
         this.delay = delay;
         this.continuous = continuous;
         this.owner = owner;
