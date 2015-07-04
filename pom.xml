@@ -126,7 +126,22 @@
     </distributionManagement>
     -->
 
+    <distributionManagement>
+        <repository>
+            <id>bintray-repo-CanaryMod</id>
+            <url>https://api.bintray.com/maven/toddharrison/CanaryMod/CanaryLib</url>
+        </repository>
+    </distributionManagement>
+
     <repositories>
+        <repository>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>bintray-toddharrison-CanaryMod</id>
+            <name>bintray</name>
+            <url>http://dl.bintray.com/toddharrison/CanaryMod</url>
+        </repository>
         <!--
         <repository>
             <id>vi-repo</id>
