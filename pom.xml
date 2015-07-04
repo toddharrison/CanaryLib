@@ -6,11 +6,14 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <groupId>net.canarymod</groupId>
     <artifactId>CanaryLib</artifactId>
     <packaging>jar</packaging>
-    <version>1.2.1-SNAPSHOT</version>
+    <version>1.2.1</version>
+
     <name>CanaryLib</name>
+    <!--
     <url>http://www.canarymod.net</url>
     <inceptionYear>2012</inceptionYear>
 
@@ -18,6 +21,7 @@
         <name>CanaryMod Team</name>
         <url>http://canarymod.net</url>
     </organization>
+    -->
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -25,7 +29,7 @@
         <build.number/>
         <!-- Dependency Versioning -->
         <metrics>R7</metrics>
-        <viutils>1.4.2</viutils>
+        <viutils>1.4.3</viutils>
         <jdom>2.0.5</jdom>
         <c3p0>0.9.5</c3p0>
         <log4j>2.0-beta9</log4j>
@@ -82,6 +86,17 @@
     </licenses>
 
     <scm>
+        <connection>scm:git:git://github.com/toddharrison/CanaryLib.git</connection>
+        <url>https://github.com/toddharrison/CanaryLib</url>
+        <developerConnection>scm:git:git@github.com:toddharrison/CanaryLib.git</developerConnection>
+    </scm>
+    <issueManagement>
+        <url>https://github.com/toddharrison/CanaryLib/issues</url>
+        <system>GitHub</system>
+    </issueManagement>
+
+    <!--
+    <scm>
         <connection>scm:git:git://github.com/CanaryModTeam/CanaryLib.git</connection>
         <url>https://github.com/CanaryModTeam/CanaryLib</url>
         <developerConnection>scm:git:git@github.com:CanaryModTeam/CanaryLib.git</developerConnection>
@@ -109,13 +124,16 @@
             <url>http://repo.visualillusionsent.net/repository/public/</url>
         </snapshotRepository>
     </distributionManagement>
+    -->
 
     <repositories>
+        <!--
         <repository>
             <id>vi-repo</id>
             <name>Visual Illusions Repository</name>
             <url>http://repo.visualillusionsent.net/repository/public/</url>
         </repository>
+        -->
         <repository>
             <id>mojang</id>
             <name>Minecraft Libraries</name>
@@ -350,7 +368,8 @@
                 </plugins>
             </build>
         </profile>
-        <!-- Add Build number to a Jenkins build -->
+        
+        <!-- Add Build number to a Jenkins build - ->
         <profile>
             <id>jenkins</id>
             <activation>
@@ -362,5 +381,6 @@
                 <build.number>-${BUILD_NUMBER}</build.number>
             </properties>
         </profile>
+        -->
     </profiles>
 </project>
