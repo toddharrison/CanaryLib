@@ -21,7 +21,7 @@ apply plugin: 'idea'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.johnrengelman.shadow'
 
-group = 'net.visualillusionsent'
+group = 'net.canarymod'
 archivesBaseName = 'CanaryLib'
 version = '1.2.1.' + build_number
 
@@ -104,7 +104,7 @@ bintray {
     pkg {
         repo = 'CanaryMod'
         name = 'CanaryLib'
-        vcsUrl = 'https://github.com/toddharrison/viutils.git'
+        vcsUrl = 'https://github.com/toddharrison/CanaryLib.git'
         licenses = ['BSD 3-Clause']
         version {
             name = project.version
