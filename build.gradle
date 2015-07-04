@@ -64,6 +64,10 @@ publishing {
 repositories {
     mavenCentral()
     mavenLocal()
+
+    maven {
+        url "http://dl.bintray.com/toddharrison/CanaryMod"
+    }
 }
 
 dependencies {
@@ -99,9 +103,9 @@ bintray {
     publish = true
     pkg {
         repo = 'CanaryMod'
-        name = 'viutils'
+        name = 'CanaryLib'
         vcsUrl = 'https://github.com/toddharrison/viutils.git'
-        licenses = ['BSD 3-Clause License']
+        licenses = ['BSD 3-Clause']
         version {
             name = project.version
         }
