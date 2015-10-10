@@ -1,0 +1,11 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Sat Jul 04 19:28:00 MDT 2015
+http\://dl.bintray.com/toddharrison/CanaryMod/.error=
+@default-https\://libraries.minecraft.net/.lastUpdated=1423699837206
+http\://dl.bintray.com/toddharrison/CanaryMod/.lastUpdated=1436058463714
+http\://repo.visualillusionsent.net/repository/public/.error=Could not transfer artifact org.mcstats.standalone\:metrics\:pom\:R7 from/to vi-repo (http\://repo.visualillusionsent.net/repository/public/)\: Failed to transfer file\: http\://repo.visualillusionsent.net/repository/public/org/mcstats/standalone/metrics/R7/metrics-R7.pom. Return code is\: 503, ReasonPhrase\: Service Unavailable.
+http\://repo.mcstats.org/content/repositories/releases/.lastUpdated=1423699838189
+@default-vi-repo-http\://repo.visualillusionsent.net/repository/public/.lastUpdated=1436059680178
+https\://repo.maven.apache.org/maven2/.lastUpdated=1436058463895
+https\://repo.maven.apache.org/maven2/.error=
+https\://libraries.minecraft.net/.error=Could not transfer artifact org.mcstats.standalone\:metrics\:pom\:R7 from/to mojang (https\://libraries.minecraft.net)\: Access denied to\: https\://libraries.minecraft.net/org/mcstats/standalone/metrics/R7/metrics-R7.pom , ReasonPhrase\:Forbidden.

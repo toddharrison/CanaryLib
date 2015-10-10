@@ -135,6 +135,20 @@
 
     <repositories>
         <repository>
+            <id>project.local</id>
+            <name>project</name>
+            <url>file:${project.basedir}/repo</url>
+        </repository>
+        <repository>
+            <id>mojang</id>
+            <name>Minecraft Libraries</name>
+            <url>https://libraries.minecraft.net</url>
+        </repository>
+    </repositories>
+
+<!--
+    <repositories>
+        <repository>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
@@ -142,13 +156,13 @@
             <name>bintray</name>
             <url>http://dl.bintray.com/toddharrison/CanaryMod</url>
         </repository>
-        <!--
+        <!- -
         <repository>
             <id>vi-repo</id>
             <name>Visual Illusions Repository</name>
             <url>http://repo.visualillusionsent.net/repository/public/</url>
         </repository>
-        -->
+        - ->
         <repository>
             <id>mojang</id>
             <name>Minecraft Libraries</name>
@@ -165,6 +179,7 @@
             <url>http://repo.mcstats.org/content/repositories/snapshots/</url>
         </repository>
     </repositories>
+-->
 
     <dependencies>
         <!-- Compile Time Dependencies -->
