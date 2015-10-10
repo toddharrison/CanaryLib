@@ -1245,8 +1245,9 @@ public class CommandList implements CommandListener {
     }
 
     @Command(aliases = { "spawn" }, description = "spawn info", permissions = {
-            SPAWN }, toolTip = "/spawn [worldname] [player]", min = 1, max = 3)
+            SPAWN }, toolTip = "/spawn", min = 1, max = 1)
     public void spawnCommand(final MessageReceiver caller, final String[] parameters) {
+        // TODO support spawn to specific world
         natives.get("spawn").execute(caller, parameters);
     }
 
@@ -1279,6 +1280,7 @@ public class CommandList implements CommandListener {
             WARP$USE }, toolTip = "/warp <name>", min = 0, version = 2)
     public void warpUse(final MessageReceiver caller, final String[] parameters) {
         if (parameters.length == 0) {
+            // TODO added listwarps for /warp command
             natives.get("listwarps").execute(caller, parameters);
         } else {
             natives.get("warp").execute(caller, parameters);
